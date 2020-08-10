@@ -32,10 +32,10 @@ class CustomBaseException(Exception):
         self.nombre = "Excepción base personalizada"
 
     def __repr__(self):
-        repr = "\n" + "-"*40 + self.nombre
-                + " -- Origen: " + self.origen + "\n"
-                + " -- Mensaje: " + self.msj + "\n"
-                + " -- Mensaje Adicional: " + self.msj_adicional + "\n"
+        repr = "\n" + "-"*40 + self.nombre \
+                + " -- Origen: " + self.origen + "\n" \
+                + " -- Mensaje: " + self.msj + "\n" \
+                + " -- Mensaje Adicional: " + self.msj_adicional + "\n" \
                 + "-"*40 + "\n"
         return(repr)
 
@@ -51,5 +51,16 @@ class ErrorDeConexion(CustomBaseException):
                 msj="Esta excepción fue elevada manualmente", 
                 msj_adicional="No hay mensajes adicionales"):
 
-        super().__init__(self,origen,msj,msj_adicional)
+        super().__init__(origen,msj,msj_adicional)
         self.nombre = "Error de conexión."
+
+class ErrorDeValorIngresado(CustomBaseException):
+    """ Excepción correspondiente a un error debido a un valor ingresado por el usuario"""
+
+    def __init__(self, 
+                origen, 
+                msj="Esta excepción fue elevada manualmente", 
+                msj_adicional="No hay mensajes adicionales"):
+
+        super().__init__(origen,msj,msj_adicional)
+        self.nombre = "Error de valor ingresado por el usuario."
