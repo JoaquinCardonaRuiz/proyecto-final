@@ -1,6 +1,6 @@
 """ Módulo de datos.
 
-Este modulo constituye, en la arquitectura de 3 capas, a la capa de Datos, encargada de gestionar las interacciones
+Este modulo constituye, en la arquitectura de 3 capas, la capa de Datos, encargada de gestionar las interacciones
 con la base de datos. Este módulo contiene a la clase CapaDatos, que contiene métodos para la conexión a la base de 
 datos y aquellos que engloban las distintas consultas que se utilizarán para obtener, modificar, y/o actualizar 
 elementos en la base de datos.
@@ -10,38 +10,55 @@ palabras comenzarán también con mayúscula. Las funciones, métodos, atributos
 en minusculas, separando las palabras con guiones bajos.
 
 Dependencias:
-    flask_mysqldb
+    MySQLdb
 
+TODO:
+    * Docstring dentro de la clase CapaDatos
+    * Crear clase EcoAsistente que guarde todos los globales. (stocks, etc.)
+    * Recuperar valores de EcoPuntos al inicializar clase EcoAsistente
+    * Programar consulta de datos en clase EcoPuntos
 """
 
 #Imports
 
-from flask_mysqldb import MySQL
+import MySQLdb
+import custom_exceptions
+from custom_exceptions import *
 
+#Clase que representa la capa de datos.
 class CapaDatos():
-
-    def ConexionDB(password, host):
-    """Crea la conexión con la base de datos MySQL. Devuelve un booleano.
-
-    Args:
-        password (string): Contraseña de la conexión.
-        host (string): Nombre del host de MySQL.
-
-    Returns:
-        bool: Verdadero si la conexión tuvo éxito, falso si no.
-
-    Raises:
-        ErrorDeConexion: si ocurre un error conectando a la base de datos.
     """
+    """
+    def __init__(self):
+        
+        self.db = None
+        self.cursor = None
+        
 
-    #Creación del motor de la Base de datos
-    try:
-        engine = create_engine('mysql://root:'+ password + '@' + host + '/ecoasistente')
-
-        #Exceptuamos a AlchemyBase de la convención de nombres por representar una clase
-        AlchemyBase = declarative_base()   
-        AlchemyBase.metadata.bind = engine
-    except Exception as e:
-        raise custom_exceptions.ErrorDeConexion(origen="classes.ConexionDB()",
-                                                msj=str(e),
-                                                msj_adicional="Error conectando a la base de datos MySQL.")
+    def abrir_conexion(self):
+        """
+        """
+        #Conexión con el motor de BD.
+        try:
+            self.db = MySQLdb.connect(host="sql10.freemysqlhosting.net",    # Host de la BD.
+                        user="sql10359552",      # Usuario de la BD
+                        passwd="vyqs1VbikX",     # Contraseña de la BD
+                        db="sql10359552")        # Nombre de la DB
+            self.cursor = self.db.cursor()
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="classes.ConexionDB()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error conectando a la base de datos MySQL.")
+    
+    def cerrar_conexion(self):
+        """
+        """
+        #Cerrando la conexión con el motor de BD:
+        try:
+            self.db.close()
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="classes.ConexionDB()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error cerrando la conexión a la base de datos MySQL.")
+    
