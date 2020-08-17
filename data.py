@@ -31,7 +31,7 @@ class CapaDatos():
         
         self.db = None
         self.cursor = None
-        # self.abrir_conexion() -- Pregunta: hacemos que al instanciarse se abra la conexion automaticaente? Si es no, borrá esta línea
+        self.abrir_conexion()
 
     def abrir_conexion(self):
         """
