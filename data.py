@@ -13,10 +13,8 @@ Dependencias:
     MySQLdb
 
 TODO:
-    * Docstring dentro de la clase CapaDatos
-    * Crear clase EcoAsistente que guarde todos los globales. (stocks, etc.)
-    * Recuperar valores de EcoPuntos al inicializar clase EcoAsistente
-    * Programar consulta de datos en clase EcoPuntos
+    * Docstring dentro de la clase CapaDatos.
+    * Docstring con descripción de los métodos.
 """
 
 #Imports
@@ -33,7 +31,7 @@ class CapaDatos():
         
         self.db = None
         self.cursor = None
-        
+        # self.abrir_conexion() -- Pregunta: hacemos que al instanciarse se abra la conexion automaticaente? Si es no, borrá esta línea
 
     def abrir_conexion(self):
         """
