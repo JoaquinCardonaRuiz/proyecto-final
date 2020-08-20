@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EcoAsitente</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/layout.css')}}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">   
+</head>
+<body>
+    
+    <div class="vertical-nav bg-white" id="sidebar">
+        <div class="py-4 px-3 mb-4 bg-light">
+          <div class="media d-flex align-items-center"><img src="/static/img/user.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+            <div class="media-body">
+              <h4 class="m-0" style="font-size: large;">EcoAsistente</h4>
+              <p class="font-weight-light text-muted mb-0" style="font-size: large;">proyecto final</p>
+            </div>
+          </div>
+        </div>
+      
+        <ul class="nav flex-column bg-white mb-0">
+          <li class="nav-item" style="line-height: 40px;">
+            <a href="/" class="nav-link text-dark font- bg-light" style="font-size: 15px;">
+                      <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
+                      Inicio
+                  </a>
+          </li>
+          <li class="nav-item" style="line-height: 40px;">
+            <a href="/profile" class="nav-link text-dark font-awesome bg-light" style="font-size: 15px;">
+                      <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
+                      Perfil
+                  </a>
+          </li>
+          <li class="nav-item" style="line-height: 40px;">
+            <a href="/choice" class="nav-link text-dark font-awesome bg-light" style="font-size: 15px;">
+                      <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
+                      Inscripciones
+                  </a>
+          </li>
+          <li class="nav-item" style="line-height: 40px;">
+            <a href="/drop-choice" class="nav-link text-dark font-awesome bg-light" style="font-size: 15px;">
+                      <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+                      Bajas
+                  </a>
+          </li>
+          <li class="nav-item" style="line-height: 40px;">
+            <a href="/payment" class="nav-link font-awesome text-dark bg-light" style="font-size: 15px;">
+                      <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+                      Pagos
+                  </a>
+          </li>
+        </ul>
+      </div>
+      <!-- End vertical navbar -->
+      <script src="static/js/layout.js"></script>
+
+</body>
+
+{%block body%}
+{%endblock%}
+<!--footer starts from here-->
