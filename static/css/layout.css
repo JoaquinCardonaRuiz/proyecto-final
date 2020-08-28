@@ -90,7 +90,7 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
   }
 
   body {
-	background: #599fd9;
+	background: #95C22B;
 
 	min-height: 100vh;
 	overflow-x: hidden;
@@ -109,3 +109,7 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 	color: #aaa;
   }
   
+.fa{
+	color:#95C22B;
+}
+
