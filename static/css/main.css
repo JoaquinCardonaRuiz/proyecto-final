@@ -1,8 +1,8 @@
-.fas:hover{
-    transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+#top-container{
+    width: 86%; 
+    margin-left: 7%; 
+    margin-top: 5%; border-radius: 5px;
 }
 
 
-.fas {
-	transition: transform .1s; /* Animation */
-}
+

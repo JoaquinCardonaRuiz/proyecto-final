@@ -22,7 +22,7 @@
     <div class="py-4 px-3 mb-4 bg-light">
       <div class="media d-flex align-items-center">
         <div class="media-body">
-          <h4 class="m-0">EcoAsistente</h4>
+          <h4 class="m-0" onclick="window.location.href='/'" id="navbar-title">EcoAsistente</h4>
           <p class="font-weight-light text-muted mb-0">Proyecto Final</p>
         </div>
       </div>
@@ -67,9 +67,9 @@
               </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link text-dark font-italic bg-light">
-                  <i class="fa fa-bar-chart mr-3 fa-fw"></i>
-                  Bar charts
+        <a href="/gestion-niveles" class="nav-link text-dark font-italic bg-light">
+                  <i class="fa fa-trophy mr-3 fa-fw"></i>
+                  Gestión de niveles
               </a>
       </li>
       <li class="nav-item">
@@ -86,7 +86,14 @@
       </li>
     </ul>
   </div>
-  <!-- End vertical navbar -->   
+  <!-- End vertical navbar --> 
+  
+  <!-- Start upper navbar --> 
+  <div class="page-content" style="text-align: right;" id="content">
+    <p id="upper-navbar"><i class="fas fa-question-circle fa-2x" id="navbar-questions"></i><i class="fas fa-user-circle fa-2x" id="navbar-user"></i></p>
+  </div>
+  <!-- End upper navbar --> 
+
 
 </body>
 

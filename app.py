@@ -7,8 +7,15 @@ app.secret_key = 'myscretkey'
 
 @app.route('/', methods = ['GET','POST'])
 def main():
-    pass
     return render_template('main.html')
+
+@app.route('/gestion-niveles', methods = ['GET','POST'])
+def gestion_niveles():
+    return render_template('gestion-niveles.html')
+
+@app.route('/alta-nivel', methods = ['GET','POST'])
+def alta_nivel():
+    return render_template('alta-nivel.html')
 
 
 if __name__ == '__main__':

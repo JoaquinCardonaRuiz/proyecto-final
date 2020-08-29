@@ -113,3 +113,25 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 	color:#95C22B;
 }
 
+#upper-navbar{
+	margin-top: 2.5%; 
+	margin-right: 7%;
+}
+
+.fas:hover{
+    transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+
+.fas {
+    transition: transform .1s; /* Animation */
+    color: #333333;
+}
+
+#navbar-questions{
+    margin-right: 1%;
+}
+
+#navbar-title{
+	cursor: pointer;
+}
