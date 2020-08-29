@@ -22,6 +22,7 @@ TODO:
 import MySQLdb
 import custom_exceptions
 from custom_exceptions import *
+from classes import Nivel
 
 #Clase que representa la capa de datos.
 class CapaDatos():
@@ -60,3 +61,24 @@ class CapaDatos():
                                                     msj=str(e),
                                                     msj_adicional="Error cerrando la conexión a la base de datos MySQL.")
     
+    def get_niveles(self):
+        """
+        Obtiene todos los niveles de la BD.
+        """
+        #Conexión con el motor de BD.
+        try:
+            self.abrir_conexion()
+            sql = ("select * from niveles")
+            self.cursor.execute(sql)
+            niveles_ = self.cursor.fetchall()
+            niveles = []
+            for nivel in niveles_:
+                nivel_ = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
+                niveles.append(nivel_)
+            return niveles
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_niveles()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los niveles desde la BD.")
+

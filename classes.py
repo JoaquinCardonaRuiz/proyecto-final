@@ -161,6 +161,7 @@ class Nivel:
 
     Atributos:
         id (string): Identificador de la entidad.
+        nombre(string): Identifica el número del nivel.
         minimoEcoPuntos (float): Mínima cantidad de ecopuntos necesaria para alcanzar el nivel.
         maximoEcoPuntos (float): Máxima cantidad de ecopuntos que el nivel comprende.
         descuento (float): Descuento aplicado a los pedidos para los usuarios que alcanzaron el
@@ -169,8 +170,9 @@ class Nivel:
             multiplicar el precio del pedido.
     """
 
-    def __init__(self,id,minimoEcoPuntos,maximoEcoPuntos,descuento):
+    def __init__(self,id,nombre,minimoEcoPuntos,maximoEcoPuntos,descuento):
         self.id = id
+        self.nombre = nombre
         self.minimoEcoPuntos = minimoEcoPuntos
         self.maximoEcoPuntos = maximoEcoPuntos
         self.set_descuento(descuento)
