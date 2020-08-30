@@ -135,3 +135,11 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 #navbar-title{
 	cursor: pointer;
 }
+
+#sidebar{
+	background-color: #fff;
+}
+
+.nav-item:hover{
+	background-color: #d1f089e1;
+}

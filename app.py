@@ -18,7 +18,9 @@ def gestion_niveles():
 
 @app.route('/alta-nivel', methods = ['GET','POST'])
 def alta_nivel():
-    return render_template('alta-nivel.html')
+    negocio = Negocio()
+    min_max_nivel = negocio.get_min_max_niveles()
+    return render_template('alta-nivel.html', min_nivel = min_max_nivel[0], max_level = min_max_nivel[1])
 
 
 if __name__ == '__main__':

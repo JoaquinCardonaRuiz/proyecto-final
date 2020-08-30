@@ -20,39 +20,41 @@
     <h1 class="heading">Gestión de niveles</h1>
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container bg-light" id="option" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
                 <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Añadir nivel</p>
             </div>
-            <div class="container bg-light" id="option" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
                 <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Modificar nivel</p>
             </div>
-            <div class="container bg-light" id="option" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
                 <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Eliminar nivel</p>
             </div>
         </div>
     </div>
-    <div class="container bg-light" id="table-container">
-        <table class="table" id="content-table">
-            <thead>
-              <tr>
-                <th scope="col">Nivel</th>
-                <th scope="col">EcoPuntos</th>
-                <th scope="col">Descuento</th>
-              </tr>
-            </thead>
-            <tbody>
-            {%for nivel in niveles%}
-              <tr>
-                <th scope="row">{{nivel.nombre}}</th>
-                <td>Desde los {{nivel.minimoEcoPuntos}} hasta los {{nivel.maximoEcoPuntos}} EcoPuntos.</td>
-                <td>{{nivel.descuento}}%</td>
-              </tr>
-            {%endfor%}
-            </tbody>
-        </table>
+    <div class="container" id="table-container">
+        <div class="row">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Nivel</th>
+                    <th scope="col" class="table-heading">EcoPuntos</th>
+                    <th scope="col" class="table-heading">Descuento</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for nivel in niveles%}
+                <tr>
+                    <th scope="row">{{nivel.nombre}}</th>
+                    <td>Desde los {{nivel.minimoEcoPuntos}} hasta los {{nivel.maximoEcoPuntos}} EcoPuntos.</td>
+                    <td>{{nivel.descuento}}%</td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

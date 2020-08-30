@@ -24,6 +24,9 @@ import custom_exceptions
 from custom_exceptions import *
 from classes import Nivel
 from data import CapaDatos
+import operator
+from operator import attrgetter
+
 
 #Clase que representa la capa de datos.
 class Negocio():
@@ -66,7 +69,23 @@ class Negocio():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="negocio.get_niveles()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los niveles la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo los niveles de la capa de Datos.")
+        
+    def get_min_max_niveles(self):
+        """
+        Obtiene el mínimo y el máximo nivel de la BD.
+        """
+        #Conexión con el motor de BD.
+        try:
+            niveles = self.datos.get_niveles()
+            max_nivel = (max(niveles, key= operator.attrgetter('nombre')).nombre)
+            min_nivel = (min(niveles, key= operator.attrgetter('nombre')).nombre)
+            return [min_nivel, max_nivel]
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_niveles()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio calculando el máximo/mínimo nivel.")
 
 
     

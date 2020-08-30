@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
     <link rel="icon" type="image/png" href=""/>
-    <link rel="stylesheet" href="{{url_for('static',filename='css/choice.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/alta-nivel.css')}}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <meta charset="utf-8">
@@ -19,18 +19,36 @@
 <div class="page-content" style="text-align: left;" id="content">
     <h1 class="heading">Añadir un nivel</h1>
     <div class="container" id="top-container">
-        <div class="row">
-            <div class="container bg-light" id="option" onclick="window.location.href='/alta-nivel'">
-                <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Añadir nivel</p>
+        <div class="col">
+            <div class="row" id="top-row">
+                <div class="group" style="margin-left: 10%;">      
+                    <input type="number" required>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Número de Nivel</label>
+                </div>
+                <div class="group" style="margin-left: 10%;">      
+                    <input type="text" required>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Porcentaje Descuento</label>
+                </div>
             </div>
-            <div class="container bg-light" id="option">
-                <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Modificar nivel</p>
-            </div>
-            <div class="container bg-light" id="option">
-                <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Eliminar nivel</p>
+        </div>
+        <div class="col">
+            <div class="row" style="width: 100%;">
+                <div class="group" style="margin-left: 10%;">      
+                    <input type="number" required>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Mínimo EcoPuntos</label>
+                </div>
+                <div class="group" style="margin-left: 10%;">      
+                    <input type="number" required>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Máximo EcoPuntos</label>
+                </div>
             </div>
         </div>
     </div>
