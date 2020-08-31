@@ -22,7 +22,8 @@ TODO:
 
 import MySQLdb
 import custom_exceptions
-from classes import Nivel
+from classes import Nivel,\
+                    EntidadDestino
 
 #Clase que representa la capa de datos.
 class Datos():
@@ -31,9 +32,9 @@ class Datos():
     #Conexión con el motor de BD.
     try:
         db = MySQLdb.connect(host="sql10.freemysqlhosting.net",    # Host de la BD.
-                    user="sql10359552",      # Usuario de la BD
-                    passwd="vyqs1VbikX",     # Contraseña de la BD
-                    db="sql10359552")        # Nombre de la DB
+                    user="sql10359552",                            # Usuario de la BD
+                    passwd="vyqs1VbikX",                           # Contraseña de la BD
+                    db="sql10359552")                              # Nombre de la DB
         cursor = db.cursor()
             
     except Exception as e:
@@ -60,7 +61,6 @@ class Datos():
         """
         Obtiene todos los niveles de la BD.
         """
-        #Conexión con el motor de BD.
         try:
             sql = ("select * from niveles")
             cls.cursor.execute(sql)
@@ -77,3 +77,23 @@ class Datos():
                                                     msj_adicional="Error obtieniendo los \
                                                         niveles desde la BD.")
 
+    @classmethod
+    def get_entidades_destino(cls):
+        """
+        Obtiene todos los niveles de la BD.
+        """
+        try:
+            sql = ("SELECT * FROM entidadesDestino;")
+            cls.cursor.execute(sql)
+            entidades_ = cls.cursor.fetchall()
+            entidades = []
+            for e in entidades_:
+                entidad_ = EntidadDestino(e[0],e[1])
+                entidades.append(entidad_)
+            return entidades
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_entidades_destino()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo las \
+                                                        entidades destino desde la BD.")

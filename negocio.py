@@ -32,7 +32,8 @@ class Negocio():
     @classmethod
     def replace_dots(cls, number, decimals):
         """
-        Redondea la cantidad de decimales del número recibido como parámetro, y reemplaza el punto por una coma para denotarlos.
+        Redondea la cantidad de decimales del número recibido como parámetro, y reemplaza el 
+        punto por una coma para denotarlos.
         """
         try:
             if decimals == 0:
@@ -44,7 +45,8 @@ class Negocio():
         except Exception as e:
            raise custom_exceptions.ErrorDeConexion(origen="negocio.replace_dots()",
                                                    msj=str(e),
-                                                   msj_adicional="Error formateando los números.")
+                                                   msj_adicional="Error formateando los \
+                                                       números.")
 
     @classmethod
     def get_niveles(cls):
@@ -63,13 +65,15 @@ class Negocio():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="negocio.get_niveles()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los niveles de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                         obtieniendo los niveles de la capa de\
+                                                         Datos.")
+    
     @classmethod    
     def get_min_max_niveles(cls):
         """
         Obtiene el mínimo y el máximo nivel de la BD.
         """
-        #Conexión con el motor de BD.
         try:
             niveles = Datos.get_niveles()
             max_nivel = (max(niveles, key= operator.attrgetter('nombre')).nombre)
@@ -79,7 +83,22 @@ class Negocio():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="negocio.get_niveles()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio calculando el máximo/mínimo nivel.")
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                         calculando el máximo/mínimo nivel.")
 
+    @classmethod
+    def get_entidades_destino(cls):
+        """
+        Obtiene todas las entidades de destino de la BD.
+        """
+        try:
+            entidades = Datos.get_entidades_destino()
+            return entidades
 
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_entidades_destino()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                         obtieniendo las entidades destino de \
+                                                         la capa de Datos.")
     

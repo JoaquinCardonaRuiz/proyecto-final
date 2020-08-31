@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href=""/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/choice.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <h1 class="heading">Gestión de niveles</h1>
+    <div class="container" id="top-container">
+        <div class="row">
+            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
+                <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
+                <p class="option-title">Añadir Entidad Destino</p>
+            </div>
+            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
+                <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
+                <p class="option-title">Modificar Entidad Destino</p>
+            </div>
+            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
+                <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
+                <p class="option-title">Eliminar Entidad Destino</p>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="table-container">
+        <div class="row">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">Nombre de la Entidad</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for ent in entidades%}
+                <tr>
+                    <th scope="row">{{ent.id}}</th>
+                    <td>{{ent.nombre}}</td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="static/js/gestion-ed.js"></script>
+{% endblock %}
