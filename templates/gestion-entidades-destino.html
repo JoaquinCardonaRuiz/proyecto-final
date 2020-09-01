@@ -17,20 +17,22 @@
 {% extends 'layout.html' %}
 {% block body %}
 <div class="page-content" style="text-align: left;" id="content">
-    <h1 class="heading">Gestión de niveles</h1>
+    <div class="container" id="heading-container">
+        <h1 class="heading">Gestión de Entidades de Destino</h1>
+    </div>
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-left" onclick="window.location.href='/alta-nivel'">
                 <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Añadir Entidad Destino</p>
+                <p class="option-title">Añadir entidad</p>
             </div>
-            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-middle" onclick="window.location.href='/alta-nivel'">
                 <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Modificar Entidad Destino</p>
+                <p class="option-title">Modificar entidad</p>
             </div>
-            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-right" onclick="window.location.href='/alta-nivel'">
                 <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Eliminar Entidad Destino</p>
+                <p class="option-title">Eliminar entidad</p>
             </div>
         </div>
     </div>

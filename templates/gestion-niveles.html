@@ -17,18 +17,20 @@
 {% extends 'layout.html' %}
 {% block body %}
 <div class="page-content" style="text-align: left;" id="content">
-    <h1 class="heading">Gestión de niveles</h1>
+    <div class="container" id="heading-container">
+        <h1 class="heading">Gestión de niveles</h1>
+    </div>
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-left" data-toggle="modal" data-target="#altaNivelModal" onclick="setModalValues('{{max_level}}')">
                 <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Añadir nivel</p>
             </div>
-            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-middle" onclick="window.location.href='/alta-nivel'">
                 <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Modificar nivel</p>
             </div>
-            <div class="container" id="option" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-right" onclick="window.location.href='/alta-nivel'">
                 <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Eliminar nivel</p>
             </div>
@@ -59,6 +61,69 @@
 </div>
 
 
+
+<!-- Modal -->
+<div class="modal fade modal-lg" id="altaNivelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Añadir un nuevo nivel</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{url_for('gestion_niveles')}}" method="POST" class="modal-body" id="altaNivelForm">
+            <div class="row">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">      
+                        <input type="text" required id="numeroNivel" onkeyup="validaNumero('{{max_level}}')" name="numeroNivel"> 
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Número de Nivel</label>
+                        <p id="numeroNivelError" class="modalErrorMessage">* No se puede modificar el nivel.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">      
+                        <input type="text" required id="descuento" onkeydown="strReplace('descuento')" onkeyup="strRemove('descuento', 'descuentoNivelError')" name="descuento">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Descuento (%)</label>
+                        <p id="descuentoNivelError" class="modalErrorMessage">* El formato del número es incorrecto.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">      
+                        <input type="text" required id="minEcoPuntos" onkeydown="strReplace('minEcoPuntos')" onkeyup="strRemove('minEcoPuntos', 'minEPNivelError')" name="minEcoPuntos">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Mínimo EcoPuntos</label>
+                        <p id="minEPNivelError" class="modalErrorMessage">* El formato del número es incorrecto.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">      
+                        <input type="text" required id="maxEcoPuntos" onkeydown="strReplace('maxEcoPuntos')" onkeyup="strRemove('maxEcoPuntos', 'maxEPNivelError')" name="maxEcoPuntos">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Máximo EcoPuntos</label>
+                        <p id="maxEPNivelError" class="modalErrorMessage">* El formato del número es incorrecto.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <p class="bottom-modal-text">Una vez completados todos los datos, presione el botón "Crear nivel" para añadir el nuevo nivel.</p>
+            </div>
+        </form>
+        <div class="modal-footer">
+          <div type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</div>
+          <div type="button" class="btn" onclick="submitForm('altaNivelForm')" id="primary-btn">Crear nivel</div>
+        </div>
+      </div>
+    </div>
+</div>
 
 <script src="static/js/gestion-niveles.js"></script>
 {% endblock %}
