@@ -18,7 +18,7 @@ def gestion_niveles():
         descuento = request.form['descuento']
         minEcoPuntos = request.form['minEcoPuntos']
         maxEcoPuntos = request.form['maxEcoPuntos']
-        print(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
+        print(Negocio.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos))
     return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0], max_level = min_max_nivel[1])
 
 @app.route('/gestion-ed', methods = ['GET','POST'])

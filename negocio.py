@@ -47,6 +47,24 @@ class Negocio():
                                                    msj=str(e),
                                                    msj_adicional="Error formateando los \
                                                        números.")
+    @classmethod
+    def round_float(cls, number, decimals):
+        """
+        Redondea la cantidad de decimales del número recibido como parámetro, y reemplaza el 
+        punto por una coma para denotarlos.
+        """
+        try:
+            if decimals == 0:
+                number = float(str(number).replace(',', '.'))
+                return number
+            else:
+                number = round(float(str(number).replace(',', '.')),decimals)
+                return number
+        except Exception as e:
+           raise custom_exceptions.ErrorDeConexion(origen="negocio.replace_dots()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error formateando los \
+                                                       números.")                                                  
 
     @classmethod
     def get_niveles(cls):
@@ -102,3 +120,24 @@ class Negocio():
                                                          obtieniendo las entidades destino de \
                                                          la capa de Datos.")
     
+
+    @classmethod
+    def alta_nivel(cls, numeroNivel, descuento, minEcoPuntos, maxEcoPuntos):
+        max_nivel = float(cls.get_min_max_niveles()[1])
+        maxDescuento = cls.round_float(Datos.get_max_descuento(), 2)
+        descuento = cls.round_float(descuento,2)
+        maxEP = cls.round_float(Datos.get_max_ecoPuntos(),1)
+        if int(numeroNivel) != int(max_nivel + 1):
+            return "Error al añadir el nivel. El número de nivel no es correcto."
+        elif cls.round_float(minEcoPuntos,2) < cls.round_float(maxEcoPuntos,2):
+            return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor al máximo de EcoPuntos del máximo nivel."
+        elif descuento < maxDescuento:
+            return "Error al añadir el nivel. El descuento no puede ser menor al máximo descuento asignado (" + str(maxDescuento) + "%)."
+        elif cls.round_float(minEcoPuntos,1) > cls.round_float(maxEP,1):
+            return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor a " + str(maxEP) + " EcoPuntos."
+        else:
+            nivel = Nivel(None, numeroNivel, minEcoPuntos, maxEcoPuntos, descuento)
+            if Datos.alta_nivel(nivel):
+                return True
+            else:
+                "Error al añadir nivel a la Base de Datos. Intente nuevamente más tarde."
