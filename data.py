@@ -29,19 +29,25 @@ from classes import Nivel,\
 class Datos():
     """
     """
-    #Conexión con el motor de BD.
-    try:
-        db = MySQLdb.connect(host="sql10.freemysqlhosting.net",    # Host de la BD.
-                    user="sql10359552",                            # Usuario de la BD
-                    passwd="vyqs1VbikX",                           # Contraseña de la BD
-                    db="sql10359552")                              # Nombre de la DB
-        cursor = db.cursor()
-            
-    except Exception as e:
-        raise custom_exceptions.ErrorDeConexion(origen="classes.ConexionDB()",
-                                                msj=str(e),
-                                                msj_adicional="Error conectando a la base de \
-                                                    datos MySQL.")
+    db = None
+    cursor = None
+
+    @classmethod
+    def abrir_conexion(cls):
+        #Conexión con el motor de BD.
+        
+        try:
+            cls.db = MySQLdb.connect(host="sql10.freemysqlhosting.net",    # Host de la BD.
+                        user="sql10359552",                            # Usuario de la BD
+                        passwd="vyqs1VbikX",                           # Contraseña de la BD
+                        db="sql10359552")                              # Nombre de la DB
+            cls.cursor = cls.db.cursor()
+                
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data",
+                                                    msj=str(e),
+                                                    msj_adicional="Error conectando a la base de \
+                                                        datos MySQL.")
     
     @classmethod
     def cerrar_conexion(cls):
@@ -51,7 +57,7 @@ class Datos():
         try:
             cls.db.close()
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="classes.ConexionDB()",
+            raise custom_exceptions.ErrorDeConexion(origen="data.cerrar_conexion()",
                                                     msj=str(e),
                                                     msj_adicional="Error cerrando la conexión \
                                                         a la base de datos MySQL.")
@@ -61,6 +67,7 @@ class Datos():
         """
         Obtiene todos los niveles de la BD.
         """
+        cls.abrir_conexion()
         try:
             sql = ("select * from niveles")
             cls.cursor.execute(sql)
@@ -76,12 +83,15 @@ class Datos():
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo los \
                                                         niveles desde la BD.")
+        finally:
+            cls.cerrar_conexion()
 
     @classmethod
     def get_entidades_destino(cls):
         """
         Obtiene todos los niveles de la BD.
         """
+        cls.abrir_conexion()
         try:
             sql = ("SELECT * FROM entidadesDestino;")
             cls.cursor.execute(sql)
@@ -97,10 +107,13 @@ class Datos():
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo las \
                                                         entidades destino desde la BD.")
+        finally:
+            cls.cerrar_conexion()
     
     @classmethod
     def get_max_descuento(cls):
         """Devuelve el mayor descuento registrado en la BD."""
+        cls.abrir_conexion()
         try:
             sql = ("select max(descuento) from niveles;")
             cls.cursor.execute(sql)
@@ -111,9 +124,12 @@ class Datos():
                                                     msj=str(e),
                                                     msj_adicional="Error el máximo descuento \
                                                          de un nivel desde la BD.")
-    
+        finally:
+            cls.cerrar_conexion()
+
     @classmethod
     def get_max_ecoPuntos(cls):
+        cls.abrir_conexion()
         """Devuelve la mayor cantidad EcoPuntos solicitada para un nivel registrado en la BD."""
         try:
             sql = ("select max(maxEcoPuntos) from niveles;")
@@ -125,9 +141,12 @@ class Datos():
                                                     msj=str(e),
                                                     msj_adicional="Error el máximo de EcoPuntos \
                                                          de un nivel desde la BD.")
+        finally:
+            cls.cerrar_conexion()
     
     @classmethod
     def alta_nivel(cls, nivel):
+        cls.abrir_conexion()
         """Añade el nivel que recibe como parametro a la BD."""
         try:
             sql = ("insert into niveles (nombre, minEcoPuntos, maxEcoPuntos, descuento) values (%s, %s, %s, %s);")
@@ -140,3 +159,5 @@ class Datos():
                                                     msj=str(e),
                                                     msj_adicional="Error el máximo de EcoPuntos \
                                                          de un nivel desde la BD.")
+        finally:
+            cls.cerrar_conexion()
