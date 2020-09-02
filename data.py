@@ -34,7 +34,9 @@ class Datos():
 
     @classmethod
     def abrir_conexion(cls):
-        #Conexión con el motor de BD.
+        """
+        Abre la conexión con el motor de BD, y setea como variables de clase a la BD y el Cursor.
+        """
         
         try:
             cls.db = MySQLdb.connect(host="sql10.freemysqlhosting.net",    # Host de la BD.
@@ -52,6 +54,7 @@ class Datos():
     @classmethod
     def cerrar_conexion(cls):
         """
+        Cierra la conexión con el motor de BD.
         """
         #Cerrando la conexión con el motor de BD:
         try:

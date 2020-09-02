@@ -85,18 +85,18 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="descuento" onkeydown="strReplace('descuento')" onkeyup="strRemove('descuento', 'descuentoNivelError')" name="descuento">
+                        <input type="text" id="descuento" onkeypress="return isNumberKey(this, event);" onkeyup = "validaDescuento()" name="descuento" >
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Descuento (%)</label>
-                        <p id="descuentoNivelError" class="modalErrorMessage">* El formato del número es incorrecto.</p>
+                        <p id="descuentoNivelError" class="modalErrorMessage">* El descuento debe estar entre 0 y 100.</p>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="minEcoPuntos" onkeyup="validaEP('{{maxEP}}')" name="minEcoPuntos">
+                        <input type="text" required id="minEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}')" name="minEcoPuntos">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Mínimo EcoPuntos</label>
@@ -105,11 +105,11 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="maxEcoPuntos" onkeydown="strReplace('maxEcoPuntos')" onkeyup="strRemove('maxEcoPuntos', 'maxEPNivelError')" name="maxEcoPuntos">
+                        <input type="text" required id="maxEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMaxEP('{{maxEP}}')" name="maxEcoPuntos">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Máximo EcoPuntos</label>
-                        <p id="maxEPNivelError" class="modalErrorMessage">* El formato del número es incorrecto.</p>
+                        <p id="maxEPNivelError" class="modalErrorMessage">* El máx. de EcoPuntos debe mayor {{maxEP + 1}}.</p>
                     </div>
                 </div>
             </div>
@@ -124,6 +124,7 @@
       </div>
     </div>
 </div>
+
 
 <script src="static/js/gestion-niveles.js"></script>
 {% endblock %}

@@ -12,6 +12,7 @@ function setModalValues(maxLevel, maxEP){
     maxEP = parseInt(maxEP);
     $('#numeroNivel').val(maxLevel + 1);
     $('#minEcoPuntos').val(maxEP + 1);
+    $('#maxEcoPuntos').val(maxEP + 1000);
 }
 
 
@@ -25,7 +26,7 @@ function validaNumero(maxLevel){
     }
 }
 
-function validaEP(maxLevel){
+function validaMinEP(maxLevel){
     maxLevel = parseInt(maxLevel);
     if (parseInt($('#minEcoPuntos').val()) != (maxLevel + 1)){
         $('#minEPNivelError').show()
@@ -35,43 +36,46 @@ function validaEP(maxLevel){
     }
 }
 
-function strReplace(idInput){
-    var idInput = String(idInput);
-    parseInt(event.keyCode)
-    if (event.keyCode == 188){
-        val = $('#' + idInput).val();
-        $('#' + idInput).val(val + ".");
+function validaMaxEP(maxLevel){
+    maxLevel = parseInt(maxLevel) + 2;
+    if (parseInt($('#maxEcoPuntos').val()) < maxLevel){
+        $('#maxEPNivelError').show()
+    }
+    else{
+        $('#maxEPNivelError').hide()
     }
 }
 
-function strRemove(idInput, idErrorMessage){
-    var idInput = String(idInput);
-    var idErrorMessage = String(idErrorMessage);
-    if ((parseInt(event.keyCode) >= 48 && parseInt(event.keyCode) <= 57) || parseInt(event.keyCode) == 190 || parseInt(event.keyCode) == 180){
-        val = $('#' + idInput).val().slice(0, -1);
-        if ($('#' + idInput).val().slice(-1) == ","){
-            $('#' + idInput).val(val);
-        }
-    }
-    else if(parseInt(event.keyCode) == 8){
-    
+function validaDescuento(){
+    val = parseFloat($('#descuento').val());
+    if (val > 100){
+        $('#descuentoNivelError').show();
     }
     else{
-        val = $('#' + idInput).val().slice(0, -1);
-        $('#' + idInput).val(val);
+        $('#descuentoNivelError').hide();
     }
-    var cant = $('#' + idInput).val().match(/\./g).length;
-    if (cant > 1){
-        $('#' + idErrorMessage).show();
-    }
-    else{
-        $('#' + idErrorMessage).hide();
-
-    }
-
 }
 
 function submitForm(idForm){
     idForm = String(idForm);
     $( "#" + idForm ).submit();
 }
+
+
+
+function isNumberKey(txt, evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode == 46) {
+      //Check if the text already contains the . character
+      if (txt.value.indexOf('.') === -1) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if (charCode > 31 &&
+        (charCode < 48 || charCode > 57))
+        return false;
+    }
+    return true;
+  }
