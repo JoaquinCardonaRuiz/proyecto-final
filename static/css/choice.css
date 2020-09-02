@@ -61,7 +61,7 @@
     transform: translateY(-50%);
     font-size: 18px;
     font-family: 'Roboto', sans-serif;
-    margin-right: 15%;
+    margin-right: 14%;
 }
 
 .heading{
@@ -107,7 +107,8 @@
 #table-container{
     background-color: #fff;
     width: 82%; 
-    margin-top: 5%; 
+    margin-top: 5%;
+    margin-bottom: 4%; 
     border-radius: 5px;;
     margin-top: 6%;
     height: fit-content;

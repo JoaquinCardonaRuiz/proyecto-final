@@ -123,21 +123,43 @@ class Negocio():
 
     @classmethod
     def alta_nivel(cls, numeroNivel, descuento, minEcoPuntos, maxEcoPuntos):
-        max_nivel = float(cls.get_min_max_niveles()[1])
+        max_nivel = int(cls.get_min_max_niveles()[1])
         maxDescuento = cls.round_float(Datos.get_max_descuento(), 2)
-        descuento = cls.round_float(descuento,2)
         maxEP = cls.round_float(Datos.get_max_ecoPuntos(),1)
+        minEcoPuntos = int(cls.round_float(minEcoPuntos,0))
+        maxEcoPuntos = int(cls.round_float(maxEcoPuntos,0))
+        descuento = cls.round_float(descuento,2)
+
+        print(int(cls.round_float(minEcoPuntos,0)))
+        print(int(cls.round_float(maxEP,0)) + 1)
         if int(numeroNivel) != int(max_nivel + 1):
             return "Error al añadir el nivel. El número de nivel no es correcto."
-        elif cls.round_float(minEcoPuntos,2) < cls.round_float(maxEcoPuntos,2):
+        #Ver problema a partir de aca, y en las variables asignadas.
+        elif cls.round_float(minEcoPuntos,2) >= cls.round_float(maxEcoPuntos,2):
             return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor al máximo de EcoPuntos del máximo nivel."
         elif descuento < maxDescuento:
             return "Error al añadir el nivel. El descuento no puede ser menor al máximo descuento asignado (" + str(maxDescuento) + "%)."
-        elif cls.round_float(minEcoPuntos,1) > cls.round_float(maxEP,1):
+        elif descuento < 0 or descuento > 100:
+            return "Error al añadir el nivel. El descuento debe estar entre 0% y 100%."
+        elif cls.round_float(minEcoPuntos,1) < cls.round_float(maxEP,1):
             return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor a " + str(maxEP) + " EcoPuntos."
+        #Ver si funciona.
+        elif minEcoPuntos != (int(cls.round_float(maxEP,0)) + 1):
+            return "Error al añadir nivel. El mínimo de EcoPuntos debe ser " + str(int(cls.round_float(maxEP,0))) + " EcoPuntos."
         else:
             nivel = Nivel(None, numeroNivel, minEcoPuntos, maxEcoPuntos, descuento)
             if Datos.alta_nivel(nivel):
                 return True
             else:
                 "Error al añadir nivel a la Base de Datos. Intente nuevamente más tarde."
+
+    @classmethod
+    def get_max_ecoPuntos(cls):
+        try:
+            return int(cls.replace_dots(Datos.get_max_ecoPuntos(),0))
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_max_ecoPuntos()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo\
+                                                          el máximo de EcoPuntos del último nivel la capa \
+                                                          de Datos.")

@@ -22,7 +22,7 @@
     </div>
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container" id="option-left" data-toggle="modal" data-target="#altaNivelModal" onclick="setModalValues('{{max_level}}')">
+            <div class="container" id="option-left" data-toggle="modal" data-target="#altaNivelModal" onclick="setModalValues('{{max_level}}', '{{maxEP}}')">
                 <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Añadir nivel</p>
             </div>
@@ -96,11 +96,11 @@
             <div class="row">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="minEcoPuntos" onkeydown="strReplace('minEcoPuntos')" onkeyup="strRemove('minEcoPuntos', 'minEPNivelError')" name="minEcoPuntos">
+                        <input type="text" required id="minEcoPuntos" onkeyup="validaEP('{{maxEP}}')" name="minEcoPuntos">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Mínimo EcoPuntos</label>
-                        <p id="minEPNivelError" class="modalErrorMessage">* El formato del número es incorrecto.</p>
+                        <p id="minEPNivelError" class="modalErrorMessage">* El mínimo de EcoPuntos debe ser {{maxEP + 1}}.</p>
                     </div>
                 </div>
                 <div class="col">

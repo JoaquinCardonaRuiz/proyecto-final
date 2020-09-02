@@ -7,9 +7,11 @@ $('#maxEPNivelError').hide()
 
 
 
-function setModalValues(maxLevel){
+function setModalValues(maxLevel, maxEP){
     maxLevel = parseInt(maxLevel);
+    maxEP = parseInt(maxEP);
     $('#numeroNivel').val(maxLevel + 1);
+    $('#minEcoPuntos').val(maxEP + 1);
 }
 
 
@@ -20,6 +22,16 @@ function validaNumero(maxLevel){
     }
     else{
         $('#numeroNivelError').hide()
+    }
+}
+
+function validaEP(maxLevel){
+    maxLevel = parseInt(maxLevel);
+    if (parseInt($('#minEcoPuntos').val()) != (maxLevel + 1)){
+        $('#minEPNivelError').show()
+    }
+    else{
+        $('#minEPNivelError').hide()
     }
 }
 
