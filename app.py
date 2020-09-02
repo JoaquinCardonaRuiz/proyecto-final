@@ -19,6 +19,8 @@ def gestion_niveles():
         descuento = request.form['descuento']
         minEcoPuntos = request.form['minEcoPuntos']
         maxEcoPuntos = request.form['maxEcoPuntos']
+        #Una vez incorporado flash eliminar el print.
+        print(Negocio.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos))
         niveles = Negocio.get_niveles()
     return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0], max_level = min_max_nivel[1], maxEP = maxEP)
 
