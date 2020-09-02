@@ -41,15 +41,18 @@
             <table class="table" id="content-table">
                 <thead style=" border-top:none">
                 <tr>
-                    <th scope="col" class="table-heading">ID</th>
                     <th scope="col" class="table-heading">Nombre de la Entidad</th>
+                    <th scope="col" class="table-heading">Demanda</th>
+                    <th scope="col" class="table-heading">Salidas de Stock</th>
                 </tr>
                 </thead>
                 <tbody>
+                <input hidden type="text" name="id_input" id="id_input" value={{id}}>
                 {%for ent in entidades%}
                 <tr>
-                    <th scope="row">{{ent.id}}</th>
-                    <td>{{ent.nombre}}</td>
+                    <th scope="row">{{ent.nombre}}</th>
+                    <td><a href='#'data-toggle="modal" data-target="#demandaModal">Ver Demanda</a></td>
+                    <td><a href='#'data-toggle="modal" data-target="#demandaModal">Ver Salidas</a></td>
                 </tr>
                 {%endfor%}
                 </tbody>
@@ -58,7 +61,31 @@
     </div>
 </div>
 
-
+<!-- Modal -->
+<div class="modal fade modal-lg" id="demandaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <table class="table" id="content-table">
+            <thead style=" border-top:none">
+            <tr>
+                <th scope="col" class="table-heading">Artículo</th>
+                <th scope="col" class="table-heading">Cantidad</th>
+            </tr>
+            </thead>
+            </tbody>
+        </table>
+        <div class="modal-footer">
+          <div type="button" class="btn" id="primary-btn" data-dismiss="modal">Ok</div>
+        </div>
+      </div>
+    </div>
+</div>
 
 <script src="static/js/gestion-ed.js"></script>
 {% endblock %}
