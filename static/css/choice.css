@@ -265,3 +265,16 @@ input:focus ~ .highlight {
 	from { background:#95C22B; }
   to 	{ width:0; background:transparent; }
 }
+
+.delete-row{
+  display: none;
+}
+
+.delete-th{
+  display: none;
+}
+
+#delete-table-icon:hover{
+  color: #d1f089e1;
+  cursor: pointer;
+}

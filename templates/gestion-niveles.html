@@ -30,7 +30,7 @@
                 <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Modificar nivel</p>
             </div>
-            <div class="container" id="option-right" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-right" onclick="removeLevel()">
                 <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Eliminar nivel</p>
             </div>
@@ -39,11 +39,12 @@
     <div class="container" id="table-container">
         <div class="row">
             <table class="table" id="content-table">
-                <thead style=" border-top:none">
+                <thead style="border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">Nivel</th>
                     <th scope="col" class="table-heading">EcoPuntos</th>
                     <th scope="col" class="table-heading">Descuento</th>
+                    <th class="table-heading delete-th"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,6 +53,7 @@
                     <th scope="row">{{nivel.nombre}}</th>
                     <td>Desde los {{nivel.minimoEcoPuntos}} hasta los {{nivel.maximoEcoPuntos}} EcoPuntos.</td>
                     <td>{{nivel.descuento}}%</td>
+                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon"></i></td>
                 </tr>
                 {%endfor%}
                 </tbody>

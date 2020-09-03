@@ -1,14 +1,18 @@
 
 
-$('#numeroNivelError').hide()
-$('#descuentoNivelError').hide()
-$('#minEPNivelError').hide()
-$('#maxEPNivelError').hide()
-
 var descuento = true;
 var minEP = true;
 var maxEP = true;
 var nivel = true;
+var del = false;
+
+$("#option-right").hover(function(){
+    $(this).css("border", "2px solid #95C22B");
+    }, function(){
+    if (del == false){
+        $(this).css("border", "2px solid transparent");
+    }
+  });
 
 function enable_disable(){
     if (minEP == true && maxEP == true && nivel == true && descuento == true){
@@ -28,6 +32,11 @@ function setModalValues(maxLevel, maxEP, maxDescuento){
     $('#minEcoPuntos').val(maxEP + 1);
     $('#maxEcoPuntos').val(maxEP + 1000);
     $('#descuento').val(maxDescuento + 2.5);
+    $('#numeroNivelError').hide();
+    $('#descuentoNivelError').hide();
+    $('#minEPNivelError').hide();
+    $('#maxEPNivelError').hide();
+    $('#primary-btn').prop('disabled', false);
 }
 
 
@@ -114,8 +123,6 @@ function submitForm(idForm){
     $( "#" + idForm ).submit();
 }
 
-
-
 function isNumberKey(txt, evt) {
     var charCode = (evt.which) ? evt.which : evt.keyCode;
     if (charCode == 46) {
@@ -132,3 +139,25 @@ function isNumberKey(txt, evt) {
     }
     return true;
   }
+
+function removeLevel(){
+    if (del == false){
+        $('.delete-row').fadeIn()
+        $('.delete-th').fadeIn()
+        del = true;
+        $('#option-right').css('border', '2px solid #95C22B');
+        var y = window.scrollY + document.querySelector('#table-container').getBoundingClientRect().top; // Y
+        var x = window.scrollX + document.querySelector('#table-container').getBoundingClientRect().left; // X
+        window.scrollTo(x, y);
+        
+    }
+    else{
+        $('.delete-row').fadeOut()
+        $('.delete-th').fadeOut()
+        del = false;
+        $('#option-right').css('border', '2px solid transparent');
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+}
+
