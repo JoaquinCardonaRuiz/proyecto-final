@@ -5,54 +5,107 @@ $('#descuentoNivelError').hide()
 $('#minEPNivelError').hide()
 $('#maxEPNivelError').hide()
 
+var descuento = true;
+var minEP = true;
+var maxEP = true;
+var nivel = true;
 
+function enable_disable(){
+    if (minEP == true && maxEP == true && nivel == true && descuento == true){
+        $('#primary-btn').prop('disabled', false);
+    }
+    else{
+        $('#primary-btn').prop('disabled', true);
+    } 
 
-function setModalValues(maxLevel, maxEP){
+}
+
+function setModalValues(maxLevel, maxEP, maxDescuento){
     maxLevel = parseInt(maxLevel);
     maxEP = parseInt(maxEP);
+    maxDescuento = parseFloat(maxDescuento.replace(',','.'))
     $('#numeroNivel').val(maxLevel + 1);
     $('#minEcoPuntos').val(maxEP + 1);
     $('#maxEcoPuntos').val(maxEP + 1000);
+    $('#descuento').val(maxDescuento + 2.5);
 }
 
 
 function validaNumero(maxLevel){
     maxLevel = parseInt(maxLevel);
     if (parseInt($('#numeroNivel').val()) != (maxLevel + 1)){
-        $('#numeroNivelError').show()
+        $('#numeroNivelError').show();
+        nivel = false;
+        enable_disable();
     }
     else{
-        $('#numeroNivelError').hide()
+        $('#numeroNivelError').hide();
+        nivel = true;
+        enable_disable();
     }
 }
 
 function validaMinEP(maxLevel){
     maxLevel = parseInt(maxLevel);
     if (parseInt($('#minEcoPuntos').val()) != (maxLevel + 1)){
-        $('#minEPNivelError').show()
+        $('#minEPNivelError').show();
+        minEP = false;
+        enable_disable();
     }
     else{
-        $('#minEPNivelError').hide()
+        $('#minEPNivelError').hide();
+        minEP = true;
+        enable_disable();
+
     }
 }
 
 function validaMaxEP(maxLevel){
     maxLevel = parseInt(maxLevel) + 2;
     if (parseInt($('#maxEcoPuntos').val()) < maxLevel){
-        $('#maxEPNivelError').show()
+        $('#maxEPNivelError').text('* El máx. de EcoPuntos debe mayor a ' + String(maxLevel - 1) + " .");
+        $('#maxEPNivelError').show();
+        maxEP = false;
+        enable_disable();
+    }
+    else if (isNaN(parseInt($('#maxEcoPuntos').val()))){
+        $('#maxEPNivelError').text('* El máximo de EcoPuntos no puede quedar vacío.');
+        $('#maxEPNivelError').show();
+        maxEP = false;
+        enable_disable();
     }
     else{
-        $('#maxEPNivelError').hide()
+        $('#maxEPNivelError').hide();
+        maxEP = true;
+        enable_disable();
     }
 }
 
-function validaDescuento(){
+function validaDescuento(maxDescuento){
     val = parseFloat($('#descuento').val());
+    maxDescuento = parseFloat(maxDescuento.replace(',','.'))
     if (val > 100){
+        $('#descuentoNivelError').text('* El descuento no puede ser mayor al 100%.');
         $('#descuentoNivelError').show();
+        descuento = false;
+        enable_disable();
+    }
+    else if (val <= maxDescuento){
+        $('#descuentoNivelError').text('* El descuento debe ser mayor a ' + String(maxDescuento) + '%.');
+        $('#descuentoNivelError').show();
+        descuento = false;
+        enable_disable();
+    }
+    else if (isNaN(val)){
+        $('#descuentoNivelError').text('* El descuento no puede quedar vacío.');
+        $('#descuentoNivelError').show();
+        descuento = false;
+        enable_disable();
     }
     else{
         $('#descuentoNivelError').hide();
+        descuento = true;
+        enable_disable();
     }
 }
 

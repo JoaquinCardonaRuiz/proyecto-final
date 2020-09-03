@@ -22,7 +22,7 @@
     </div>
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container" id="option-left" data-toggle="modal" data-target="#altaNivelModal" onclick="setModalValues('{{max_level}}', '{{maxEP}}')">
+            <div class="container" id="option-left" data-toggle="modal" data-target="#altaNivelModal" onclick="setModalValues('{{max_level}}', '{{maxEP}}', '{{maxDescuento}}')">
                 <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Añadir nivel</p>
             </div>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="descuento" onkeypress="return isNumberKey(this, event);" onkeyup = "validaDescuento()" name="descuento" >
+                        <input type="text" id="descuento" onkeypress="return isNumberKey(this, event);" onkeyup = "validaDescuento('{{maxDescuento}}')" name="descuento" >
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Descuento (%)</label>
@@ -118,8 +118,8 @@
             </div>
         </form>
         <div class="modal-footer">
-          <div type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</div>
-          <div type="button" class="btn" onclick="submitForm('altaNivelForm')" id="primary-btn">Crear nivel</div>
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn" onclick="submitForm('altaNivelForm')" id="primary-btn">Crear nivel</button>
         </div>
       </div>
     </div>
