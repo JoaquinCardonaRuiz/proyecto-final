@@ -92,7 +92,7 @@ class Datos():
     @classmethod
     def get_entidades_destino(cls):
         """
-        Obtiene todos los niveles de la BD.
+        Obtiene todos las entidades de destino de la BD.
         """
         cls.abrir_conexion()
         try:

@@ -14,13 +14,18 @@ def gestion_niveles():
     niveles = Negocio.get_niveles()
     min_max_nivel = Negocio.get_min_max_niveles()
     maxEP = Negocio.get_max_ecoPuntos()
+    maxDescuento = Negocio.get_max_descuento()
     if request.method == 'POST':
         numeroNivel = request.form['numeroNivel']
         descuento = request.form['descuento']
         minEcoPuntos = request.form['minEcoPuntos']
         maxEcoPuntos = request.form['maxEcoPuntos']
+        print(Negocio.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos))
         niveles = Negocio.get_niveles()
-    return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0], max_level = min_max_nivel[1], maxEP = maxEP)
+        min_max_nivel = Negocio.get_min_max_niveles()
+        maxEP = Negocio.get_max_ecoPuntos()
+        maxDescuento = Negocio.get_max_descuento()
+    return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0], max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
 
 @app.route('/gestion-ed/<id>')
 def devolver_demandas(id):

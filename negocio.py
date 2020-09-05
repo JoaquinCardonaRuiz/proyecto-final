@@ -40,7 +40,10 @@ class Negocio():
                 number = str(int(round(float(number),decimals))).replace('.', ',')
                 return number
             else:
-                number = str(round(float(number),decimals)).replace('.', ',')
+                if (number).is_integer():
+                    number = str(int(number)).replace('.', ',')
+                else:
+                    number = str(round(float(number),decimals)).replace('.', ',') 
                 return number
         except Exception as e:
            raise custom_exceptions.ErrorDeConexion(origen="negocio.replace_dots()",
@@ -75,7 +78,7 @@ class Negocio():
         try:
             niveles = Datos.get_niveles()
             for nivel in niveles:
-                nivel.descuento = cls.replace_dots(nivel.descuento, 0)
+                nivel.descuento = cls.replace_dots(nivel.descuento, 1)
                 nivel.minimoEcoPuntos = cls.replace_dots(nivel.minimoEcoPuntos,0)
                 nivel.maximoEcoPuntos = cls.replace_dots(nivel.maximoEcoPuntos,0)
             return niveles
@@ -166,8 +169,19 @@ class Negocio():
         try:
             return int(cls.replace_dots(Datos.get_max_ecoPuntos(),0))
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.alta_nivel()",
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_max_ecoPuntos()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obtieniendo\
                                                           el máximo de EcoPuntos del último nivel la capa \
                                                           de Datos.")
+
+    @classmethod
+    def get_max_descuento(cls):
+        try:
+            return cls.replace_dots(Datos.get_max_descuento(),1)
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_max_descuento()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo\
+                                                          el máximo descuento de la capa de Datos.")
+
