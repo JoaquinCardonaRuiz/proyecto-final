@@ -20,7 +20,7 @@ TODO:
 #Imports
 
 import custom_exceptions
-from classes import Nivel
+from classes import *
 from data import Datos
 import operator
 from operator import attrgetter
@@ -108,6 +108,22 @@ class Negocio():
                                                          calculando el máximo/mínimo nivel.")
 
     @classmethod
+    def get_articulos(cls):
+        """
+        Obtiene todos los tipos articulo de la BD.
+        """
+        try:
+            arts = Datos.get_articulos()
+            return arts
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_articulos()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                         obtieniendo los tipos articulo de \
+                                                         la capa de Datos.")
+
+    @classmethod
     def get_entidades_destino(cls):
         """
         Obtiene todas las entidades de destino de la BD.
@@ -125,10 +141,26 @@ class Negocio():
     
 
     @classmethod
+    def get_one_entidad_destino(cls, id):
+        """
+        Obtiene una entidad de destino de la BD a partir de su id.
+        """
+        try:
+            entidad = Datos.get_one_entidad_destino(id)
+            return entidad
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_one_entidad_destino()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                         obtieniendo una entidad destino de \
+                                                         la capa de Datos.")
+
+    @classmethod
     def alta_nivel(cls, numeroNivel, descuento, minEcoPuntos, maxEcoPuntos):
         """
-        Realiza las validaciones de negocio de un nivel, y si no hay errores, instancia el nuevo nivel
-        y llama al método de la Capa de Datos que lo registra en la BD.
+        Realiza las validaciones de negocio de un nivel, y si no hay errores, instancia el 
+        nuevo nivel y llama al método de la Capa de Datos que lo registra en la BD.
         """
         try:
             #Reestructuración de los datos:
@@ -143,15 +175,19 @@ class Negocio():
             if int(numeroNivel) != int(max_nivel + 1):
                 return "Error al añadir el nivel. El número de nivel no es correcto."
             elif cls.round_float(minEcoPuntos,2) >= cls.round_float(maxEcoPuntos,2):
-                return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor al máximo de EcoPuntos del máximo nivel."
+                return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor al\
+                        máximo de EcoPuntos del máximo nivel."
             elif descuento < maxDescuento:
-                return "Error al añadir el nivel. El descuento no puede ser menor al máximo descuento asignado (" + str(maxDescuento) + "%)."
+                return "Error al añadir el nivel. El descuento no puede ser menor al máximo \
+                        descuento asignado (" + str(maxDescuento) + "%)."
             elif descuento < 0 or descuento > 100:
                 return "Error al añadir el nivel. El descuento debe estar entre 0% y 100%."
             elif cls.round_float(minEcoPuntos,1) < cls.round_float(maxEP,1):
-                return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor a " + str(maxEP) + " EcoPuntos."
+                return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor a\
+                         " + str(maxEP) + " EcoPuntos."
             elif minEcoPuntos != (int(cls.round_float(maxEP,0)) + 1):
-                return "Error al añadir nivel. El mínimo de EcoPuntos debe ser " + str(int(cls.round_float(maxEP,0))) + " EcoPuntos."
+                return "Error al añadir nivel. El mínimo de EcoPuntos debe ser\
+                     " + str(int(cls.round_float(maxEP,0))) + " EcoPuntos."
             else:
                 nivel = Nivel(None, numeroNivel, minEcoPuntos, maxEcoPuntos, descuento)
                 if Datos.alta_nivel(nivel):
@@ -171,9 +207,9 @@ class Negocio():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="negocio.get_max_ecoPuntos()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo\
-                                                          el máximo de EcoPuntos del último nivel la capa \
-                                                          de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                          obtieniendo el máximo de EcoPuntos \
+                                                          del último nivel la capa de Datos.")
 
     @classmethod
     def get_max_descuento(cls):
@@ -182,6 +218,7 @@ class Negocio():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="negocio.get_max_descuento()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo\
-                                                          el máximo descuento de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                          obtieniendo el máximo descuento de \
+                                                          la capa de Datos.")
 

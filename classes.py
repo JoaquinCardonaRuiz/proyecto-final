@@ -16,7 +16,7 @@ Dependencias:
 TODO:
     * DONE - Arreglar clase TipoUsuario
     * DONE - Terminar clase Estimacion
-    * Recordar qué era el atributo "estado" en TipoDocumento
+    * DONE - Recordar qué era el atributo "estado" en TipoDocumento
     * Crear clase EcoAsistente que guarde todos los globales. (stocks, etc.)
     * Recuperar valores de EcoPuntos al inicializar clase EcoAsistente
     * Programar consulta de datos en clase EcoPuntos
@@ -28,6 +28,7 @@ TODO:
 import MySQLdb
 import custom_exceptions
 from custom_exceptions import *
+
 
 #Clases almacenadas en BD
 class Usuario:
@@ -218,7 +219,7 @@ class TipoDocumento:
         id (string): Identificador de la entidad.
         nombre (string): Nombre del tipo de documento, para identificación por parte del
             usuario.
-        estado (bool): VERIFICAR. Vale True si está habilitado para registrar nuevos usuarios
+        estado (bool): Vale True si está habilitado para registrar nuevos usuarios
             con este tipo de documento, False si no.
     """
 
@@ -590,13 +591,13 @@ class EntidadDestino:
     Atributos:
         id (string): Identificador de la entidad.
         nombre (string): Nombre para identificación por parte del usuario.
-        demanda (CantDemanda[]): Arreglo de los artículos demandados por la entidad.
+        demandas (CantDemanda[]): Arreglo de los artículos demandados por la entidad.
         salidas (SalidaStock[]): Arreglo de las salidas de stock destinadas a la entidad.
     """
-    def __init__(self,id,nombre,demanda=[],salidas=[]):
+    def __init__(self,id,nombre,demandas=[],salidas=[]):
         self.id = id
         self.nombre = nombre
-        self.demanda = demanda
+        self.demandas = demandas
         self.salidas = salidas
 
 class SalidaStock:

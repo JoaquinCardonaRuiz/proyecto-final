@@ -22,8 +22,7 @@ TODO:
 
 import MySQLdb
 import custom_exceptions
-from classes import Nivel,\
-                    EntidadDestino
+from classes import *
 
 #Clase que representa la capa de datos.
 class Datos():
@@ -90,9 +89,13 @@ class Datos():
             cls.cerrar_conexion()
 
     @classmethod
+    def get_articulos(cls):
+        return []
+
+    @classmethod
     def get_entidades_destino(cls):
         """
-        Obtiene todos las entidades de destino de la BD.
+        Obtiene todas las entidades de destino de la BD.
         """
         cls.abrir_conexion()
         try:
@@ -101,7 +104,9 @@ class Datos():
             entidades_ = cls.cursor.fetchall()
             entidades = []
             for e in entidades_:
-                entidad_ = EntidadDestino(e[0],e[1])
+                demandas = cls.get_demandas(e[0])
+                salidas = cls.get_salidas(e[0])
+                entidad_ = EntidadDestino(e[0],e[1],demandas,salidas)
                 entidades.append(entidad_)
             return entidades
             
@@ -112,7 +117,67 @@ class Datos():
                                                         entidades destino desde la BD.")
         finally:
             cls.cerrar_conexion()
+
+    @classmethod
+    def get_one_entidad_destino(cls,id):
+        """
+        Obtiene una entidad de destino de la BD a partir de su id.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT * FROM entidadesDestino WHERE idEntidad = {};".format(id))
+            cls.cursor.execute(sql)
+            e = cls.cursor.fetchall()[0]
+            demandas = cls.get_demandas(e[0])
+            salidas = cls.get_salidas(e[0])
+            entidad = EntidadDestino(e[0],e[1],demandas,salidas)
+            return entidad
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_one_entidad_destino()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo una \
+                                                        entidad destino desde la BD.")
+        finally:
+            cls.cerrar_conexion()
     
+    @classmethod
+    def get_demandas(cls,id):
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT * FROM demanda WHERE idEntidad = {};".format(id))
+            cls.cursor.execute(sql)
+            demandas = cls.cursor.fetchall()
+            cantDemandas = []
+            for d in demandas:
+                demanda = CantDemanda(d[0],d[2],d[1])
+                cantDemandas.append(demanda)
+            return cantDemandas
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_demandas()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo las \
+                                                        demandas desde la BD.")
+
+    @classmethod
+    def get_salidas(cls,id):
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT * FROM salidasStock WHERE idEntidad = {};".format(id))
+            cls.cursor.execute(sql)
+            salidas = cls.cursor.fetchall()
+            salidasStock = []
+            for s in salidas:
+                salida = SalidaStock(s[0],s[1],s[2],s[3])
+                salidasStock.append(salida)
+            return salidasStock
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_salidas()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo las \
+                                                        salidas de stock desde la BD.")
+
     @classmethod
     def get_max_descuento(cls):
         """Devuelve el mayor descuento registrado en la BD."""
@@ -164,3 +229,4 @@ class Datos():
                                                          de un nivel desde la BD.")
         finally:
             cls.cerrar_conexion()
+
