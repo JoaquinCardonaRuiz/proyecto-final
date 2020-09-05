@@ -108,19 +108,19 @@ class Negocio():
                                                          calculando el máximo/mínimo nivel.")
 
     @classmethod
-    def get_articulos(cls):
+    def get_tabla_demandas(cls,id):
         """
         Obtiene todos los tipos articulo de la BD.
         """
         try:
-            arts = Datos.get_articulos()
-            return arts
+            dems = Datos.get_tabla_demandas(id)
+            return dems
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_articulos()",
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_tabla_demandas()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
-                                                         obtieniendo los tipos articulo de \
+                                                         obtieniendo la tabla de demandas de \
                                                          la capa de Datos.")
 
     @classmethod
@@ -173,19 +173,25 @@ class Negocio():
             
             #Validación de Reglas de Negocio:
             if int(numeroNivel) != int(max_nivel + 1):
+                #Valida regla RN01
                 return "Error al añadir el nivel. El número de nivel no es correcto."
             elif cls.round_float(minEcoPuntos,2) >= cls.round_float(maxEcoPuntos,2):
+                #Valida regla RN02
                 return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor al\
                         máximo de EcoPuntos del máximo nivel."
             elif descuento < maxDescuento:
+                #Valida regla RN03
                 return "Error al añadir el nivel. El descuento no puede ser menor al máximo \
                         descuento asignado (" + str(maxDescuento) + "%)."
             elif descuento < 0 or descuento > 100:
+                #Valida regla RN04
                 return "Error al añadir el nivel. El descuento debe estar entre 0% y 100%."
-            elif cls.round_float(minEcoPuntos,1) < cls.round_float(maxEP,1):
-                return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor a\
-                         " + str(maxEP) + " EcoPuntos."
+            #TODO: Ver
+            # elif cls.round_float(minEcoPuntos,1) < cls.round_float(maxEP,1):
+            #     return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor a\
+            #              " + str(maxEP) + " EcoPuntos."
             elif minEcoPuntos != (int(cls.round_float(maxEP,0)) + 1):
+                #Valida regla RN05
                 return "Error al añadir nivel. El mínimo de EcoPuntos debe ser\
                      " + str(int(cls.round_float(maxEP,0))) + " EcoPuntos."
             else:

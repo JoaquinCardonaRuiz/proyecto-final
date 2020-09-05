@@ -89,8 +89,32 @@ class Datos():
             cls.cerrar_conexion()
 
     @classmethod
-    def get_articulos(cls):
-        return []
+    def get_tabla_demandas(cls,id):
+        """
+        Obtiene la tabla de demandas a partir de un id de entidad de destino de la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT idEntidad, idTipoArticulo, tiposArticulo.nombre, cantidad \
+                    FROM demanda \
+                    right join tiposArticulo using(idTipoArticulo) \
+                    left join entidadesDestino using(idEntidad) \
+                    WHERE idEntidad = {};".format(id))
+            cls.cursor.execute(sql)
+            demandas_ = cls.cursor.fetchall()
+            demandas = []
+            for d in demandas_:
+                demanda_ = {"nombre": d[2],"cantidad": d[3]}
+                demandas.append(demanda_)
+            return demandas
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_tabla_demandas()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo la \
+                                                        tabla de demandas desde la BD.")
+        finally:
+            cls.cerrar_conexion()
 
     @classmethod
     def get_entidades_destino(cls):

@@ -29,16 +29,8 @@ def gestion_niveles():
 
 @app.route('/gestion-ed/<id>')
 def devolver_demandas(id):
-    demandas_present = {}
-    entidad = Negocio.get_one_entidad_destino(id)
-    articulos = Negocio.get_articulos()
-    demandas_present["id_ent"] = entidad.id
-    demandas_present["nombre_ent"] = entidad.nombre
-    demandas_present["demandas"] = []
-    for d in entidad.demandas:
-        demandas_present["demandas"].append({"id_art":d.idTipoArticulo, "cant":d.cantidad})
-
-    return jsonify({"id_ent": id})
+    demandas_present = Negocio.get_tabla_demandas(id)
+    return jsonify(demandas_present)
 
 @app.route('/gestion-ed', methods = ['GET','POST'])
 def gestion_ed():
