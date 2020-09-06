@@ -161,3 +161,7 @@ function removeLevel(){
     }
 }
 
+function openModal(){
+    jQuery.noConflict(); 
+    $('#bajaNivelModal').modal('show');
+}
