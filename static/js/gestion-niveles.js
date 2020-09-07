@@ -161,7 +161,46 @@ function removeLevel(){
     }
 }
 
-function openModal(){
+function openBajaModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel){
+    cant_niveles = parseInt(cant_niveles);
+    numero = parseInt(numero);
+    maxEPnivel = parseInt(maxEPnivel); 
+    minEPnivel = parseInt(minEPnivel); 
+    factor_mod = (maxEPnivel - minEPnivel + 1)/2;
+    nuevo_max = minEPnivel - 1 + factor_mod;
+    nuevo_min = maxEPnivel + 1 - factor_mod;
     jQuery.noConflict(); 
+    $('#modalBajaMod1').show();
+    $('#numNivel').val(String(idNivel));
     $('#bajaNivelModal').modal('show');
+    $('#modalBajaMod1').show();
+    $('#modalBajaMod2').show();
+    $('#modalBajaMod3').show();
+    $('.top-modal-text-baja').text('Si elimina el nivel ' + numero + ' se producirán las siguientes modificaciones:');
+    if (numero != 1){
+        $('#modalBajaMod1').text('- El nivel ' + String(parseInt(numero)-1) + ' será ahora hasta los ' + String(parseInt(nuevo_max)) + ' EcoPuntos.');
+    }
+    else{
+        $('#modalBajaMod1').hide();
+    }
+    if (numero == cant_niveles){
+        $('#modalBajaMod2').text('- El nivel ' + String(parseInt(numero)-1) + ' será ahora el último nivel.');
+        $('#modalBajaMod3').hide();
+
+    }
+    else{
+        if(numero == 1){
+            $('#modalBajaMod2').text('- El nivel ' + String(parseInt(numero)+1) + ' será ahora el nivel ' + String(parseInt(numero)) + ', y será desde los 0 EcoPuntos.');
+        }
+        else{
+            $('#modalBajaMod2').text('- El nivel ' + String(parseInt(numero)+1) + ' será ahora el nivel ' + String(parseInt(numero)) + ', y será desde los ' + String(parseInt(nuevo_min)) + ' EcoPuntos.');
+        }
+        $('#modalBajaMod3').text('- Todos los niveles posteriores disminuirán su número en 1 unidad.');
+    }
+
+}
+
+function setID(){
+    id = $('#numNivel').val();
+    window.location.href='/gestion-niveles/' + String(id)
 }

@@ -249,8 +249,109 @@ class Datos():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_entidades_destino()",
                                                     msj=str(e),
-                                                    msj_adicional="Error el máximo de EcoPuntos \
+                                                    msj_adicional="Error obteniendo el máximo de EcoPuntos \
                                                          de un nivel desde la BD.")
         finally:
             cls.cerrar_conexion()
 
+
+    @classmethod
+    def get_nivel_id(cls, id):
+        cls.abrir_conexion()
+        """Obtiene un nivel de la BD en base a un ID. Devuelve False si no encuentra ninguno."""
+        try:
+            sql = ("select * from niveles where idNivel = %s")
+            values = (id,)
+            cls.cursor.execute(sql, values)
+            nivel = cls.cursor.fetchone()
+            if nivel == None:
+                return False
+            else:
+                nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
+                return nivel
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_nivel_id",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo un nivel en base al \
+                                                        id recibido como parámetro.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
+    def get_nivel_nombre(cls, nombre):
+        cls.abrir_conexion()
+        """Obtiene un nivel de la BD en base a un ID. Devuelve False si no encuentra ninguno."""
+        try:
+            sql = ("select * from niveles where nombre = %s")
+            values = (str(nombre),)
+            cls.cursor.execute(sql, values)
+            nivel = cls.cursor.fetchone()
+            if nivel == None:
+                return False
+            else:
+                nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
+                return nivel
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_nivel_nombre",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo un nivel en base al \
+                                                        nombre recibido como parámetro.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
+    def baja_nivel(cls, nuevo_min, nombre_min, nuevo_max, nombre_max, nivel):
+        cls.abrir_conexion()
+        """Elimina un nivel, y modifica el máximo de EcoPuntos del nivel anterior, y el máximo de EcoPuntos del nivel siguiente."""
+        try:
+            if int(nivel.nombre) == 1:
+                #Actualiza el mínimo del nivel siguiente, ya que no existe nivel anterior.
+                sql = ("UPDATE niveles SET minEcoPuntos = %s WHERE nombre = %s")
+                values = (nuevo_min, str(int(nivel.nombre) + 1))
+                cls.cursor.execute(sql, values)
+                
+                #Elimina el nivel en base al ID recibido.
+                sql = ("DELETE FROM niveles WHERE idNivel = %s")
+                values = (str(nivel.id),)
+                cls.cursor.execute(sql, values)
+
+                #Disminuye en una unidad los nombres de los niveles posteriores.
+                sql = ("UPDATE niveles SET nombre = nombre-1 WHERE nombre > %s;")
+                values = (str(nivel.nombre))
+                cls.cursor.execute(sql, values)
+
+                cls.db.commit()
+
+
+                return True
+
+            else:
+                #Actualiza mínimo del nivel siguiente.
+                sql = ("UPDATE niveles SET minEcoPuntos = %s WHERE nombre = %s")
+                values = (nuevo_min, str(nombre_min))
+                cls.cursor.execute(sql, values)
+                
+                #Actualia máximo del nivel anterior.
+                sql = ("UPDATE niveles SET maxEcoPuntos = %s WHERE nombre = %s")
+                values = (nuevo_max, str(nombre_max))
+                cls.cursor.execute(sql, values)
+
+                #Elimina el nivel en base al ID recibido.
+                sql = ("DELETE FROM niveles WHERE idNivel = %s")
+                values = (str(nivel.id),)
+                cls.cursor.execute(sql, values)
+
+                #Disminuye en una unidad los nombres de los niveles posteriores.
+                sql = ("UPDATE niveles SET nombre = nombre-1 WHERE nombre > %s;")
+                values = (str(nivel.nombre))
+                cls.cursor.execute(sql, values)
+                
+                cls.db.commit()
+
+                return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.baja_nivel",
+                                                    msj=str(e),
+                                                    msj_adicional="Error dando de baja un nivel de la BD.")
+        finally:
+            cls.cerrar_conexion()

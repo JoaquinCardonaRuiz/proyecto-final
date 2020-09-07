@@ -93,7 +93,7 @@ class Negocio():
     @classmethod    
     def get_min_max_niveles(cls):
         """
-        Obtiene el mínimo y el máximo nivel de la BD.
+        Obtiene el mínimo y el máximo nivel de la BD. Devuelve una lista de la forma: [min, max]
         """
         try:
             niveles = Datos.get_niveles()
@@ -139,6 +139,38 @@ class Negocio():
                                                          obtieniendo las entidades destino de \
                                                          la capa de Datos.")
     
+    @classmethod
+    def get_nivel_id(cls, id):
+        """
+        Obtiene un nivel en base a su ID de la BD.
+        """
+        try:
+            nivel = Datos.get_nivel_id(id)
+            return nivel
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_nivel_id()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                         obtieniendo un nivel en base su ID de \
+                                                         la capa de Datos.")
+    
+    @classmethod
+    def get_nivel_nombre(cls, nombre):
+        """
+        Obtiene un nivel en base a su nombre de la BD.
+        """
+        try:
+            nivel = Datos.get_nivel_nombre(nombre)
+            return nivel
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_nivel_nombre()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                         obtieniendo un nivel en base su nombre de \
+                                                         la capa de Datos.")
+
 
     @classmethod
     def get_one_entidad_destino(cls, id):
@@ -186,10 +218,6 @@ class Negocio():
             elif descuento < 0 or descuento > 100:
                 #Valida regla RN04
                 return "Error al añadir el nivel. El descuento debe estar entre 0% y 100%."
-            #TODO: Ver
-            # elif cls.round_float(minEcoPuntos,1) < cls.round_float(maxEP,1):
-            #     return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor a\
-            #              " + str(maxEP) + " EcoPuntos."
             elif minEcoPuntos != (int(cls.round_float(maxEP,0)) + 1):
                 #Valida regla RN05
                 return "Error al añadir nivel. El mínimo de EcoPuntos debe ser\
@@ -208,6 +236,9 @@ class Negocio():
 
     @classmethod
     def get_max_ecoPuntos(cls):
+        """
+        Obtiene el máximo de EcoPuntos asignados a un nivel.
+        """
         try:
             return int(cls.replace_dots(Datos.get_max_ecoPuntos(),0))
         except Exception as e:
@@ -219,6 +250,9 @@ class Negocio():
 
     @classmethod
     def get_max_descuento(cls):
+        """
+        Obtiene el máximo descuento asignado a un nivel.
+        """
         try:
             return cls.replace_dots(Datos.get_max_descuento(),1)
         except Exception as e:
@@ -227,4 +261,43 @@ class Negocio():
                                                     msj_adicional="Error en la capa de Negocio\
                                                           obtieniendo el máximo descuento de \
                                                           la capa de Datos.")
+
+    @classmethod
+    def baja_nivel(cls, id):
+        try:
+            min_max_niveles = cls.get_min_max_niveles()
+            min_nivel = min_max_niveles[0]
+            max_nivel = min_max_niveles[1]
+            nivel = cls.get_nivel_id(id)
+            if nivel == False:
+                return "Error 1 eliminando nivel de la Base de Datos. Intente nuevamente más tarde."
+            else:
+                if int(nivel.nombre) == 1:
+                    #Valida regla RN09.
+                    if int(max_nivel) == int(nivel.nombre):
+                        return "Error al eliminar nivel. No se puede eliminar el nivel 1 si no existen otros niveles."
+                    else:
+                        nuevo_min = 0
+                        if Datos.baja_nivel(nuevo_min, None, None, None, nivel):
+                            return True
+                        else:
+                            return "Error eliminando nivel de la Base de Datos. Intente nuevamente más tarde."
+                elif int(nivel.nombre) == max_nivel:
+                    pass
+                else:
+                    #Valida regla RN05 y RN10
+                    factor_mod =  (nivel.maximoEcoPuntos - nivel.minimoEcoPuntos + 1)/2
+                    nuevo_max = round(nivel.minimoEcoPuntos + factor_mod,0) - 1
+                    nuevo_min = round(nivel.maximoEcoPuntos - factor_mod,0) + 1
+                    if Datos.baja_nivel(nuevo_min, int(nivel.nombre) + 1, nuevo_max, int(nivel.nombre)-1, nivel):
+                        return True
+                    else:
+                        return "Error eliminando nivel de la Base de Datos. Intente nuevamente más tarde."
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.baja_nivel()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                          dando de baja un nivel.")
+
 

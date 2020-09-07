@@ -124,8 +124,29 @@
 .bottom-modal-text-baja{
   text-align: center;
   width: 100%;
-  font-size: 17px;
+  font-size: 16.5px;
+  margin-top: 1.5%;
+  font-weight: 500;
+
 }
+
+.top-modal-text-baja{
+  text-align: center;
+  width: 100%;
+  font-size: 16.5px;
+  text-align: left; 
+  margin-left:8.5%;
+  font-weight: 500;
+}
+
+.bottom-modal-text-baja-mods{
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+  text-align: left; 
+  margin-left:10%;
+}
+
 
 .table-heading{
     border-top: none !important;
@@ -147,6 +168,9 @@ div.modal-content{
     margin-top: 5%;
 }
 
+.modal-body-baja{
+  margin-top: 4%;
+}
 
 #primary-btn{
     background-color: #95C22B;
@@ -155,6 +179,16 @@ div.modal-content{
 
 #primary-btn:hover{
     background-color: #87af28;
+}
+
+#primary-btn-alert{
+  background-color: #f14e4e;
+  color: #fff;
+}
+
+#primary-btn-alert:hover{
+  background-color: #cf4545;
+  color: #fff;
 }
 
 #secondary-btn:hover{

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, flash, jsonify
+from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
 from negocio import Negocio
 app = Flask(__name__)
 
@@ -20,12 +20,20 @@ def gestion_niveles():
         descuento = request.form['descuento']
         minEcoPuntos = request.form['minEcoPuntos']
         maxEcoPuntos = request.form['maxEcoPuntos']
-        print(Negocio.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos))
+        Negocio.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
         niveles = Negocio.get_niveles()
         min_max_nivel = Negocio.get_min_max_niveles()
         maxEP = Negocio.get_max_ecoPuntos()
         maxDescuento = Negocio.get_max_descuento()
-    return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0], max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
+    return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0], 
+    max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
+
+@app.route('/gestion-niveles/', defaults = {'id': 0})
+@app.route('/gestion-niveles/<int:id>')
+def obtener_nivel_baja(id):
+    id = int(id)
+    print(Negocio.baja_nivel(id))
+    return redirect(url_for('gestion_niveles'))
 
 @app.route('/gestion-ed/<id>')
 def devolver_demandas(id):
