@@ -5,11 +5,20 @@ var minEP = true;
 var maxEP = true;
 var nivel = true;
 var del = false;
+var mod = false;
 
 $("#option-right").hover(function(){
     $(this).css("border", "2px solid #95C22B");
     }, function(){
     if (del == false){
+        $(this).css("border", "2px solid transparent");
+    }
+  });
+
+$("#option-middle").hover(function(){
+    $(this).css("border", "2px solid #95C22B");
+    }, function(){
+    if (mod == false){
         $(this).css("border", "2px solid transparent");
     }
   });
@@ -142,9 +151,13 @@ function isNumberKey(txt, evt) {
 
 function removeLevel(){
     if (del == false){
+        $('.modify-row').hide()
+        $('.modify-th').hide()
         $('.delete-row').fadeIn()
         $('.delete-th').fadeIn()
         del = true;
+        mod = false;
+        $('#option-middle').css('border', '2px solid transparent');
         $('#option-right').css('border', '2px solid #95C22B');
         var y = window.scrollY + document.querySelector('#table-container').getBoundingClientRect().top; // Y
         var x = window.scrollX + document.querySelector('#table-container').getBoundingClientRect().left; // X
@@ -161,6 +174,31 @@ function removeLevel(){
     }
 }
 
+function modifyLevel(){
+    if (mod == false){
+        $('.delete-row').hide()
+        $('.delete-th').hide()
+        $('.modify-row').fadeIn()
+        $('.modify-th').fadeIn()
+        mod = true;
+        del = false;
+        $('#option-right').css('border', '2px solid transparent');
+        $('#option-middle').css('border', '2px solid #95C22B');
+        var y = window.scrollY + document.querySelector('#table-container').getBoundingClientRect().top; // Y
+        var x = window.scrollX + document.querySelector('#table-container').getBoundingClientRect().left; // X
+        window.scrollTo(x, y);
+        
+    }
+    else{
+        $('.modify-row').fadeOut()
+        $('.modify-th').fadeOut()
+        mod = false;
+        $('#option-middle').css('border', '2px solid transparent');
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+}
+
 function openBajaModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel){
     cant_niveles = parseInt(cant_niveles);
     numero = parseInt(numero);
@@ -169,7 +207,8 @@ function openBajaModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel){
     factor_mod = (maxEPnivel - minEPnivel + 1)/2;
     nuevo_max = minEPnivel - 1 + factor_mod;
     nuevo_min = maxEPnivel + 1 - factor_mod;
-    jQuery.noConflict(); 
+    jQuery.noConflict();
+    $('#primary-btn-alert').prop('disabled', false); 
     $('#modalBajaMod1').show();
     $('#numNivel').val(String(idNivel));
     $('#bajaNivelModal').modal('show');
@@ -178,18 +217,33 @@ function openBajaModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel){
     $('#modalBajaMod3').show();
     $('.top-modal-text-baja').text('Si elimina el nivel ' + numero + ' se producirán las siguientes modificaciones:');
     if (numero != 1){
-        $('#modalBajaMod1').text('- El nivel ' + String(parseInt(numero)-1) + ' será ahora hasta los ' + String(parseInt(nuevo_max)) + ' EcoPuntos.');
+        if(numero == 2 && numero == cant_niveles){
+            $('#modalBajaMod1').text('- El nivel ' + String(parseInt(numero)-1) + ' será ahora el único nivel.');
+            $('#modalBajaMod2').hide();
+        }
+        else{
+            $('#modalBajaMod1').text('- El nivel ' + String(parseInt(numero)-1) + ' será ahora hasta los ' + String(parseInt(nuevo_max)) + ' EcoPuntos.');
+        }
     }
     else{
         $('#modalBajaMod1').hide();
     }
     if (numero == cant_niveles){
-        $('#modalBajaMod2').text('- El nivel ' + String(parseInt(numero)-1) + ' será ahora el último nivel.');
-        $('#modalBajaMod3').hide();
-
+        if (numero == 1){
+            $('.bottom-modal-text-baja').text('Lo sentimos, no se puede eliminar el nivel 1 si no existen otros niveles.')
+            $('.top-modal-text-baja').hide();
+            $('#modalBajaMod2').hide();
+            $('#modalBajaMod3').hide();
+            $('#primary-btn-alert').prop('disabled', true);
+        }
+        else{
+            $('#modalBajaMod1').text('- El nivel ' + String(parseInt(numero)-1) + ' será ahora el último nivel, y todos los usuarios nivel ' + String(parseInt(numero))+ ' pasarán a ser nivel ' + String(parseInt(numero)-1) + '.');
+            $('#modalBajaMod2').hide();
+            $('#modalBajaMod3').hide();
+        }
     }
     else{
-        if(numero == 1){
+        if(numero == 1 && numero != cant_niveles){
             $('#modalBajaMod2').text('- El nivel ' + String(parseInt(numero)+1) + ' será ahora el nivel ' + String(parseInt(numero)) + ', y será desde los 0 EcoPuntos.');
         }
         else{

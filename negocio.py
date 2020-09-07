@@ -235,6 +235,32 @@ class Negocio():
                                                          dando de alta un nuevo nivel.")
 
     @classmethod
+    def obtiene_nivel(cls, ecoPuntos):
+        """
+        Esta función devuelve el nivel al que pertenece una determinada cantidad de EcoPuntos, recibida como parametro.
+        """
+        try:
+            niveles = Datos.get_niveles()
+            for nivel in niveles:
+                if int(nivel.nombre) == len(niveles):
+                    if int(ecoPuntos) >= int(nivel.minimoEcoPuntos):
+                        return nivel
+                    else:
+                        return False
+                else:
+                    if int(ecoPuntos) >= int(nivel.minimoEcoPuntos) and int(ecoPuntos) <= int(nivel.maximoEcoPuntos):
+                        return nivel
+                    else:
+                        return False
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.obtiene_nivel()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                          calculando el nivel para una cantidad\
+                                                          de EcoPuntos recibida como parámetro.")
+
+
+    @classmethod
     def get_max_ecoPuntos(cls):
         """
         Obtiene el máximo de EcoPuntos asignados a un nivel.
@@ -269,6 +295,7 @@ class Negocio():
             min_nivel = min_max_niveles[0]
             max_nivel = min_max_niveles[1]
             nivel = cls.get_nivel_id(id)
+            print(max_nivel, nivel.nombre)
             if nivel == False:
                 return "Error 1 eliminando nivel de la Base de Datos. Intente nuevamente más tarde."
             else:
@@ -282,8 +309,14 @@ class Negocio():
                             return True
                         else:
                             return "Error eliminando nivel de la Base de Datos. Intente nuevamente más tarde."
-                elif int(nivel.nombre) == max_nivel:
-                    pass
+                elif int(nivel.nombre) == int(max_nivel):
+                    factor_mod =  (nivel.maximoEcoPuntos - nivel.minimoEcoPuntos + 1)/2
+                    nuevo_max = round(nivel.minimoEcoPuntos) - 1
+                    nuevo_min = round(nivel.maximoEcoPuntos - factor_mod,0) + 1
+                    if Datos.baja_nivel(nuevo_min, int(nivel.nombre) + 1, nuevo_max, int(nivel.nombre)-1, nivel):
+                        return True
+                    else:
+                        return "Error eliminando nivel de la Base de Datos. Intente nuevamente más tarde."
                 else:
                     #Valida regla RN05 y RN10
                     factor_mod =  (nivel.maximoEcoPuntos - nivel.minimoEcoPuntos + 1)/2

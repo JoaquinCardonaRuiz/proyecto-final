@@ -29,7 +29,6 @@ import MySQLdb
 import custom_exceptions
 from custom_exceptions import *
 
-
 #Clases almacenadas en BD
 class Usuario:
     """ Representa a los usuarios del sistema, tanto los administradores como los ciudadanos.
@@ -196,6 +195,7 @@ class Nivel:
         else:
             self.minimoEcoPuntos = minimoEcoPuntos
             self.maximoEcoPuntos = maximoEcoPuntos
+
 
 class Estimacion:
     """ Representa una estimación de CO2 o consumo de energía provista al usuario por el

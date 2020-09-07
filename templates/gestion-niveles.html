@@ -26,7 +26,7 @@
                 <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Añadir nivel</p>
             </div>
-            <div class="container" id="option-middle" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-middle" onclick="modifyLevel()">
                 <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Modificar nivel</p>
             </div>
@@ -45,6 +45,7 @@
                     <th scope="col" class="table-heading">EcoPuntos</th>
                     <th scope="col" class="table-heading">Descuento</th>
                     <th class="table-heading delete-th"></th>
+                    <th class="table-heading modify-th"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -58,6 +59,8 @@
                     {%endif%}
                     <td>{{nivel.descuento}}%</td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{nivel.nombre}}', '{{niveles|length}}', '{{nivel.minimoEcoPuntos}}', '{{nivel.maximoEcoPuntos}}', '{{nivel.id}}')"></i></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
+
                 </tr>
                 {%endfor%}
                 </tbody>
