@@ -9,6 +9,8 @@ app.secret_key = 'myscretkey'
 def main():
     return render_template('main.html')
 
+# -- Niveles -- 
+
 @app.route('/gestion-niveles', methods = ['GET','POST'])
 def gestion_niveles():
     niveles = Negocio.get_niveles()
@@ -28,7 +30,7 @@ def gestion_niveles():
     return render_template('gestion-niveles.html', 
                             niveles = niveles, 
                             min_nivel = min_max_nivel[0],
-                             
+
     max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
 
 @app.route('/gestion-niveles/', defaults = {'id': 0})
@@ -37,6 +39,14 @@ def obtener_nivel_baja(id):
     id = int(id)
     print(Negocio.baja_nivel(id))
     return redirect(url_for('gestion_niveles'))
+
+# -- Entidades Destino -- 
+
+@app.route('/gestion-ed', methods = ['GET','POST'])
+def gestion_ed():
+    entidades = Negocio.get_entidades_destino()
+    return render_template('gestion-entidades-destino.html', entidades = entidades)
+
 
 @app.route('/gestion-ed/demandas/<id>')
 def devolver_demandas(id):
@@ -48,11 +58,15 @@ def devolver_salidas(id):
     salidas_present = Negocio.get_tabla_salidas(id)
     return jsonify(salidas_present)
 
-
-@app.route('/gestion-ed', methods = ['GET','POST'])
-def gestion_ed():
-    entidades = Negocio.get_entidades_destino()
-    return render_template('gestion-entidades-destino.html', entidades = entidades)
+@app.route('/gestion-ed/alta', methods = ['GET','POST'])
+def alta_entidad_destino():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        try:
+            Negocio.alta_entidad_destino(nombre)
+        except Exception as e:
+            raise e
+        return redirect(url_for('gestion_ed'))
 
 if __name__ == '__main__':
     app.debug = True

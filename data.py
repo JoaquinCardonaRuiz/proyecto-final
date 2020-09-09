@@ -178,6 +178,26 @@ class Datos():
             cls.cerrar_conexion()
 
     @classmethod
+    def alta_entidad_destino(cls,nombre):
+        """
+        Da de alta una nueva entidad destino en el sistema.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("INSERT INTO entidadesDestino (nombre) \
+                    VALUES (\"{}\");".format(nombre))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.alta_entidad_destino()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error dando de alta una \
+                                                        entidad destino en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
     def get_one_entidad_destino(cls,id):
         """
         Obtiene una entidad de destino de la BD a partir de su id.
@@ -275,8 +295,8 @@ class Datos():
     
     @classmethod
     def alta_nivel(cls, nivel):
-        cls.abrir_conexion()
         """Añade el nivel que recibe como parametro a la BD."""
+        cls.abrir_conexion()
         try:
             sql = ("INSERT INTO niveles (nombre, minEcoPuntos, maxEcoPuntos, descuento) \
                     VALUES (%s, %s, %s, %s);")
@@ -285,11 +305,10 @@ class Datos():
             cls.db.commit()
             return True
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.get_entidades_destino()",
+            raise custom_exceptions.ErrorDeConexion(origen="data.alta_nivel()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obteniendo el máximo \
-                                                         de EcoPuntos de un nivel desde la \
-                                                         BD.")
+                                                    msj_adicional="Error dando de alta un \
+                                                        nivel en la BD.")
         finally:
             cls.cerrar_conexion()
 

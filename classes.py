@@ -184,12 +184,12 @@ class Nivel:
 
     def set_ecopuntos(self,minimoEcoPuntos,maximoEcoPuntos):
         if minimoEcoPuntos > maximoEcoPuntos: 
-            raise ErrorDeValorIngresado(origen="Nivel.set_ecopuntos",msj_adicional="El valor de\
+            raise ErrorReglaDeNegocio(origen="Nivel.set_ecopuntos",msj_adicional="El valor de\
                 la cantidad máxima de ecopuntos debe ser mayor al valor de la cantidad mínima\
                 de ecopuntos.")
 
         elif minimoEcoPuntos < 0 or maximoEcoPuntos < 0:
-            raise ErrorDeValorIngresado(origen="Nivel.set_ecopuntos",msj_adicional="El valor de\
+            raise ErrorReglaDeNegocio(origen="Nivel.set_ecopuntos",msj_adicional="El valor de\
                 las cantidades mínimas y máximas de ecopuntos debe ser mayor o igual a 0.")
 
         else:

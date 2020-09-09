@@ -54,7 +54,7 @@ class ErrorDeConexion(CustomBaseException):
         super().__init__(origen,msj,msj_adicional)
         self.nombre = "Error de conexión."
 
-class ErrorDeValorIngresado(CustomBaseException):
+class ErrorReglaDeNegocio(CustomBaseException):
     """ Excepción correspondiente a un error debido a un valor ingresado por el usuario"""
 
     def __init__(self, 
@@ -64,3 +64,14 @@ class ErrorDeValorIngresado(CustomBaseException):
 
         super().__init__(origen,msj,msj_adicional)
         self.nombre = "Error de valor ingresado por el usuario."
+
+class ErrorDeNegocio(CustomBaseException):
+    """ Excepción correspondiente a un error durante el procesamiento de la capa de negocio"""
+
+    def __init__(self, 
+                origen, 
+                msj="Esta excepción fue elevada manualmente", 
+                msj_adicional="No hay mensajes adicionales"):
+
+        super().__init__(origen,msj,msj_adicional)
+        self.nombre = "Error de negocio."

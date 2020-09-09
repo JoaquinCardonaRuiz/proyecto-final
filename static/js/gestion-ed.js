@@ -6,7 +6,7 @@ function getTablaDemandas(id, nombre){
         // Borro contenido anterior
         document.getElementById("modalTableBody"). innerHTML="";
         document.getElementById("headerRow").innerHTML ="";
-        
+
         // Creo títulos de columnas
         var headings = ["Artículo","Cantidad","Unidad"];
         for (i=0; i < headings.length; i++){
@@ -96,4 +96,26 @@ function getTablaSalidas(id, nombre){
             document.getElementById("modalTableBody").appendChild(row);
         }
     })
+}
+
+function validaNombre(nombres){
+    var n = document.getElementById("nombreInput").value;
+    if(nombres.includes(n)){
+        //Se comprueba regla RN11
+        document.getElementById("descuentoNivelError").innerHTML = "* Ese nombre ya ha sido registrado como una entidad de destino.";
+        document.getElementsByName("add-btn")[0].disabled = true;
+    }
+    else if (!n){
+        //Se comprueba regla RN12
+        document.getElementById("descuentoNivelError").innerHTML = "* Este campo debe ser completado para crear la entidad.";
+        document.getElementsByName("add-btn")[0].disabled = true;
+    }
+    else{
+        document.getElementById("descuentoNivelError").innerHTML = "";
+        document.getElementsByName("add-btn")[0].disabled = false;
+    }
+}
+
+function submitForm(n){
+    document.getElementById(n).submit();
 }

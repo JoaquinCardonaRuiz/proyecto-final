@@ -22,15 +22,15 @@
     </div>
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container" id="option-left" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-left" data-toggle="modal" data-target="#altaModal">
                 <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Añadir entidad</p>
             </div>
-            <div class="container" id="option-middle" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-middle">
                 <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Modificar entidad</p>
             </div>
-            <div class="container" id="option-right" onclick="window.location.href='/alta-nivel'">
+            <div class="container" id="option-right">
                 <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Eliminar entidad</p>
             </div>
@@ -47,11 +47,14 @@
                 </tr>
                 </thead>
                 <tbody>
+                {%set nombres = []%}
                 {%for ent in entidades%}
+                <!-- Jinja funciona en comentarios... sin esto imprime None en pantalla.-->
+                <!--{{nombres.append(ent.nombre)}} -->
                 <tr>
                     <th scope="row">{{ent.nombre}}</th>
-                    <td><a href='#'data-toggle="modal" data-target="#demandaModal" onclick="getTablaDemandas({{ent.id}},'{{ent.nombre}}')">Ver Demanda</a></td>
-                    <td><a href='#'data-toggle="modal" data-target="#demandaModal" onclick="getTablaSalidas({{ent.id}},'{{ent.nombre}}')">Ver Salidas</a></td>
+                    <td><a href='#'data-toggle="modal" data-target="#tablaModal" onclick="getTablaDemandas({{ent.id}},'{{ent.nombre}}')">Ver Demanda</a></td>
+                    <td><a href='#'data-toggle="modal" data-target="#tablaModal" onclick="getTablaSalidas({{ent.id}},'{{ent.nombre}}')">Ver Salidas</a></td>
                 </tr>
                 {%endfor%}
                 </tbody>
@@ -60,8 +63,8 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade modal-lg" id="demandaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Tabla Modal -->
+<div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -86,6 +89,70 @@
       </div>
     </div>
 </div>
+
+<!--Alta Modal -->
+<div class="modal fade modal-lg" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Añadir una nueva Entidad de Destino</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{url_for('alta_entidad_destino')}}" method="POST" class="modal-body" id="altaEntidadForm">
+            <div class="row">
+                <div class="col">
+                    <div class="group" style="margin-left: 5%;">      
+                        <input type="text" id="nombreInput" onkeyup = "validaNombre({{nombres|safe}})" name="nombre" >
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Nombre de la Entidad</label>
+                        <p id="descuentoNivelError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <p class="bottom-modal-text">Una vez completados todos los datos, presione el botón "Crear Entidad".</p>
+            </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn" onclick="submitForm('altaEntidadForm')" id="primary-btn" name = "add-btn">Crear Entidad</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Delete Modal -->
+<div class="modal fade modal-lg" id="bajaNivelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Eliminar un nivel</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body-baja" id="altaNivelForm">
+            <div class="row">
+                <p class="top-modal-text-baja"></p>
+                <p class="bottom-modal-text-baja-mods" id="modalBajaMod1"></p>
+                <p class="bottom-modal-text-baja-mods" id="modalBajaMod2"></p>
+                <p class="bottom-modal-text-baja-mods" id="modalBajaMod3"></p>
+                <p class="bottom-modal-text-baja">¿Está seguro que desea eliminar el nivel? Una vez eliminado, el nivel no se podrá recuperar.</p>
+            </div>
+        </div>
+        <input type="text" name="" id="numNivel" hidden>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn" onclick="setID();" id="primary-btn-alert">Eliminar nivel</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 
 <script src="static/js/gestion-ed.js"></script>
 {% endblock %}

@@ -46,7 +46,7 @@ class Negocio():
                     number = str(round(float(number),decimals)).replace('.', ',') 
                 return number
         except Exception as e:
-           raise custom_exceptions.ErrorDeConexion(origen="negocio.replace_dots()",
+           raise custom_exceptions.ErrorDeNegocio(origen="negocio.replace_dots()",
                                                    msj=str(e),
                                                    msj_adicional="Error formateando los \
                                                        números.")
@@ -64,7 +64,7 @@ class Negocio():
                 number = round(float(str(number).replace(',', '.')),decimals)
                 return number
         except Exception as e:
-           raise custom_exceptions.ErrorDeConexion(origen="negocio.replace_dots()",
+           raise custom_exceptions.ErrorDeNegocio(origen="negocio.replace_dots()",
                                                    msj=str(e),
                                                    msj_adicional="Error formateando los \
                                                        números.")                                                  
@@ -84,7 +84,7 @@ class Negocio():
             return niveles
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_niveles()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_niveles()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                          obtieniendo los niveles de la capa de\
@@ -103,7 +103,7 @@ class Negocio():
             return [min_nivel, max_nivel]
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_niveles()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_niveles()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                          calculando el máximo/mínimo nivel.")
@@ -119,7 +119,7 @@ class Negocio():
             return dems
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_tabla_demandas()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_tabla_demandas()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                          obtieniendo la tabla de demandas de \
@@ -136,11 +136,43 @@ class Negocio():
             return sals
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_tabla_salidas()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_tabla_salidas()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                          obtieniendo la tabla de salidas de \
                                                          la capa de Datos.")
+
+    @classmethod
+    def alta_entidad_destino(cls,nombre):
+        """
+        Da de alta una nueva entidad destino en el sistema.
+        """
+        try:
+            if nombre in [i.nombre for i in cls.get_entidades_destino()]:
+                #Valida regla RN11
+                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.alta_entidad_destino()",
+                                                              msj="Error en la capa\
+                                                                de negocio al validar regla \
+                                                                RN11: Todas las entidades de \
+                                                                destino deben tener nombres \
+                                                                distintos.") 
+            elif nombre == "":
+                #Valida regla RN12
+                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.alta_entidad_destino()",
+                                                              msj="Error en la capa\
+                                                                de negocio al validar regla \
+                                                                RN11: Todas las entidades de \
+                                                                destino deben tener nombres \
+                                                                distintos.") 
+            else:
+                Datos.alta_entidad_destino(nombre)
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.alta_entidad_destino()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                         dando de alta una nueva entidad de \
+                                                         destino.")
+        
 
     @classmethod
     def get_entidades_destino(cls):
@@ -152,7 +184,7 @@ class Negocio():
             return entidades
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_entidades_destino()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_entidades_destino()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                          obtieniendo las entidades destino de \
@@ -168,7 +200,7 @@ class Negocio():
             return nivel
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_nivel_id()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_nivel_id()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                          obtieniendo un nivel en base su ID de\
@@ -184,7 +216,7 @@ class Negocio():
             return nivel
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_nivel_nombre()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_nivel_nombre()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                          obtieniendo un nivel en base su \
@@ -201,7 +233,7 @@ class Negocio():
             return entidad
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_one_entidad_destino()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_one_entidad_destino()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                          obtieniendo una entidad destino de \
@@ -246,9 +278,9 @@ class Negocio():
                 if Datos.alta_nivel(nivel):
                     return True
                 else:
-                    "Error al añadir nivel a la Base de Datos. Intente nuevamente más tarde."
+                    return "Error al añadir nivel a la Base de Datos. Intente nuevamente más tarde."
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_entidades_destino()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.alta_nivel()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                          dando de alta un nuevo nivel.")
@@ -274,7 +306,7 @@ class Negocio():
                     else:
                         return False
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.obtiene_nivel()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.obtiene_nivel()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                           calculando el nivel para una \
@@ -290,7 +322,7 @@ class Negocio():
         try:
             return int(cls.replace_dots(Datos.get_max_ecoPuntos(),0))
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_max_ecoPuntos()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_max_ecoPuntos()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                           obtieniendo el máximo de EcoPuntos \
@@ -304,7 +336,7 @@ class Negocio():
         try:
             return cls.replace_dots(Datos.get_max_descuento(),1)
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_max_descuento()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_max_descuento()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                           obtieniendo el máximo descuento de \
@@ -363,7 +395,7 @@ class Negocio():
                              más tarde."
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="negocio.baja_nivel()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.baja_nivel()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                           dando de baja un nivel.")
