@@ -95,7 +95,7 @@ class Datos():
         """
         cls.abrir_conexion()
         try:
-            sql = ("SELECT idEntidad, idTipoArticulo, tiposArticulo.nombre, cantidad \
+            sql = ("SELECT idEntidad, idTipoArticulo, tiposArticulo.nombre, cantidad, unidadMedida \
                     FROM demanda \
                     right join tiposArticulo using(idTipoArticulo) \
                     left join entidadesDestino using(idEntidad) \
@@ -104,7 +104,7 @@ class Datos():
             demandas_ = cls.cursor.fetchall()
             demandas = []
             for d in demandas_:
-                demanda_ = {"nombre": d[2],"cantidad": d[3]}
+                demanda_ = {"nombre": d[2],"cantidad": d[3], "unidadmedida": d[4]}
                 demandas.append(demanda_)
             return demandas
             
@@ -115,6 +115,35 @@ class Datos():
                                                         tabla de demandas desde la BD.")
         finally:
             cls.cerrar_conexion()
+
+    @classmethod
+    def get_tabla_salidas(cls,id):
+        """
+        Obtiene la tabla de salidas a partir de un id de entidad de destino de la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT idEntidad, idTipoArticulo, tiposArticulo.nombre, cantidadSalida, unidadMedida, fecha\
+                    FROM salidasStock \
+                    right join tiposArticulo using(idTipoArticulo) \
+                    left join entidadesDestino using(idEntidad) \
+                    WHERE idEntidad = {};".format(id))
+            cls.cursor.execute(sql)
+            demandas_ = cls.cursor.fetchall()
+            demandas = []
+            for d in demandas_:
+                demanda_ = {"nombre": d[2],"cantidad": d[3], "unidadmedida": d[4], "fecha": str(d[5])}
+                demandas.append(demanda_)
+            return demandas
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_tabla_salidas()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo la \
+                                                        tabla de salidas desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
 
     @classmethod
     def get_entidades_destino(cls):

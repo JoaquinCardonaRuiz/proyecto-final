@@ -50,8 +50,8 @@
                 {%for ent in entidades%}
                 <tr>
                     <th scope="row">{{ent.nombre}}</th>
-                    <td><a href='#'data-toggle="modal" data-target="#demandaModal" onclick="setID({{ent.id}},'{{ent.nombre}}')">Ver Demanda</a></td>
-                    <td><a href='#'data-toggle="modal" data-target="#demandaModal" onclick="setID({{ent.id}},'{{ent.nombre}}')">Ver Salidas</a></td>
+                    <td><a href='#'data-toggle="modal" data-target="#demandaModal" onclick="getTablaDemandas({{ent.id}},'{{ent.nombre}}')">Ver Demanda</a></td>
+                    <td><a href='#'data-toggle="modal" data-target="#demandaModal" onclick="getTablaSalidas({{ent.id}},'{{ent.nombre}}')">Ver Salidas</a></td>
                 </tr>
                 {%endfor%}
                 </tbody>
@@ -72,9 +72,8 @@
         </div>
         <table class="table" id="content-table">
             <thead style=" border-top:none">
-            <tr>
-                <th scope="col" class="table-heading">Artículo</th>
-                <th scope="col" class="table-heading">Cantidad</th>
+            <tr id=headerRow>
+
             </tr>
             </thead>
             <tbody id="modalTableBody">

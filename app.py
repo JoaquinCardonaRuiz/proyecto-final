@@ -35,10 +35,16 @@ def obtener_nivel_baja(id):
     print(Negocio.baja_nivel(id))
     return redirect(url_for('gestion_niveles'))
 
-@app.route('/gestion-ed/<id>')
+@app.route('/gestion-ed/demandas/<id>')
 def devolver_demandas(id):
     demandas_present = Negocio.get_tabla_demandas(id)
     return jsonify(demandas_present)
+
+@app.route('/gestion-ed/salidas/<id>')
+def devolver_salidas(id):
+    salidas_present = Negocio.get_tabla_salidas(id)
+    return jsonify(salidas_present)
+
 
 @app.route('/gestion-ed', methods = ['GET','POST'])
 def gestion_ed():

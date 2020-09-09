@@ -110,7 +110,8 @@ class Negocio():
     @classmethod
     def get_tabla_demandas(cls,id):
         """
-        Obtiene todos los tipos articulo de la BD.
+        Obtiene todos los datos necesarios para mostrar la tabla de demandas de una entidad de
+        destino de la BD.
         """
         try:
             dems = Datos.get_tabla_demandas(id)
@@ -121,6 +122,23 @@ class Negocio():
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                          obtieniendo la tabla de demandas de \
+                                                         la capa de Datos.")
+
+    @classmethod
+    def get_tabla_salidas(cls,id):
+        """
+        Obtiene todos los datos necesarios para mostrar la tabla de salidas de una entidad de
+        destino de la BD.
+        """
+        try:
+            sals = Datos.get_tabla_salidas(id)
+            return sals
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="negocio.get_tabla_salidas()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio\
+                                                         obtieniendo la tabla de salidas de \
                                                          la capa de Datos.")
 
     @classmethod
