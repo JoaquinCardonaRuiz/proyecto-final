@@ -254,7 +254,7 @@ function openBajaModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel){
 
 }
 
-function setID(){
+function baja_nivel(){
     id = $('#numNivel').val();
-    window.location.href='/gestion-niveles/' + String(id)
+    window.location.href='/gestion-niveles/baja/' + String(id)
 }

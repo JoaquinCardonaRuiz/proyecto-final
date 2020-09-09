@@ -81,7 +81,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{url_for('gestion_niveles')}}" method="POST" class="modal-body" id="altaNivelForm">
+        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body" id="altaNivelForm">
             <div class="row">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
@@ -156,7 +156,7 @@
         <input type="text" name="" id="numNivel" hidden>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="btn" onclick="setID();" id="primary-btn-alert">Eliminar nivel</button>
+          <button type="button" class="btn" onclick="baja_nivel();" id="primary-btn-alert">Eliminar nivel</button>
         </div>
       </div>
     </div>

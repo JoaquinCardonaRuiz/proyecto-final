@@ -11,31 +11,30 @@ def main():
 
 # -- Niveles -- 
 
-@app.route('/gestion-niveles', methods = ['GET','POST'])
+@app.route('/gestion-niveles')
 def gestion_niveles():
     niveles = Negocio.get_niveles()
     min_max_nivel = Negocio.get_min_max_niveles()
     maxEP = Negocio.get_max_ecoPuntos()
     maxDescuento = Negocio.get_max_descuento()
-    if request.method == 'POST':
-        numeroNivel = request.form['numeroNivel']
-        descuento = request.form['descuento']
-        minEcoPuntos = request.form['minEcoPuntos']
-        maxEcoPuntos = request.form['maxEcoPuntos']
-        Negocio.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
-        niveles = Negocio.get_niveles()
-        min_max_nivel = Negocio.get_min_max_niveles()
-        maxEP = Negocio.get_max_ecoPuntos()
-        maxDescuento = Negocio.get_max_descuento()
     return render_template('gestion-niveles.html', 
                             niveles = niveles, 
                             min_nivel = min_max_nivel[0],
 
     max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
 
-@app.route('/gestion-niveles/', defaults = {'id': 0})
-@app.route('/gestion-niveles/<int:id>')
-def obtener_nivel_baja(id):
+@app.route('/gestion-niveles/alta', methods = ['GET','POST'])
+def alta_nivel():
+    if request.method == 'POST':
+        numeroNivel = request.form['numeroNivel']
+        descuento = request.form['descuento']
+        minEcoPuntos = request.form['minEcoPuntos']
+        maxEcoPuntos = request.form['maxEcoPuntos']
+        Negocio.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
+    return redirect(url_for('gestion_niveles'))
+
+@app.route('/gestion-niveles/baja/<int:id>')
+def baja_nivel(id):
     id = int(id)
     print(Negocio.baja_nivel(id))
     return redirect(url_for('gestion_niveles'))
