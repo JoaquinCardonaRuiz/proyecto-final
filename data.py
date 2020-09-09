@@ -34,21 +34,22 @@ class Datos():
     @classmethod
     def abrir_conexion(cls):
         """
-        Abre la conexión con el motor de BD, y setea como variables de clase a la BD y el Cursor.
+        Abre la conexión con el motor de BD, y setea como variables de clase a la BD y el 
+        Cursor.
         """
         
         try:
-            cls.db = MySQLdb.connect(host="sql10.freemysqlhosting.net",    # Host de la BD.
-                        user="sql10359552",                            # Usuario de la BD
-                        passwd="vyqs1VbikX",                           # Contraseña de la BD
-                        db="sql10359552")                              # Nombre de la DB
+            cls.db = MySQLdb.connect(host="sql10.freemysqlhosting.net",  # Host de la BD.
+                        user="sql10359552",                              # Usuario de la BD
+                        passwd="vyqs1VbikX",                             # Contraseña de la BD
+                        db="sql10359552")                                # Nombre de la DB
             cls.cursor = cls.db.cursor()
                 
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data",
                                                     msj=str(e),
-                                                    msj_adicional="Error conectando a la base de \
-                                                        datos MySQL.")
+                                                    msj_adicional="Error conectando a la base \
+                                                        de datos MySQL.")
     
     @classmethod
     def cerrar_conexion(cls):
@@ -95,7 +96,8 @@ class Datos():
         """
         cls.abrir_conexion()
         try:
-            sql = ("SELECT idEntidad, idTipoArticulo, tiposArticulo.nombre, cantidad, unidadMedida \
+            sql = ("SELECT idEntidad, idTipoArticulo, tiposArticulo.nombre, cantidad,\
+                    unidadMedida \
                     FROM demanda \
                     right join tiposArticulo using(idTipoArticulo) \
                     left join entidadesDestino using(idEntidad) \
@@ -123,7 +125,8 @@ class Datos():
         """
         cls.abrir_conexion()
         try:
-            sql = ("SELECT idEntidad, idTipoArticulo, tiposArticulo.nombre, cantidadSalida, unidadMedida, fecha\
+            sql = ("SELECT idEntidad, idTipoArticulo, tiposArticulo.nombre, cantidadSalida,\
+                    unidadMedida, fecha\
                     FROM salidasStock \
                     right join tiposArticulo using(idTipoArticulo) \
                     left join entidadesDestino using(idEntidad) \
@@ -132,7 +135,10 @@ class Datos():
             demandas_ = cls.cursor.fetchall()
             demandas = []
             for d in demandas_:
-                demanda_ = {"nombre": d[2],"cantidad": d[3], "unidadmedida": d[4], "fecha": str(d[5])}
+                demanda_ = {"nombre": d[2],
+                            "cantidad": d[3], 
+                            "unidadmedida": d[4], 
+                            "fecha": str(d[5])}
                 demandas.append(demanda_)
             return demandas
             
@@ -251,7 +257,9 @@ class Datos():
     @classmethod
     def get_max_ecoPuntos(cls):
         cls.abrir_conexion()
-        """Devuelve la mayor cantidad EcoPuntos solicitada para un nivel registrado en la BD."""
+        """Devuelve la mayor cantidad EcoPuntos solicitada para un nivel registrado en la 
+        BD.
+        """
         try:
             sql = ("select max(maxEcoPuntos) from niveles;")
             cls.cursor.execute(sql)
@@ -260,8 +268,8 @@ class Datos():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_entidades_destino()",
                                                     msj=str(e),
-                                                    msj_adicional="Error el máximo de EcoPuntos \
-                                                         de un nivel desde la BD.")
+                                                    msj_adicional="Error el máximo de \
+                                                        EcoPuntos de un nivel desde la BD.")
         finally:
             cls.cerrar_conexion()
     
@@ -270,7 +278,8 @@ class Datos():
         cls.abrir_conexion()
         """Añade el nivel que recibe como parametro a la BD."""
         try:
-            sql = ("insert into niveles (nombre, minEcoPuntos, maxEcoPuntos, descuento) values (%s, %s, %s, %s);")
+            sql = ("INSERT INTO niveles (nombre, minEcoPuntos, maxEcoPuntos, descuento) \
+                    VALUES (%s, %s, %s, %s);")
             values = (nivel.nombre, nivel.minimoEcoPuntos, nivel.maximoEcoPuntos, nivel.descuento)
             cls.cursor.execute(sql, values)
             cls.db.commit()
@@ -278,8 +287,9 @@ class Datos():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_entidades_destino()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obteniendo el máximo de EcoPuntos \
-                                                         de un nivel desde la BD.")
+                                                    msj_adicional="Error obteniendo el máximo \
+                                                         de EcoPuntos de un nivel desde la \
+                                                         BD.")
         finally:
             cls.cerrar_conexion()
 
@@ -287,7 +297,9 @@ class Datos():
     @classmethod
     def get_nivel_id(cls, id):
         cls.abrir_conexion()
-        """Obtiene un nivel de la BD en base a un ID. Devuelve False si no encuentra ninguno."""
+        """Obtiene un nivel de la BD en base a un ID. Devuelve False si no encuentra 
+        ninguno.
+        """
         try:
             sql = ("select * from niveles where idNivel = %s")
             values = (id,)
@@ -301,15 +313,18 @@ class Datos():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_nivel_id",
                                                     msj=str(e),
-                                                    msj_adicional="Error obteniendo un nivel en base al \
-                                                        id recibido como parámetro.")
+                                                    msj_adicional="Error obteniendo un nivel \
+                                                        en base al id recibido como \
+                                                        parámetro.")
         finally:
             cls.cerrar_conexion()
 
     @classmethod
     def get_nivel_nombre(cls, nombre):
         cls.abrir_conexion()
-        """Obtiene un nivel de la BD en base a un ID. Devuelve False si no encuentra ninguno."""
+        """Obtiene un nivel de la BD en base a un ID. Devuelve False si no encuentra 
+        ninguno.
+        """
         try:
             sql = ("select * from niveles where nombre = %s")
             values = (str(nombre),)
@@ -323,15 +338,18 @@ class Datos():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_nivel_nombre",
                                                     msj=str(e),
-                                                    msj_adicional="Error obteniendo un nivel en base al \
-                                                        nombre recibido como parámetro.")
+                                                    msj_adicional="Error obteniendo un nivel \
+                                                        en base al nombre recibido como \
+                                                        parámetro.")
         finally:
             cls.cerrar_conexion()
 
     @classmethod
     def baja_nivel(cls, nuevo_min, nombre_min, nuevo_max, nombre_max, nivel):
         cls.abrir_conexion()
-        """Elimina un nivel, y modifica el máximo de EcoPuntos del nivel anterior, y el máximo de EcoPuntos del nivel siguiente."""
+        """Elimina un nivel, y modifica el máximo de EcoPuntos del nivel anterior, y el máximo 
+        de EcoPuntos del nivel siguiente.
+        """
         try:
             if int(nivel.nombre) == 1:
                 #Actualiza el mínimo del nivel siguiente, ya que no existe nivel anterior.
@@ -381,6 +399,7 @@ class Datos():
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.baja_nivel",
                                                     msj=str(e),
-                                                    msj_adicional="Error dando de baja un nivel de la BD.")
+                                                    msj_adicional="Error dando de baja un \
+                                                    nivel de la BD.")
         finally:
             cls.cerrar_conexion()

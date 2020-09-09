@@ -25,7 +25,10 @@ def gestion_niveles():
         min_max_nivel = Negocio.get_min_max_niveles()
         maxEP = Negocio.get_max_ecoPuntos()
         maxDescuento = Negocio.get_max_descuento()
-    return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0], 
+    return render_template('gestion-niveles.html', 
+                            niveles = niveles, 
+                            min_nivel = min_max_nivel[0],
+                             
     max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
 
 @app.route('/gestion-niveles/', defaults = {'id': 0})

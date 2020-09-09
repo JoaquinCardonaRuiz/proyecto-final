@@ -5,7 +5,8 @@ function getTablaDemandas(id, nombre){
         
         // Borro contenido anterior
         document.getElementById("modalTableBody"). innerHTML="";
-
+        document.getElementById("headerRow").innerHTML ="";
+        
         // Creo títulos de columnas
         var headings = ["Artículo","Cantidad","Unidad"];
         for (i=0; i < headings.length; i++){
