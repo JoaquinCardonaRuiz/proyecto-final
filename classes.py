@@ -599,21 +599,22 @@ class EntidadDestino:
         self.salidas = salidas
 
 class SalidaStock:
-    """ Representa un conjunto de artículos que se saca del stock para entregar a una entidad
-    de destino. 
+    """ Representa un artículo que se saca del stock para entregar a una entidad de destino. 
 
     Atributos:
         id (string): Identificador de la entidad.
-        concepto (string): Descripción de la transacción.
         idTipoArticulo (string): Identificador del tipo de artículo correspondiente.
+        idEntidad (string): Identificador de la entidad de destino correspondiente.
         fecha (Date): Fecha de la transacción.
+        cantidadSalida (float): Cantidad del artículo representada, en su unidad de medida.
     """
-    def __init__(self,id,concepto,idTipoArticulo,fecha):
+    def __init__(self,id,idTipoArticulo,idEntidad,fecha,cantidadSalida):
         self.id = id
-        self.concepto = concepto
         self.idTipoArticulo = idTipoArticulo
+        self.idEntidad = idEntidad
         self.fecha = fecha
-
+        self.cantidadSalida = cantidadSalida
+        
 class Material:
     """ Representa una material que puede ingresar a través de un depósito de usuarios, y ser
     tornado en artículos para su salida.
