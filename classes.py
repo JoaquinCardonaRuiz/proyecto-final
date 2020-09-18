@@ -299,7 +299,7 @@ class Deposito:
     Atributos:
         id (string): Identificador de la entidad.
         codigo (string): Código ingresado por el usuario para registrar el depósito a su nombre.
-        material (CantidadMaterial): Entidad de CantidadMaterial que registra el tipo de material
+        material (CantMaterial): Entidad de CantMaterial que registra el tipo de material
             y la cantidad del mismo depositado.
         idPuntoDeposito (string): Identificador del punto de depósito en el que el depósito fue
             realizado.
@@ -504,14 +504,12 @@ class CantArticulo:
     """ Representa un conjunto de artículos del mismo tipo. Almacena el tipo y la cantidad.
     
     Atributos:
-        id (string): Identificador de la entidad.
         cantidad (float): Cantidad del tipo de artículo presente en el conjunto, en la unidad
             de medida especificada por el mismo.
         idTipoArticulo (string): Identificador del tipo de artículo correspondiente.
         precioVenta (Currency): Precio de venta de los artículos al momento de ser empleados.
     """
     def __init__(self,id,cantidad,idTipoArticulo,precioVenta=0.0):
-        self.id = id
         self.cantidad = cantidad
         self.idTipoArticulo = idTipoArticulo
         self.precioVenta = precioVenta
@@ -544,7 +542,8 @@ class TipoArticulo:
                 costoMateriales,
                 costoTotal,
                 margenGanancia,
-                unidadMedida):
+                unidadMedida,
+                stock):
         self.id = id
         self.nombre = nombre
         self.materiales = materiales
@@ -553,6 +552,7 @@ class TipoArticulo:
         self.costoTotal = costoTotal
         self.margenGanancia = margenGanancia
         self.unidadMedida = unidadMedida
+        self.stock = stock
 
 class Valor:
     """ Representa un valor monetario de una entidad en un momento en particular. El objetivo
@@ -574,13 +574,11 @@ class CantDemanda:
     destino. Almacena el tipo y la cantidad.
     
     Atributos:
-        id (string): Identificador de la entidad.
         cantidad (float): Cantidad del tipo de artículo presente en el conjunto, en la unidad
             de medida especificada por el mismo.
         idTipoArticulo (string): Identificador del tipo de artículo correspondiente.
     """
-    def __init__(self,id,cantidad,idTipoArticulo,precioVenta=0.0):
-        self.id = id
+    def __init__(self,cantidad,idTipoArticulo,precioVenta=0.0):
         self.cantidad = cantidad
         self.idTipoArticulo = idTipoArticulo
 
@@ -607,13 +605,13 @@ class SalidaStock:
     Atributos:
         id (string): Identificador de la entidad.
         concepto (string): Descripción de la transacción.
-        articulos (CantArticulo): Artículos restados del stock en la transacción.
+        idTipoArticulo (string): Identificador del tipo de artículo correspondiente.
         fecha (Date): Fecha de la transacción.
     """
-    def __init__(self,id,concepto,articulo,fecha):
+    def __init__(self,id,concepto,idTipoArticulo,fecha):
         self.id = id
         self.concepto = concepto
-        self.articulo = articulo
+        self.idTipoArticulo = idTipoArticulo
         self.fecha = fecha
 
 class Material:
@@ -638,16 +636,14 @@ class Material:
         self.stock = stock
 
 
-class CantidadMaterial:
+class CantMaterial:
     """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.
     
     Atributos:
-        id (string): Identificador de la entidad.
         cantidad (float): Cantidad del material que se representa, en la unidad de medida 
             especificada por el mismo.
         idMaterial (string): Identificador del material correspondiente.
     """
-    def __init__(self,id,cantidad,idMaterial):
-        self.id = id
+    def __init__(self,cantidad,idMaterial):
         self.cantidad = cantidad
         self.idMaterial = idMaterial
