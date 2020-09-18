@@ -25,7 +25,6 @@ TODO:
 
 #Imports
 
-import MySQLdb
 import custom_exceptions
 from custom_exceptions import *
 

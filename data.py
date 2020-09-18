@@ -20,7 +20,7 @@ TODO:
 
 #Imports
 
-import MySQLdb
+import mysql.connector
 import custom_exceptions
 from classes import *
 
@@ -39,7 +39,7 @@ class Datos():
         """
         
         try:
-            cls.db = MySQLdb.connect(host="sql10.freemysqlhosting.net",  # Host de la BD.
+            cls.db = mysql.connector.connect(host="sql10.freemysqlhosting.net",  # Host de la BD.
                         user="sql10359552",                              # Usuario de la BD
                         passwd="vyqs1VbikX",                             # Contraseña de la BD
                         db="sql10359552")                                # Nombre de la DB
