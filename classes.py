@@ -606,14 +606,14 @@ class SalidaStock:
         idTipoArticulo (string): Identificador del tipo de artículo correspondiente.
         idEntidad (string): Identificador de la entidad de destino correspondiente.
         fecha (Date): Fecha de la transacción.
-        cantidadSalida (float): Cantidad del artículo representada, en su unidad de medida.
+        cantidad (float): Cantidad del artículo representada, en su unidad de medida.
     """
-    def __init__(self,id,idTipoArticulo,idEntidad,fecha,cantidadSalida):
+    def __init__(self,id,idTipoArticulo,idEntidad,fecha,cantidad):
         self.id = id
         self.idTipoArticulo = idTipoArticulo
         self.idEntidad = idEntidad
         self.fecha = fecha
-        self.cantidadSalida = cantidadSalida
+        self.cantidad = cantidad
         
 class Material:
     """ Representa una material que puede ingresar a través de un depósito de usuarios, y ser

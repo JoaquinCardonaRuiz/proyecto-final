@@ -45,16 +45,28 @@ def baja_nivel(id):
 def gestion_ed():
     entidades = Negocio.get_entidades_destino()
     return render_template('gestion-entidades-destino.html', entidades = entidades)
-
+    
 
 @app.route('/gestion-ed/demandas/<id>')
 def devolver_demandas(id):
-    demandas_present = Negocio.get_tabla_demandas(id)
+    #TODO: evitar esta vuelta a BD
+    #TODO: revisar cómo verificar que sólo se cargue una demanda por TA
+    e = Negocio.get_one_entidad_destino(id)
+    a = Negocio.get_articulos([i.idTipoArticulo for i in e.demandas])
+
+    demandas_present = [{"nombre":          d[1].nombre,
+                         "cantidad":        d[0].cantidad, 
+                         "unidadmedida":    d[1].unidadMedida}
+                        for d in list(zip(e.demandas,a))]        
+
     return jsonify(demandas_present)
 
 @app.route('/gestion-ed/salidas/<id>')
 def devolver_salidas(id):
-    salidas_present = Negocio.get_tabla_salidas(id)
+    #TODO: evitar esta vuelta a BD
+    e = Negocio.get_one_entidad_destino(id)
+    a = Negocio.get_articulos([i.idTipoArticulo for i in e.salidas])
+    salidas_present =  [{"nombre": "todavia no desarrollado"} ]      
     return jsonify(salidas_present)
 
 @app.route('/gestion-ed/alta', methods = ['GET','POST'])

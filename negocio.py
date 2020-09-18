@@ -50,6 +50,7 @@ class Negocio():
                                                    msj=str(e),
                                                    msj_adicional="Error formateando los \
                                                        números.")
+    
     @classmethod
     def round_float(cls, number, decimals):
         """
@@ -109,37 +110,19 @@ class Negocio():
                                                          calculando el máximo/mínimo nivel.")
 
     @classmethod
-    def get_tabla_demandas(cls,id):
+    def get_articulos(cls,ids=[]):
         """
-        Obtiene todos los datos necesarios para mostrar la tabla de demandas de una entidad de
-        destino de la BD.
-        """
-        try:
-            dems = Datos.get_tabla_demandas(id)
-            return dems
-
-        except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_tabla_demandas()",
-                                                    msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio\
-                                                         obtieniendo la tabla de demandas de \
-                                                         la capa de Datos.")
-
-    @classmethod
-    def get_tabla_salidas(cls,id):
-        """
-        Obtiene todos los datos necesarios para mostrar la tabla de salidas de una entidad de
-        destino de la BD.
+        Obtiene todas los tipos de articulo de la BD.
         """
         try:
-            sals = Datos.get_tabla_salidas(id)
-            return sals
+            articulos = Datos.get_articulos()
+            return articulos
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_tabla_salidas()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_articulos()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
-                                                         obtieniendo la tabla de salidas de \
+                                                         obtieniendo los tipos de articulo de \
                                                          la capa de Datos.")
 
     @classmethod
@@ -173,7 +156,6 @@ class Negocio():
                                                          dando de alta una nueva entidad de \
                                                          destino.")
         
-
     @classmethod
     def get_entidades_destino(cls):
         """
@@ -221,7 +203,6 @@ class Negocio():
                                                     msj_adicional="Error en la capa de Negocio\
                                                          obtieniendo un nivel en base su \
                                                          nombre de la capa de Datos.")
-
 
     @classmethod
     def get_one_entidad_destino(cls, id):
@@ -313,7 +294,6 @@ class Negocio():
                                                           cantidad de EcoPuntos recibida como \
                                                           parámetro.")
 
-
     @classmethod
     def get_max_ecoPuntos(cls):
         """
@@ -349,7 +329,6 @@ class Negocio():
             min_nivel = min_max_niveles[0]
             max_nivel = min_max_niveles[1]
             nivel = cls.get_nivel_id(id)
-            print(max_nivel, nivel.nombre)
             if nivel == False:
                 return "Error 1 eliminando nivel de la Base de Datos. Intente nuevamente más \
                     tarde."

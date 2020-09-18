@@ -90,33 +90,70 @@ class Datos():
             cls.cerrar_conexion()
 
     @classmethod
-    def get_tabla_demandas(cls,id):
+    def get_articulos(cls,ids=[]):
         """
-        Obtiene la tabla de demandas a partir de un id de entidad de destino de la BD.
+        Obtiene todos los articulos de la BD. Si se provee una lista de IDs, devuelve sólo 
+        los tipos artículos que corresponden a los ids.
+
+        Argumentos:
+            ids (string[]): Listado de IDs para filtrar resultados.
+
+        """
+        
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT * FROM tiposArticulo;")
+            
+            #Si el parametro de ids no es vacío, se agrega el WHERE IN con el listado de ids
+            if ids:
+                sql = sql.replace(";"," ") + \
+                "WHERE idTipoArticulo IN ({});".format(', '.join([str(i) for i in ids]))
+            cls.cursor.execute(sql.format(*ids))
+            articulos_ = cls.cursor.fetchall()
+            articulos = []
+            for a in articulos_:
+                materiales = cls.get_cantmat(a[0],noClose=True)
+                articulo_ = TipoArticulo(a[0],a[4],materiales,a[5],a[6],a[7],a[2],a[3],a[1])
+                articulos.append(articulo_)
+            return articulos
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_entidades_destino()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo las \
+                                                        entidades destino desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_cantmat(cls, id, noClose=False):
+        """
+        Obtiene los materiales que componen un tipo articulo de la BD
         """
         cls.abrir_conexion()
         try:
-            sql = ("SELECT idEntidad, idTipoArticulo, tiposArticulo.nombre, cantidad,\
-                    unidadMedida \
-                    FROM demanda \
-                    right join tiposArticulo using(idTipoArticulo) \
-                    left join entidadesDestino using(idEntidad) \
-                    WHERE idEntidad = {};".format(id))
+            sql = ("SELECT tiposArt_mat.cantidad,tiposArt_mat.idMaterial \
+                    FROM tiposArt_mat \
+                    INNER JOIN tiposArticulo \
+                    USING(idTipoArticulo) \
+                    WHERE idTipoArticulo = {};").format(id)
             cls.cursor.execute(sql)
-            demandas_ = cls.cursor.fetchall()
-            demandas = []
-            for d in demandas_:
-                demanda_ = {"nombre": d[2],"cantidad": d[3], "unidadmedida": d[4]}
-                demandas.append(demanda_)
-            return demandas
+            cantmats_ = cls.cursor.fetchall()
+            cantmats = []
+            for m in cantmats_:
+                cantMat = CantMaterial(m[0],m[1])
+                cantmats.append(cantMat)
+            return cantmats
             
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.get_tabla_demandas()",
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_entidades_destino()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obtieniendo la \
-                                                        tabla de demandas desde la BD.")
+                                                    msj_adicional="Error obtieniendo las \
+                                                        entidades destino desde la BD.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
 
     @classmethod
     def get_tabla_salidas(cls,id):
@@ -138,10 +175,10 @@ class Datos():
                 demanda_ = {"nombre": d[2],
                             "cantidad": d[3], 
                             "unidadmedida": d[4], 
-                            "fecha": str(d[5])}
+                            "fecha": str(d[5])} #TODO: formatear fecha bien
                 demandas.append(demanda_)
             return demandas
-            
+        
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_tabla_salidas()",
                                                     msj=str(e),
@@ -163,8 +200,8 @@ class Datos():
             entidades_ = cls.cursor.fetchall()
             entidades = []
             for e in entidades_:
-                demandas = cls.get_demandas(e[0])
-                salidas = cls.get_salidas(e[0])
+                demandas = cls.get_demandas(e[0],noClose = True)
+                salidas = cls.get_salidas(e[0],noClose = True)
                 entidad_ = EntidadDestino(e[0],e[1],demandas,salidas)
                 entidades.append(entidad_)
             return entidades
@@ -207,8 +244,8 @@ class Datos():
             sql = ("SELECT * FROM entidadesDestino WHERE idEntidad = {};".format(id))
             cls.cursor.execute(sql)
             e = cls.cursor.fetchall()[0]
-            demandas = cls.get_demandas(e[0])
-            salidas = cls.get_salidas(e[0])
+            demandas = cls.get_demandas(e[0],noClose = True)
+            salidas = cls.get_salidas(e[0],noClose = True)
             entidad = EntidadDestino(e[0],e[1],demandas,salidas)
             return entidad
         except Exception as e:
@@ -220,7 +257,7 @@ class Datos():
             cls.cerrar_conexion()
     
     @classmethod
-    def get_demandas(cls,id):
+    def get_demandas(cls,id,noClose = False):
         cls.abrir_conexion()
         try:
             sql = ("SELECT * FROM demanda WHERE idEntidad = {};".format(id))
@@ -228,7 +265,7 @@ class Datos():
             demandas = cls.cursor.fetchall()
             cantDemandas = []
             for d in demandas:
-                demanda = CantDemanda(d[0],d[2],d[1])
+                demanda = CantDemanda(d[2],d[1])
                 cantDemandas.append(demanda)
             return cantDemandas
 
@@ -237,9 +274,12 @@ class Datos():
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo las \
                                                         demandas desde la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
 
     @classmethod
-    def get_salidas(cls,id):
+    def get_salidas(cls,id,noClose = False):
         cls.abrir_conexion()
         try:
             sql = ("SELECT * FROM salidasStock WHERE idEntidad = {};".format(id))
@@ -247,7 +287,7 @@ class Datos():
             salidas = cls.cursor.fetchall()
             salidasStock = []
             for s in salidas:
-                salida = SalidaStock(s[0],s[1],s[2],s[3])
+                salida = SalidaStock(s[0],s[1],s[2],s[3],s[4])
                 salidasStock.append(salida)
             return salidasStock
 
@@ -256,6 +296,9 @@ class Datos():
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo las \
                                                         salidas de stock desde la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
 
     @classmethod
     def get_max_descuento(cls):
