@@ -452,7 +452,7 @@ class Datos():
 
                 #Disminuye en una unidad los nombres de los niveles posteriores.
                 sql = ("UPDATE niveles SET nombre = nombre-1 WHERE nombre > %s;")
-                values = (str(nivel.nombre))
+                values = (str(nivel.nombre),)
                 cls.cursor.execute(sql, values)
                 
                 cls.db.commit()
