@@ -6,6 +6,9 @@ var maxEP = true;
 var nivel = true;
 var del = false;
 var mod = false;
+var numeroModificarModal = false;
+var minDescuentoMod = false;
+var maxDescuentoMod = false;
 
 $("#option-right").hover(function(){
     $(this).css("border", "2px solid #95C22B");
@@ -26,9 +29,13 @@ $("#option-middle").hover(function(){
 function enable_disable(){
     if (minEP == true && maxEP == true && nivel == true && descuento == true){
         $('#primary-btn').prop('disabled', false);
+        $('#primary-btn-mod').prop('disabled', false);
     }
     else{
         $('#primary-btn').prop('disabled', true);
+        $('#primary-btn-mod').prop('disabled', true);
+
+        
     } 
 
 }
@@ -49,18 +56,34 @@ function setModalValues(maxLevel, maxEP, maxDescuento){
 }
 
 
-function validaNumero(maxLevel){
-    maxLevel = parseInt(maxLevel);
-    if (parseInt($('#numeroNivel').val()) != (maxLevel + 1)){
-        $('#numeroNivelError').show();
-        nivel = false;
-        enable_disable();
+function validaNumero(maxLevel, modalType){
+    if (modalType == 'alta'){
+        maxLevel = parseInt(maxLevel);
+        if (parseInt($('#numeroNivel').val()) != (maxLevel + 1)){
+            $('#numeroNivelError').show();
+            nivel = false;
+            enable_disable();
+        }
+        else{
+            $('#numeroNivelError').hide();
+            nivel = true;
+            enable_disable();
+        }
     }
-    else{
-        $('#numeroNivelError').hide();
-        nivel = true;
-        enable_disable();
+    else if(modalType=='mod'){
+        level = parseInt(numeroModificarModal);
+        if (parseInt($('#numeroNivelMod').val()) != (level)){
+            $('#numeroNivelErrorMod').show();
+            nivel = false;
+            enable_disable();
+        }
+        else{
+            $('#numeroNivelErrorMod').hide();
+            nivel = true;
+            enable_disable();
+        }
     }
+    
 }
 
 function validaMinEP(maxLevel){
@@ -99,32 +122,74 @@ function validaMaxEP(maxLevel){
     }
 }
 
-function validaDescuento(maxDescuento){
-    val = parseFloat($('#descuento').val());
-    maxDescuento = parseFloat(maxDescuento.replace(',','.'))
-    if (val > 100){
-        $('#descuentoNivelError').text('* El descuento no puede ser mayor al 100%.');
-        $('#descuentoNivelError').show();
-        descuento = false;
-        enable_disable();
-    }
-    else if (val <= maxDescuento){
-        $('#descuentoNivelError').text('* El descuento debe ser mayor a ' + String(maxDescuento) + '%.');
-        $('#descuentoNivelError').show();
-        descuento = false;
-        enable_disable();
-    }
-    else if (isNaN(val)){
-        $('#descuentoNivelError').text('* El descuento no puede quedar vacío.');
-        $('#descuentoNivelError').show();
-        descuento = false;
-        enable_disable();
+function validaDescuento(maxDescuento, modalType){
+    if (modalType == 'alta'){
+        val = parseFloat($('#descuento').val());
+        maxDescuento = parseFloat(maxDescuento.replace(',','.'));
+        
+        if (val > 100){
+            $('#descuentoNivelError').text('* El descuento no puede ser mayor al 100%.');
+            $('#descuentoNivelError').show();
+            descuento = false;
+            enable_disable();
+        }
+        else if (val <= maxDescuento){
+            $('#descuentoNivelError').text('* El descuento debe ser mayor a ' + String(maxDescuento) + '%.');
+            $('#descuentoNivelError').show();
+            descuento = false;
+            enable_disable();
+        }
+        else if (isNaN(val)){
+            $('#descuentoNivelError').text('* El descuento no puede quedar vacío.');
+            $('#descuentoNivelError').show();
+            descuento = false;
+            enable_disable();
+        }
+        else{
+            $('#descuentoNivelError').hide();
+            descuento = true;
+            enable_disable();
+        }
+
     }
     else{
-        $('#descuentoNivelError').hide();
-        descuento = true;
-        enable_disable();
+        val = parseFloat($('#descuentoMod').val());
+        maxDescuento = parseFloat(maxDescuentoMod);
+        minDescuento = parseFloat(minDescuentoMod);
+        if (val > 100){
+            $('#descuentoNivelErrorMod').text('* El descuento no puede ser mayor al 100%.');
+            $('#descuentoNivelErrorMod').show();
+            descuento = false;
+            enable_disable();
+        }
+        else if (val <= minDescuento){
+            $('#descuentoNivelErrorMod').text('* El descuento debe ser mayor a ' + String(minDescuento) + '%.');
+            $('#descuentoNivelErrorMod').show();
+            descuento = false;
+            enable_disable();
+        }
+
+        else if (val >= maxDescuento){
+            $('#descuentoNivelErrorMod').text('* El descuento debe ser menor a ' + String(maxDescuento) + '%.');
+            $('#descuentoNivelErrorMod').show();
+            descuento = false;
+            enable_disable();
+        }
+
+        else if (isNaN(val)){
+            $('#descuentoNivelErrorMod').text('* El descuento no puede quedar vacío.');
+            $('#descuentoNivelErrorMod').show();
+            descuento = false;
+            enable_disable();
+        }
+        else{
+            $('#descuentoNivelErrorMod').hide();
+            descuento = true;
+            enable_disable();
+        }
     }
+
+    
 }
 
 function submitForm(idForm){
@@ -149,6 +214,7 @@ function isNumberKey(txt, evt) {
     return true;
   }
 
+//Hace aparecer y desaprecer los iconos para eliminar al lado de cada elemento de la lista.
 function removeLevel(){
     if (del == false){
         $('.modify-row').hide()
@@ -174,6 +240,7 @@ function removeLevel(){
     }
 }
 
+//Hace aparecer y desaprecer los iconos para modificar al lado de cada elemento de la lista.
 function modifyLevel(){
     if (mod == false){
         $('.delete-row').hide()
@@ -252,6 +319,30 @@ function openBajaModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel){
         $('#modalBajaMod3').text('- Todos los niveles posteriores disminuirán su número en 1 unidad.');
     }
 
+}
+
+function setModifyModalValues(numero, cant_niveles, minEPnivel, maxEPnivel, descuento){
+    numero = parseInt(numero);
+    numeroModificarModal = numero;
+    $('#numeroNivelMod').val(numero);
+    $('#descuentoMod').val(parseFloat(descuento.replace(',','.')));
+    $('#numeroNivelErrorMod').hide();
+    $('#descuentoNivelErrorMod').hide();
+    $('#minEPNivelErrorMod').hide();
+    $('#maxEPNivelErrorMod').hide();
+    $('#primary-btn').prop('disabled', false);
+    $.getJSON("/gestion-niveles/modificacion/"+String(numero),function (result){
+        minDescuentoMod = result['anterior'];
+        maxDescuentoMod = result['posterior'];
+    });
+}
+
+function openModificarModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel, descuento){
+    jQuery.noConflict();
+    setModifyModalValues(numero, cant_niveles, minEPnivel, maxEPnivel, descuento);
+    
+    $('#modificarNivelModal').modal('show');
+    $('#headingModalMod').text('Modificar el nivel ' + String(parseInt(numero)));
 }
 
 function baja_nivel(){

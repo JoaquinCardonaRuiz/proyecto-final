@@ -75,7 +75,7 @@
     height: fit-content;
 }
 
-#headingModal{
+.modal-title{
     margin-top: 1%;
     font-size: 25px;
     margin-left:4%;
@@ -178,7 +178,16 @@ div.modal-content{
 }
 
 #primary-btn:hover{
-    background-color: #87af28;
+  background-color: #87af28;
+}
+
+#primary-btn-mod{
+  background-color: #95C22B;
+  color: #fff;
+}
+
+#primary-btn-mod:hover{
+  background-color: #87af28;
 }
 
 #primary-btn-alert{

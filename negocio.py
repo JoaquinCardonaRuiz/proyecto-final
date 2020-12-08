@@ -378,5 +378,28 @@ class Negocio():
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio\
                                                           dando de baja un nivel.")
+    
 
-
+    
+    @classmethod
+    def getDescuentosAntPost(cls, numero):
+        """
+        Obtiene el descuento anterior y posterior en base a un determinado numero de nivel, y los devuelve en un diccionario.
+        """
+        try:
+            maxLevel = int(Datos.get_max_nivel().nombre)
+            if numero == 1:
+                anterior = 0
+                posterior = Datos.get_nivel_nombre(int(numero)+1).descuento
+            elif numero == maxLevel:
+                anterior = Datos.get_nivel_nombre(int(numero-1)).descuento
+                posterior = 100
+            else:
+                anterior = Datos.get_nivel_nombre(int(numero-1)).descuento
+                posterior = Datos.get_nivel_nombre(int(numero)+1).descuento
+            result = {'anterior':anterior, 'posterior':posterior}
+            return result
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.getDescuentosAntPost()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo los descuentos de los niveles anteriores y posteriores a un nivel por numero.")

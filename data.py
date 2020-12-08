@@ -384,7 +384,7 @@ class Datos():
     @classmethod
     def get_nivel_nombre(cls, nombre):
         cls.abrir_conexion()
-        """Obtiene un nivel de la BD en base a un ID. Devuelve False si no encuentra 
+        """Obtiene un nivel de la BD en base a un Numero de nivel (Nombre). Devuelve False si no encuentra 
         ninguno.
         """
         try:
@@ -463,5 +463,26 @@ class Datos():
                                                     msj=str(e),
                                                     msj_adicional="Error dando de baja un \
                                                     nivel de la BD.")
+        finally:
+            cls.cerrar_conexion()
+        
+    @classmethod
+    def get_max_nivel(cls):
+        cls.abrir_conexion()
+        """Obtiene el nivel mas grande registrado en la BD. Si no hay niveles registrados, devuelve False.
+        """
+        try:
+            sql = ("select * from Niveles where nombre = (select max(nombre) from niveles);")
+            cls.cursor.execute(sql)
+            nivel = cls.cursor.fetchone()
+            if nivel == None:
+                return False
+            else:
+                nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
+                return nivel
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_max_nivel",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo el maximo nivel de la BD.")
         finally:
             cls.cerrar_conexion()

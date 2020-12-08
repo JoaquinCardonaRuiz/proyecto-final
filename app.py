@@ -39,6 +39,13 @@ def baja_nivel(id):
     print(Negocio.baja_nivel(id))
     return redirect(url_for('gestion_niveles'))
 
+@app.route('/gestion-niveles/modificacion/<int:id>')
+def mod_nivel(id):
+    id = int(id)
+    desc_ant_post = Negocio.getDescuentosAntPost(id)
+    #desc_ant_post = {'anterior':5,'posterior':10}
+    return jsonify(desc_ant_post)
+
 # -- Entidades Destino -- 
 
 @app.route('/gestion-ed', methods = ['GET','POST'])

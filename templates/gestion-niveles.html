@@ -59,7 +59,7 @@
                     {%endif%}
                     <td>{{nivel.descuento}}%</td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{nivel.nombre}}', '{{niveles|length}}', '{{nivel.minimoEcoPuntos}}', '{{nivel.maximoEcoPuntos}}', '{{nivel.id}}')"></i></td>
-                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openModificarModal('{{nivel.nombre}}', '{{niveles|length}}', '{{nivel.minimoEcoPuntos}}', '{{nivel.maximoEcoPuntos}}', '{{nivel.id}}', '{{nivel.descuento}}')"></i></td>
 
                 </tr>
                 {%endfor%}
@@ -85,7 +85,7 @@
             <div class="row">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="numeroNivel" onkeyup="validaNumero('{{max_level}}')" name="numeroNivel"> 
+                        <input type="text" required id="numeroNivel" onkeyup="validaNumero('{{max_level}}', 'alta')" name="numeroNivel"> 
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Número de Nivel</label>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="descuento" onkeypress="return isNumberKey(this, event);" onkeyup = "validaDescuento('{{maxDescuento}}')" name="descuento" >
+                        <input type="text" id="descuento" onkeypress="return isNumberKey(this, event);" onkeyup = "validaDescuento('{{maxDescuento}}', 'alta')" name="descuento" >
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Descuento (%)</label>
@@ -157,6 +157,69 @@
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
           <button type="button" class="btn" onclick="baja_nivel();" id="primary-btn-alert">Eliminar nivel</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Modify Modal -->
+<div class="modal fade modal-lg" id="modificarNivelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModalMod"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body" id="altaNivelForm">
+            <div class="row">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">      
+                        <input type="text" required id="numeroNivelMod" onkeyup="validaNumero(false, 'mod')" name="numeroNivel"> 
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Número de Nivel</label>
+                        <p id="numeroNivelErrorMod" class="modalErrorMessage">* No se puede modificar el nivel.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">      
+                        <input type="text" id="descuentoMod" onkeypress="return isNumberKey(this, event);" onkeyup = "validaDescuento(false, 'mod')" name="descuento" >
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Descuento (%)</label>
+                        <p id="descuentoNivelErrorMod" class="modalErrorMessage">* El descuento debe estar entre 0 y 100.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">      
+                        <input type="text" required id="minEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}')" name="minEcoPuntos">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Mínimo EcoPuntos</label>
+                        <p id="minEPNivelErrorMod" class="modalErrorMessage">* El mínimo de EcoPuntos debe ser {{maxEP + 1}}.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">      
+                        <input type="text" required id="maxEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMaxEP('{{maxEP}}')" name="maxEcoPuntos">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Máximo EcoPuntos</label>
+                        <p id="maxEPNivelErrorMod" class="modalErrorMessage">* El máx. de EcoPuntos debe mayor {{maxEP + 1}}.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <p class="bottom-modal-text">Una vez completados todos los datos, presione el botón "Crear nivel" para añadir el nuevo nivel.</p>
+            </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn" onclick="submitForm('altaNivelForm')" id="primary-btn-mod">Modificar nivel</button>
         </div>
       </div>
     </div>
