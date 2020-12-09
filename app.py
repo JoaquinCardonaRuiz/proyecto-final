@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
-from negocio import Negocio
+from negocio.negocio import *
 app = Flask(__name__)
 
 #Session
@@ -13,10 +13,10 @@ def main():
 
 @app.route('/gestion-niveles')
 def gestion_niveles():
-    niveles = Negocio.get_niveles()
-    min_max_nivel = Negocio.get_min_max_niveles()
-    maxEP = Negocio.get_max_ecoPuntos()
-    maxDescuento = Negocio.get_max_descuento()
+    niveles = NegocioNivel.get_niveles()
+    min_max_nivel = NegocioNivel.get_min_max_niveles()
+    maxEP = NegocioNivel.get_max_ecoPuntos()
+    maxDescuento = NegocioNivel.get_max_descuento()
     return render_template('gestion-niveles.html', 
                             niveles = niveles, 
                             min_nivel = min_max_nivel[0],
@@ -30,7 +30,7 @@ def alta_nivel():
         descuento = request.form['descuento']
         minEcoPuntos = request.form['minEcoPuntos']
         maxEcoPuntos = request.form['maxEcoPuntos']
-        Negocio.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
+        NegocioNivel.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
     return redirect(url_for('gestion_niveles'))
 
 @app.route('/gestion-niveles/mod/<id>/<desc>/<min>/<max>')
@@ -40,26 +40,25 @@ def mod_nivel(id, desc, min, max):
     minEP = float(min)
     maxEP = float(max)
     a = Negocio.modifica_nivel(numero, desc, minEP, maxEP)
-    
     return redirect(url_for('gestion_niveles'))
-
+  
 @app.route('/gestion-niveles/baja/<int:id>')
 def baja_nivel(id):
     id = int(id)
-    print(Negocio.baja_nivel(id))
+    print(NegocioNivel.baja_nivel(id))
     return redirect(url_for('gestion_niveles'))
 
 @app.route('/gestion-niveles/modificacion/<int:id>')
 def mod_nivel_request(id):
     id = int(id)
-    desc_ant_post = Negocio.getDescuentosAntPost(id)
+    desc_ant_post = NegocioNivel.getDescuentosAntPost(id)
     return jsonify(desc_ant_post)
 
 # -- Entidades Destino -- 
 
 @app.route('/gestion-ed', methods = ['GET','POST'])
 def gestion_ed():
-    entidades = Negocio.get_entidades_destino()
+    entidades = NegocioEntidadDestino.get_entidades_destino()
     return render_template('gestion-entidades-destino.html', entidades = entidades)
     
 
@@ -67,8 +66,8 @@ def gestion_ed():
 def devolver_demandas(id):
     #TODO: evitar esta vuelta a BD
     #TODO: revisar cómo verificar que sólo se cargue una demanda por TA
-    e = Negocio.get_one_entidad_destino(id)
-    a = Negocio.get_articulos([i.idTipoArticulo for i in e.demandas])
+    e = NegocioEntidadDestino.get_one_entidad_destino(id)
+    a = NegocioArticulo.get_articulos([i.idTipoArticulo for i in e.demandas])
 
     demandas_present = [{"nombre":          d[1].nombre,
                          "cantidad":        d[0].cantidad, 
@@ -80,8 +79,8 @@ def devolver_demandas(id):
 @app.route('/gestion-ed/salidas/<id>')
 def devolver_salidas(id):
     #TODO: evitar esta vuelta a BD
-    e = Negocio.get_one_entidad_destino(id)
-    a = Negocio.get_articulos([i.idTipoArticulo for i in e.salidas])
+    e = NegocioEntidadDestino.get_one_entidad_destino(id)
+    a = NegocioArticulo.get_articulos([i.idTipoArticulo for i in e.salidas])
     salidas_present =  [{"nombre": "todavia no desarrollado"} ]      
     return jsonify(salidas_present)
 
@@ -90,7 +89,7 @@ def alta_entidad_destino():
     if request.method == 'POST':
         nombre = request.form['nombre']
         try:
-            Negocio.alta_entidad_destino(nombre)
+            NegocioEntidadDestino.alta_entidad_destino(nombre)
         except Exception as e:
             raise e
         return redirect(url_for('gestion_ed'))
