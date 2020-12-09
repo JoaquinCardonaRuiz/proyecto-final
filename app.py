@@ -33,6 +33,16 @@ def alta_nivel():
         Negocio.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
     return redirect(url_for('gestion_niveles'))
 
+@app.route('/gestion-niveles/mod/<id>/<desc>/<min>/<max>')
+def mod_nivel(id, desc, min, max):
+    numero = int(id)
+    desc = float(desc)
+    minEP = float(min)
+    maxEP = float(max)
+    a = Negocio.modifica_nivel(numero, desc, minEP, maxEP)
+    
+    return redirect(url_for('gestion_niveles'))
+
 @app.route('/gestion-niveles/baja/<int:id>')
 def baja_nivel(id):
     id = int(id)
@@ -40,10 +50,9 @@ def baja_nivel(id):
     return redirect(url_for('gestion_niveles'))
 
 @app.route('/gestion-niveles/modificacion/<int:id>')
-def mod_nivel(id):
+def mod_nivel_request(id):
     id = int(id)
     desc_ant_post = Negocio.getDescuentosAntPost(id)
-    #desc_ant_post = {'anterior':5,'posterior':10}
     return jsonify(desc_ant_post)
 
 # -- Entidades Destino -- 

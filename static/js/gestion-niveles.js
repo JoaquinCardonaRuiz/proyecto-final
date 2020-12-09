@@ -424,3 +424,11 @@ function baja_nivel(){
     id = $('#numNivel').val();
     window.location.href='/gestion-niveles/baja/' + String(id)
 }
+
+function mod_nivel(){
+    id = $('#numeroNivelMod').val();
+    desc = $('#descuentoMod').val();
+    min = $('#minEcoPuntosMod').val();
+    max = $('#maxEcoPuntosMod').val();
+    window.location.href='/gestion-niveles/mod/' + String(id) + '/' + String(desc) + '/' + String(min) + '/' +  String(max)
+}
