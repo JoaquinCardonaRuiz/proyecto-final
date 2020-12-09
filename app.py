@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
-from negocio.negocio import *
+from negocio.capa_negocio import *
 app = Flask(__name__)
 
 #Session
