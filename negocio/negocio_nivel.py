@@ -262,3 +262,53 @@ class NegocioNivel(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.getDescuentosAntPost()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obtieniendo los descuentos de los niveles anteriores y posteriores a un nivel por numero.")
+
+
+    
+    @classmethod
+    def modifica_nivel_logic(cls, numero, descuento, minEP, maxEP):
+        #TODO: validar que el descuento no sea mayor que 100.
+        """
+        Modifica un nivel en la BD, y valida las Reglas de Negocio pertinentes. En caso de no cumplirse alguna, devuelve un string con el error de validación.
+        """
+        try:
+
+            sig_nivel = DatosNivel.get_nivel_nombre(int(numero)+1)
+            ant_nivel = DatosNivel.get_nivel_nombre(int(numero)-1)
+
+            if DatosNivel.get_nivel_nombre(numero) == False:
+                return "Error, el nivel que se intenta modificar no existe en la Base de Datos."
+            #Valida RN02
+            if maxEP <= minEP:
+                return "Error, el máximo de EcoPuntos debe ser mayor al mínimo de EcoPuntos."
+            #Valida RN13
+            if maxEP == 0:
+                return "Error, el máximo de EcoPuntos no puede ser igual a 0."
+            #Valida RN03
+            if sig_nivel != False:
+                if sig_nivel.descuento <= descuento:
+                    return "Error, el descuento del nivel no puede ser mayor o igual al del nivel siguiente. Debe ser menor."
+            #Valida RN03
+            if ant_nivel != False:
+                if ant_nivel.descuento >= descuento:
+                    return "Error, el descuento del nivel no puede ser menor o igual al del nivel anterior. Debe ser mayor."
+            else:
+                return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.modifica_nivel()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio modificando un nivel.")
+
+
+
+    @classmethod
+    def modifica_nivel(cls, numero, nuevo_des, nuevo_minEP, nuevo_maxEP):
+        """
+        Modifica un nivel en la BD, y valida las Reglas de Negocio pertinentes. En caso de no cumplirse alguna, devuelve un string con el error de validación.
+        """
+        try:
+            return DatosNivel.get_nivel_EP(100000)
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.modifica_nivel()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio modificando un nivel.")

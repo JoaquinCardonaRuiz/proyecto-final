@@ -66,10 +66,10 @@ class Datos():
         """
         
         try:
-            cls.db = mysql.connector.connect(host="eco-asistente-pf.mysql.database.azure.com",  # Host de la BD.
-                        user="EcoAdmin@eco-asistente-pf",                              # Usuario de la BD
-                        passwd="PF-Caracini-Cardona",                             # Contraseña de la BD
-                        db="ecoasistente")                                # Nombre de la DB
+            cls.db = mysql.connector.connect(host="eco-asistente-proyecto-final.mysql.database.azure.com", # Host de la BD.
+                        user="EcoAdmin@eco-asistente-proyecto-final", # Usuario de la BD
+                        passwd="PF-Caracini-Cardona", # Contraseña de la BD
+                        db="ecoasistente")  # Nombre de la DB
             cls.cursor = cls.db.cursor()
                 
         except Exception as e:

@@ -214,3 +214,33 @@ class DatosNivel(Datos):
                                                         EcoPuntos de un nivel desde la BD.")
         finally:
             cls.cerrar_conexion()
+
+    @classmethod
+    def get_nivel_EP(cls, ecoPuntos):
+        cls.abrir_conexion()
+        """Obtiene el nivel al que corresponde una determinada cantidad de ecoPuntos.
+        """
+        try:
+            sql = ("select * from Niveles where minEcoPuntos <= %s and maxEcoPuntos >= %s")
+            values = (str(ecoPuntos), str(ecoPuntos),)
+            cls.cursor.execute(sql, values)
+            nivel = cls.cursor.fetchone()
+            if nivel == None:
+                sql = ("select * from niveles where nombre = (select max(nombre) from niveles where minEcoPuntos <= %s);")
+                values = (str(ecoPuntos),)
+                cls.cursor.execute(sql, values)
+                nivel = cls.cursor.fetchone()
+                if nivel == None:
+                    return False
+                else:
+                    nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
+                    return nivel
+            else:
+                nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
+                return nivel
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_nivel_EP",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo el nivel en base a los EcoPuntos de la BD.")
+        finally:
+            cls.cerrar_conexion()
