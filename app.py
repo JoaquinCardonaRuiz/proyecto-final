@@ -40,10 +40,8 @@ def mod_nivel(id, desc, min, max):
     minEP = float(min)
     maxEP = float(max)
     a = Negocio.modifica_nivel(numero, desc, minEP, maxEP)
-
     return redirect(url_for('gestion_niveles'))
-
-
+  
 @app.route('/gestion-niveles/baja/<int:id>')
 def baja_nivel(id):
     id = int(id)
