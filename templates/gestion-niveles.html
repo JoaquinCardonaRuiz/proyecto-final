@@ -85,7 +85,7 @@
             <div class="row">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="numeroNivel" onkeyup="validaNumero('{{max_level}}', 'alta')" name="numeroNivel"> 
+                        <input type="text" required id="numeroNivel" onkeyup="validaNumero('{{max_level}}', 'alta')" name="numeroNivel" autocomplete="off"> 
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Número de Nivel</label>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="descuento" onkeypress="return isNumberKey(this, event);" onkeyup = "validaDescuento('{{maxDescuento}}', 'alta')" name="descuento" >
+                        <input type="text" id="descuento" onkeypress="return isNumberKey(this, event);" onkeyup = "validaDescuento('{{maxDescuento}}', 'alta')" name="descuento" autocomplete="off">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Descuento (%)</label>
@@ -105,7 +105,7 @@
             <div class="row">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="minEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}')" name="minEcoPuntos">
+                        <input type="text" required id="minEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}', 'alta')" name="minEcoPuntos" autocomplete="off">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Mínimo EcoPuntos</label>
@@ -114,7 +114,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="maxEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMaxEP('{{maxEP}}')" name="maxEcoPuntos">
+                        <input type="text" required id="maxEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMaxEP('{{maxEP}}', 'alta')" name="maxEcoPuntos" autocomplete="off">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Máximo EcoPuntos</label>
@@ -176,7 +176,7 @@
             <div class="row">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="numeroNivelMod" onkeyup="validaNumero(false, 'mod')" name="numeroNivel"> 
+                        <input type="text" required id="numeroNivelMod" onkeyup="validaNumero(false, 'mod')" name="numeroNivel" autocomplete="off"> 
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Número de Nivel</label>
@@ -185,7 +185,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="descuentoMod" onkeypress="return isNumberKey(this, event);" onkeyup = "validaDescuento(false, 'mod')" name="descuento" >
+                        <input type="text" id="descuentoMod" onkeypress="return isNumberKey(this, event);" onkeyup = "validaDescuento(false, 'mod')" name="descuento" autocomplete="off">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Descuento (%)</label>
@@ -196,7 +196,7 @@
             <div class="row">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="minEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}')" name="minEcoPuntos">
+                        <input type="text" required id="minEcoPuntosMod" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}', 'mod')" name="minEcoPuntos" autocomplete="off">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Mínimo EcoPuntos</label>
@@ -205,7 +205,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="maxEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMaxEP('{{maxEP}}')" name="maxEcoPuntos">
+                        <input type="text" required id="maxEcoPuntosMod" onkeypress="return isNumberKey(this, event);" onkeyup="validaMaxEP(false, 'mod')" name="maxEcoPuntos" autocomplete="off">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Máximo EcoPuntos</label>
@@ -214,7 +214,7 @@
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text">Una vez completados todos los datos, presione el botón "Crear nivel" para añadir el nuevo nivel.</p>
+                <p class="bottom-modal-text">Una vez completados todos los datos, presione el botón "Modficar nivel" para modificar el nivel.</p>
             </div>
         </form>
         <div class="modal-footer">
