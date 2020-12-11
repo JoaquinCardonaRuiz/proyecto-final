@@ -1,3 +1,3 @@
-from negocio.capa_negocio import *
+from data.data_nivel import DatosNivel
 
-print(NegocioNivel.modifica_nivel(1,2,0,5500))
+DatosNivel.get_cant_niveles()

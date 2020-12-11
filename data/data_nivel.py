@@ -3,6 +3,7 @@ import custom_exceptions
 from classes import Nivel
 from utils import Utils
 
+#TODO: añadir noClose a los metodos.
 
 class DatosNivel(Datos):
     @classmethod
@@ -201,7 +202,7 @@ class DatosNivel(Datos):
     @classmethod
     def baja_nivel_mod(cls, niveles_baja, nivel_mod, desc, minEP, maxEP, inf, sup, nuevos_niveles):
         cls.abrir_conexion()
-        """Elimina un nivel de la BD en base al nombre recibido.
+        """Elimina los niveles que deban eliminarse en base a una modificación realizada.
         """
         try:
             #Elimina niveles en la lista de niveles a eliminar
@@ -225,15 +226,24 @@ class DatosNivel(Datos):
                 sql = ("UPDATE niveles SET minEcoPuntos = %s WHERE nombre = %s")
                 values = (int(maxEP)+1, sup)
                 cls.cursor.execute(sql, values)
-
-            #TODO: terminar numeracion
-
             
-            cls.db.commit() 
+            #TODO: no funciona bien.
+            #Modifica la enumeración de los niveles en base a los cambios realizados:
+            cant_niveles = cls.get_cant_niveles()
+            cls.abrir_conexion()
+            for i in range(1,cant_niveles+1):
+                print(i)
+                sql = ("UPDATE niveles SET nombre = %s ORDER BY minEcoPuntos ASC")
+                values = (i,)
+                cls.cursor.execute(sql, values) 
+            
+            cls.db.commit()
+            
+            return True 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data_nivel.baja_nivel_nombre",
+            raise custom_exceptions.ErrorDeConexion(origen="data_nivel.baja_nivel_mod",
                                                     msj=str(e),
-                                                    msj_adicional="Error eliminando un nivel de la BD en base al nombre.")
+                                                    msj_adicional="Error eliminando un niveles de la BD en base a modificaciones realizadas.")
         finally:
             cls.cerrar_conexion()
 
@@ -271,6 +281,23 @@ class DatosNivel(Datos):
                                                     msj=str(e),
                                                     msj_adicional="Error el máximo de \
                                                         EcoPuntos de un nivel desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
+    def get_cant_niveles(cls):
+        """Devuelve la mayor cantidad EcoPuntos solicitada para un nivel registrado en la 
+        BD.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("select count(idNivel) from niveles;")
+            cls.cursor.execute(sql)
+            return int(cls.cursor.fetchone()[0])
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="dataNivel.get_cant_niveles()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo la cantidad de niveles de la BD.")
         finally:
             cls.cerrar_conexion()
 
