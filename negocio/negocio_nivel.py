@@ -1,6 +1,6 @@
 from negocio.negocio import Negocio
 import custom_exceptions
-import utils
+from utils import Utils
 from data.data_nivel import DatosNivel
 from classes import Nivel
 import operator
@@ -17,9 +17,9 @@ class NegocioNivel(Negocio):
         try:
             niveles = DatosNivel.get_niveles()
             for nivel in niveles:
-                nivel.descuento = utils.replace_dots(nivel.descuento, 1)
-                nivel.minimoEcoPuntos = utils.replace_dots(nivel.minimoEcoPuntos,0)
-                nivel.maximoEcoPuntos = utils.replace_dots(nivel.maximoEcoPuntos,0)
+                nivel.descuento = Utils.replace_dots(nivel.descuento, 1)
+                nivel.minimoEcoPuntos = Utils.replace_dots(nivel.minimoEcoPuntos,0)
+                nivel.maximoEcoPuntos = Utils.replace_dots(nivel.maximoEcoPuntos,0)
             return niveles
 
         except Exception as e:
@@ -88,17 +88,17 @@ class NegocioNivel(Negocio):
         try:
             #Reestructuración de los datos:
             max_nivel = int(cls.get_min_max_niveles()[1])
-            maxDescuento = utils.round_float(DatosNivel.get_max_descuento(), 2)
-            maxEP = utils.round_float(DatosNivel.get_max_ecoPuntos(),1)
-            minEcoPuntos = int(utils.round_float(minEcoPuntos,0))
-            maxEcoPuntos = int(utils.round_float(maxEcoPuntos,0))
-            descuento = utils.round_float(descuento,2)
+            maxDescuento = Utils.round_float(DatosNivel.get_max_descuento(), 2)
+            maxEP = Utils.round_float(DatosNivel.get_max_ecoPuntos(),1)
+            minEcoPuntos = int(Utils.round_float(minEcoPuntos,0))
+            maxEcoPuntos = int(Utils.round_float(maxEcoPuntos,0))
+            descuento = Utils.round_float(descuento,2)
             
             #Validación de Reglas de Negocio:
             if int(numeroNivel) != int(max_nivel + 1):
                 #Valida regla RN01
                 return "Error al añadir el nivel. El número de nivel no es correcto."
-            elif utils.round_float(minEcoPuntos,2) >= utils.round_float(maxEcoPuntos,2):
+            elif Utils.round_float(minEcoPuntos,2) >= Utils.round_float(maxEcoPuntos,2):
                 #Valida regla RN02
                 return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor al\
                         máximo de EcoPuntos del máximo nivel."
@@ -109,10 +109,10 @@ class NegocioNivel(Negocio):
             elif descuento < 0 or descuento > 100:
                 #Valida regla RN04
                 return "Error al añadir el nivel. El descuento debe estar entre 0% y 100%."
-            elif minEcoPuntos != (int(utils.round_float(maxEP,0)) + 1):
+            elif minEcoPuntos != (int(Utils.round_float(maxEP,0)) + 1):
                 #Valida regla RN05
                 return "Error al añadir nivel. El mínimo de EcoPuntos debe ser\
-                     " + str(int(utils.round_float(maxEP,0))) + " EcoPuntos."
+                     " + str(int(Utils.round_float(maxEP,0))) + " EcoPuntos."
             else:
                 nivel = Nivel(None, numeroNivel, minEcoPuntos, maxEcoPuntos, descuento)
                 if DatosNivel.alta_nivel(nivel):
@@ -159,7 +159,7 @@ class NegocioNivel(Negocio):
         Obtiene el máximo de EcoPuntos asignados a un nivel.
         """
         try:
-            return int(utils.replace_dots(DatosNivel.get_max_ecoPuntos(),0))
+            return int(Utils.replace_dots(DatosNivel.get_max_ecoPuntos(),0))
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_max_ecoPuntos()",
                                                     msj=str(e),
@@ -173,7 +173,7 @@ class NegocioNivel(Negocio):
         Obtiene el máximo descuento asignado a un nivel.
         """
         try:
-            return utils.replace_dots(DatosNivel.get_max_descuento(),1)
+            return Utils.replace_dots(DatosNivel.get_max_descuento(),1)
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_max_descuento()",
                                                     msj=str(e),
@@ -266,10 +266,10 @@ class NegocioNivel(Negocio):
 
     
     @classmethod
-    def modifica_nivel_logic(cls, numero, descuento, minEP, maxEP):
+    def nivel_validaciones_rn(cls, numero, descuento, minEP, maxEP):
         #TODO: validar que el descuento no sea mayor que 100.
         """
-        Modifica un nivel en la BD, y valida las Reglas de Negocio pertinentes. En caso de no cumplirse alguna, devuelve un string con el error de validación.
+        Valida las Reglas de Negocio para un nivel, en base a los parametros recibidos. En caso de no cumplirse alguna, devuelve un string con el error de validación. Si pasa las validaciones, lo modifica en la BD.
         """
         try:
 
@@ -279,19 +279,45 @@ class NegocioNivel(Negocio):
             if DatosNivel.get_nivel_nombre(numero) == False:
                 return "Error, el nivel que se intenta modificar no existe en la Base de Datos."
             #Valida RN02
-            if maxEP <= minEP:
+            elif maxEP <= minEP:
                 return "Error, el máximo de EcoPuntos debe ser mayor al mínimo de EcoPuntos."
+            #TODO: añadir regla de negocio:
+            elif minEP < 0:
+                return "Error, el mínimo de EcoPuntos no puede ser menor a 0."
             #Valida RN13
-            if maxEP == 0:
+            elif maxEP == 0:
                 return "Error, el máximo de EcoPuntos no puede ser igual a 0."
             #Valida RN03
-            if sig_nivel != False:
-                if sig_nivel.descuento <= descuento:
+            elif sig_nivel != False:
+                if int(NegocioNivel.get_min_max_niveles()[1]) == numero:
+                    return True
+                elif sig_nivel.descuento <= descuento:
                     return "Error, el descuento del nivel no puede ser mayor o igual al del nivel siguiente. Debe ser menor."
+                elif ant_nivel != False:
+                    if Nivel == 1:
+                        return True
+                    elif ant_nivel.descuento >= descuento:
+                        return "Error, el descuento del nivel no puede ser menor o igual al del nivel anterior. Debe ser mayor."
+                    else:
+                        return True
+                else:
+                    return True
+                
             #Valida RN03
-            if ant_nivel != False:
-                if ant_nivel.descuento >= descuento:
+            elif ant_nivel != False:
+                if Nivel == 1:
+                    return True
+                elif ant_nivel.descuento >= descuento:
                     return "Error, el descuento del nivel no puede ser menor o igual al del nivel anterior. Debe ser mayor."
+                elif sig_nivel != False:
+                    if int(NegocioNivel.get_min_max_niveles()[1]) == numero:
+                        return True
+                    elif sig_nivel.descuento <= descuento:
+                        return "Error, el descuento del nivel no puede ser mayor o igual al del nivel siguiente. Debe ser menor."
+                    else:
+                         return True
+                else:
+                    return True
             else:
                 return True
         except Exception as e:
@@ -302,12 +328,84 @@ class NegocioNivel(Negocio):
 
 
     @classmethod
-    def modifica_nivel(cls, numero, nuevo_des, nuevo_minEP, nuevo_maxEP):
+    def modifica_nivel(cls, nivel, nuevo_des, nuevo_minEP, nuevo_maxEP):
         """
         Modifica un nivel en la BD, y valida las Reglas de Negocio pertinentes. En caso de no cumplirse alguna, devuelve un string con el error de validación.
         """
         try:
-            return DatosNivel.get_nivel_EP(100000)
+            nivel_mod = nivel
+            validaciones = NegocioNivel.nivel_validaciones_rn(nivel,nuevo_des,nuevo_minEP,nuevo_maxEP)
+            if validaciones == True:
+                niveles_baja = []
+                nuevo_nivel = DatosNivel.get_nivel_EP(nuevo_minEP)
+                dif = int(nivel) - int(nuevo_nivel.nombre)
+                #Movimiento de niveles en base al nuevo mínimo EcoPuntos.
+                if dif > 0:
+                    if int(nuevo_nivel.minimoEcoPuntos) == int(nuevo_minEP):
+                        print(1)
+                        #Eliminar nivel actual, y todos los que estan en el medio.
+                        for i in range(int(nivel)-1,int(nuevo_nivel.nombre)-1,-1):
+                            niveles_baja.append(i)
+                    else:
+                        #Modifico nivel actual
+                        #Elimino SOLO los que estan en el medio.
+                        print(2)
+                        for i in range(int(nivel)-1,int(nuevo_nivel.nombre),-1):
+                            niveles_baja.append(i)
+                else:
+                    if int(nuevo_nivel.maximoEcoPuntos) == int(nuevo_minEP):
+                        print(3)
+                        #Eliminar nivel actual, y todos los que estan en el medio.
+                        for i in range(int(nivel)+1,int(nuevo_nivel.nombre)+1):
+                            niveles_baja.append(i)
+                    else:
+                        #Modifico nivl actual, y elimino SOLO los que estan en el medio.
+                        print(4)
+                        for i in range(int(nivel)+1,int(nuevo_nivel.nombre)):
+                            niveles_baja.append(i)
+                #Movimiento de niveles en base al nuevo máximo EcoPuntos.
+                nuevo_nivel = DatosNivel.get_nivel_EP(nuevo_maxEP)
+                dif = int(nivel) - int(nuevo_nivel.nombre)
+                if dif < 0:
+                    if int(nuevo_nivel.maximoEcoPuntos) == int(nuevo_maxEP):
+                        #Eliminar nivel actual, y todos los que estan en el medio.
+                        print(5)
+                        for i in range(int(nivel)+1,int(nuevo_nivel.nombre)+1):
+                            niveles_baja.append(i)
+                    else:
+                        #Modifico nivel actual
+                        #Elimino SOLO los que estan en el medio.
+                        print(6)
+                        for i in range(int(nivel)+1,int(nuevo_nivel.nombre)):
+                            niveles_baja.append(i)
+                else:
+                    if int(nuevo_nivel.minimoEcoPuntos) == int(nuevo_maxEP):
+                        #Eliminar nivel actual, y todos los que estan en el medio.
+                        print(7)
+                        for i in range(int(nivel)-1,int(nuevo_nivel.nombre)-1):
+                            niveles_baja.append(i)
+                    else:
+                        #Modifico nivl actual, y elimino SOLO los que estan en el medio.
+                        print(8)
+                        for i in range(int(nivel)-1,int(nuevo_nivel.nombre)):
+                            niveles_baja.append(i)
+                niveles_baja = list(dict.fromkeys(niveles_baja))
+                
+                
+                niveles = DatosNivel.get_niveles()
+                niv = []
+                for nivel in niveles:
+                    niv.append(int(nivel.nombre))
+                nuevos_niveles = Utils.difference_between_lists(niv,niveles_baja)
+                mas_cercano_inf = Utils.nearest_element(Utils.lower_higher_elements_than(nuevos_niveles,nivel_mod)[0],nivel_mod)
+                mas_cercano_sup = Utils.nearest_element(Utils.lower_higher_elements_than(nuevos_niveles,nivel_mod)[1],nivel_mod)
+
+                DatosNivel.baja_nivel_mod(niveles_baja,nivel_mod,nuevo_des,nuevo_minEP,nuevo_maxEP,mas_cercano_inf,mas_cercano_sup,nuevos_niveles)
+                
+                #TODO: borrar los niveles que estan en la lista, y cambiar el máximo del nivel anterior, y el mínimo del nivel posterior para que coincida.
+            else:
+                return validaciones
+
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.modifica_nivel()",
                                                     msj=str(e),

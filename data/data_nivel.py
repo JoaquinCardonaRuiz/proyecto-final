@@ -1,6 +1,8 @@
 from data.data import Datos
 import custom_exceptions
 from classes import Nivel
+from utils import Utils
+
 
 class DatosNivel(Datos):
     @classmethod
@@ -156,6 +158,7 @@ class DatosNivel(Datos):
                                                     nivel de la BD.")
         finally:
             cls.cerrar_conexion()
+    
         
     @classmethod
     def get_max_nivel(cls):
@@ -175,6 +178,62 @@ class DatosNivel(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data.get_max_nivel",
                                                     msj=str(e),
                                                     msj_adicional="Error obteniendo el maximo nivel de la BD.")
+        finally:
+            cls.cerrar_conexion()
+    
+    @classmethod
+    def baja_nivel_nombre(cls, nombre):
+        cls.abrir_conexion()
+        """Elimina un nivel de la BD en base al nombre recibido.
+        """
+        try:
+            sql = ("DELETE FROM niveles WHERE nombre = %s")
+            values = (nombre,)
+            cls.cursor.execute(sql, values)    
+            cls.db.commit()
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_nivel.baja_nivel_nombre",
+                                                    msj=str(e),
+                                                    msj_adicional="Error eliminando un nivel de la BD en base al nombre.")
+        finally:
+            cls.cerrar_conexion()
+    
+    @classmethod
+    def baja_nivel_mod(cls, niveles_baja, nivel_mod, desc, minEP, maxEP, inf, sup, nuevos_niveles):
+        cls.abrir_conexion()
+        """Elimina un nivel de la BD en base al nombre recibido.
+        """
+        try:
+            #Elimina niveles en la lista de niveles a eliminar
+            for nivel in niveles_baja:
+                sql = ("DELETE FROM niveles WHERE nombre = %s")
+                values = (nivel,)
+                cls.cursor.execute(sql, values) 
+
+            #Actualiza los valores del nivel modificado
+            sql = ("UPDATE niveles SET maxEcoPuntos = %s, minEcoPuntos = %s, descuento = %s WHERE nombre = %s")
+            values = (maxEP, minEP, desc, nivel_mod)
+            cls.cursor.execute(sql, values)
+
+            #Actualiza los valores de los niveles contiguos:
+            if inf != False:
+                sql = ("UPDATE niveles SET maxEcoPuntos = %s WHERE nombre = %s")
+                values = (int(minEP)-1, inf)
+                cls.cursor.execute(sql, values)
+            
+            if sup != False:
+                sql = ("UPDATE niveles SET minEcoPuntos = %s WHERE nombre = %s")
+                values = (int(maxEP)+1, sup)
+                cls.cursor.execute(sql, values)
+
+            #TODO: terminar numeracion
+
+            
+            cls.db.commit() 
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_nivel.baja_nivel_nombre",
+                                                    msj=str(e),
+                                                    msj_adicional="Error eliminando un nivel de la BD en base al nombre.")
         finally:
             cls.cerrar_conexion()
 
