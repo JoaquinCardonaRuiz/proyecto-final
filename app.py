@@ -35,7 +35,7 @@ def alta_nivel():
         descuento = request.form['descuento']
         minEcoPuntos = request.form['minEcoPuntos']
         maxEcoPuntos = request.form['maxEcoPuntos']
-        NegocioNivel.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
+        print(NegocioNivel.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos))
     return redirect(url_for('gestion_niveles'))
 
 @app.route('/gestion-niveles/mod/<id>/<desc>/<min>/<max>')
@@ -44,8 +44,7 @@ def mod_nivel(id, desc, min, max):
     desc = float(desc)
     minEP = float(min)
     maxEP = float(max)
-    nivel = NegocioNivel.modifica_nivel(numero,desc,minEP,maxEP)
-    print(nivel.nombre)
+    print(NegocioNivel.modifica_nivel(numero,desc,minEP,maxEP))
     return redirect(url_for('gestion_niveles'))
   
 @app.route('/gestion-niveles/baja/<int:id>')

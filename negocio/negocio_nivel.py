@@ -1,4 +1,5 @@
 from negocio.negocio import Negocio
+from negocio.negocio_usuario import NegocioUsuario
 import custom_exceptions
 from utils import Utils
 from data.data_nivel import DatosNivel
@@ -116,7 +117,11 @@ class NegocioNivel(Negocio):
             else:
                 nivel = Nivel(None, numeroNivel, minEcoPuntos, maxEcoPuntos, descuento)
                 if DatosNivel.alta_nivel(nivel):
-                    return True
+                    res = NegocioUsuario.actualiza_nivel_all()
+                    if res == True:
+                        return True
+                    else:
+                        return "Error actualizando el nivel de los usuarios en la Base de Datos. Las modificaciones en los niveles se han realizado con éxito. Intente actualizar los niveles de los usuarios manualmente más tarde."
                 else:
                     return "Error al añadir nivel a la Base de Datos. Intente nuevamente más tarde."
         except Exception as e:
@@ -183,6 +188,9 @@ class NegocioNivel(Negocio):
 
     @classmethod
     def baja_nivel(cls, id):
+        """
+        Da de baja un nivel en base a su nombre, validando primero las reglas de negocio pertinentes.
+        """
         try:
             min_max_niveles = cls.get_min_max_niveles()
             min_nivel = min_max_niveles[0]
@@ -200,7 +208,11 @@ class NegocioNivel(Negocio):
                     else:
                         nuevo_min = 0
                         if DatosNivel.baja_nivel(nuevo_min, None, None, None, nivel):
-                            return True
+                            res = NegocioUsuario.actualiza_nivel_all()
+                            if res == True:
+                                return True
+                            else:
+                                return "Error actualizando el nivel de los usuarios en la Base de Datos. Las modificaciones en los niveles se han realizado con éxito. Intente actualizar los niveles de los usuarios manualmente más tarde."
                         else:
                             return "Error eliminando nivel de la Base de Datos. Intente \
                                 nuevamente más tarde."
@@ -213,7 +225,11 @@ class NegocioNivel(Negocio):
                                         nuevo_max, 
                                         int(nivel.nombre)-1, 
                                         nivel):
-                        return True
+                        res = NegocioUsuario.actualiza_nivel_all()
+                        if res == True:
+                            return True
+                        else:
+                            return "Error actualizando el nivel de los usuarios en la Base de Datos. Las modificaciones en los niveles se han realizado con éxito. Intente actualizar los niveles de los usuarios manualmente más tarde."
                     else:
                         return "Error eliminando nivel de la Base de Datos. Intente nuevamente\
                              más tarde."
@@ -227,7 +243,11 @@ class NegocioNivel(Negocio):
                                         nuevo_max, 
                                         int(nivel.nombre)-1, 
                                         nivel):
-                        return True
+                        res = NegocioUsuario.actualiza_nivel_all()
+                        if res == True:
+                            return True
+                        else:
+                            return "Error actualizando el nivel de los usuarios en la Base de Datos. Las modificaciones en los niveles se han realizado con éxito. Intente actualizar los niveles de los usuarios manualmente más tarde."
                     else:
                         return "Error eliminando nivel de la Base de Datos. Intente nuevamente\
                              más tarde."
@@ -247,11 +267,14 @@ class NegocioNivel(Negocio):
         """
         try:
             maxLevel = int(DatosNivel.get_max_nivel().nombre)
-            if numero == 1:
+            if numero == 1 and numero == maxLevel:
+                anterior = 0           
+                posterior = 100
+            elif numero == 1:
                 anterior = 0
                 posterior = DatosNivel.get_nivel_nombre(int(numero)+1).descuento
             elif numero == maxLevel:
-                anterior = DatosNivel.get_nivel_nombre(int(numero-1)).descuento
+                anterior = DatosNivel.get_nivel_nombre(int(numero)-1).descuento
                 posterior = 100
             else:
                 anterior = DatosNivel.get_nivel_nombre(int(numero-1)).descuento
@@ -321,7 +344,7 @@ class NegocioNivel(Negocio):
             else:
                 return True
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.modifica_nivel()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocioNivel.modifica_nivel()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio modificando un nivel.")
 
@@ -333,6 +356,7 @@ class NegocioNivel(Negocio):
         Modifica un nivel en la BD, y valida las Reglas de Negocio pertinentes. En caso de no cumplirse alguna, devuelve un string con el error de validación.
         """
         try:
+            max_level = int(cls.get_min_max_niveles()[1])
             nivel_mod = nivel
             validaciones = NegocioNivel.nivel_validaciones_rn(nivel,nuevo_des,nuevo_minEP,nuevo_maxEP)
             if validaciones == True:
@@ -352,7 +376,7 @@ class NegocioNivel(Negocio):
                         print(2)
                         for i in range(int(nivel)-1,int(nuevo_nivel.nombre),-1):
                             niveles_baja.append(i)
-                else:
+                elif dif<0:
                     if int(nuevo_nivel.maximoEcoPuntos) == int(nuevo_minEP):
                         print(3)
                         #Eliminar nivel actual, y todos los que estan en el medio.
@@ -367,7 +391,7 @@ class NegocioNivel(Negocio):
                 nuevo_nivel = DatosNivel.get_nivel_EP(nuevo_maxEP)
                 dif = int(nivel) - int(nuevo_nivel.nombre)
                 if dif < 0:
-                    if int(nuevo_nivel.maximoEcoPuntos) == int(nuevo_maxEP):
+                    if int(nuevo_nivel.maximoEcoPuntos) == int(nuevo_maxEP) or int(nuevo_nivel.nombre) == max_level:
                         #Eliminar nivel actual, y todos los que estan en el medio.
                         print(5)
                         for i in range(int(nivel)+1,int(nuevo_nivel.nombre)+1):
@@ -378,35 +402,57 @@ class NegocioNivel(Negocio):
                         print(6)
                         for i in range(int(nivel)+1,int(nuevo_nivel.nombre)):
                             niveles_baja.append(i)
-                else:
+                
+                elif dif>0:
                     if int(nuevo_nivel.minimoEcoPuntos) == int(nuevo_maxEP):
                         #Eliminar nivel actual, y todos los que estan en el medio.
                         print(7)
                         for i in range(int(nivel)-1,int(nuevo_nivel.nombre)-1):
                             niveles_baja.append(i)
                     else:
-                        #Modifico nivl actual, y elimino SOLO los que estan en el medio.
+                        #Modifico nivel actual, y elimino SOLO los que estan en el medio.
                         print(8)
                         for i in range(int(nivel)-1,int(nuevo_nivel.nombre)):
                             niveles_baja.append(i)
+                
                 niveles_baja = list(dict.fromkeys(niveles_baja))
+                return cls.modifica_nivel_logic(niveles_baja,nivel_mod,nuevo_des,nuevo_minEP,nuevo_maxEP)
                 
-                
-                niveles = DatosNivel.get_niveles()
-                niv = []
-                for nivel in niveles:
-                    niv.append(int(nivel.nombre))
-                nuevos_niveles = Utils.difference_between_lists(niv,niveles_baja)
-                mas_cercano_inf = Utils.nearest_element(Utils.lower_higher_elements_than(nuevos_niveles,nivel_mod)[0],nivel_mod)
-                mas_cercano_sup = Utils.nearest_element(Utils.lower_higher_elements_than(nuevos_niveles,nivel_mod)[1],nivel_mod)
-
-                DatosNivel.baja_nivel_mod(niveles_baja,nivel_mod,nuevo_des,nuevo_minEP,nuevo_maxEP,mas_cercano_inf,mas_cercano_sup,nuevos_niveles)
-                
-                #TODO: borrar los niveles que estan en la lista, y cambiar el máximo del nivel anterior, y el mínimo del nivel posterior para que coincida.
             else:
                 return validaciones
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.modifica_nivel()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocioNivel.modifica_nivel()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio modificando un nivel.")
+
+
+    @classmethod
+    def modifica_nivel_logic(cls,niveles_baja,nivel_mod,nuevo_des,nuevo_minEP,nuevo_maxEP):
+        """
+        Maneja la logica para el borrado de elementos en base a las modificaciones realizadas, y llama a la capa de datos para guardar estos cambios.
+        """
+        try:
+            niveles = DatosNivel.get_niveles()
+            niv = []
+            for nivel in niveles:
+                niv.append(int(nivel.nombre))
+            nuevos_niveles = Utils.difference_between_lists(niv,niveles_baja)
+            mas_cercano_inf = Utils.nearest_element(Utils.lower_higher_elements_than(nuevos_niveles,nivel_mod)[0],nivel_mod)
+            mas_cercano_sup = Utils.nearest_element(Utils.lower_higher_elements_than(nuevos_niveles,nivel_mod)[1],nivel_mod)
+            print('Más cercano inf:',mas_cercano_inf)
+            print('Más cercano sup:',mas_cercano_sup)
+            print('Los niveles que quedan son:', nuevos_niveles)
+            print('Los niveles que se eliminan son:',niveles_baja)
+            if DatosNivel.baja_nivel_mod(niveles_baja,nivel_mod,nuevo_des,nuevo_minEP,nuevo_maxEP,mas_cercano_inf,mas_cercano_sup,nuevos_niveles):
+                res = NegocioUsuario.actualiza_nivel_all()
+                if res == True:
+                    return True
+                else:
+                    return "Error actualizando el nivel de los usuarios en la Base de Datos. Las modificaciones en los niveles se han realizado con éxito. Intente actualizar los niveles de los usuarios manualmente más tarde."
+            else:
+                return "Error modificando los niveles en la Base de Datos. Por favor, intente nuevamene más tarde."
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocioNivel.modifica_nivel_logic()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio en el manejo de la lógica de la modifiacion del nivel.")

@@ -9,6 +9,7 @@ var numeroModificarModal = false;
 var minDescuentoMod = false;
 var maxDescuentoMod = false;
 
+
 //Efecto CSS el botón del extremo derecho de los botones principales del modulo.
 $("#option-right").hover(function(){
     $(this).css("border", "2px solid #95C22B");
@@ -39,8 +40,11 @@ function enable_disable(){
     } 
 }
 
+
 //Setea los valores iniciales del Modal del alta.
 function setModalValues(maxLevel, maxEP, maxDescuento){
+
+    //Manejo de datos
     maxLevel = parseInt(maxLevel);
     maxEP = parseInt(maxEP);
     maxDescuento = parseFloat(maxDescuento.replace(',','.'))
@@ -52,7 +56,15 @@ function setModalValues(maxLevel, maxEP, maxDescuento){
     $('#descuentoNivelError').hide();
     $('#minEPNivelError').hide();
     $('#maxEPNivelError').hide();
+    
+    //Manejo de elementos de carga
+    $("#fieldsRow1Alta1").show();
+    $("#fieldsRow1Alta2").show();
+    $(".lds-ring").hide();
     $('#primary-btn').prop('disabled', false);
+    $('#secondary-btn').prop('disabled', false);
+    $("#bottomModModalText").text('Una vez completados todos los datos, presione el botón "Crear nivel" para añadir el nuevo nivel.');
+
 }
 
 //Valida el contenido del input numero cada vez que se modifica, en caso de no cumplir una de las validaciones, muestra
@@ -104,7 +116,13 @@ function validaMinEP(maxLevel, modalType){
     }
     else if(modalType == 'mod'){
         maxEPMod = parseInt($('#maxEcoPuntosMod').val())
-        if (parseInt($('#minEcoPuntosMod').val()) >= maxEPMod){
+        if (parseInt($('#minEcoPuntosMod').val()) != 0 && numeroModificarModal == 1){
+            $('#minEPNivelErrorMod').text('* El min. de EcoPuntos debe ser 0.');
+            $('#minEPNivelErrorMod').show();
+            minEP = false;
+            enable_disable();
+        }
+        else if (parseInt($('#minEcoPuntosMod').val()) >= maxEPMod){
             $('#minEPNivelErrorMod').text('* El min. de EcoPuntos debe ser menor a ' + String(maxEPMod) + " .");
             $('#minEPNivelErrorMod').show();
             minEP = false;
@@ -259,8 +277,21 @@ function validaDescuento(maxDescuento, modalType){
 
 //Hace el submit de un form, recibiendo su ID como parametro.
 function submitForm(idForm){
+    //Manejo de elementos de carga
+    $("#fieldsRow1Alta1").hide();
+    $("#fieldsRow1Alta2").hide();
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $('#primary-btn').prop('disabled', true);
+    $('#secondary-btn').prop('disabled', true);
+
+    //Manejo de datos
     idForm = String(idForm);
     $( "#" + idForm ).submit();
+
+    //Funcion que va cambiando los mensajes de carga.
+    nextMsgAlta();
+
 }
 
 //Valida e impide que los input sean caracteres distintos de numeros.
@@ -335,6 +366,8 @@ function modifyLevel(){
 
 //Abre el Modal de baja. 
 function openBajaModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel){
+    
+    //Manejo de datos
     cant_niveles = parseInt(cant_niveles);
     numero = parseInt(numero);
     maxEPnivel = parseInt(maxEPnivel); 
@@ -342,6 +375,15 @@ function openBajaModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel){
     factor_mod = (maxEPnivel - minEPnivel + 1)/2;
     nuevo_max = minEPnivel - 1 + factor_mod;
     nuevo_min = maxEPnivel + 1 - factor_mod;
+
+    //Manejo de elementos de carga
+    $("#fieldsRowBaja").show();
+    $(".lds-ring").hide();
+    $('#bottomBajaModalText').hide();
+    $('#pprimary-btn-alert').prop('disabled', false);
+    $('#secondary-btn-baja').prop('disabled', false);
+
+    //Manejo de carteles
     jQuery.noConflict();
     $('#primary-btn-alert').prop('disabled', false); 
     $('#modalBajaMod1').show();
@@ -414,21 +456,99 @@ function setModifyModalValues(numero, cant_niveles, minEPnivel, maxEPnivel, desc
 function openModificarModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel, descuento){
     jQuery.noConflict();
     setModifyModalValues(numero, cant_niveles, minEPnivel, maxEPnivel, descuento);
+    $("#fieldsRow1").show();
+    $("#fieldsRow2").show();
+    $(".lds-ring").hide();
+    $("#bottomModModalText").text('Una vez completados todos los datos, presione el botón "Modificar nivel" para modificar el nivel.');
     $('#primary-btn-mod').prop('disabled', false);
+    $('#secondary-btn-mod').prop('disabled', false);
     $('#modificarNivelModal').modal('show');
     $('#headingModalMod').text('Modificar el nivel ' + String(parseInt(numero)));
 }
 
 //Envía el id del nivel a dar de baja al backend.
 function baja_nivel(){
+
+    //Manejo de elementos para la carga
+    $("#fieldsRowBaja").hide();
+    $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $('#bottomBajaModalText').show();
+    $('#pprimary-btn-alert').prop('disabled', true);
+    $('#secondary-btn-baja').prop('disabled', true);
+
+    //Manejo de datos
     id = $('#numNivel').val();
     window.location.href='/gestion-niveles/baja/' + String(id)
+
+    //Funcion que va cambiando los mensajes de carga.
+    nextMsgBaja()
 }
 
 function mod_nivel(){
+    //Manejo de elementos de carga
+    $("#fieldsRow1").hide();
+    $("#fieldsRow2").hide();
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $('#primary-btn-mod').prop('disabled', true);
+    $('#secondary-btn-mod').prop('disabled', true);
+    
+    //Manejo de elementos de datos
     id = $('#numeroNivelMod').val();
     desc = $('#descuentoMod').val();
     min = $('#minEcoPuntosMod').val();
     max = $('#maxEcoPuntosMod').val();
-    window.location.href='/gestion-niveles/mod/' + String(id) + '/' + String(desc) + '/' + String(min) + '/' +  String(max)
+    window.location.href='/gestion-niveles/mod/' + String(id) + '/' + String(desc) + '/' + String(min) + '/' +  String(max);
+    
+    //Funcion que va cambiando los mensajes de carga.
+    nextMsgMod();
 }
+
+//Funcion para el manejo de los mensajes durante la carga.
+function nextMsgMod() {
+    if (messages.length == 1) {
+        $('#bottomModModalText').html(messages.pop()).fadeIn(500);
+
+    } else {
+        $('#bottomModModalText').html(messages.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgMod);
+
+    }
+};
+
+function nextMsgAlta() {
+    if (messages.length == 1) {
+        $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500);
+
+    } else {
+        $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgAlta);
+
+    }
+};
+
+function nextMsgBaja() {
+    if (messages.length == 1) {
+        $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500);
+
+    } else {
+        $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgBaja);
+    }
+};
+
+// Lista de mensajes para la carga del Modal de modifcar nivel.
+var messages = [
+    "Estamos aplicando las modificaciones...",
+    "Ajustando algunos detalles",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+
+// Lista de mensajes para la carga del Modal de alta nivel.
+var messagesAlta = [
+    "Estamos añadiendo el nivel...",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+
+var messagesBaja = [
+    "Estamos eliminando el nivel...",
+    "¡Casi listo! Últimos retoques"
+].reverse();
