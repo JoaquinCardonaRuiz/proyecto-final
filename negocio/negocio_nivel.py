@@ -279,7 +279,7 @@ class NegocioNivel(Negocio):
                 posterior = DatosNivel.get_nivel_nombre(int(numero)+1).descuento
             elif numero == maxLevel:
                 anterior = DatosNivel.get_nivel_nombre(int(numero)-1).descuento
-                posterior = 100
+                posterior = 100.01
             else:
                 anterior = DatosNivel.get_nivel_nombre(int(numero-1)).descuento
                 posterior = DatosNivel.get_nivel_nombre(int(numero)+1).descuento

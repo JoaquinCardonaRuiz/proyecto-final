@@ -8,6 +8,8 @@ var mod = false;
 var numeroModificarModal = false;
 var minDescuentoMod = false;
 var maxDescuentoMod = false;
+var maxWarning = false;
+var minWarning = false;
 
 
 //Efecto CSS el botón del extremo derecho de los botones principales del modulo.
@@ -162,6 +164,12 @@ function validaMinEP(maxLevel, modalType){
             maxEP = true;
             enable_disable();
         }
+    }
+    if (parseInt($('#minEcoPuntosMod').val()) != minWarning){
+        $("#warning-icon-mod").show();
+    }
+    else{
+        $("#warning-icon-mod").hide();
     }  
 }
 
@@ -220,6 +228,12 @@ function validaMaxEP(maxLevel, modalType){
             enable_disable();
         }
     }
+    if (parseInt($('#maxEcoPuntosMod').val()) != maxWarning){
+        $("#warning-icon-mod").show();
+    }
+    else{
+        $("#warning-icon-mod").hide();
+    }  
 }
 
 //Valida el contenido del input Descuento cada vez que se modifica, en caso de no cumplir una de las validaciones, muestra
@@ -477,10 +491,13 @@ function openModificarModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNive
     $("#fieldsRow2").show();
     $(".lds-ring").hide();
     $("#bottomModModalText").text('Una vez completados todos los datos, presione el botón "Modificar nivel" para modificar el nivel.');
-    $('#primary-btn-mod').prop('disabled', false);
+    $('#primary-btn-mod').prop('disabled', true);
     $('#secondary-btn-mod').prop('disabled', false);
     $('#modificarNivelModal').modal('show');
     $('#headingModalMod').text('Modificar el nivel ' + String(parseInt(numero)));
+    maxWarning = parseInt($('#maxEcoPuntosMod').val());
+    minWarning = parseInt($('#minEcoPuntosMod').val());
+
 }
 
 //Envía el id del nivel a dar de baja al backend.

@@ -221,6 +221,13 @@ div.modal-content{
   width: 100%;
 }
 
+#warning-icon-mod{
+  text-align: center;
+  width: 100%;
+  margin-top:-3%;
+  display: none;
+}
+
 #bottomAltaModalTextError{
   margin-left: 5%;
   width: 90%;
