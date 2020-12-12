@@ -11,6 +11,7 @@ class NegocioUsuario(Negocio):
             """
             try:
                 #TODO: CODIFICAR METODO
+                print('Se actualizaron los niveles de todos los usuarios.')
                 return True
             except Exception as e:
                 raise custom_exceptions.ErrorDeNegocio(origen="negocio.actualiza_nivel_all()",

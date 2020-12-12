@@ -82,7 +82,10 @@
           </button>
         </div>
         <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body" id="altaNivelForm">
-            <div class="row">
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row" id="fieldsRow1Alta1">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
                         <input type="text" required id="numeroNivel" onkeyup="validaNumero('{{max_level}}', 'alta')" name="numeroNivel" autocomplete="off"> 
@@ -102,7 +105,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" id="fieldsRow1Alta2">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
                         <input type="text" required id="minEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}', 'alta')" name="minEcoPuntos" autocomplete="off">
@@ -123,7 +126,7 @@
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text">Una vez completados todos los datos, presione el botón "Crear nivel" para añadir el nuevo nivel.</p>
+                <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione el botón "Crear nivel" para añadir el nuevo nivel.</p>
             </div>
         </form>
         <div class="modal-footer">
@@ -145,17 +148,21 @@
           </button>
         </div>
         <div class="modal-body-baja" id="altaNivelForm">
-            <div class="row">
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row" id="fieldsRowBaja">
                 <p class="top-modal-text-baja"></p>
                 <p class="bottom-modal-text-baja-mods" id="modalBajaMod1"></p>
                 <p class="bottom-modal-text-baja-mods" id="modalBajaMod2"></p>
                 <p class="bottom-modal-text-baja-mods" id="modalBajaMod3"></p>
                 <p class="bottom-modal-text-baja">¿Está seguro que desea eliminar el nivel? Una vez eliminado, el nivel no se podrá recuperar.</p>
             </div>
+            <p class="bottom-modal-text" id="bottomBajaModalText"></p>
         </div>
         <input type="text" name="" id="numNivel" hidden>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
           <button type="button" class="btn" onclick="baja_nivel();" id="primary-btn-alert">Eliminar nivel</button>
         </div>
       </div>
@@ -173,7 +180,10 @@
           </button>
         </div>
         <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body" id="altaNivelForm">
-            <div class="row">
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row" id="fieldsRow1">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
                         <input type="text" required id="numeroNivelMod" onkeyup="validaNumero(false, 'mod')" name="numeroNivel" autocomplete="off"> 
@@ -193,7 +203,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" id="fieldsRow2">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
                         <input type="text" required id="minEcoPuntosMod" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}', 'mod')" name="minEcoPuntos" autocomplete="off">
@@ -214,16 +224,17 @@
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text">Una vez completados todos los datos, presione el botón "Modificar nivel" para modificar el nivel.</p>
+                <p class="bottom-modal-text" id="bottomModModalText">Una vez completados todos los datos, presione el botón "Modificar nivel" para modificar el nivel.</p>
             </div>
         </form>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-mod">Cancelar</button>
           <button type="button" class="btn" onclick="mod_nivel()" id="primary-btn-mod">Modificar nivel</button>
         </div>
       </div>
     </div>
 </div>
+
 
 <script src="static/js/gestion-niveles.js"></script>
 {% endblock %}

@@ -1,3 +1,3 @@
-from data.data_nivel import DatosNivel
+from negocio.capa_negocio import *
 
-DatosNivel.get_cant_niveles()
+print(NegocioNivel.get_min_max_niveles())

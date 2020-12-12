@@ -18,7 +18,7 @@ class DatosNivel(Datos):
             niveles_ = cls.cursor.fetchall()
             niveles = []
             for nivel in niveles_:
-                nivel_ = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
+                nivel_ = Nivel(nivel[0], int(nivel[1]), nivel[2], nivel[3], nivel[4])
                 niveles.append(nivel_)
             return niveles
             
