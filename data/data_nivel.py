@@ -7,7 +7,7 @@ from utils import Utils
 
 class DatosNivel(Datos):
     @classmethod
-    def get_niveles(cls):
+    def get_niveles(cls, noClose = False):
         """
         Obtiene todos los niveles de la BD.
         """
@@ -28,10 +28,11 @@ class DatosNivel(Datos):
                                                     msj_adicional="Error obtieniendo los \
                                                         niveles desde la BD.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
     
     @classmethod
-    def alta_nivel(cls, nivel):
+    def alta_nivel(cls, nivel, noClose = False):
         """Añade el nivel que recibe como parametro a la BD."""
         cls.abrir_conexion()
         try:
@@ -47,11 +48,11 @@ class DatosNivel(Datos):
                                                     msj_adicional="Error dando de alta un \
                                                         nivel en la BD.")
         finally:
-            cls.cerrar_conexion()
-
+            if not(noClose):
+                cls.cerrar_conexion()
 
     @classmethod
-    def get_nivel_id(cls, id):
+    def get_nivel_id(cls, id, noClose = False):
         cls.abrir_conexion()
         """Obtiene un nivel de la BD en base a un ID. Devuelve False si no encuentra 
         ninguno.
@@ -73,10 +74,11 @@ class DatosNivel(Datos):
                                                         en base al id recibido como \
                                                         parámetro.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
 
     @classmethod
-    def get_nivel_nombre(cls, nombre):
+    def get_nivel_nombre(cls, nombre, noClose = False):
         cls.abrir_conexion()
         """Obtiene un nivel de la BD en base a un Numero de nivel (Nombre). Devuelve False si no encuentra 
         ninguno.
@@ -98,10 +100,11 @@ class DatosNivel(Datos):
                                                         en base al nombre recibido como \
                                                         parámetro.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
 
     @classmethod
-    def baja_nivel(cls, nuevo_min, nombre_min, nuevo_max, nombre_max, nivel):
+    def baja_nivel(cls, nuevo_min, nombre_min, nuevo_max, nombre_max, nivel, noClose = False):
         cls.abrir_conexion()
         """Elimina un nivel, y modifica el máximo de EcoPuntos del nivel anterior, y el máximo 
         de EcoPuntos del nivel siguiente.
@@ -158,11 +161,12 @@ class DatosNivel(Datos):
                                                     msj_adicional="Error dando de baja un \
                                                     nivel de la BD.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
     
         
     @classmethod
-    def get_max_nivel(cls):
+    def get_max_nivel(cls, noClose = False):
         cls.abrir_conexion()
         """Obtiene el nivel mas grande registrado en la BD. Si no hay niveles registrados, devuelve False.
         """
@@ -180,10 +184,11 @@ class DatosNivel(Datos):
                                                     msj=str(e),
                                                     msj_adicional="Error obteniendo el maximo nivel de la BD.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
     
     @classmethod
-    def baja_nivel_nombre(cls, nombre):
+    def baja_nivel_nombre(cls, nombre, noClose = False):
         cls.abrir_conexion()
         """Elimina un nivel de la BD en base al nombre recibido.
         """
@@ -197,10 +202,11 @@ class DatosNivel(Datos):
                                                     msj=str(e),
                                                     msj_adicional="Error eliminando un nivel de la BD en base al nombre.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
     
     @classmethod
-    def baja_nivel_mod(cls, niveles_baja, nivel_mod, desc, minEP, maxEP, inf, sup, nuevos_niveles):
+    def baja_nivel_mod(cls, niveles_baja, nivel_mod, desc, minEP, maxEP, inf, sup, nuevos_niveles, noClose = False):
         cls.abrir_conexion()
         """Elimina los niveles que deban eliminarse en base a una modificación realizada.
         """
@@ -235,8 +241,6 @@ class DatosNivel(Datos):
                 values = (i, nivel_nuevo)
                 cls.cursor.execute(sql, values)
                 i += 1
-
-
             
             cls.db.commit()
             
@@ -246,11 +250,12 @@ class DatosNivel(Datos):
                                                     msj=str(e),
                                                     msj_adicional="Error eliminando un niveles de la BD en base a modificaciones realizadas.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
 
 
     @classmethod
-    def get_max_descuento(cls):
+    def get_max_descuento(cls, noClose = False):
         """Devuelve el mayor descuento registrado en la BD."""
         cls.abrir_conexion()
         try:
@@ -264,10 +269,11 @@ class DatosNivel(Datos):
                                                     msj_adicional="Error el máximo descuento \
                                                          de un nivel desde la BD.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
 
     @classmethod
-    def get_max_ecoPuntos(cls):
+    def get_max_ecoPuntos(cls, noClose = False):
         cls.abrir_conexion()
         """Devuelve la mayor cantidad EcoPuntos solicitada para un nivel registrado en la 
         BD.
@@ -283,10 +289,11 @@ class DatosNivel(Datos):
                                                     msj_adicional="Error el máximo de \
                                                         EcoPuntos de un nivel desde la BD.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
 
     @classmethod
-    def get_cant_niveles(cls):
+    def get_cant_niveles(cls, noClose = False):
         """Devuelve la mayor cantidad EcoPuntos solicitada para un nivel registrado en la 
         BD.
         """
@@ -300,10 +307,11 @@ class DatosNivel(Datos):
                                                     msj=str(e),
                                                     msj_adicional="Error obteniendo la cantidad de niveles de la BD.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
 
     @classmethod
-    def get_nivel_EP(cls, ecoPuntos):
+    def get_nivel_EP(cls, ecoPuntos, noClose = False):
         cls.abrir_conexion()
         """Obtiene el nivel al que corresponde una determinada cantidad de ecoPuntos.
         """
@@ -330,4 +338,5 @@ class DatosNivel(Datos):
                                                     msj=str(e),
                                                     msj_adicional="Error obteniendo el nivel en base a los EcoPuntos de la BD.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()

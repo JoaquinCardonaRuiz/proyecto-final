@@ -216,6 +216,17 @@ div.modal-content{
   display: none;
 }
 
+#warning-icon{
+  text-align: center;
+  width: 100%;
+}
+
+#bottomAltaModalTextError{
+  margin-left: 5%;
+  width: 90%;
+  margin-top: 2%;
+}
+
 * { box-sizing:border-box; }
 
 /* basic stylings ------------------------------------------ */

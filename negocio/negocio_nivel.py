@@ -89,6 +89,7 @@ class NegocioNivel(Negocio):
         try:
             #Reestructuración de los datos:
             max_nivel = int(cls.get_min_max_niveles()[1])
+            max_level = DatosNivel.get_nivel_nombre(max_nivel)
             maxDescuento = Utils.round_float(DatosNivel.get_max_descuento(), 2)
             maxEP = Utils.round_float(DatosNivel.get_max_ecoPuntos(),1)
             minEcoPuntos = int(Utils.round_float(minEcoPuntos,0))
@@ -96,7 +97,10 @@ class NegocioNivel(Negocio):
             descuento = Utils.round_float(descuento,2)
             
             #Validación de Reglas de Negocio:
-            if int(numeroNivel) != int(max_nivel + 1):
+            if max_level.descuento == 100:
+                #Valida regla RN06
+                return "Error al añadir el nivel. No se pueden añadir más niveles ya que hay uno con un descuento del 100%. Para añadir otro nivel, modifique primero el descuento del último nivel existente."
+            elif int(numeroNivel) != int(max_nivel + 1):
                 #Valida regla RN01
                 return "Error al añadir el nivel. El número de nivel no es correcto."
             elif Utils.round_float(minEcoPuntos,2) >= Utils.round_float(maxEcoPuntos,2):
@@ -304,12 +308,15 @@ class NegocioNivel(Negocio):
             #Valida RN02
             elif maxEP <= minEP:
                 return "Error, el máximo de EcoPuntos debe ser mayor al mínimo de EcoPuntos."
-            #TODO: añadir regla de negocio:
+            #Valida RN14
             elif minEP < 0:
                 return "Error, el mínimo de EcoPuntos no puede ser menor a 0."
             #Valida RN13
             elif maxEP == 0:
                 return "Error, el máximo de EcoPuntos no puede ser igual a 0."
+            #Valida RN04
+            elif float(descuento) > 100:
+                return "Error, el descuento no puede ser maayor al 100%."
             #Valida RN03
             elif sig_nivel != False:
                 if int(NegocioNivel.get_min_max_niveles()[1]) == numero:

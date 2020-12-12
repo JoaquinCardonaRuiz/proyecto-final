@@ -48,22 +48,39 @@ function setModalValues(maxLevel, maxEP, maxDescuento){
     maxLevel = parseInt(maxLevel);
     maxEP = parseInt(maxEP);
     maxDescuento = parseFloat(maxDescuento.replace(',','.'))
-    $('#numeroNivel').val(maxLevel + 1);
-    $('#minEcoPuntos').val(maxEP + 1);
-    $('#maxEcoPuntos').val(maxEP + 1000);
-    $('#descuento').val(maxDescuento + 2.5);
-    $('#numeroNivelError').hide();
-    $('#descuentoNivelError').hide();
-    $('#minEPNivelError').hide();
-    $('#maxEPNivelError').hide();
+    if (maxDescuento >= 100){
+        $('#primary-btn').prop('disabled', true);
+        $("#fieldsRow1Alta1").hide();
+        $("#fieldsRow1Alta2").hide();
+        $('#bottomAltaModalText').hide();
+        $("#errorRow").show();
+        $("#bottomAltaModalTextError").text("No se puede añadir un nuevo nivel ya que el nivel " + String(maxLevel) + " posee un descuento del 100%. Por favor, modifique primero el descuento de dicho nivel e intente nuevamente.");
+    }
+    else{
+        $("#errorRow").hide();
+        $('#numeroNivel').val(maxLevel + 1);
+        $('#minEcoPuntos').val(maxEP + 1);
+        $('#maxEcoPuntos').val(maxEP + 1000);
+        if (maxDescuento >= 97.5){
+            $('#descuento').val(100);
+        }
+        else{
+            $('#descuento').val(maxDescuento + 2.5);
+        }
+        $('#numeroNivelError').hide();
+        $('#descuentoNivelError').hide();
+        $('#minEPNivelError').hide();
+        $('#maxEPNivelError').hide();
+        
+        //Manejo de elementos de carga
+        $("#fieldsRow1Alta1").show();
+        $("#fieldsRow1Alta2").show();
+        $(".lds-ring").hide();
+        $('#primary-btn').prop('disabled', false);
+        $('#secondary-btn').prop('disabled', false);
+        $("#bottomModModalText").text('Una vez completados todos los datos, presione el botón "Crear nivel" para añadir el nuevo nivel.');
+    }
     
-    //Manejo de elementos de carga
-    $("#fieldsRow1Alta1").show();
-    $("#fieldsRow1Alta2").show();
-    $(".lds-ring").hide();
-    $('#primary-btn').prop('disabled', false);
-    $('#secondary-btn').prop('disabled', false);
-    $("#bottomModModalText").text('Una vez completados todos los datos, presione el botón "Crear nivel" para añadir el nuevo nivel.');
 
 }
 
@@ -380,7 +397,7 @@ function openBajaModal(numero, cant_niveles, minEPnivel, maxEPnivel, idNivel){
     $("#fieldsRowBaja").show();
     $(".lds-ring").hide();
     $('#bottomBajaModalText').hide();
-    $('#pprimary-btn-alert').prop('disabled', false);
+    $('#primary-btn-alert').prop('disabled', false);
     $('#secondary-btn-baja').prop('disabled', false);
 
     //Manejo de carteles
@@ -474,7 +491,7 @@ function baja_nivel(){
     $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
     $(".lds-ring").show().fadeIn(500);
     $('#bottomBajaModalText').show();
-    $('#pprimary-btn-alert').prop('disabled', true);
+    $('#primary-btn-alert').prop('disabled', true);
     $('#secondary-btn-baja').prop('disabled', true);
 
     //Manejo de datos
