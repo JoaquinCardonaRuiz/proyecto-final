@@ -9,7 +9,12 @@ app.secret_key = 'myscretkey'
 def main():
     return render_template('main.html')
 
-# -- Niveles -- 
+''' 
+    -------
+    Niveles
+    -------
+'''
+
 
 @app.route('/gestion-niveles')
 def gestion_niveles():
@@ -55,13 +60,21 @@ def mod_nivel_request(id):
     desc_ant_post = NegocioNivel.getDescuentosAntPost(id)
     return jsonify(desc_ant_post)
 
-# -- Entidades Destino -- 
+
+
+
+''' 
+    -----------------
+    Entidades Destino
+    -----------------
+'''
+
 
 @app.route('/gestion-ed', methods = ['GET','POST'])
 def gestion_ed():
     entidades = NegocioEntidadDestino.get_entidades_destino()
     return render_template('gestion-entidades-destino.html', entidades = entidades)
-    
+
 
 @app.route('/gestion-ed/demandas/<id>')
 def devolver_demandas(id):
@@ -77,13 +90,15 @@ def devolver_demandas(id):
 
     return jsonify(demandas_present)
 
+
 @app.route('/gestion-ed/salidas/<id>')
 def devolver_salidas(id):
     #TODO: evitar esta vuelta a BD
     e = NegocioEntidadDestino.get_one_entidad_destino(id)
     a = NegocioArticulo.get_articulos([i.idTipoArticulo for i in e.salidas])
-    salidas_present =  [{"nombre": "todavia no desarrollado"} ]      
+    salidas_present =  [{"nombre": "todavia no desarrollado"}]
     return jsonify(salidas_present)
+
 
 @app.route('/gestion-ed/alta', methods = ['GET','POST'])
 def alta_entidad_destino():
@@ -94,6 +109,7 @@ def alta_entidad_destino():
         except Exception as e:
             raise e
         return redirect(url_for('gestion_ed'))
+
 
 if __name__ == '__main__':
     app.debug = True

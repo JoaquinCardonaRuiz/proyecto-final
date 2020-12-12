@@ -1,11 +1,11 @@
 function getTablaDemandas(id, nombre){
     $.getJSON("/gestion-ed/demandas/"+String(id),function (result){
-        // Establezco título
-        document.getElementById("headingModal").innerHTML = "Demandas de " + nombre + ".";
-        
         // Borro contenido anterior
         document.getElementById("modalTableBody"). innerHTML="";
         document.getElementById("headerRow").innerHTML ="";
+
+        // Establezco título
+        document.getElementById("headingModal").innerHTML = "Demandas de " + nombre + ".";
 
         // Creo títulos de columnas
         var headings = ["Artículo","Cantidad","Unidad"];
@@ -18,31 +18,37 @@ function getTablaDemandas(id, nombre){
         }
 
         // Creo contenido
-        for(i=0; i < result.length; i++){
-            // Creo celda de nombre
-            headCell = document.createElement("th");
-            headCell.scope = "row";
-            headCell.innerHTML = result[i]["nombre"];
-
-            // Creo celda de cantidad
-            bodyCell1 = document.createElement("td");
-            bodyCell1.innerHTML = result[i]["cantidad"];
-
-            // Creo celda de unidad
-            bodyCell2 = document.createElement("td");
-            bodyCell2.innerHTML = result[i]["unidadmedida"];
-
-            // Creo fila
-            row = document.createElement("tr");
-
-            // Agrego celdas a fila
-            row.appendChild(headCell); 
-            row.appendChild(bodyCell1);
-            row.appendChild(bodyCell2);
-
-            // Agrego fila a tabla
-            document.getElementById("modalTableBody").appendChild(row);
+        if(result.length > 0){
+            for(i=0; i < result.length; i++){
+                // Creo celda de nombre
+                headCell = document.createElement("th");
+                headCell.scope = "row";
+                headCell.innerHTML = result[i]["nombre"];
+    
+                // Creo celda de cantidad
+                bodyCell1 = document.createElement("td");
+                bodyCell1.innerHTML = result[i]["cantidad"];
+    
+                // Creo celda de unidad
+                bodyCell2 = document.createElement("td");
+                bodyCell2.innerHTML = result[i]["unidadmedida"];
+    
+                // Creo fila
+                row = document.createElement("tr");
+    
+                // Agrego celdas a fila
+                row.appendChild(headCell); 
+                row.appendChild(bodyCell1);
+                row.appendChild(bodyCell2);
+    
+                // Agrego fila a tabla
+                document.getElementById("modalTableBody").appendChild(row);
+            }
         }
+        else{
+            
+        }
+        
     })
 }
 

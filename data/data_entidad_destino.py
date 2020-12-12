@@ -1,8 +1,9 @@
 from data.data import Datos
+from data.data_demanda import DatosDemanda
+from data.data_salida_stock import DatosSalidaStock
 import custom_exceptions
-from classes import EntidadDestino
-from classes import CantDemanda
-from classes import SalidaStock
+from classes import EntidadDestino, CantDemanda, SalidaStock
+
 
 class DatosEntidadDestino(Datos):
     @classmethod
@@ -50,9 +51,9 @@ class DatosEntidadDestino(Datos):
             entidades_ = cls.cursor.fetchall()
             entidades = []
             for e in entidades_:
-                demandas = cls.get_demandas(e[0],noClose = True)
-                salidas = cls.get_salidas(e[0],noClose = True)
-                entidad_ = EntidadDestino(e[0],e[1],demandas,salidas)
+                demandas =  DatosDemanda.get_demandas_by_entidad(e[0],noClose = True)
+                salidas =   DatosSalidaStock.get_salidas_by_entidad(e[0],noClose = True)
+                entidad_ =  EntidadDestino(e[0],e[1],demandas,salidas)
                 entidades.append(entidad_)
             return entidades
             
@@ -94,58 +95,13 @@ class DatosEntidadDestino(Datos):
             sql = ("SELECT * FROM entidadesDestino WHERE idEntidad = {};".format(id))
             cls.cursor.execute(sql)
             e = cls.cursor.fetchall()[0]
-            demandas = cls.get_demandas(e[0],noClose = True)
-            salidas = cls.get_salidas(e[0],noClose = True)
+            demandas =  DatosDemanda.get_demandas_by_entidad(e[0],noClose = True)
+            salidas =   DatosSalidaStock.get_salidas_by_entidad(e[0],noClose = True)
             entidad = EntidadDestino(e[0],e[1],demandas,salidas)
             return entidad
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_one_entidad_destino()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obtieniendo una \
-                                                        entidad destino desde la BD.")
+                                                    msj_adicional="Error obtieniendo una entidad destino desde la BD.")
         finally:
             cls.cerrar_conexion()
-    
-    @classmethod
-    def get_demandas(cls,id,noClose = False):
-        cls.abrir_conexion()
-        try:
-            sql = ("SELECT * FROM demanda WHERE idEntidad = {};".format(id))
-            cls.cursor.execute(sql)
-            demandas = cls.cursor.fetchall()
-            cantDemandas = []
-            for d in demandas:
-                demanda = CantDemanda(d[2],d[1])
-                cantDemandas.append(demanda)
-            return cantDemandas
-
-        except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.get_demandas()",
-                                                    msj=str(e),
-                                                    msj_adicional="Error obtieniendo las \
-                                                        demandas desde la BD.")
-        finally:
-            if not(noClose):
-                cls.cerrar_conexion()
-
-    @classmethod
-    def get_salidas(cls,id,noClose = False):
-        cls.abrir_conexion()
-        try:
-            sql = ("SELECT * FROM salidasStock WHERE idEntidad = {};".format(id))
-            cls.cursor.execute(sql)
-            salidas = cls.cursor.fetchall()
-            salidasStock = []
-            for s in salidas:
-                salida = SalidaStock(s[0],s[1],s[2],s[3],s[4])
-                salidasStock.append(salida)
-            return salidasStock
-
-        except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.get_salidas()",
-                                                    msj=str(e),
-                                                    msj_adicional="Error obtieniendo las \
-                                                        salidas de stock desde la BD.")
-        finally:
-            if not(noClose):
-                cls.cerrar_conexion()
