@@ -104,7 +104,13 @@ function validaMinEP(maxLevel, modalType){
     }
     else if(modalType == 'mod'){
         maxEPMod = parseInt($('#maxEcoPuntosMod').val())
-        if (parseInt($('#minEcoPuntosMod').val()) >= maxEPMod){
+        if (parseInt($('#minEcoPuntosMod').val()) != 0 && numeroModificarModal == 1){
+            $('#minEPNivelErrorMod').text('* El min. de EcoPuntos debe ser 0.');
+            $('#minEPNivelErrorMod').show();
+            minEP = false;
+            enable_disable();
+        }
+        else if (parseInt($('#minEcoPuntosMod').val()) >= maxEPMod){
             $('#minEPNivelErrorMod').text('* El min. de EcoPuntos debe ser menor a ' + String(maxEPMod) + " .");
             $('#minEPNivelErrorMod').show();
             minEP = false;

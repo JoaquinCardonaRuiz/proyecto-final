@@ -120,7 +120,7 @@ class DatosNivel(Datos):
 
                 #Disminuye en una unidad los nombres de los niveles posteriores.
                 sql = ("UPDATE niveles SET nombre = nombre-1 WHERE nombre > %s;")
-                values = (str(nivel.nombre))
+                values = (str(nivel.nombre),)
                 cls.cursor.execute(sql, values)
 
                 cls.db.commit()
@@ -227,15 +227,16 @@ class DatosNivel(Datos):
                 values = (int(maxEP)+1, sup)
                 cls.cursor.execute(sql, values)
             
-            #TODO: no funciona bien.
             #Modifica la enumeración de los niveles en base a los cambios realizados:
-            cant_niveles = cls.get_cant_niveles()
-            cls.abrir_conexion()
-            for i in range(1,cant_niveles+1):
-                print(i)
-                sql = ("UPDATE niveles SET nombre = %s ORDER BY minEcoPuntos ASC")
-                values = (i,)
-                cls.cursor.execute(sql, values) 
+            nuevos_niveles = sorted(nuevos_niveles)
+            i = 1
+            for nivel_nuevo in nuevos_niveles:
+                sql = ("UPDATE niveles set nombre = %s WHERE nombre = %s")
+                values = (i, nivel_nuevo)
+                cls.cursor.execute(sql, values)
+                i += 1
+
+
             
             cls.db.commit()
             
