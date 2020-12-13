@@ -109,6 +109,17 @@ def alta_entidad_destino():
             raise e
         return redirect(url_for('gestion_ed'))
 
+''' 
+    ---------------------------
+    Puntos de Deposito y Retiro
+    ---------------------------
+'''
+
+
+
+@app.route('/elegir-tipo-punto', methods = ['GET','POST'])
+def selection():
+    return render_template('elegir-tipo-punto.html')
 
 if __name__ == '__main__':
     app.debug = True
