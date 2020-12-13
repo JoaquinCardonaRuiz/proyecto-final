@@ -23,17 +23,22 @@
     </div>
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container" id="option" onclick="redirect('deposito')">
+            <div class="container" id="option1" onclick="redirect('deposito')">
                 <i class="fa fa-map-marker-alt fa-4x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Puntos de Depósito</p>
                 <p class="option-description">Visualizar y gestionar los Puntos de Depósito registrados en EcoAsistente.</p>
 
             </div>
-            <div class="container" id="option" onclick="redirect('retiro')">
+            <div class="container" id="option2" onclick="redirect('retiro')">
                 <i class="fa fa-map-marker-alt fa-4x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Puntos de Retiro</p>
                 <p class="option-description">Visualizar y gestionar los Puntos de Retiro registrados en EcoAsistente.</p>
             </div>
+        </div>
+        <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
+        <p id="loading-text"></p>
     </div>
 </div>
 

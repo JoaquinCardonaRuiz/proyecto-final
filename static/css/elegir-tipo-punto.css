@@ -55,7 +55,7 @@
     margin-right: 14%;
 }
 
-#option{
+#option1{
     width: 100%;
     margin-left: 0%; 
     border-radius: 5px;
@@ -66,7 +66,77 @@
     margin-bottom: 3%;
 }
 
-#option:hover{
+#option2{
+    width: 100%;
+    margin-left: 0%; 
+    border-radius: 5px;
+    height: 125px;
+    border:2px solid transparent;
+    background-color: #fff;
+    box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3%;
+}
+
+#option1:hover{
     border:2px solid #95C22B;
     cursor: pointer;
 }
+
+#option2:hover{
+    border:2px solid #95C22B;
+    cursor: pointer;
+}
+
+#loadingRow{
+    margin-top:15%;
+}
+
+#loading-text{
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    margin-left: 3%;
+    margin-top: 4%;
+    display: none;
+    font-size: 18px;
+}
+
+/* Loading Ring */
+
+.lds-ring {
+    display: none;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-left: 45%;
+    margin-right: 45%;
+    margin-bottom: 3%;
+  }
+  .lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    margin: 8px;
+    border: 8px solid #fff;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #95C22B transparent transparent transparent;
+  }
+  .lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes lds-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }

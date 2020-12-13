@@ -115,8 +115,6 @@ def alta_entidad_destino():
     ---------------------------
 '''
 
-
-
 @app.route('/elegir-tipo-punto', methods = ['GET','POST'])
 def selection():
     return render_template('elegir-tipo-punto.html')

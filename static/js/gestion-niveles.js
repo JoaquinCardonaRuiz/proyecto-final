@@ -551,7 +551,7 @@ function nextMsgMod() {
 };
 
 function nextMsgAlta() {
-    if (messages.length == 1) {
+    if (messagesAlta.length == 1) {
         $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500);
 
     } else {
@@ -561,7 +561,7 @@ function nextMsgAlta() {
 };
 
 function nextMsgBaja() {
-    if (messages.length == 1) {
+    if (messagesBaja.length == 1) {
         $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500);
 
     } else {
@@ -582,6 +582,7 @@ var messagesAlta = [
     "¡Casi listo! Últimos retoques"
 ].reverse();
 
+// Lista de mensajes para la carga del Modal de baja nivel.
 var messagesBaja = [
     "Estamos eliminando el nivel...",
     "¡Casi listo! Últimos retoques"
