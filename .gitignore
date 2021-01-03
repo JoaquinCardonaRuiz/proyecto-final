@@ -131,3 +131,6 @@ dmypy.json
 #Compiled files
 **/*.pyc
 **/**/*.pyc
+
+#vscode
+.vscode/**
