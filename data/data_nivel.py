@@ -316,7 +316,7 @@ class DatosNivel(Datos):
         """Obtiene el nivel al que corresponde una determinada cantidad de ecoPuntos.
         """
         try:
-            sql = ("select * from Niveles where minEcoPuntos <= %s and maxEcoPuntos >= %s")
+            sql = ("select * from niveles where minEcoPuntos <= %s and maxEcoPuntos >= %s")
             values = (str(ecoPuntos), str(ecoPuntos),)
             cls.cursor.execute(sql, values)
             nivel = cls.cursor.fetchone()
