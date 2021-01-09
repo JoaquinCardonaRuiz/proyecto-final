@@ -14,21 +14,72 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">   
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">   
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;500&display=swap" rel="stylesheet">
 </head>
-<body style="background-color: #f8f9fa;">
+<body style="background-color: #f8f9fa;" onscroll="animations()">
 
-<div class="page-content">
-    <img id="background-img" src="/static/img/start-page.png" alt="">
+<div class="top" id="page-top-content">
     <div class="row" id="page-heading">
             <h4 id="heading-title" onclick="window.location.href='/'">EcoAsistente</h4>
-            <h4 id="heading-option">Info</h5>
+            <h4 id="heading-option">Info <img src="/static/img/chevron.svg" class="chevron"></img></h5> 
             <h4 id="heading-option-right">Iniciar Sesión</h5>
-        </div>
-            
+            <h4 id="heading-option-right2">Registrate</h5>
+    </div>
+    <div id="top-title-content">
+        <h1 id="top-title">Descubrí una nueva</h1>
+        <h1 id="top-title">manera de</h1>
+        <h1 id="top-title">reciclar</h1>
+        <h5 id="top-subtitle">Ayudar al planeta nunca fue tan fácl</h5>
+        <h3 id="start-button">Empezar</h3>
+    </div>
+        
+</div>
 
+<div class="jumbotron" id="page-content-1">
+    <h3 class="page-content-title">Qué podés hacer con EcoAsistente</h3>
+    <p class="page-content-subtitle">Descubrí como podes ganar ayudando al medio ambiente y a tu ciudad.</p>
+    <div class="row justify-content-center" id="cards-row">
+        <div class="start-card" id="start-card1">
+            <div class="circle">1</div>
+            <h5 class="card-title">Depositá residuos</h5>
+            <p class="card-description">Depositá tus residuos en cualquier Punto de Depósito de la ciudad.</p>   
+        </div>
+        <div class="start-card" id="start-card2">
+            <div class="circle">2</div>
+            <h5 class="card-title">Sumá EcoPuntos</h5>
+            <p class="card-description">Sumá EcoPuntos por cada depósito de reisudos que hagas.</p>   
+        </div>
+        <div class="start-card" id="start-card3">
+            <div class="circle">3</div>
+            <h5 class="card-title">Canjealos por productos</h5>
+            <p class="card-description">Canjeá tus EcoPuntos por productos hechos a partir de materiales reciclados.</p>   
+        </div>
     </div>
 </div>
+
+<div class="jumbotron" id="page-content-2">
+    <div class="row">
+        <div class="col justify-content-center" style="margin: auto;">
+            <h3 class="page-content-title2">Encontrá la planta</h3>
+            <h3 class="page-content-title2">ideal para vos</h3>
+            <p class="page-content-subtitle2">EcoAsistente te ayuda a hacer tu casa más verde, encontrando la planta ideal para vos, en base a la cantidad de horas de luz, la cantidad de veces que puedas regarla, y algo más.</p>
+        </div>
+        <div class="col justify-content-center">
+            <img src="/static/img/plantas-start-page.png" alt="" id="start-image2">
+        </div>
+    </div>
+    
+    
+    
+</div>
+
+
+
 
 </body>
 <script src="static/js/start-page.js"></script>
