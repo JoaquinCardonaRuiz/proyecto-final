@@ -147,15 +147,10 @@ body{
 
 #page-content-1{
     position: relative;
-    margin-top: 30%;
     background-color: gray;
     width: 100%;
     height: fit-content;
-}
-
-
-#page-content-1{
-    margin-top: 33%;
+    margin-top: 32vw;
     background-color: transparent;
 }
 
@@ -254,11 +249,19 @@ body{
 .page-content-subtitle2{
     margin-top: 7%;
     text-align: left;
-    font-size: 20px;
+    font-size: 19px;
     line-height: 1.5rem;
     font-weight: 200;
     font-family: 'IBM Plex Sans', sans-serif;
     margin-left: 30%;
+}
+
+#first-row-page-content-2{
+    margin-top: -2%;
+}
+
+#left-col-page-content-2{
+    margin: auto;
 }
 
 #start-image2{
@@ -267,6 +270,6 @@ body{
     margin-right: auto;
     width: 465px;
     transition: width 0.3s, height 0.3s, transform 0.3s;
-    transform: translateX(20%);
+    transform: translateX(40%);
     display: none;
 }
