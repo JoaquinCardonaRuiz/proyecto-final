@@ -53,8 +53,10 @@
                 <!--{{nombres.append(ent.nombre)}} -->
                 <tr>
                     <th scope="row">{{ent.nombre}}</th>
-                    <td><a href='#'data-toggle="modal" data-target="#tablaModal" onclick="getTablaDemandas({{ent.id}},'{{ent.nombre}}')">Ver Demanda</a></td>
-                    <td><a href='#'data-toggle="modal" data-target="#tablaModal" onclick="getTablaSalidas({{ent.id}},'{{ent.nombre}}')">Ver Salidas</a></td>
+                    <td><a href='#' onclick="openLoadingRing();getTablaDemandas({{ent.id}},'{{ent.nombre}}')">Ver Demandas</a></td>
+                    <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
+                    <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
+                    <td><a href='#' onclick="openLoadingRing();getTablaSalidas({{ent.id}},'{{ent.nombre}}')">Ver Salidas</a></td>
                 </tr>
                 {%endfor%}
                 </tbody>
@@ -63,16 +65,30 @@
     </div>
 </div>
 
+<!-- Loading Modal -->
+<div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <br><br><br><br><br><br><br><br>
+      <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+    </div>
+</div>
+
 <!-- Tabla Modal -->
 <div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="headingModal"></h5>
+          <h4 class="modal-title" id="headingModal"></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+          <div id="msj-empty" hidden=true>
+          <br><br>
+              <center><p id="empty-content" style="font-size:20px; color:#888888"></p></center>
+          </div>
         <table class="table" id="content-table">
             <thead style=" border-top:none">
             <tr id=headerRow>

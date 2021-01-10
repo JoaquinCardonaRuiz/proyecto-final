@@ -80,7 +80,7 @@ def devolver_demandas(id):
     #TODO: evitar esta vuelta a BD
     #TODO: revisar cómo verificar que sólo se cargue una demanda por TA
     e = NegocioEntidadDestino.get_one_entidad_destino(id)
-    a = NegocioArticulo.get_articulos([i.idTipoArticulo for i in e.demandas])
+    a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.demandas])
 
     demandas_present = [{"nombre":          d[1].nombre,
                          "cantidad":        d[0].cantidad, 
@@ -94,8 +94,12 @@ def devolver_demandas(id):
 def devolver_salidas(id):
     #TODO: evitar esta vuelta a BD
     e = NegocioEntidadDestino.get_one_entidad_destino(id)
-    a = NegocioArticulo.get_articulos([i.idTipoArticulo for i in e.salidas])
-    salidas_present =  [{"nombre": "todavia no desarrollado"}]
+    a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.salidas])
+    salidas_present =  [{"nombre":          s[1].nombre,
+                         "cantidad":        s[0].cantidad, 
+                         "unidadmedida":    s[1].unidadMedida,
+                         "fecha":           s[0].fecha.strftime("%d/%m/%Y")}
+                        for s in list(zip(e.salidas,a))]   
     return jsonify(salidas_present)
 
 
