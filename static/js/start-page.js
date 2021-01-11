@@ -43,7 +43,7 @@ function animations(){
     }
 
     //Animación sección green board
-    pi_greenBoard = 1500
+    pi_greenBoard = 1940
     if(window.scrollY >= pi_greenBoard){
         $("#page-content-title-green-board").fadeIn(500);
         $("#page-content-title-green-board").css({"transform":"translateY(-90px)"});
