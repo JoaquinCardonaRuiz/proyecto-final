@@ -228,52 +228,8 @@ body{
     margin-top: 5%;
   }
 
-#page-content-2{
-    position: relative;
-    border-radius: 0px;
-    background-color: transparent;
-    margin-top: -2%;
-    background-color: white;
-}
 
-.page-content-title2{
-    text-align: left;
-    color: #95C22B;
-    font-weight: 900;
-    font-size: 45px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    margin-left: 30%;
-    margin-top: 3%;
-}
-
-.page-content-subtitle2{
-    margin-top: 7%;
-    text-align: left;
-    font-size: 19px;
-    line-height: 1.5rem;
-    font-weight: 200;
-    font-family: 'IBM Plex Sans', sans-serif;
-    margin-left: 30%;
-}
-
-#first-row-page-content-2{
-    margin-top: -2%;
-}
-
-#left-col-page-content-2{
-    margin: auto;
-}
-
-#start-image2{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 465px;
-    transition: width 0.3s, height 0.3s, transform 0.3s;
-    transform: translateX(50%);
-    display: none;
-}
-
+/*Sección Flujo Basico*/
 
 #page-content-flujo-basico{
     position: relative;
@@ -324,11 +280,126 @@ body{
 
 #start-image-flujo-basico{
     display: block;
-    margin-left: 10%;
-    margin-right: auto;
+    margin-left: auto;
+    margin-right: 12%;
     width: 520px;
     transition: width 0.3s, height 0.3s, transform 0.3s;
-    transform: translateX(-50%);
+    transform: translateX(-50px);
+    float: right;
     display: none;
 }
 
+
+/*Sección Green Board*/
+
+#page-content-green-board{
+    position: relative;
+    border-radius: 0px;
+    background-color: transparent;
+    margin-top: -2%;
+    background-color: #95C22B;
+    height: 900px;
+}
+
+.page-content-title-green-board{
+    text-align: center;
+    color: white;
+    font-weight: 900;
+    font-size: 60px;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-text-stroke: .8px #000;
+    text-shadow: 3px 2.5px 0 #000;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+    margin-top: 70px;
+    display: none;
+}
+
+#row-page-content-green-board-1{
+    position: relative;
+    margin-top: -45px;
+    width: 57rem;
+    transition: width 0.7s, height 0.7s, transform 0.7s;    
+    transform: translateX(-40px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#row-page-content-green-board-3{
+    position: relative;
+    width: 57rem;
+    transition: width 0.7s, height 0.7s, transform 0.7s;    
+    transform: translateX(-40px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-content-subtitle-green-board{
+    color: white;
+    font-family: 'Hind', sans-serif;
+    margin-top: 50px;
+    font-size: 35px;
+}
+
+.page-content-description-green-board{
+    color: white;
+    font-family: 'Hind', sans-serif;
+    float: left;
+    margin-right: 8%;
+    font-size: 17px;
+}
+
+#start-image-green-board{
+    width: 300px;
+    margin-right: 20px;
+    margin-left: 15%;
+
+}
+
+
+/*Sección Recomendación Plantas*/
+
+#page-content-plantas{
+    position: relative;
+    border-radius: 0px;
+    background-color: transparent;
+    margin-top: -2%;
+    background-color: white;
+}
+
+.page-content-title-plantas{
+    text-align: left;
+    color: #95C22B;
+    font-weight: 900;
+    font-size: 45px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    margin-left: 30%;
+    margin-top: 3%;
+}
+
+.page-content-subtitle-plantas{
+    margin-top: 7%;
+    text-align: left;
+    font-size: 19px;
+    line-height: 1.5rem;
+    font-weight: 200;
+    font-family: 'IBM Plex Sans', sans-serif;
+    margin-left: 30%;
+}
+
+#first-row-page-content-plantas{
+    margin-top: -2%;
+}
+
+#left-col-page-content-plantas{
+    margin: auto;
+}
+
+#start-image-plantas{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 465px;
+    transition: width 0.3s, height 0.3s, transform 0.3s;
+    transform: translateX(50%);
+    display: none;
+}
