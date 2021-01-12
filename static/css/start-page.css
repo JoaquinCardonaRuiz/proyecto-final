@@ -463,4 +463,71 @@ body{
     margin-left: 15%;
 }
 
+/*Sección celular*/
 
+  .circles {
+    text-align: center;
+    margin: 0 auto 0 30px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    padding: 5px;
+    background:transparent;
+    border: 3px solid #95C22B;
+    text-align: center;
+    font-size: 40px;
+  }
+  
+  .vertical-line {
+    width: 2px;
+    height:50px;
+    background: #95C22B;
+    margin: 0 auto 0 69px;
+  }
+
+  #start-button-cell{
+    position: relative;
+    font-size: 17px;
+    font-weight: 450;
+    white-space: nowrap;
+    border-radius: 25px;
+    border: 1px solid #95C22B;
+    padding: 7px ;
+    text-align: center;
+    width: 200px;
+    height: 38px;
+    background: #95C22B;
+    color: whitesmoke;
+    margin-left: 30px;
+  }
+
+  #start-button-cell:hover{
+    background-color: #aedd42;
+    border: 1px solid #aedd42;
+    cursor: pointer; 
+  }
+
+  .circle-title{
+    text-align: left;
+    float:left;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 24px;
+    margin-top: 50px;
+  }
+
+  .circle-description{
+    float: left;
+    line-height: 1.5rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 200;
+  }
+
+  .left-circle-col{
+      width: 130px;
+  }
+  
+
+  .left-circle-col-btn{
+    margin: auto;
+  }

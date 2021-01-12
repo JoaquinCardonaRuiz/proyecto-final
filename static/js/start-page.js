@@ -6,6 +6,7 @@ else{
     $("#page-content-1").css({"margin-top":"32vw"});
 }
 
+var circleFilled = false;
 
 function animations(){
     //alert(window.scrollY);
@@ -75,4 +76,19 @@ function animations(){
         $("#row-page-content-green-board-3").fadeOut(500);
     
     }
+}
+
+function fillCircles(numero){
+    numero = parseInt(numero);
+    if (circleFilled != numero){
+        $("#circle1").css({"background":"transparent"})
+        $("#circle2").css({"background":"transparent"})
+        $("#circle3").css({"background":"transparent"})
+        $("#circle4").css({"background":"transparent"})
+        $("#circle" + String(numero)).css({"background":"#95C22B"})
+        $("#circle" + String(numero)).fadeIn();
+
+    }
+
+    
 }
