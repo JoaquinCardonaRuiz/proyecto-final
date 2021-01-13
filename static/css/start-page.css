@@ -465,6 +465,16 @@ body{
 
 /*Sección celular*/
 
+#page-content-circles{
+    position: relative;
+    border-radius: 0px;
+    background-color: white;
+}
+
+#page-content-circles-col{
+    margin-right:10%;
+}
+
   .circles {
     text-align: center;
     margin: 0 auto 0 30px;
@@ -480,7 +490,7 @@ body{
   
   .vertical-line {
     width: 2px;
-    height:50px;
+    height:60px;
     background: #95C22B;
     margin: 0 auto 0 69px;
   }
@@ -507,12 +517,20 @@ body{
     cursor: pointer; 
   }
 
+  .circle-title1{
+    text-align: left;
+    float:left;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 24px;
+    margin-top: 60px;
+  }
+
   .circle-title{
     text-align: left;
     float:left;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 24px;
-    margin-top: 50px;
+    margin-top: 10%;
   }
 
   .circle-description{
@@ -521,13 +539,69 @@ body{
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 15px;
     font-weight: 200;
+    position:static;
   }
 
   .left-circle-col{
-      width: 130px;
+    width: 130px;
+  }
+
+  .right-circle-col{
+    height: fit-content;
+  }
+
+  #start-button-cell{
+    margin: auto;
+    margin-left: 30px;
+    position: absolute;
+  }
+
+  .circle-image{
+    width: 40px; 
+    margin:auto; 
+    margin-top: -10px;
+  }
+
+  #circle-image-1{
+      width: 50px;
+      margin-top: -5px;
   }
   
+  #circle-image-1-w{
+    width: 50px;
+    margin-top: -5px;
+    display: none;
+  }
 
-  .left-circle-col-btn{
-    margin: auto;
+  #circle-image-2{
+    margin-left: 3px;
+  }
+
+  #circle-image-2-w{
+    margin-left: 3px;
+    display: none;
+  }
+
+  #circle-image-3{
+    width: 47px;
+    margin-top: -3px;
+  }
+
+  #circle-image-3-w{
+    width: 47px;
+    margin-top: -3px;
+    display: none;
+  }
+
+  #circle-image-4{
+    width: 45px;
+    margin-top: -10px;
+    margin-left: 2px;
+  }
+
+  #circle-image-4-w{
+    width: 45px;
+    margin-top: -10px;
+    margin-left: 2px;
+    display: none;
   }

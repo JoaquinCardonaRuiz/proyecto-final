@@ -1,4 +1,3 @@
-
 if(parseInt($(window).width()) > 1550){
     $("#page-content-1").css({"margin-top":"40vw"});
 }
@@ -81,14 +80,35 @@ function animations(){
 function fillCircles(numero){
     numero = parseInt(numero);
     if (circleFilled != numero){
-        $("#circle1").css({"background":"transparent"})
-        $("#circle2").css({"background":"transparent"})
-        $("#circle3").css({"background":"transparent"})
-        $("#circle4").css({"background":"transparent"})
-        $("#circle" + String(numero)).css({"background":"#95C22B"})
+        if (circleFilled == 1){
+            $("#circle1").css({"background":"transparent"});
+            $("#circle-image-1-w").hide();
+            $("#circle-image-1").show();
+        }
+        else if (circleFilled == 2){
+            $("#circle2").css({"background":"transparent"});
+            $("#circle-image-2-w").hide();
+            $("#circle-image-2").show();
+        }
+        else if (circleFilled == 3){
+            $("#circle3").css({"background":"transparent"});
+            $("#circle-image-3-w").hide();
+            $("#circle-image-3").show();
+        }
+        else if (circleFilled == 4){
+            $("#circle4").css({"background":"transparent"});
+            $("#circle-image-4-w").hide();
+            $("#circle-image-4").show();
+        }
+       
+        
+        
+        $("#circle" + String(numero)).css({"background":"#95C22B"});
+        $("#circle-image-" + String(numero) + "").hide();
+        $("#circle-image-" + String(numero) + "-w").show();
         $("#circle" + String(numero)).fadeIn();
-
     }
-
-    
+    circleFilled = numero;
 }
+
+fillCircles(1);

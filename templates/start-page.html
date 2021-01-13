@@ -76,61 +76,55 @@
     </div>
 </div>
 
-<div class="jumbotron" id="page-content-flujo-basico">
+<div class="jumbotron" id="page-content-circles">
     <div class="row">
         <div class="col">
-
         </div>
-        <div class="col">
-                <div class="row">
-                    <div class="left-circle-col">
-                        <div class="vertical-line"></div> 
-                        <div class="circles" id="circle1" onclick="fillCircles(1)"></div>
+        <div class="col" id="page-content-circles-col">
+            <div class="row" id="">
+                <div class="left-circle-col">
+                    <div class="vertical-line"></div> 
+                    <div class="circles" id="circle1" onclick="fillCircles(1)">
+                        <img src="/static/img/circles-1-green.png" class="circle-image" id="circle-image-1">
+                        <img src="/static/img/circles-1-white.png" class="circle-image" id="circle-image-1-w">
                     </div>
-                    <div class="col right-circle-col">
-                        <h5 class="circle-title">Depositá residuos</h5>
-                        <p class="circle-description">Depositá tus residuos en cualquier Punto de Depósito de la ciudad.</p>   
+
+                    <div class="vertical-line"></div> 
+                    <div class="circles" id="circle2" onclick="fillCircles(2)">
+                        <img src="/static/img/circles-2-green.png" class="circle-image" id="circle-image-2">
+                        <img src="/static/img/circles-2-white.png" class="circle-image" id="circle-image-2-w">
                     </div>
-                </div>
-                <div class="row">
-                    <div class="left-circle-col">
-                        <div class="vertical-line"></div> 
-                        <div class="circles" id="circle2" onclick="fillCircles(2)"></div>
-                    </div>
-                    <div class="col right-circle-col">
-                        <h5 class="circle-title">Sumá EcoPuntos</h5>
-                        <p class="circle-description">Sumá EcoPuntos por cada depósito de reisudos que hagas.</p>   
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="left-circle-col">
-                        <div class="vertical-line"></div> 
-                        <div class="circles" id="circle3" onclick="fillCircles(3)"></div>
-                    </div>
-                    <div class="col right-circle-col">
-                        <h5 class="circle-title">Canjealos por productos</h5>
-                        <p class="circle-description">Canjeá tus EcoPuntos por productos hechos a partir de materiales reciclados.</p>   
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="left-circle-col">
-                        <div class="vertical-line"></div> 
-                        <div class="circles" id="circle4" onclick="fillCircles(4)"></div>
-                    </div>
-                    <div class="col right-circle-col">
-                        <h5 class="circle-title">Retiralos en los Puntos de Retiro</h5>
-                        <p class="circle-description">Depositá tus residuos en cualquier Punto de Depósito de la ciudad.</p>   
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="left-circle-col-btn">
-                        <div class="vertical-line"></div>
-                        <h3 id="start-button-cell">¡Empezá ahora!</h3>
-                    </div>
-                    <div class="col right-circle-col">
+
+                    <div class="vertical-line"></div> 
+                    <div class="circles" id="circle3" onclick="fillCircles(3)">
+                        <img src="/static/img/circles-3-green.png" class="circle-image" id="circle-image-3">
+                        <img src="/static/img/circles-3-white.png" class="circle-image" id="circle-image-3-w">
 
                     </div>
+                    
+                    <div class="vertical-line"></div> 
+                    <div class="circles" id="circle4" onclick="fillCircles(4)">
+                        <img src="/static/img/circles-4-green.png" class="circle-image" id="circle-image-4">
+                        <img src="/static/img/circles-4-white.png" class="circle-image" id="circle-image-4-w">
+                    </div>
+
+                    <div class="vertical-line"></div>
+                    <h3 id="start-button-cell">¡Empezá ahora!</h3> 
+
                 </div>
+                <div class="col right-circle-col">
+                    <h5 class="circle-title1">Depositá residuos</h5>
+                    <p class="circle-description" id="desc-1-circles">Depositá tus residuos en cualquier Punto de Depósito de la ciudad.</p>   
+                    
+                    <h5 class="circle-title">Sumá EcoPuntos</h5>
+                    <p class="circle-description" id="desc-2-circles">Sumá EcoPuntos por cada depósito de reisudos que hagas cargando el código obtenido en esta web.</p>   
+                    <h5 class="circle-title">Canjealos por productos</h5>
+                    <p class="circle-description" id="desc-3-circles">Canjeá tus EcoPuntos por productos hechos a partir de materiales reciclados.</p> 
+                
+                    <h5 class="circle-title">Retiralos en los Puntos de Retiro</h5>
+                    <p class="circle-description" id="desc-4-circles">Retirá tu producto por un Punto de Retiro que elijas dentro de la ciudad.</p>   
+                </div>
+            </div>
         </div>
     </div>
 </div>
