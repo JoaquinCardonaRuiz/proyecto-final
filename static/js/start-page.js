@@ -5,6 +5,30 @@ else{
     $("#page-content-1").css({"margin-top":"32vw"});
 }
 
+//Acomoda los textos en base a la posición de los circulos.
+function orderCirclesText(){
+    var pos_circulo_1 = document.getElementById("circle1").offsetTop;
+    $("#circle-title-1").css({top: pos_circulo_1, position:'absolute'});
+    $("#desc-1-circles").css({top: pos_circulo_1 + 35, position:'absolute'});
+
+    var pos_circulo_2 = document.getElementById("circle2").offsetTop;
+    $("#circle-title-2").css({top: pos_circulo_2, position:'absolute'});
+    $("#desc-2-circles").css({top: pos_circulo_2 + 35, position:'absolute'});
+
+
+    var pos_circulo_3 = document.getElementById("circle3").offsetTop;
+    $("#circle-title-3").css({top: pos_circulo_3, position:'absolute'});
+    $("#desc-3-circles").css({top: pos_circulo_3 + 35, position:'absolute'});
+
+
+    var pos_circulo_4 = document.getElementById("circle4").offsetTop;
+    $("#circle-title-4").css({top: pos_circulo_4, position:'absolute'});
+    $("#desc-4-circles").css({top: pos_circulo_4 + 35, position:'absolute'});
+}
+
+
+
+
 var circleFilled = false;
 
 function animations(){
@@ -105,10 +129,11 @@ function fillCircles(numero){
         
         $("#circle" + String(numero)).css({"background":"#95C22B"});
         $("#circle-image-" + String(numero) + "").hide();
-        $("#circle-image-" + String(numero) + "-w").show();
+        $("#circle-image-" + String(numero) + "-w").fadeIn();
         $("#circle" + String(numero)).fadeIn();
     }
     circleFilled = numero;
 }
 
 fillCircles(1);
+orderCirclesText();
