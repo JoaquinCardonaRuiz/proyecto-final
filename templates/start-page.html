@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
 </head>
-<body style="background-color: #f8f9fa;" onscroll="animations()">
+<body style="background-color: white;" onscroll="animations()">
 
 <div class="top" id="page-top-content">
     <div class="row" id="page-heading">
@@ -46,18 +46,18 @@
     <p class="page-content-subtitle">Descubrí como podes ganar ayudando al medio ambiente y a tu ciudad.</p>
     <div class="row justify-content-center" id="cards-row">
         <div class="start-card" id="start-card1">
-            <div class="circle">1</div>
+            <img src="/static/img/tarjetas-1.png" id="card-img-1">
             <h5 class="card-title">Depositá residuos</h5>
-            <p class="card-description">Depositá tus residuos en cualquier Punto de Depósito de la ciudad.</p>   
+            <p class="card-description">Depositá tus residuos en cualquier Punto de Depósito de la ciudad y sumá EcoPuntos por cada depósito.</p>   
         </div>
         <div class="start-card" id="start-card2">
-            <div class="circle">2</div>
-            <h5 class="card-title">Sumá EcoPuntos</h5>
+            <img src="/static/img/tarjetas-2.png" id="card-img-2">
+            <h5 class="card-title">Canjea EcoPuntos</h5>
             <p class="card-description">Sumá EcoPuntos por cada depósito de reisudos que hagas.</p>   
         </div>
         <div class="start-card" id="start-card3">
-            <div class="circle">3</div>
-            <h5 class="card-title">Canjealos por productos</h5>
+            <img src="/static/img/tarjetas-3.png" id="card-img-3">
+            <h5 class="card-title">Hacé tu vida sustentable</h5>
             <p class="card-description">Canjeá tus EcoPuntos por productos hechos a partir de materiales reciclados.</p>   
         </div>
     </div>
@@ -76,6 +76,7 @@
     </div>
 </div>
 
+<!--Sección circulos verdes-->
 <div class="jumbotron" id="page-content-circles">
     <div class="row">
         <div class="col" id="page-content-img-col">
@@ -83,6 +84,8 @@
         </div>
         <div class="col" id="page-content-circles-col">
             <div class="row" id="">
+                <h2 class="line-title">Sumáte a una</h2>
+                <h2 class="line-title-2">ciudad sustentable</h2>
                 <div class="left-circle-col">
                     <div class="vertical-line"></div> 
                     <div class="circles" id="circle1" onclick="fillCircles(1)">
@@ -132,12 +135,12 @@
 </div>
 
   
-
+<!--Sección Plantas-->
 <div class="jumbotron" id="page-content-plantas">
     <div class="row" id="first-row-page-content-plantas">
         <div class="col justify-content-center" id="left-col-page-content-plantas">
             <h3 class="page-content-title-plantas">Encontrá la planta</h3>
-            <h3 class="page-content-title-plantas-2">ideal para vos</h3>
+            <h3 class="page-content-title-plantas-2">que va con vos</h3>
             <p class="page-content-subtitle-plantas">EcoAsistente te ayuda a hacer tu casa más verde, encontrando la planta ideal para vos, en base a la cantidad de horas de luz, la cantidad de veces que puedas regarla, y temperatura.</p>
         </div>
         <div class="col justify-content-center">
@@ -146,16 +149,16 @@
     </div>
 </div>
 
-
+<!--Gacetilla Verde-->
 <div class="jumbotron" id="page-content-green-board">
-    <h1 class="page-content-title-green-board" id="page-content-title-green-board">Titulo Green Board EcoAsistentera</h1>
+    <h1 class="page-content-title-green-board" id="page-content-title-green-board">Sumate al movimiento ecológico</h1>
     <div class="row" id="row-page-content-green-board-1">
         <div class="col">
-            <img src="/static/img/flat-man-recycling-start-page.png" id="start-image-green-board">
+            <img src="/static/img/gacetilla-1.png" id="start-image-green-board">
         </div>
         <div class="col">
-            <h2 class="page-content-subtitle-green-board">Sumáte a EcoAsistente</h2>
-            <p class="page-content-description-green-board">Sumate a EcoAsistente así nos recibimos y dejamos de codear estas mierdas, y podemos irnos a Europa de una buena vez.</p>
+            <h2 class="page-content-subtitle-green-board">Más reciclás, más ganás</h2>
+            <p class="page-content-description-green-board">Por cada depósito que realices, obtené EcoPuntos que te ayuden a subir de nivel y así obtener descuentos exclusivos para el canje de artículos.</p>
         </div>
     </div>
     <div class="row" id="row-page-content-green-board-2">
@@ -164,16 +167,16 @@
             <p class="page-content-description-green-board-left">Sumate a EcoAsistente así nos recibimos y dejamos de codear estas mierdas, y podemos irnos a Europa de una buena vez.</p>
         </div>
         <div class="col">
-            <img src="/static/img/flat-man-recycling-start-page.png" id="start-image-green-board-2">
+            <img src="/static/img/gacetilla-2.png" id="start-image-green-board-2">
         </div>
     </div>
     <div class="row" id="row-page-content-green-board-3">
         <div class="col">
-            <img src="/static/img/flat-man-recycling-start-page.png" id="start-image-green-board-3">
+            <img src="/static/img/gacetilla-3.png" id="start-image-green-board-3">
         </div>
         <div class="col">
-            <h2 class="page-content-subtitle-green-board">Sumáte a EcoAsistente</h2>
-            <p class="page-content-description-green-board">Sumate a EcoAsistente así nos recibimos y dejamos de codear estas mierdas, y podemos irnos a Europa de una buena vez.</p>
+            <h2 class="page-content-subtitle-green-board">Conocé los Puntos de Depósito de tu ciudad</h2>
+            <p class="page-content-description-green-board">Consultá la ubicación y disponibilidad de los Puntos de Depósito de toda la ciudad, sus horarios, y que materiales podés depositar en cada uno</p>
         </div>
     </div>
 </div>

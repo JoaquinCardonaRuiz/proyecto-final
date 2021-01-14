@@ -1,8 +1,14 @@
 if(parseInt($(window).width()) > 1550){
     $("#page-content-1").css({"margin-top":"40vw"});
+    $("#page-content-plantas").css({"margin-left":"20%"});
+    $("#page-content-plantas").css({"margin-right":"15%"});
 }
 else{
     $("#page-content-1").css({"margin-top":"32vw"});
+    $("#page-content-plantas").css({"margin-left":"15%"});
+    $("#page-content-plantas").css({"margin-right":"13%"});
+
+
 }
 
 //Acomoda los textos en base a la posición de los circulos.
