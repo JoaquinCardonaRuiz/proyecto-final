@@ -206,8 +206,8 @@ body{
 }
 
 .card-description{
-    margin-left: 15%;
-    margin-right: 15%;
+    margin-left: 13%;
+    margin-right: 13%;
     line-height: 1.5rem;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 16px;
@@ -227,7 +227,7 @@ body{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 80px;
+    width: 75px;
     margin-top: 10%;
 }
 
@@ -237,6 +237,7 @@ body{
     margin-right: auto;
     width: 67.5px;
     margin-top: 10%;
+    margin-left: 100px;
 }
 
 
@@ -370,6 +371,7 @@ body{
     margin-top: -2%;
     background-color: #95C22B;
     height: fit-content;
+    min-height: 1000px;
 }
 
 .page-content-title-green-board{
@@ -462,6 +464,8 @@ body{
     width: 300px;
     margin-right: 20px;
     margin-left: 15%;
+    max-width: 100%;
+
 }
 
 #start-image-green-board-2{
@@ -469,6 +473,8 @@ body{
     margin-right: 20px;
     margin-left: 25%;
     margin-top: 20px;
+    max-width: 100%;
+
 }
 
 #start-image-green-board-3{
@@ -476,6 +482,8 @@ body{
     margin-right: 10px;
     margin-left: 20%;
     margin-top: 40px;
+    max-width: 100%;
+
 }
 
 /*Sección circulos*/
@@ -624,13 +632,171 @@ body{
     align-items: center;
     height: fit-content;
     vertical-align: middle;
-    margin-top: 8rem;
+    margin-top: 9rem;
 }
 
-#devices-img{
-    width: 550px;
+.devices-img{
+    width: 570px;
     max-width: 100%;
     float: right;
     margin-right: none;
     vertical-align: middle; 
+}
+
+#devices-img-2{
+    display: none;
+}
+
+#devices-img-3{
+    display: none;
+}
+
+#devices-img-4{
+    display: none;
+}
+
+/* Sección top preguntas*/
+
+#page-content-top-questions{
+    height: fit-content;
+    background-color: transparent;
+    margin-left: 10%;
+}
+
+#questions-col{
+    margin-left: 1%;
+}
+
+#top-questions-title{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 37px;
+    font-weight: 300;
+    margin-bottom: 40px;
+}
+
+.question-answer{
+    text-align: left;
+    line-height: 1.5rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 200;
+    position: relative;
+    margin-left: 60px;
+    margin-top: 15px;
+    width: 28vw;
+    margin-bottom: 30px;
+    display: none;
+    line-break: 30px;    
+}
+
+.question-row{
+    text-align: left;
+    height: fit-content;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: width 0.3s, height 0.3s, transform 0.3s;
+    transform: translateX(-10%);
+    display: none;
+}
+
+.question{
+    margin-left: 15px;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: 'IBM Plex Sans', sans-serif;
+
+}
+
+.chevron-faq {
+    float: left;
+    height: 13px;
+    transition: width 0.3s, height 0.3s, transform 0.3s;
+    position: relative;
+    margin-top: 6px;
+    fill: #95C22B;
+    margin-left: 50px;
+  }
+
+#question-img{
+    width: 500px;
+    max-width: 100%;
+    float: right;
+    margin-right: none;
+    vertical-align: middle; 
+    margin-left: auto;
+    transition: width 0.3s, height 0.3s, transform 0.3s;
+    transform: translateX(-150px);
+    margin-top: 1rem;
+}
+
+/*Sección Graduados*/
+#page-content-graduados{
+    border-radius: 0px;
+    background-color: transparent;
+}
+
+#card-graduados{
+    margin: auto;
+    width:1000px;
+    height:450px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 8px 8px rgba(110, 110, 110, 0.1);
+}
+
+#card-graduados:hover{
+    transition: background-color 1s ease-in-out;
+    transition: width 1.1s, height 1.1s, transform 1.1s;
+    background-color: #f9f4ff;
+    transform: translateY(-15px); 
+}
+    
+
+#graudados-right-col{
+    width: fit-content;
+}
+
+.card-graduados-title{
+    color: #393a38;
+    font-weight: 900;
+    font-size: 40px;
+    font-family: 'Hind', sans-serif;
+    margin-left: 10%;
+    margin-top: 10%;
+}
+
+.card-graduados-title-2{
+    color:#393a38;
+    font-weight: 900;
+    font-size: 40px;
+    font-family: 'Hind', sans-serif;
+    margin-left: 10%;
+    margin-top: -13px;
+}
+
+.card-graduados-title-3{
+    color: #393a38;
+    font-weight: 900;
+    font-size: 40px;
+    font-family: 'Hind', sans-serif;
+    margin-left: 10%;
+    margin-top: -13px;
+}
+
+#graduados-img{
+    width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: middle;
+    margin-left: 100px;
+    margin-top: 75px;    
+}
+
+.graduados-description{
+    margin-top: 30px;
+    text-align: left;
+    font-size: 17px;
+    line-height: 1.5rem;
+    font-weight: 200;
+    font-family: 'IBM Plex Sans', sans-serif;
+    margin-left: 10%;
 }

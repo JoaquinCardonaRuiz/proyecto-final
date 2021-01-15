@@ -21,6 +21,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
 </head>
 <body style="background-color: white;" onscroll="animations()">
 
@@ -53,12 +55,12 @@
         <div class="start-card" id="start-card2">
             <img src="/static/img/tarjetas-2.png" id="card-img-2">
             <h5 class="card-title">Canjea EcoPuntos</h5>
-            <p class="card-description">Sumá EcoPuntos por cada depósito de reisudos que hagas.</p>   
+            <p class="card-description">Explorá nuestra tienda y utilizá tus EcoPuntos para obtener artículos hechos con materiales reciclados.</p>   
         </div>
         <div class="start-card" id="start-card3">
             <img src="/static/img/tarjetas-3.png" id="card-img-3">
-            <h5 class="card-title">Hacé tu vida sustentable</h5>
-            <p class="card-description">Canjeá tus EcoPuntos por productos hechos a partir de materiales reciclados.</p>   
+            <h5 class="card-title">Hacé tu vida más sustentable</h5>
+            <p class="card-description">Obtené información para reducir tu uso de energía y encontrá las plantas ideales para a vos.</p>   
         </div>
     </div>
 </div>
@@ -80,7 +82,10 @@
 <div class="jumbotron" id="page-content-circles">
     <div class="row">
         <div class="col" id="page-content-img-col">
-            <img src="/static/img/despositivos.png" id="devices-img">
+            <img src="/static/img/despositivos-1.png" class = "devices-img" id="devices-img-1">
+            <img src="/static/img/despositivos-2.png" class = "devices-img" id="devices-img-2">
+            <img src="/static/img/despositivos-3.png" class = "devices-img" id="devices-img-3">
+            <img src="/static/img/despositivos-4.png" class = "devices-img" id="devices-img-4">
         </div>
         <div class="col" id="page-content-circles-col">
             <div class="row" id="">
@@ -176,12 +181,67 @@
         </div>
         <div class="col">
             <h2 class="page-content-subtitle-green-board">Conocé los Puntos de Depósito de tu ciudad</h2>
-            <p class="page-content-description-green-board">Consultá la ubicación y disponibilidad de los Puntos de Depósito de toda la ciudad, sus horarios, y que materiales podés depositar en cada uno</p>
+            <p class="page-content-description-green-board">Consultá la ubicación y disponibilidad de los Puntos de Depósito de toda la ciudad, sus horarios, y que materiales podés depositar en cada uno de ellos.</p>
         </div>
     </div>
 </div>
 
+<div class="jumbotron" id="page-content-top-questions">
+    <div class="row" style="width: 90%;">
+        <div class="col" id="question-img-col">
+            <img src="/static/img/question-1.png" id="question-img">
+        </div>
+        <div class="col" id="questions-col">
+            <h2 id="top-questions-title">TOP 5 preguntas</h2>
+            <div class="row question-row" onclick="slideAnswer(1);" id="question-row-1">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1"></img>
+                <p class="question" id="question-1">¿Qué es EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-1">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
+            
+            <div class="row question-row" onclick="slideAnswer(2);" id="question-row-2">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2"></img>
+                <p class="question" id="question-2">¿Cómo comienzo a usar EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-2">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
 
+            <div class="row question-row" onclick="slideAnswer(3);" id="question-row-3">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3"></img>
+                <p class="question" id="question-3">¿Cómo obtengo EcoPuntos?</p>
+            </div>
+            <p class="question-answer" id="answer-3">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
+
+            <div class="row question-row" onclick="slideAnswer(4);" id="question-row-4">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4"></img>
+                <p class="question" id="question-4">¿Dónde puedo realizar depósitos?</p>
+            </div>
+            <p class="question-answer" id="answer-4">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
+
+            <div class="row question-row" onclick="slideAnswer(5);" id="question-row-5">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5"></img>
+                <p class="question" id="question-5">¿Qué materiales puedo depositar?</p>
+            </div>
+            <p class="question-answer" id="answer-5">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
+        </div>
+    </div>
+</div>
+
+<!--Sección graduados-->
+<div class="jumbotron" id="page-content-graduados">
+    <div class="container" id="card-graduados" onmouseout="graduadosOut();" onmouseover="graduadosIn();">
+        <div class="row" id="graduados-row">
+            <div class="col" id="graduados-left-col">
+                <h2 class="card-graduados-title">Acá va un título que </h2>
+                <h2 class="card-graduados-title-2">quede bien para</h2>
+                <h2 class="card-graduados-title-3">dar un final</h2>
+                <p class="graduados-description">EcoAsistente es el Proyecto Final de los Alumnos Bruno Tomás Caracini y Joaquín Cardona Ruíz de la carrera Ingeniería en Sistemas de Información, de la Universisdad Tecnológica Nacional de Rosario. Fue presentado en marzo de 2021, y con el concluímos nuestro ciclo como estudiantes universitarios para convertirnos en ingenieros.</p>
+            </div>
+            <div class="col" id="graudados-right-col">
+                <img src="/static/img/graduados.png" id="graduados-img">
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
