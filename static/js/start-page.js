@@ -241,8 +241,16 @@ setMarings();
 
 $( window ).resize(function() {
     setMarings();
-});
+    if ($( window ).width() < 1170){
+        $("#start-image-plantas").css({"margin-top":"15%"});
+        $("#start-image-flujo-basico").css({"margin-top":"10%"});
+    }
+    else{
+        $("#start-image-plantas").css({"margin-top":"0%"});
+        $("#start-image-flujo-basico").css({"margin-top":"0%"});
 
+    }
+});
 function graduadosIn() {
     $(".card-graduados-title").css({"transition" : "color 0.5s ease-in-out","color": "#95C22B"});
     $(".card-graduados-title-2").css({"transition" : "color 0.5s ease-in-out","color": "#95C22B"});
