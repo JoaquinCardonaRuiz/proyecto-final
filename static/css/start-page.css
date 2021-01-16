@@ -737,7 +737,7 @@ body{
 #page-content-graduados{
     border-radius: 0px;
     background-color: transparent;
-    margin-top: -3%;
+    margin-top: -2%;
 }
 
 #card-graduados{
@@ -806,97 +806,103 @@ body{
     margin-left: 10%;
 }
 
-/*Seccion Footer*/
-body {
-    font-family: 'IBM Plex Sans', sans-serif;
- }
- .bg-grey {
-    background: #292929;
- }
- .logo-footer {
-    margin-bottom: 40px;
- }
- footer {
-        color: grey;
- }
- footer p, a {
-font-size: 12px;
-font-family: 'IBM Plex Sans', sans-serif;;
-}
-footer h6 {
-font-family: 'IBM Plex Sans', sans-serif;
-margin-bottom: 40px;
-position: relative;
-}
-footer h6:after {
-position: absolute;
-content: "";
-background: grey;
-width: 12%;
-height: 1px;
-left: 0;
-bottom: -20px;
-}
- .btn-footer {
-             color: grey;
-          
-            text-decoration: none;
-            border: 1px solid;
-            border-radius: 43px;
-            font-size: 13px;
-            padding: 7px 30px;
-            line-height: 47px;
- }
- .btn-footer:hover {
-            
-            text-decoration: none;
-           
- }
-.form-footer input[type="text"] {
-    border: none;
-border-radius: 16px 0 0 16px;
-outline: none;
-padding-left: 10px;
+/*footer*/
+.col_white_amrc { color:#FFF;}
+footer { width:100%; background-color:#263238; min-height:230px; padding:10px 0px 8px 0px ;}
+.pt2 { padding-top:40px ; margin-bottom:20px ;}
+footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
+.mb10 { padding-bottom:15px ;}
+.footer_ul_amrc { margin:0px ; list-style-type:none ; font-size:14px; padding:0px 0px 10px 0px ; }
+.footer_ul_amrc li {padding:0px 0px 5px 0px;}
+.footer_ul_amrc li a{ color:#CCC;}
+.footer_ul_amrc li a:hover{ color:#fff; text-decoration:none;}
+.fleft { float:left;}
+.padding-right { padding-right:10px; }
 
-}
-::placeholder {
-font-size: 10px;
-padding-left: 10px;
-font-style: italic;
-}
-.form-footer input[type="button"] {
-border: none;
-background:#232323;
-    margin-left: -5px;
-color: #fff;
-outline: none;
-border-radius: 0 16px 16px 0;
-padding: 2px 12px;
-}
- .social .fa {
-color: grey;
-font-size: 22px;
-padding: 10px 15px;
-background: #3c3c3c;
-}
- footer ul li {
-list-style: none;
-display: block;
-}
-footer ul  {
-padding-left: 0;
-}
-footer ul  li a{
-text-decoration: none;
-color: grey;
-text-decoration:none;
-}
-a:hover {
-text-decoration: none;
-color: #f5f5f5 !important;
+.footer_ul2_amrc {margin:0px; list-style-type:none; padding:0px;}
+.footer_ul2_amrc li p { display:table; }
+.footer_ul2_amrc li a:hover { text-decoration:none;}
+.footer_ul2_amrc li i { margin-top:5px;}
 
+.bottom_border { border-bottom:1px solid #323f45; padding-bottom:20px;}
+.foote_bottom_ul_amrc {
+	list-style-type:none;
+	padding:0px;
+	display:table;
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto;
 }
-.logo-part {
-border-right: 1px solid grey;
-height: 100%;
+.foote_bottom_ul_amrc li { display:inline;}
+.foote_bottom_ul_amrc li a { color:#999; margin:0 12px;}
+
+
+.footer-logo{
+    width: 240px;
+    margin-left: -20px;
+}
+
+#footer-col-1{
+    margin-right: -100px;
+    margin-left: 150px;
+    margin-top: 31px;
+}
+
+#footer-col-2{
+    margin-right: -100px;
+    margin-top: 31px;
+}
+
+#footer-col-3{
+    margin-top: 31px;
+}
+
+#start-button-footer{
+    position: relative;
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+    border-radius: 25px;
+    border: 1px solid #95C22B;
+    padding: 8px ;
+    text-align: center;
+    width: 225px;
+    height: 38px;
+    background: #95C22B;
+    color: #263238;
+    margin-top: 30px;
+}
+
+#login-button-footer{
+    position: relative;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    border-radius: 25px;
+    border: 1px solid whitesmoke;
+    padding: 8px ;
+    text-align: center;
+    width: 225px;
+    height: 38px;
+    background: transparent;
+    color: whitesmoke;
+    margin-top: 15px;
+}
+
+#start-button-footer:hover{
+    background-color: #c8fa53;
+    border: 1px solid #c8fa53;
+    cursor: pointer; 
+    padding: 8px ;
+
+  }
+
+#login-button-footer:hover{
+  background-color: rgba(245, 245, 245, 0.74);
+  border: 1px rgba(245, 245, 245, 0.74);
+  color: #263238;
+  cursor: pointer; 
+  padding: 9px ;
+
 }
