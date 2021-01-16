@@ -26,11 +26,11 @@
                 <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Añadir entidad</p>
             </div>
-            <div class="container" id="option-middle">
+            <div class="container" id="option-middle" onclick="modifyEntidad()">
                 <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Modificar entidad</p>
             </div>
-            <div class="container" id="option-right">
+            <div class="container" id="option-right" onclick="removeEntidad()">
                 <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
                 <p class="option-title">Eliminar entidad</p>
             </div>
@@ -44,6 +44,8 @@
                     <th scope="col" class="table-heading">Nombre de la Entidad</th>
                     <th scope="col" class="table-heading">Demanda</th>
                     <th scope="col" class="table-heading">Salidas de Stock</th>
+                    <th class="table-heading delete-th"></th>
+                    <th class="table-heading modify-th"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,10 +55,12 @@
                 <!--{{nombres.append(ent.nombre)}} -->
                 <tr>
                     <th scope="row">{{ent.nombre}}</th>
-                    <td><a href='#' onclick="openLoadingRing();getTablaDemandas({{ent.id}},'{{ent.nombre}}')">Ver Demandas</a></td>
+                    <td><a href='#' onclick="openLoadingRing();getTablaDemandas('{{ent.id}}','{{ent.nombre}}')">Ver Demandas</a></td>
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
-                    <td><a href='#' onclick="openLoadingRing();getTablaSalidas({{ent.id}},'{{ent.nombre}}')">Ver Salidas</a></td>
+                    <td><a href='#' onclick="openLoadingRing();getTablaSalidas('{{ent.id}}','{{ent.nombre}}')">Ver Salidas</a></td>
+                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{ent.id}}')"></i></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ent.id}}','{{ent.nombre}}')"></i></td>
                 </tr>
                 {%endfor%}
                 </tbody>
@@ -116,15 +120,15 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{url_for('alta_entidad_destino')}}" method="POST" class="modal-body" id="altaEntidadForm">
+        <form action="{{url_for('alta_entidad_destino')}}" method="POST" class="modal-body" id="altaEntidadForm" autocomplete="off">
             <div class="row">
                 <div class="col">
                     <div class="group" style="margin-left: 5%;">      
-                        <input type="text" id="nombreInput" onkeyup = "validaNombre({{nombres|safe}})" name="nombre" >
+                        <input type="text" id="nombreInput" onkeyup = "validaNuevoNombre({{nombres|safe}})" name="nombre" >
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Nombre de la Entidad</label>
-                        <p id="descuentoNivelError" class="modalErrorMessage"></p>
+                        <p id="nombreEntidadError" class="modalErrorMessage"></p>
                     </div>
                 </div>
             </div>
@@ -135,35 +139,94 @@
         </form>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="btn" onclick="submitForm('altaEntidadForm')" id="primary-btn" name = "add-btn">Crear Entidad</button>
+          <button type="button" class="btn" onclick="submitForm('altaEntidadForm')" id="primary-btn" name = "add-btn" disabled>Crear Entidad</button>
         </div>
       </div>
     </div>
 </div>
 
 <!--Delete Modal -->
-<div class="modal fade modal-lg" id="bajaNivelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-lg" id="bajaEntidadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="headingModal">Eliminar un nivel</h5>
+          <h5 class="modal-title" id="headingModal">Eliminar una Entidad de Destino</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body-baja" id="altaNivelForm">
-            <div class="row">
-                <p class="top-modal-text-baja"></p>
-                <p class="bottom-modal-text-baja-mods" id="modalBajaMod1"></p>
-                <p class="bottom-modal-text-baja-mods" id="modalBajaMod2"></p>
-                <p class="bottom-modal-text-baja-mods" id="modalBajaMod3"></p>
-                <p class="bottom-modal-text-baja">¿Está seguro que desea eliminar el nivel? Una vez eliminado, el nivel no se podrá recuperar.</p>
+        <div class="modal-body-baja" >
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
+            <p class="b-modal-text-baja">
+            ¿Está seguro que desea eliminar la entidad de destino? Una vez eliminada, esta no se podrá recuperar.</p>
+            <p class="bottom-modal-text" id="bottomBajaModalText"></p>
         </div>
-        <input type="text" name="" id="numNivel" hidden>
+        <input type="text" name="" id="idEntidad" hidden>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="btn" onclick="setID();" id="primary-btn-alert">Eliminar nivel</button>
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
+          <button type="button" class="btn" onclick="baja_entidad();" id="primary-btn-alert">Eliminar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Edit Modal -->
+<div class="modal fade modal-lg" id="editEntidadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header"> 
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs ed-tabs" id="myTab" role="tablist">
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link active" id="entidad-tab" data-toggle="tab" href="#entidad" role="tab" aria-controls="entidad" aria-selected="true">Nombre de Entidad</a>
+            </li>
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link " id="demandas-tab" data-toggle="tab" href="#demandas" role="tab" aria-controls="demandas" aria-selected="false">Demandas</a>
+            </li>
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link " id="nuevademanda-tab" data-toggle="tab" href="#nuevademanda" role="tab" aria-controls="nuevademanda" aria-selected="false">Nueva Demanda</a>
+            </li>
+          </ul>
+        </div>
+        <!-- Tab panes -->
+        <div class="tab-content">
+
+          <!-- Tab pane 1 -->
+          <div class="tab-pane active" id="entidad" role="tabpanel" aria-labelledby="entidad-tab">
+            <form action="{{url_for('alta_entidad_destino')}}" method="POST" class="modal-body" id="modEntidadForm" autocomplete="off">
+            <div class="row">
+                <div class="col">
+                    <div class="group" style="margin-left: 5%;">      
+                        <input type="text" id="EntNombreInput" onkeyup = "validaModNombre({{nombres|safe}})" name="nombre" >
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Nombre de la Entidad</label>
+                        <p id="modNombreEntidadError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <p class="bottom-modal-text">Una vez completados todos los datos, presione el botón "Aceptar".</p>
+            </div>
+        </form>
+
+          </div>
+
+          <!-- Tab pane 2 -->
+          <div class="tab-pane" id="demandas" role="tabpanel" aria-labelledby="demandas-tab">2</div>
+          
+          <!-- Tab pane 3 -->
+          <div class="tab-pane" id="nuevademanda" role="tabpanel" aria-labelledby="nuevademanda-tab">3</div>
+        </div>
+
+        <input type="text" name="" id="idEntidad" hidden>
+        <input type="text" name="" id="nombreEntidad" hidden>
+        <div class="modal-footer">
+          <button type="button" class="btn aceptar-btn" onclick="submitForm('modEntidadForm')" id="mod-name-btn" name = "add-btn" disabled>Aceptar</button>
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cerrar</button>
         </div>
       </div>
     </div>
