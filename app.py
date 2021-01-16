@@ -71,7 +71,7 @@ def mod_nivel_request(id):
 
 @app.route('/gestion-ed', methods = ['GET','POST'])
 def gestion_ed():
-    entidades = NegocioEntidadDestino.get_entidades_destino()
+    entidades = NegocioEntidadDestino.get_all()
     return render_template('gestion-entidades-destino.html', entidades = entidades)
 
 
@@ -79,7 +79,7 @@ def gestion_ed():
 def devolver_demandas(id):
     #TODO: evitar esta vuelta a BD
     #TODO: revisar cómo verificar que sólo se cargue una demanda por TA
-    e = NegocioEntidadDestino.get_one_entidad_destino(id)
+    e = NegocioEntidadDestino.get_one(id)
     a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.demandas])
 
     demandas_present = [{"nombre":          d[1].nombre,
@@ -93,7 +93,7 @@ def devolver_demandas(id):
 @app.route('/gestion-ed/salidas/<id>')
 def devolver_salidas(id):
     #TODO: evitar esta vuelta a BD
-    e = NegocioEntidadDestino.get_one_entidad_destino(id)
+    e = NegocioEntidadDestino.get_one(id)
     a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.salidas])
     salidas_present =  [{"nombre":          s[1].nombre,
                          "cantidad":        s[0].cantidad, 
@@ -108,10 +108,17 @@ def alta_entidad_destino():
     if request.method == 'POST':
         nombre = request.form['nombre']
         try:
-            NegocioEntidadDestino.alta_entidad_destino(nombre)
+            NegocioEntidadDestino.add(nombre)
         except Exception as e:
             raise e
         return redirect(url_for('gestion_ed'))
+
+
+@app.route('/gestion-ed/baja/<id>')
+def baja_entidad_destino(id):
+    id = int(id)
+    NegocioEntidadDestino.delete(id)
+    return redirect(url_for('gestion_ed'))
 
 
 if __name__ == '__main__':

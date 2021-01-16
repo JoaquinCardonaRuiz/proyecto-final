@@ -14,12 +14,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
+<!-- Sidebar import -->
 {% extends 'layout.html' %}
+
 {% block body %}
 <div class="page-content" style="text-align: left;" id="content">
+
+
+
+
+    <!-- Heading -->
+
     <div class="container" id="heading-container">
         <h1 class="heading">Gestión de Entidades de Destino</h1>
     </div>
+    
+
+
+
+    <!-- Botones Opciones-->
+
     <div class="container" id="top-container">
         <div class="row">
             <div class="container" id="option-left" data-toggle="modal" data-target="#altaModal">
@@ -36,6 +50,13 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+    <!-- Tabla Entidades-->
+
     <div class="container" id="table-container">
         <div class="row">
             <table class="table" id="content-table">
@@ -69,7 +90,13 @@
     </div>
 </div>
 
+
+
+
+
 <!-- Loading Modal -->
+<!-- Para mostrar mientras se carga un modal-->
+
 <div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <br><br><br><br><br><br><br><br>
@@ -79,7 +106,12 @@
     </div>
 </div>
 
+
+
+
+
 <!-- Tabla Modal -->
+
 <div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -110,7 +142,12 @@
     </div>
 </div>
 
+
+
+
+
 <!--Alta Modal -->
+
 <div class="modal fade modal-lg" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -145,7 +182,13 @@
     </div>
 </div>
 
+
+
+
+
+
 <!--Delete Modal -->
+
 <div class="modal fade modal-lg" id="bajaEntidadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -161,8 +204,8 @@
             </div>
             <p class="b-modal-text-baja">
             ¿Está seguro que desea eliminar la entidad de destino? Una vez eliminada, esta no se podrá recuperar.</p>
-            <p class="bottom-modal-text" id="bottomBajaModalText"></p>
         </div>
+        <p class="bottom-modal-text" id="bottomBajaModalText"></p>
         <input type="text" name="" id="idEntidad" hidden>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
@@ -172,11 +215,17 @@
     </div>
 </div>
 
+
+
+
+
 <!--Edit Modal -->
+
 <div class="modal fade modal-lg" id="editEntidadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header"> 
+
           <!-- Nav tabs -->
           <ul class="nav nav-tabs ed-tabs" id="myTab" role="tablist">
             <li class="nav-item ed-tabs-item">
@@ -190,7 +239,10 @@
             </li>
           </ul>
         </div>
+
+
         <!-- Tab panes -->
+        <!-- Contenido de las pestanas -->
         <div class="tab-content">
 
           <!-- Tab pane 1 -->
@@ -215,12 +267,16 @@
 
           </div>
 
+
           <!-- Tab pane 2 -->
           <div class="tab-pane" id="demandas" role="tabpanel" aria-labelledby="demandas-tab">2</div>
           
           <!-- Tab pane 3 -->
           <div class="tab-pane" id="nuevademanda" role="tabpanel" aria-labelledby="nuevademanda-tab">3</div>
         </div>
+
+
+
 
         <input type="text" name="" id="idEntidad" hidden>
         <input type="text" name="" id="nombreEntidad" hidden>

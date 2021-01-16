@@ -8,6 +8,8 @@ function openLoadingRing(){
     $(".lds-ring").show();
 }
 
+
+
 function getTablaDemandas(id, nombre){
     $.getJSON("/gestion-ed/demandas/"+String(id),function (result){
 
@@ -66,6 +68,8 @@ function getTablaDemandas(id, nombre){
         
     })
 }
+
+
 
 function getTablaSalidas(id, nombre){
     $.getJSON("/gestion-ed/salidas/"+String(id),function (result){
@@ -223,7 +227,7 @@ function openBajaModal(idEntidad){
 function baja_entidad(){
 
     //Manejo de elementos para la carga
-    $("#fieldsRowBaja").hide();
+    $(".b-modal-text-baja").hide();
     $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
     $(".lds-ring").show().fadeIn(500);
     $('#bottomBajaModalText').show();
@@ -232,14 +236,14 @@ function baja_entidad(){
 
     //Manejo de datos
     id = $('#idEntidad').val();
-    window.location.href='/gestion-ed/baja' + String(id)
+    window.location.href='/gestion-ed/baja/' + String(id)
 
     //Funcion que va cambiando los mensajes de carga.
     nextMsgBaja()
 }
 
 function nextMsgBaja() {
-    if (messages.length == 1) {
+    if (messagesBaja.length == 1) {
         $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500);
 
     } else {
