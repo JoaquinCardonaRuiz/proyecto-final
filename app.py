@@ -120,6 +120,18 @@ def baja_entidad_destino(id):
     NegocioEntidadDestino.delete(id)
     return redirect(url_for('gestion_ed'))
 
+@app.route('/gestion-ed/edit', methods = ['GET','POST'])
+def edit_entidad_destino():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        id = request.form['id']
+        print(nombre,id)
+        try:
+            NegocioEntidadDestino.update(id,nombre)
+        except Exception as e:
+            raise e
+        return redirect(url_for('gestion_ed'))
+
 
 if __name__ == '__main__':
     app.debug = True

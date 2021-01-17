@@ -205,10 +205,24 @@ div.modal-content{
   text-transform: none !important;
 }
 
-.aceptar-btn{
+.btn-aceptar{
   background-color: #95C22B !important;
     color: #fff !important;
 }
+
+.btn-custom{
+  cursor: default !important;
+  background-color: #FFF !important;
+  border-radius: 4px !important;
+  border-color: transparent !important;
+  border-width: 0px !important;
+  border: none !important;
+  margin-top:8px !important;
+  text-align: left !important;
+
+}
+
+
 
 #primary-btn{
     background-color: #95C22B;

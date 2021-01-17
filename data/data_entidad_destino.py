@@ -123,7 +123,26 @@ class DatosEntidadDestino(Datos):
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_entidad_destino.delete()",
                                                     msj=str(e),
-                                                    msj_adicional="Error eliminando una \
-                                                        entidad destino en la BD.")
+                                                    msj_adicional="Error eliminando una entidad destino en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def update(cls,id,nombre):
+        """
+        Actualiza el nombre de una entidad de destino en la BD
+        """
+
+        cls.abrir_conexion()
+        try:
+            sql = ("UPDATE entidadesDestino SET nombre = \"{}\" WHERE idEntidad={}".format(nombre,id))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_entidad_destino.update()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando una entidad destino en la BD.")
         finally:
             cls.cerrar_conexion()

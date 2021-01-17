@@ -1,6 +1,10 @@
 var del = false;
 var mod = false;
 
+$('.dropdown-menu a').on('click', function(){    
+    $(this).parent().parent().prev().html($(this).html() + '<span class="caret"></span>');    
+})
+
 function openLoadingRing(){
     document.getElementById("open-loading-modal").click();
     $(".lds-ring").hide();
@@ -242,6 +246,27 @@ function baja_entidad(){
     nextMsgBaja()
 }
 
+function alta_entidad(){
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    document.getElementById("row-to-hide-alta").hidden=true;
+    $('#primary-btn').prop('disabled', true);
+    $('#secondary-btn').prop('disabled', true);
+    submitForm('altaEntidadForm');
+    nextMsgAlta();
+}
+
+function mod_entidad(){
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    document.getElementById("row-to-hide-mod").hidden=true;
+    $('#primary-btn').prop('disabled', true);
+    $('#secondary-btn').prop('disabled', true);
+    submitForm('modEntidadForm');
+    nextMsgMod();
+}
+
+
 function nextMsgBaja() {
     if (messagesBaja.length == 1) {
         $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500);
@@ -251,9 +276,39 @@ function nextMsgBaja() {
     }
 };
 
+function nextMsgAlta() {
+    if (messagesAlta.length == 1) {
+        $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500);
+
+    } else {
+        $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgAlta);
+
+    }
+};
+
+function nextMsgMod() {
+    if (messagesMod.length == 1) {
+        $('#bottomModModalText').html(messagesMod.pop()).fadeIn(500);
+
+    } else {
+        $('#bottomModModalText').html(messagesMod.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgMod);
+
+    }
+};
+
 
 var messagesBaja = [
     "Estamos eliminando la entidad de destino...",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+
+var messagesAlta = [
+    "Estamos añadiendo la entidad de destino...",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+
+var messagesMod = [
+    "Estamos modificando la entidad de destino...",
     "¡Casi listo! Últimos retoques"
 ].reverse();
 
@@ -266,6 +321,7 @@ function openEditModal(idEntidad,nombreEntidad){
     document.getElementById("EntNombreInput").value = nombreEntidad;
     $('#editEntidadModal').modal('show');
     $('.nav-tabs a:first').tab('show');
+    document.getElementById("idEntidadInput").value = document.getElementById("idEntidad").value;
     document.getElementById("mod-name-btn").disabled = true;
 }
 
@@ -291,5 +347,24 @@ function validaModNombre(nombres){
     else{
         document.getElementById("modNombreEntidadError").innerHTML = "";
         document.getElementById("mod-name-btn").disabled = false;
+    }
+}
+
+function configureModalTab(n){
+    if(n == 1){
+        document.getElementById("idEntidadInput").value = document.getElementById("idEntidad").value;
+        document.getElementById("mod-name-btn").hidden = false;
+        document.getElementById("del-dem-btn").hidden = true;
+        document.getElementById("add-dem-btn").hidden = true;
+    }
+    else if(n == 2){
+        document.getElementById("mod-name-btn").hidden = true;
+        document.getElementById("del-dem-btn").hidden = false;
+        document.getElementById("add-dem-btn").hidden = true;
+    }
+    else if(n == 3){
+        document.getElementById("mod-name-btn").hidden = true;
+        document.getElementById("del-dem-btn").hidden = true;
+        document.getElementById("add-dem-btn").hidden = false;
     }
 }

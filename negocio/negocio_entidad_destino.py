@@ -11,7 +11,7 @@ class NegocioEntidadDestino(Negocio):
         Da de alta una nueva entidad destino en el sistema.
         """
         try:
-            if nombre in [i.nombre for i in cls.get_entidades_destino()]:
+            if nombre in [i.nombre for i in cls.get_all()]:
                 #Valida regla RN11
                 raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.alta_entidad_destino()",
                                                               msj="Error en la capa de negocio al validar regla RN11: Todas las entidades de destino deben tener nombres distintos.") 
@@ -67,3 +67,15 @@ class NegocioEntidadDestino(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_entidad_destino.delete()",
                                                    msj=str(e),
                                                    msj_adicional="Error en la capa de Negocio eliminando una Entidad destino de la base de Datos")
+
+    @classmethod
+    def update(cls,id,nombre):
+        """
+        Actualiza el nombre de una entidad de destino en la BD
+        """
+        try:
+            DatosEntidadDestino.update(id,nombre)
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_entidad_destino.update()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error en la capa de Negocio actualizando una Entidad destino de la base de Datos")
