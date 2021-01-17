@@ -6,39 +6,6 @@ from classes import EntidadDestino, CantDemanda, SalidaStock
 
 
 class DatosEntidadDestino(Datos):
-    @classmethod
-    def get_tabla_salidas(cls,id):
-        """
-        Obtiene la tabla de salidas a partir de un id de entidad de destino de la BD.
-        """
-        cls.abrir_conexion()
-        try:
-            sql = ("SELECT idEntidad, idTipoArticulo, tiposArticulo.nombre, cantidadSalida,\
-                    unidadMedida, fecha\
-                    FROM salidasStock \
-                    right join tiposArticulo using(idTipoArticulo) \
-                    left join entidadesDestino using(idEntidad) \
-                    WHERE idEntidad = {} \
-                    AND entidadesDestino.estado != \"eliminado\";".format(id))
-            cls.cursor.execute(sql)
-            salidas_ = cls.cursor.fetchall()
-            salidas = []
-            for s in salidas_:
-                salida_ = {"nombre": s[2],
-                            "cantidad": s[3], 
-                            "unidadmedida": s[4], 
-                            "fecha": str(s[5])} #TODO: formatear fecha bien
-                salidas.append(salida_)
-            return salidas
-        
-        except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.get_tabla_salidas()",
-                                                    msj=str(e),
-                                                    msj_adicional="Error obtieniendo la \
-                                                        tabla de salidas desde la BD.")
-        finally:
-            cls.cerrar_conexion()
-
 
     @classmethod
     def get_all(cls):

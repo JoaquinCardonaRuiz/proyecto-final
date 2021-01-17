@@ -133,6 +133,18 @@ def edit_entidad_destino():
             raise e
         return redirect(url_for('gestion_ed'))
 
+@app.route('/gestion-ed/baja-demanda',methods = ['GET','POST'])
+def baja_demanda():
+    if request.method == 'POST':
+        idEnt = request.form['idEnt']
+        idArt = request.form['idArt']
+        try:
+            NegocioDemanda.delete(idEnt,idArt)
+        except Exception as e:
+            raise e
+
+        return redirect(url_for('gestion_ed'))
+
 
 if __name__ == '__main__':
     app.debug = True

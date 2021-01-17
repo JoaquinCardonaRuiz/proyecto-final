@@ -256,10 +256,26 @@ function mod_entidad(){
     $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
     $(".lds-ring").show().fadeIn(500);
     document.getElementById("row-to-hide-mod").hidden=true;
-    $('#primary-btn').prop('disabled', true);
-    $('#secondary-btn').prop('disabled', true);
+    $('#mod-name-btn').prop('disabled', true);
+    $('#secondary-btn-baja').prop('disabled', true);
     submitForm('modEntidadForm');
     nextMsgMod();
+}
+
+
+function baja_demanda(){
+    $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $('#bottomBajaDemText').show();
+    document.getElementById("hr-to-hide-1").hidden=true;
+    document.getElementById("row-to-hide-1").hidden=true;
+    document.getElementById("row-to-hide-2").hidden=true;
+    document.getElementById("br-to-hide-1").hidden=true;
+    document.getElementById("br-to-hide-2").hidden=true;
+    $('#del-dem-btn').prop('disabled', true);
+    $('#secondary-btn-baja').prop('disabled', true);
+    submitForm('bajaDemandaForm');
+    nextMsgBajaDem();
 }
 
 
@@ -292,6 +308,15 @@ function nextMsgMod() {
     }
 };
 
+function nextMsgBajaDem() {
+    if (messagesBajaDem.length == 1) {
+        $('#bottomBajaDemText').html(messagesBajaDem.pop()).fadeIn(500);
+
+    } else {
+        $('#bottomBajaDemText').html(messagesBajaDem.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgBajaDem);
+    }
+};
+
 
 var messagesBaja = [
     "Estamos eliminando la entidad de destino...",
@@ -308,6 +333,11 @@ var messagesMod = [
     "¡Casi listo! Últimos retoques"
 ].reverse();
 
+var messagesBajaDem = [
+    "Estamos eliminando la demanda...",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+
 
 function openEditModal(idEntidad,nombreEntidad){
     jQuery.noConflict();
@@ -319,6 +349,7 @@ function openEditModal(idEntidad,nombreEntidad){
     $('.nav-tabs a:first').tab('show');
     document.getElementById("idEntidadInput").value = document.getElementById("idEntidad").value;
     document.getElementById("mod-name-btn").disabled = true;
+    configureModalTab(1);
 }
 
 function validaModNombre(nombres){
@@ -359,13 +390,15 @@ function configureModalTab(n){
         document.getElementById("mod-name-btn").hidden = true;
         document.getElementById("del-dem-btn").hidden = false;
         document.getElementById("add-dem-btn").hidden = true;
+        document.getElementById("del-dem-btn").disabled = true;
+        document.getElementById("nombreArtInput").value = "";
+        document.getElementById("cantArtInput").value = "";
         document.getElementById("dd-fill-1").innerHTML="";
         $.getJSON("/gestion-ed/demandas/"+String(document.getElementById("idEntidad").value),function (result){
             if(result.length > 0){
                 for(i=0; i < result.length; i++){
                     var nombre = result[i]["nombre"];
                     var cantidad = result[i]["cantidad"];
-                    var unidad = result[i]["unidadmedida"];
                     var idArt = result[i]["idArt"];
                     var l = document.createElement("li");
                     l.className = "dropdown-li";
@@ -404,5 +437,6 @@ function select_option(nombre,cantidad,idArt){
     document.getElementById("nombreArtInput").value = nombre;
     document.getElementById("cantArtInput").value = cantidad;
     document.getElementById("idArtInput").value = idArt;
+    document.getElementById("idEntInput").value = document.getElementById("idEntidad").value;
     document.getElementById("del-dem-btn").disabled = false;
 }

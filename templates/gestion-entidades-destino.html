@@ -275,11 +275,11 @@
 
           <!-- Tab pane 2 -->
           <div class="tab-pane" id="demandas" role="tabpanel" aria-labelledby="demandas-tab">
-              <div class="row" id="loadingRow">
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-              </div>
-              <div class="modal-body">
-                <div class="row">
+              <form action="{{url_for('baja_demanda')}}" method="POST" class="modal-body" id="bajaDemandaForm" autocomplete="off">
+                <div class="row" id="loadingRow">
+                  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <div class="row" id="row-to-hide-1">
                   <div class="col">
                     <div class="group" style="margin-left: 5%">
                           <input type="text" id="idEntidadInput" name="id" hidden>
@@ -294,12 +294,12 @@
                     </div>
                   </div>
                 </div>
-                <hr>
-                <br><br>
-                <div class="row">
+                <hr id="hr-to-hide-1">
+                <br id="br-to-hide-1"><br id="br-to-hide-2">
+                <div class="row" id="row-to-hide-2">
                   <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                      <input type="text" id="idArtInput" name="id" hidden>
+                      <input type="text" id="idArtInput" name="idArt" hidden>
                       <input type="text" id="nombreArtInput" name="nombre" readonly>
                       <span class="highlight"></span>
                       <span class="bar"></span>
@@ -309,7 +309,7 @@
                   <div class="col">
                     <div class="group" style="margin-left: 10%;">
                       <!-- Por algun motivo el label solo se comporta bien si esta este input hidden. Ver -->
-                      <input type="text" hidden>
+                      <input type="text" id="idEntInput" name="idEnt" hidden>
                       <input type="text" id="cantArtInput" name="cantidad" readonly>
                       <span class="highlight"></span>
                       <span class="bar"></span>
@@ -318,9 +318,9 @@
                   </div>
                 </div>
                 <div class="row">
-                    <p class="bottom-modal-text">Una vez completados todos los datos, presione el botón "Eliminar".</p>
+                    <p class="bottom-modal-text" id="bottomBajaDemText">Una vez completados todos los datos, presione el botón "Eliminar".</p>
                 </div>
-              </div>
+              </form>
           </div>
           
           <!-- Tab pane 3 -->
@@ -334,7 +334,7 @@
         <input type="text" name="" id="nombreEntidad" hidden>
         <div class="modal-footer">
           <button type="button" class="btn btn-aceptar" onclick="mod_entidad();" id="mod-name-btn" name = "acc-btn" disabled>Aceptar</button>
-          <button type="button" class="btn btn-danger" onclick="submitForm('delDemForm')" id="del-dem-btn" name = "del-btn" disabled hidden>Eliminar</button>
+          <button type="button" class="btn btn-danger" onclick="baja_demanda();" id="del-dem-btn" name = "del-btn" disabled hidden>Eliminar</button>
           <button type="button" class="btn btn-aceptar" onclick="submitForm('addDemForm')" id="add-dem-btn" name = "add-btn" disabled hidden>Aceptar</button>
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cerrar</button>
         </div>
