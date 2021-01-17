@@ -295,11 +295,12 @@
                   </div>
                 </div>
                 <hr>
+                <br><br>
                 <div class="row">
                   <div class="col">
                     <div class="group" style="margin-left: 10%;">
                       <input type="text" id="idArtInput" name="id" hidden>
-                      <input type="text" id="nombreArtInput" name="nombre">
+                      <input type="text" id="nombreArtInput" name="nombre" readonly>
                       <span class="highlight"></span>
                       <span class="bar"></span>
                       <label>Nombre del Articulo</label>
@@ -307,18 +308,12 @@
                   </div>
                   <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                      <input type="text" id="cantArtInput">
+                      <!-- Por algun motivo el label solo se comporta bien si esta este input hidden. Ver -->
+                      <input type="text" hidden>
+                      <input type="text" id="cantArtInput" name="cantidad" readonly>
                       <span class="highlight"></span>
                       <span class="bar"></span>
                       <label>Cantidad</label>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="group" style="margin-left: 10%;">
-                      <input type="text" id="unidadArtInput">
-                      <span class="highlight"></span>
-                      <span class="bar"></span>
-                      <label>Unidad de Medida</label>
                     </div>
                   </div>
                 </div>

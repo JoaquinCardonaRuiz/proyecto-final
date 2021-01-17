@@ -373,7 +373,8 @@ function configureModalTab(n){
                     a.href = "#";
                     a.innerHTML = result[i]["nombre"];
                     a.className = "dropdown-link";
-                    a.onclick = "select_option("+nombre+","+cantidad+","+unidad+","+idArt+");"
+                    a.setAttribute("onClick", "select_option(\""+nombre+"\",\""+cantidad+"\",\""+idArt+"\");");
+                    //a.onclick = select_option(nombre,cantidad,unidad,idArt);
                     l.appendChild(a);
                     document.getElementById("dd-fill-1").appendChild(l);
                 }
@@ -399,10 +400,9 @@ function configureModalTab(n){
     }
 }
 
-function select_option(nombre,cantidad,unidad,idArt){
+function select_option(nombre,cantidad,idArt){
     document.getElementById("nombreArtInput").value = nombre;
     document.getElementById("cantArtInput").value = cantidad;
-    document.getElementById("unidadArtInput").value = unidad;
     document.getElementById("idArtInput").value = idArt;
     document.getElementById("del-dem-btn").disabled = false;
 }
