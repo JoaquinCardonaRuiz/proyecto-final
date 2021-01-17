@@ -283,23 +283,45 @@
                   <div class="col">
                     <div class="group" style="margin-left: 5%">
                           <input type="text" id="idEntidadInput" name="id" hidden>
-                          <label for="dd-art-btn-1">Nombre de la Entidad</label>
+                          <label for="dd-art-btn-1">Nombre del Artículo</label>
 
                           <button id="dd-art-btn-1" type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
                               Elija el nombre del artículo <span class="caret caret-custom"></span>
                           </button>
 
-                          <ul class="dropdown-menu" role="menu">
-                              <li><a href="#">small</a></li>
-                              <li><a href="#">medium</a></li>
-                              <li><a href="#">large</a></li>
+                          <ul class="dropdown-menu" role="menu" id="dd-fill-1">
                           </ul>
-                          
-
                     </div>
                   </div>
                 </div>
-              
+                <hr>
+                <div class="row">
+                  <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                      <input type="text" id="idArtInput" name="id" hidden>
+                      <input type="text" id="nombreArtInput" name="nombre">
+                      <span class="highlight"></span>
+                      <span class="bar"></span>
+                      <label>Nombre del Articulo</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                      <input type="text" id="cantArtInput">
+                      <span class="highlight"></span>
+                      <span class="bar"></span>
+                      <label>Cantidad</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                      <input type="text" id="unidadArtInput">
+                      <span class="highlight"></span>
+                      <span class="bar"></span>
+                      <label>Unidad de Medida</label>
+                    </div>
+                  </div>
+                </div>
                 <div class="row">
                     <p class="bottom-modal-text">Una vez completados todos los datos, presione el botón "Eliminar".</p>
                 </div>

@@ -219,10 +219,32 @@ div.modal-content{
   border: none !important;
   margin-top:8px !important;
   text-align: left !important;
+  vertical-align: center;
+}
+
+.dropdown-li{
+  list-style-position:inside;
+  border-bottom: 1px solid lightgray;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+  height:30px;
+  margin-bottom:10px;
 
 }
 
+.dropdown-link{
+  color: #888;
+  margin-left: 12px;
+}
 
+#dd-art-btn-1{
+  width:230px;
+}
+
+#dd-fill-1{
+  width: 230px;
+}
 
 #primary-btn{
     background-color: #95C22B;

@@ -82,10 +82,11 @@ def devolver_demandas(id):
     e = NegocioEntidadDestino.get_one(id)
     a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.demandas])
 
-    demandas_present = [{"nombre":          d[1].nombre,
+    demandas_present = [{"idArt":           d[0].idTipoArticulo,
+                         "nombre":          d[1].nombre,
                          "cantidad":        d[0].cantidad, 
                          "unidadmedida":    d[1].unidadMedida}
-                        for d in list(zip(e.demandas,a))]        
+                        for d in list(zip(e.demandas,a))]
 
     return jsonify(demandas_present)
 
