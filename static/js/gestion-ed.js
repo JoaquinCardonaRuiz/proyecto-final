@@ -1,5 +1,7 @@
 var del = false;
 var mod = false;
+var tab2loaded = false;
+var tab3loaded = false;
 
 function openLoadingRing(){
     document.getElementById("open-loading-modal").click();
@@ -278,6 +280,20 @@ function baja_demanda(){
     nextMsgBajaDem();
 }
 
+function alta_demanda(){
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $('#bottomAltaDemText').show();
+    document.getElementById("hr-to-hide-2").hidden=true;
+    document.getElementById("row-to-hide-3").hidden=true;
+    document.getElementById("row-to-hide-4").hidden=true;
+    document.getElementById("br-to-hide-3").hidden=true;
+    document.getElementById("br-to-hide-4").hidden=true;
+    $('#add-dem-btn').prop('disabled', true);
+    $('#secondary-btn-baja').prop('disabled', true);
+    submitForm('altaDemandaForm');
+    nextMsgAltaDem();
+}
 
 function nextMsgBaja() {
     if (messagesBaja.length == 1) {
@@ -317,6 +333,14 @@ function nextMsgBajaDem() {
     }
 };
 
+function nextMsgAltaDem() {
+    if (messagesAltaDem.length == 1) {
+        $('#bottomBajaDemText').html(messagesAltaDem.pop()).fadeIn(500);
+
+    } else {
+        $('#bottomBajaDemText').html(messagesAltaDem.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgAltaDem);
+    }
+};
 
 var messagesBaja = [
     "Estamos eliminando la entidad de destino...",
@@ -338,16 +362,24 @@ var messagesBajaDem = [
     "¡Casi listo! Últimos retoques"
 ].reverse();
 
+var messagesAltaDem = [
+    "Estamos creando la demanda...",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+
 
 function openEditModal(idEntidad,nombreEntidad){
     jQuery.noConflict();
+    tab2loaded = false;
+    tab3loaded = false;
+    document.getElementById("dd-fill-1").innerHTML="";
+    document.getElementById("dd-fill-2").innerHTML="";
     $(".lds-ring").hide();
     $('#idEntidad').val(String(idEntidad))
     $('#nombreEntidad').val(String(nombreEntidad));
     document.getElementById("EntNombreInput").value = nombreEntidad;
     $('#editEntidadModal').modal('show');
     $('.nav-tabs a:first').tab('show');
-    document.getElementById("idEntidadInput").value = document.getElementById("idEntidad").value;
     document.getElementById("mod-name-btn").disabled = true;
     configureModalTab(1);
 }
@@ -380,7 +412,7 @@ function validaModNombre(nombres){
 function configureModalTab(n){
 
     if(n == 1){
-        document.getElementById("idEntidadInput").value = document.getElementById("idEntidad").value;
+        document.getElementById("idEntInput").value = document.getElementById("idEntidad").value;
         document.getElementById("mod-name-btn").hidden = false;
         document.getElementById("del-dem-btn").hidden = true;
         document.getElementById("add-dem-btn").hidden = true;
@@ -393,43 +425,82 @@ function configureModalTab(n){
         document.getElementById("del-dem-btn").disabled = true;
         document.getElementById("nombreArtInput").value = "";
         document.getElementById("cantArtInput").value = "";
-        document.getElementById("dd-fill-1").innerHTML="";
-        $.getJSON("/gestion-ed/demandas/"+String(document.getElementById("idEntidad").value),function (result){
-            if(result.length > 0){
-                for(i=0; i < result.length; i++){
-                    var nombre = result[i]["nombre"];
-                    var cantidad = result[i]["cantidad"];
-                    var idArt = result[i]["idArt"];
+        if(!tab2loaded){
+            $.getJSON("/gestion-ed/demandas/"+String(document.getElementById("idEntidad").value),function (result){
+                if(result.length > 0){
+                    for(i=0; i < result.length; i++){
+                        var nombre = result[i]["nombre"];
+                        var cantidad = result[i]["cantidad"];
+                        var idArt = result[i]["idArt"];
+                        var l = document.createElement("li");
+                        l.className = "dropdown-li";
+                        var a = document.createElement("a");
+                        a.href = "#";
+                        a.innerHTML = result[i]["nombre"];
+                        a.className = "dropdown-link";
+                        a.setAttribute("onClick", "select_option(\""+nombre+"\",\""+cantidad+"\",\""+idArt+"\");");
+                        //a.onclick = select_option(nombre,cantidad,unidad,idArt);
+                        l.appendChild(a);
+                        document.getElementById("dd-fill-1").appendChild(l);
+                    }
+                }
+                else{
                     var l = document.createElement("li");
                     l.className = "dropdown-li";
                     var a = document.createElement("a");
                     a.href = "#";
-                    a.innerHTML = result[i]["nombre"];
+                    a.innerHTML = "No hay demandas";
                     a.className = "dropdown-link";
-                    a.setAttribute("onClick", "select_option(\""+nombre+"\",\""+cantidad+"\",\""+idArt+"\");");
-                    //a.onclick = select_option(nombre,cantidad,unidad,idArt);
                     l.appendChild(a);
                     document.getElementById("dd-fill-1").appendChild(l);
                 }
-            }
-            else{
-                var l = document.createElement("li");
-                l.className = "dropdown-li";
-                var a = document.createElement("a");
-                a.href = "#";
-                a.innerHTML = "No hay demandas";
-                a.className = "dropdown-link";
-                l.appendChild(a);
-                document.getElementById("dd-fill-1").appendChild(l);
-            }
-            
-        })
+                
+            })
+            tab2loaded = true;
+        }
+        
     }
 
     else if(n == 3){
         document.getElementById("mod-name-btn").hidden = true;
         document.getElementById("del-dem-btn").hidden = true;
         document.getElementById("add-dem-btn").hidden = false;
+        document.getElementById("add-dem-btn").disabled = true;
+        document.getElementById("nombreArtInputAdd").value = "";
+        document.getElementById("cantArtInputAdd").value = "";
+        if(!tab3loaded){
+            $.getJSON("/gestion-ed/articulos",function (result){            
+                if(result.length > 0){
+                    for(i=0; i < result.length; i++){
+                        console.log(result[i]);
+                        var nombre = result[i]["nombre"];
+                        var id = result[i]["id"];
+                        var l = document.createElement("li");
+                        l.className = "dropdown-li";
+                        var a = document.createElement("a");
+                        a.href = "#";
+                        a.innerHTML = result[i]["nombre"];
+                        a.className = "dropdown-link";
+                        a.setAttribute("onClick", "select_articulo(\""+nombre+"\",\""+id+"\");");
+                        l.appendChild(a);
+                        document.getElementById("dd-fill-2").appendChild(l);
+                    }
+                }
+                else{
+                    var l = document.createElement("li");
+                    l.className = "dropdown-li";
+                    var a = document.createElement("a");
+                    a.href = "#";
+                    a.innerHTML = "No hay articulos";
+                    a.className = "dropdown-link";
+                    l.appendChild(a);
+                    document.getElementById("dd-fill-1").appendChild(l);
+                }
+                
+            })
+            tab3loaded = true;
+        }
+        
     }
 }
 
@@ -439,4 +510,11 @@ function select_option(nombre,cantidad,idArt){
     document.getElementById("idArtInput").value = idArt;
     document.getElementById("idEntInput").value = document.getElementById("idEntidad").value;
     document.getElementById("del-dem-btn").disabled = false;
+}
+
+function select_articulo(nombre,id){
+    document.getElementById("nombreArtInputAdd").value = nombre;
+    document.getElementById("idArtInputAdd").value = id;
+    document.getElementById("idEntInputAdd").value = document.getElementById("idEntidad").value;
+    document.getElementById("add-dem-btn").disabled = false;
 }

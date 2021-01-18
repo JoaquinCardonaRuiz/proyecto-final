@@ -14,3 +14,16 @@ class NegocioDemanda(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_demanda.delete()",
                                                    msj=str(e),
                                                    msj_adicional="Error en la capa de Negocio eliminando una demanda de la base de Datos")
+
+
+    @classmethod
+    def add(cls,idEnt,idArt,cantidad):
+        """
+            Agrega una demanda a la Base de Datos
+        """
+        try:
+            DatosDemanda.add(idEnt,idArt,cantidad)
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_demanda.add()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error en la capa de Negocio agregando una demanda de la base de Datos")

@@ -6,12 +6,12 @@ class NegocioArticulo(Negocio):
     """Clase que representa la capa de negocio para la entidad Articulo. Hereda de Negocio.""" 
 
     @classmethod
-    def get_all(cls,ids=[]):
+    def get_all(cls):
         """
         Obtiene todas los tipos de articulo de la BD.
         """
         try:
-            articulos = DatosArticulo.get_articulos()
+            articulos = DatosArticulo.get_all()
             return articulos
 
         except Exception as e:

@@ -104,6 +104,14 @@ def devolver_salidas(id):
     return jsonify(salidas_present)
 
 
+@app.route('/gestion-ed/articulos')
+def get_articulos():
+    arts = NegocioArticulo.get_all()
+    articulos =[{"nombre":      a.nombre,
+                 "id":          a.id}
+                for a in arts]
+    return jsonify(articulos)
+
 @app.route('/gestion-ed/alta', methods = ['GET','POST'])
 def alta_entidad_destino():
     if request.method == 'POST':
@@ -142,9 +150,19 @@ def baja_demanda():
             NegocioDemanda.delete(idEnt,idArt)
         except Exception as e:
             raise e
-
         return redirect(url_for('gestion_ed'))
 
+@app.route('/gestion-ed/alta-demanda',methods = ['GET','POST'])
+def alta_demanda():
+    if request.method == 'POST':
+        idEnt = request.form['idEnt']
+        idArt = request.form['idArt']
+        cantidad = request.form['cantidad']
+        try:
+            NegocioDemanda.add(idEnt,idArt,cantidad)
+        except Exception as e:
+            raise e
+        return redirect(url_for('gestion_ed'))
 
 if __name__ == '__main__':
     app.debug = True

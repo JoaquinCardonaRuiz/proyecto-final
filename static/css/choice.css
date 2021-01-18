@@ -220,6 +220,7 @@ div.modal-content{
   margin-top:8px !important;
   text-align: left !important;
   vertical-align: center;
+  box-shadow:rgb(100, 100, 100) !important;
 }
 
 .dropdown-li{

@@ -44,3 +44,15 @@ class DatosDemanda(Datos):
         finally:
             cls.cerrar_conexion()
         
+    @classmethod
+    def add(cls, idEnt, idArt, cantidad):
+        cls.abrir_conexion()
+        try:
+            sql = ("INSERT INTO demanda (idEntidad, idTipoArticulo,cantidad) VALUES ({},{},{})".format(idEnt,idArt,cantidad))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_demanda.add()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error agregando una demanda en la BD.")
