@@ -446,13 +446,14 @@ function configureModalTab(n){
                         var nombre = result[i]["nombre"];
                         var cantidad = result[i]["cantidad"];
                         var idArt = result[i]["idArt"];
+                        var unidad = result[i]["unidadmedida"];
                         var l = document.createElement("li");
                         l.className = "dropdown-li";
                         var a = document.createElement("a");
                         a.href = "#";
                         a.innerHTML = result[i]["nombre"];
                         a.className = "dropdown-link";
-                        a.setAttribute("onClick", "select_option(\""+nombre+"\",\""+cantidad+"\",\""+idArt+"\");");
+                        a.setAttribute("onClick", "select_option(\""+nombre+"\",\""+cantidad+"\",\""+idArt+"\",\""+unidad+"\");");
                         //a.onclick = select_option(nombre,cantidad,unidad,idArt);
                         l.appendChild(a);
                         document.getElementById("dd-fill-1").appendChild(l);
@@ -482,6 +483,7 @@ function configureModalTab(n){
         document.getElementById("add-dem-btn").disabled = true;
         document.getElementById("nombreArtInputAdd").value = "";
         document.getElementById("cantArtInputAdd").value = "";
+        document.getElementById("unidad-label").innerHTML = "";
         document.getElementById("cantidadError").innerHTML = "";
         if(!tab3loaded){
             $.getJSON("/gestion-ed/articulos/"+String(document.getElementById("idEntidad").value),function (result){            
@@ -489,13 +491,14 @@ function configureModalTab(n){
                     for(i=0; i < result.length; i++){
                         var nombre = result[i]["nombre"];
                         var id = result[i]["id"];
+                        var unidad = result[i]["unidadmedida"]
                         var l = document.createElement("li");
                         l.className = "dropdown-li";
                         var a = document.createElement("a");
                         a.href = "#";
                         a.innerHTML = result[i]["nombre"];
                         a.className = "dropdown-link";
-                        a.setAttribute("onClick", "select_articulo(\""+nombre+"\",\""+id+"\");");
+                        a.setAttribute("onClick", "select_articulo(\""+nombre+"\",\""+id+"\",\""+unidad+"\");");
                         l.appendChild(a);
                         document.getElementById("dd-fill-2").appendChild(l);
                     }
@@ -518,16 +521,17 @@ function configureModalTab(n){
     }
 }
 
-function select_option(nombre,cantidad,idArt){
+function select_option(nombre,cantidad,idArt, unidad){
     document.getElementById("nombreArtInput").value = nombre;
-    document.getElementById("cantArtInput").value = cantidad;
+    document.getElementById("cantArtInput").value = cantidad + " " +unidad;
     document.getElementById("idArtInput").value = idArt;
     document.getElementById("idEntInput").value = document.getElementById("idEntidad").value;
     document.getElementById("del-dem-btn").disabled = false;
 }
 
-function select_articulo(nombre,id){
+function select_articulo(nombre,id,unidad){
     document.getElementById("nombreArtInputAdd").value = nombre;
+    document.getElementById("unidad-label").innerHTML = unidad;
     document.getElementById("idArtInputAdd").value = id;
     document.getElementById("idEntInputAdd").value = document.getElementById("idEntidad").value;
     document.getElementById("add-dem-btn").disabled = false;

@@ -308,7 +308,7 @@
                   <div class="col">
                     <div class="group" style="margin-left: 10%;">
                       <input type="text" id="idEntInput" name="idEnt" hidden>
-                      <input class="data-show-input" type="text" id="cantArtInput" name="cantidad" readonly>
+                      <input style="width:60%;" class="data-show-input" type="text" id="cantArtInput" name="cantidad" readonly>
                       <label>Cantidad</label>
                     </div>
                   </div>
@@ -359,12 +359,13 @@
                       <input type="text" id="idEntInputAdd" name="idEnt" hidden>
                       <!-- el onkeypress evita que puedas tipear numeros, porque type="number" no tiene muy buen soporte en todos los navegadores-->
                       <!-- el min y max supuestamente no tiene soporte en navegadores mobile, asi que hay que probar que no se pueda poner 0 -->
-                      <input type="number" id="cantArtInputAdd" name="cantidad" required min=1 max=999999999 onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                      <input type="number" style="width:60%;" id="cantArtInputAdd" name="cantidad" required min=1 max=999999999 onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                       <span class="highlight"></span>
                       <span class="bar"></span>
                       <label>Cantidad</label>
                       <p id="cantidadError" class="modalErrorMessage"></p>
                     </div>
+                    <label id="unidad-label" class="inline-label"></label>
                   </div>
                 </div>
                 <div class="row">

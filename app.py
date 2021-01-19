@@ -108,8 +108,9 @@ def get_articulos(id):
     e = NegocioEntidadDestino.get_one(id)
     ids = [i.idTipoArticulo for i in e.demandas]
     arts = NegocioArticulo.get_by_not_in_id_array(ids)
-    articulos =[{"nombre":      a.nombre,
-                 "id":          a.id}
+    articulos =[{"nombre":          a.nombre,
+                 "unidadmedida":    a.unidadMedida,
+                 "id":              a.id}
                 for a in arts]
     return jsonify(articulos)
 

@@ -141,6 +141,13 @@
 
 }
 
+.inline-label{
+  display:inline;
+  justify-self: right !important;
+  align-self: right !important;
+  margin-left: 250px;
+}
+
 .data-show-input{
   border-bottom: none !important;
   box-shadow:rgb(100, 100, 100) !important;
