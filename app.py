@@ -78,7 +78,6 @@ def gestion_ed():
 @app.route('/gestion-ed/demandas/<id>')
 def devolver_demandas(id):
     #TODO: evitar esta vuelta a BD
-    #TODO: revisar cómo verificar que sólo se cargue una demanda por TA
     e = NegocioEntidadDestino.get_one(id)
     a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.demandas])
 
@@ -104,9 +103,11 @@ def devolver_salidas(id):
     return jsonify(salidas_present)
 
 
-@app.route('/gestion-ed/articulos')
-def get_articulos():
-    arts = NegocioArticulo.get_all()
+@app.route('/gestion-ed/articulos/<id>')
+def get_articulos(id):
+    e = NegocioEntidadDestino.get_one(id)
+    ids = [i.idTipoArticulo for i in e.demandas]
+    arts = NegocioArticulo.get_by_not_in_id_array(ids)
     articulos =[{"nombre":      a.nombre,
                  "id":          a.id}
                 for a in arts]

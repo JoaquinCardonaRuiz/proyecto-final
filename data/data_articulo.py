@@ -56,3 +56,35 @@ class DatosArticulo(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_by_not_in_id_array(cls,ids):
+        """
+        Obtiene todos los articulos de la BD que no están en la lista de ids.
+        """
+        
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT * FROM tiposArticulo")
+            if ids != []:
+                sql += " WHERE idTipoArticulo!={}"
+                for id in ids[1:]:
+                    sql += " AND idTipoArticulo!={}"
+            sql += ";"
+            sql = sql.format(*ids)
+            cls.cursor.execute(sql)
+            articulos_ = cls.cursor.fetchall()
+            articulos = []
+            for a in articulos_:
+                materiales = DatosCantMaterial.get_from_TAid(a[0],noClose=True)
+                articulo_ = TipoArticulo(a[0],a[4],materiales,a[5],a[6],a[7],a[2],a[3],a[1])
+                articulos.append(articulo_)
+            return articulos
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_by_not_in_id_array()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo articulos desde la BD.")
+        finally:
+            cls.cerrar_conexion()

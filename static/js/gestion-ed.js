@@ -281,19 +281,28 @@ function baja_demanda(){
 }
 
 function alta_demanda(){
-    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
-    $(".lds-ring").show().fadeIn(500);
-    $('#bottomAltaDemText').show();
-    document.getElementById("hr-to-hide-2").hidden=true;
-    document.getElementById("row-to-hide-3").hidden=true;
-    document.getElementById("row-to-hide-4").hidden=true;
-    document.getElementById("br-to-hide-3").hidden=true;
-    document.getElementById("br-to-hide-4").hidden=true;
-    $('#add-dem-btn').prop('disabled', true);
-    $('#secondary-btn-baja').prop('disabled', true);
-    submitForm('altaDemandaForm');
-    nextMsgAltaDem();
+    //verificaciones
+    //TODO: anotar estas reglas de negocio
+    var cantidad = document.getElementById("cantArtInputAdd").value;
+    if( cantidad == "" || cantidad == "0"){
+        document.getElementById("cantidadError").innerHTML = "La cantidad debe completarse y ser mayor a 0.";
+    }
+    else{
+        $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+        $(".lds-ring").show().fadeIn(500);
+        $('#bottomAltaDemText').show();
+        document.getElementById("hr-to-hide-2").hidden=true;
+        document.getElementById("row-to-hide-3").hidden=true;
+        document.getElementById("row-to-hide-4").hidden=true;
+        document.getElementById("br-to-hide-3").hidden=true;
+        document.getElementById("br-to-hide-4").hidden=true;
+        $('#add-dem-btn').prop('disabled', true);
+        $('#secondary-btn-baja').prop('disabled', true);
+        submitForm('altaDemandaForm');
+        nextMsgAltaDem();
+    }
 }
+
 
 function nextMsgBaja() {
     if (messagesBaja.length == 1) {
@@ -335,10 +344,10 @@ function nextMsgBajaDem() {
 
 function nextMsgAltaDem() {
     if (messagesAltaDem.length == 1) {
-        $('#bottomBajaDemText').html(messagesAltaDem.pop()).fadeIn(500);
+        $('#bottomAltaDemText').html(messagesAltaDem.pop()).fadeIn(500);
 
     } else {
-        $('#bottomBajaDemText').html(messagesAltaDem.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgAltaDem);
+        $('#bottomAltaDemText').html(messagesAltaDem.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgAltaDem);
     }
 };
 
@@ -387,8 +396,6 @@ function openEditModal(idEntidad,nombreEntidad){
 function validaModNombre(nombres){
     var n = document.getElementById("EntNombreInput").value;
     var nombreA = document.getElementById("nombreEntidad").value;
-    console.log(n);
-    console.log(nombreA);
     if(n == nombreA){
         document.getElementById("modNombreEntidadError").innerHTML = "* El nombre de la entidad debe ser distinto a su nombre anterior.";
         document.getElementById("mod-name-btn").disabled = true;
@@ -468,11 +475,11 @@ function configureModalTab(n){
         document.getElementById("add-dem-btn").disabled = true;
         document.getElementById("nombreArtInputAdd").value = "";
         document.getElementById("cantArtInputAdd").value = "";
+        document.getElementById("cantidadError").innerHTML = "";
         if(!tab3loaded){
-            $.getJSON("/gestion-ed/articulos",function (result){            
+            $.getJSON("/gestion-ed/articulos/"+String(document.getElementById("idEntidad").value),function (result){            
                 if(result.length > 0){
                     for(i=0; i < result.length; i++){
-                        console.log(result[i]);
                         var nombre = result[i]["nombre"];
                         var id = result[i]["id"];
                         var l = document.createElement("li");

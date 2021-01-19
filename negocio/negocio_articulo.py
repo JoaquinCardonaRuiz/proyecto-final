@@ -45,3 +45,16 @@ class NegocioArticulo(Negocio):
         for id in ids:
             articulos.append(cls.get_by_id(id))
         return articulos
+
+    @classmethod
+    def get_by_not_in_id_array(cls, ids):
+        """
+        Obtiene TiposArticulos de la BD en base a los que no estan en una lista de IDs
+        """
+        try:
+            articulos = DatosArticulo.get_by_not_in_id_array(ids)
+            return articulos
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.get_by_not_in_id_array()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo tipos de articulo de la capa de Datos.")
