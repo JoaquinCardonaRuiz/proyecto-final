@@ -239,6 +239,19 @@ div.modal-content{
   margin-left: 12px;
 }
 
+.custom-center-col{
+  display: grid !important;
+  justify-content: center !important;
+}
+
+.wide-input{
+  width:400px !important;
+}
+
+.wide-bar{
+  width: 400px !important;
+}
+
 #dd-art-btn-1{
   width:230px;
 }
