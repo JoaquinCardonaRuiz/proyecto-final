@@ -210,6 +210,12 @@ function removeEntidad(){
     }
 }
 
+function openAltaModal(){
+    jQuery.noConflict();
+    $(".lds-ring").hide();
+    $('#altaModal').modal('show');
+}
+
 //Abre el Modal de baja. 
 function openBajaModal(idEntidad){
     //Manejo de elementos de carga
