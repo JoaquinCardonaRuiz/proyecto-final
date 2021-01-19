@@ -390,6 +390,7 @@ function openEditModal(idEntidad,nombreEntidad){
     document.getElementById("dd-fill-1").innerHTML="";
     document.getElementById("dd-fill-2").innerHTML="";
     $(".lds-ring").hide();
+    document.getElementById('modNombreEntidadError').innerHTML="";
     $('#idEntidad').val(String(idEntidad))
     $('#nombreEntidad').val(String(nombreEntidad));
     document.getElementById("EntNombreInput").value = nombreEntidad;
