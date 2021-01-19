@@ -437,8 +437,8 @@ function configureModalTab(n){
         document.getElementById("del-dem-btn").hidden = false;
         document.getElementById("add-dem-btn").hidden = true;
         document.getElementById("del-dem-btn").disabled = true;
-        document.getElementById("nombreArtInput").value = "";
-        document.getElementById("cantArtInput").value = "";
+        document.getElementById("nombreArtInput").value = "-";
+        document.getElementById("cantArtInput").value = "-";
         if(!tab2loaded){
             $.getJSON("/gestion-ed/demandas/"+String(document.getElementById("idEntidad").value),function (result){
                 if(result.length > 0){
