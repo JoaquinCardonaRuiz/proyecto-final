@@ -34,8 +34,15 @@ function orderCirclesText(){
     $("#desc-4-circles").css({top: pos_circulo_4 + 35, position:'absolute'});
 }
 
+function orderMenuBox(){
+    var pos_heading_option_top = document.getElementById("heading-option").offsetTop + 45;
+    var pos_heading_option_left = document.getElementById("heading-option").offsetLeft;
 
+    $("#menu-option-box-1").css({top: pos_heading_option_top, position:'absolute'});
 
+    $("#menu-option-box-1").css({left: pos_heading_option_left, position:'absolute'});
+
+}
 
 var circleFilled = false;
 
@@ -235,9 +242,23 @@ function slideAnswer(numero){
     }
 }
 
+function headingOptionHover(){
+    $(".chevron").css({cursor: 'pointer', transform: 'rotate(180deg)'});
+}
+
+function headingOptionLeave(){
+    $(".chevron").css({transform: 'rotate(0deg)'});
+    $("#menu-option-box-1").show();
+}
+
+function menuOptionBoxOut(){
+
+}
+
 fillCircles(1);
 orderCirclesText();
 setMarings();
+orderMenuBox();
 
 $( window ).resize(function() {
     setMarings();
@@ -251,6 +272,7 @@ $( window ).resize(function() {
 
     }
 });
+
 function graduadosIn() {
     $(".card-graduados-title").css({"transition" : "color 0.5s ease-in-out","color": "#95C22B"});
     $(".card-graduados-title-2").css({"transition" : "color 0.5s ease-in-out","color": "#95C22B"});

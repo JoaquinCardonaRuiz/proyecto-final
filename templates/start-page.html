@@ -39,9 +39,15 @@
 <div class="top" id="page-top-content">
     <div class="row" id="page-heading">
             <h4 id="heading-title" onclick="window.location.href='/'">EcoAsistente</h4>
-            <h4 id="heading-option">Info <img src="/static/img/chevron.svg" class="chevron"></img></h5> 
+            <h4 id="heading-option" onmouseover="headingOptionHover()" onmouseout="headingOptionLeave()">Info <img src="/static/img/chevron.svg" class="chevron"></img></h5> 
             <h4 id="heading-option-right">Iniciar Sesión</h5>
             <h4 id="heading-option-right2">Registrate</h5>
+            <div class="menu-option-box" id="menu-option-box-1" onmouseout="menuOptionBoxOut()">
+                    <p class="menu-option-box-op" id="menu-option-box-op-1">Preguntas frecuentes</p>
+                    <p class="menu-option-box-op">Quiero unirme</p>
+                    <p class="menu-option-box-op">Quienes somos</p>
+                    <p class="menu-option-box-op">¿Por qué un EcoAsistente?</p>                
+            </div>
     </div>
     <div id="top-title-content">
         <h1 id="top-title">Descubrí una nueva</h1>
@@ -50,9 +56,9 @@
         <h5 id="top-subtitle">Ayudar al planeta nunca fue tan fácil</h5>
         <h3 id="start-button">Empezar</h3>
     </div>
-        
 </div>
 
+<!--Sección Tarjetas-->
 <div class="jumbotron" id="page-content-1">
     <h3 class="page-content-title">Qué podés hacer con EcoAsistente</h3>
     <p class="page-content-subtitle">Descubrí como podes ganar ayudando al medio ambiente y a tu ciudad.</p>
@@ -75,6 +81,7 @@
     </div>
 </div>
 
+<!--Sección Flujo Básico-->
 <div class="jumbotron" id="page-content-flujo-basico">
     <div class="row" id="first-row-page-content-flujo-basico">
         <div class="col justify-content-center">
@@ -195,6 +202,8 @@
         </div>
     </div>
 </div>
+
+<!--Sección Top 5 Preguntas Frecuentes-->
 
 <div class="jumbotron" id="page-content-top-questions">
     <div class="row" style="width: 90%;">

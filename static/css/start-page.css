@@ -19,6 +19,7 @@ body{
     position: relative;
 }
 
+/*Navbar*/
 #page-heading{
     position: relative;
     margin: auto;
@@ -101,12 +102,35 @@ body{
     transition: width 0.3s, height 0.3s, transform 0.3s;
   }
 
-.chevron:hover{
-  cursor: pointer;
-  transform: rotate(180deg);
-}
-  
 
+.menu-option-box{
+    border-radius: 10px;
+    position: absolute; 
+    background-color:white; 
+    width: fit-content;
+    display: none;
+}
+
+.menu-option-box-op{
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-right: 20px;
+    height: 30px;
+    color: rgb(92, 92, 92);
+    transition: transform .2s; /* Animation */
+}
+
+.menu-option-box-op:hover{
+    color: #95C22B;
+    cursor: pointer;
+    transform: scale(1.03); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+#menu-option-box-op-1{
+    margin-top: 20px !important;
+}
+
+/*Page Content*/
 #top-title-content{
     margin: auto;
     width: 900px;
