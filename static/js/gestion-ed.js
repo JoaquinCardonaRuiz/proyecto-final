@@ -289,10 +289,11 @@ function baja_demanda(){
 function alta_demanda(){
     //verificaciones
     //TODO: anotar estas reglas de negocio
-    var cantidad = document.getElementById("cantArtInputAdd").value;
+    var cantidad = document.getElementById("cantArtInputAdd").value.replace(",",".");
     if( cantidad == "" || cantidad == "0"){
-        document.getElementById("cantidadError").innerHTML = "La cantidad debe completarse y ser mayor a 0.";
+        document.getElementById("cantidadError").innerHTML = "La cantidad debe completarse correctamente y ser mayor a 0.";
     }
+    
     else{
         $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
         $(".lds-ring").show().fadeIn(500);

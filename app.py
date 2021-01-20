@@ -159,7 +159,7 @@ def alta_demanda():
     if request.method == 'POST':
         idEnt = request.form['idEnt']
         idArt = request.form['idArt']
-        cantidad = request.form['cantidad']
+        cantidad = float(request.form['cantidad'])
         try:
             NegocioDemanda.add(idEnt,idArt,cantidad)
         except Exception as e:
