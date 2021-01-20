@@ -359,7 +359,7 @@
                       <input type="text" id="idEntInputAdd" name="idEnt" hidden>
                       <!-- el onkeypress evita que puedas tipear numeros y puntos, porque type="number" no tiene muy buen soporte en todos los navegadores-->
                       <!-- el min y max supuestamente no tiene soporte en navegadores mobile, asi que hay que probar que no se pueda poner 0 -->
-                      <input type="number" style="width:60%;" id="cantArtInputAdd" name="cantidad" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46'>
+                      <input type="number" style="width:60%;" id="cantArtInputAdd" name="cantidad" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onkeydown='document.getElementById("cantidadError").innerHTML=""'>
                       <span class="highlight"></span>
                       <span class="bar"></span>
                       <label>Cantidad</label>
