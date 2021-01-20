@@ -288,7 +288,7 @@ function baja_demanda(){
 
 function alta_demanda(){
     //verificaciones
-    //TODO: anotar estas reglas de negocio
+    //Comprueba RN16
     var cantidad = document.getElementById("cantArtInputAdd").value.replace(",",".");
     if( cantidad == "" || cantidad == "0"){
         document.getElementById("cantidadError").innerHTML = "La cantidad debe completarse correctamente y ser mayor a 0.";

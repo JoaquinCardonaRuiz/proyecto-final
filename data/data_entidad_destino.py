@@ -113,3 +113,26 @@ class DatosEntidadDestino(Datos):
                                                     msj_adicional="Error actualizando una entidad destino en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+    @classmethod
+    def check_name_repeats(cls,nombre):
+        """
+        Comprueba si no existe ninguna entidad destino con un nombre dado
+        """
+
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT COUNT(idEntidad) FROM entidadesDestino WHERE nombre=\"{}\" And estado!=\"eliminado\";".format(nombre))
+            cls.cursor.execute(sql)
+            count = cls.cursor.fetchall()[0][0]
+            if count == 0:
+                return True
+            else:
+                return False
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_entidad_destino.check_name_repeats()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error comprobando repeticiones de nombres de entidad destino en la BD.")
+        finally:
+            cls.cerrar_conexion()

@@ -11,14 +11,14 @@ class NegocioEntidadDestino(Negocio):
         Da de alta una nueva entidad destino en el sistema.
         """
         try:
-            if nombre in [i.nombre for i in cls.get_all()]:
+            if not DatosEntidadDestino.check_name_repeats(nombre):
                 #Valida regla RN11
                 raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.alta_entidad_destino()",
                                                               msj="Error en la capa de negocio al validar regla RN11: Todas las entidades de destino deben tener nombres distintos.") 
             elif nombre == "":
                 #Valida regla RN12
                 raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.alta_entidad_destino()",
-                                                              msj="Error en la capa de negocio al validar regla RN11: Todas las entidades de destino deben tener nombres distintos.") 
+                                                              msj="Error en la capa de negocio al validar regla RN12: Una entidad no puede tener nombre vacio.") 
             else:
                 DatosEntidadDestino.add(nombre)
         except Exception as e:
@@ -74,7 +74,16 @@ class NegocioEntidadDestino(Negocio):
         Actualiza el nombre de una entidad de destino en la BD
         """
         try:
-            DatosEntidadDestino.update(id,nombre)
+            if not DatosEntidadDestino.check_name_repeats(nombre):
+                #Valida regla RN11
+                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.update()",
+                                                              msj="Error en la capa de negocio al validar regla RN11: Todas las entidades de destino deben tener nombres distintos.") 
+            elif nombre == "":
+                #Valida regla RN12
+                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.update()",
+                                                              msj="Error en la capa de negocio al validar regla RN12: Una entidad no puede tener nombre vacio.") 
+            else:
+                DatosEntidadDestino.update(id,nombre)
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_entidad_destino.update()",
                                                    msj=str(e),
