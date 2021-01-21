@@ -171,7 +171,7 @@ class DatosNivel(Datos):
         """Obtiene el nivel mas grande registrado en la BD. Si no hay niveles registrados, devuelve False.
         """
         try:
-            sql = ("select * from Niveles where nombre = (select max(nombre) from niveles);")
+            sql = ("select * from niveles where nombre = (select max(nombre) from niveles);")
             cls.cursor.execute(sql)
             nivel = cls.cursor.fetchone()
             if nivel == None:
