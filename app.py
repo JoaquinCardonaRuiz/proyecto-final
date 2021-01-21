@@ -71,21 +71,21 @@ def mod_nivel_request(id):
 
 @app.route('/gestion-ed', methods = ['GET','POST'])
 def gestion_ed():
-    entidades = NegocioEntidadDestino.get_entidades_destino()
+    entidades = NegocioEntidadDestino.get_all()
     return render_template('gestion-entidades-destino.html', entidades = entidades)
 
 
 @app.route('/gestion-ed/demandas/<id>')
 def devolver_demandas(id):
     #TODO: evitar esta vuelta a BD
-    #TODO: revisar cómo verificar que sólo se cargue una demanda por TA
-    e = NegocioEntidadDestino.get_one_entidad_destino(id)
-    a = NegocioArticulo.get_articulos([i.idTipoArticulo for i in e.demandas])
+    e = NegocioEntidadDestino.get_one(id)
+    a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.demandas])
 
-    demandas_present = [{"nombre":          d[1].nombre,
+    demandas_present = [{"idArt":           d[0].idTipoArticulo,
+                         "nombre":          d[1].nombre,
                          "cantidad":        d[0].cantidad, 
                          "unidadmedida":    d[1].unidadMedida}
-                        for d in list(zip(e.demandas,a))]        
+                        for d in list(zip(e.demandas,a))]
 
     return jsonify(demandas_present)
 
@@ -93,22 +93,77 @@ def devolver_demandas(id):
 @app.route('/gestion-ed/salidas/<id>')
 def devolver_salidas(id):
     #TODO: evitar esta vuelta a BD
-    e = NegocioEntidadDestino.get_one_entidad_destino(id)
-    a = NegocioArticulo.get_articulos([i.idTipoArticulo for i in e.salidas])
-    salidas_present =  [{"nombre": "todavia no desarrollado"}]
+    e = NegocioEntidadDestino.get_one(id)
+    a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.salidas])
+    salidas_present =  [{"nombre":          s[1].nombre,
+                         "cantidad":        s[0].cantidad, 
+                         "unidadmedida":    s[1].unidadMedida,
+                         "fecha":           s[0].fecha.strftime("%d/%m/%Y")}
+                        for s in list(zip(e.salidas,a))]   
     return jsonify(salidas_present)
 
+
+@app.route('/gestion-ed/articulos/<id>')
+def get_articulos(id):
+    e = NegocioEntidadDestino.get_one(id)
+    ids = [i.idTipoArticulo for i in e.demandas]
+    arts = NegocioArticulo.get_by_not_in_id_array(ids)
+    articulos =[{"nombre":          a.nombre,
+                 "unidadmedida":    a.unidadMedida,
+                 "id":              a.id}
+                for a in arts]
+    return jsonify(articulos)
 
 @app.route('/gestion-ed/alta', methods = ['GET','POST'])
 def alta_entidad_destino():
     if request.method == 'POST':
         nombre = request.form['nombre']
         try:
-            NegocioEntidadDestino.alta_entidad_destino(nombre)
+            NegocioEntidadDestino.add(nombre)
         except Exception as e:
             raise e
         return redirect(url_for('gestion_ed'))
 
+
+@app.route('/gestion-ed/baja/<id>')
+def baja_entidad_destino(id):
+    id = int(id)
+    NegocioEntidadDestino.delete(id)
+    return redirect(url_for('gestion_ed'))
+
+@app.route('/gestion-ed/edit', methods = ['GET','POST'])
+def edit_entidad_destino():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        idEnt = request.form['id']
+        try:
+            NegocioEntidadDestino.update(idEnt,nombre)
+        except Exception as e:
+            raise e
+        return redirect(url_for('gestion_ed'))
+
+@app.route('/gestion-ed/baja-demanda',methods = ['GET','POST'])
+def baja_demanda():
+    if request.method == 'POST':
+        idEnt = request.form['idEnt']
+        idArt = request.form['idArt']
+        try:
+            NegocioDemanda.delete(idEnt,idArt)
+        except Exception as e:
+            raise e
+        return redirect(url_for('gestion_ed'))
+
+@app.route('/gestion-ed/alta-demanda',methods = ['GET','POST'])
+def alta_demanda():
+    if request.method == 'POST':
+        idEnt = request.form['idEnt']
+        idArt = request.form['idArt']
+        cantidad = float(request.form['cantidad'])
+        try:
+            NegocioDemanda.add(idEnt,idArt,cantidad)
+        except Exception as e:
+            raise e
+        return redirect(url_for('gestion_ed'))
 
 if __name__ == '__main__':
     app.debug = True

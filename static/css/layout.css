@@ -35,6 +35,7 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 .social_footer_ul li a { color:#CCC; border:1px solid #CCC; padding:8px;border-radius:50%;}
 .social_footer_ul li i {  width:20px; height:20px; text-align:center;}
 
+
 #reference{
   color: inherit; /* blue colors for links too */
   text-decoration: inherit; /* no underline */
@@ -71,7 +72,11 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 	width: 100%;
 	margin: 0;
   }
-  
+  .baja-modal-text{
+	margin-top: 1%;
+	font-size: 50px;
+	margin-left:4%;
+  }
   @media (max-width: 768px) {
 	#sidebar {
 	  margin-left: -17rem;
