@@ -36,18 +36,24 @@
 </head>
 <body style="background-color: white;" onscroll="animations()">
 
+<!--Sección Principal-->
 <div class="top" id="page-top-content">
     <div class="row" id="page-heading">
-            <h4 id="heading-title" onclick="window.location.href='/'">EcoAsistente</h4>
-            <h4 id="heading-option" onmouseover="headingOptionHover()" onmouseout="headingOptionLeave()">Info <img src="/static/img/chevron.svg" class="chevron"></img></h5> 
-            <h4 id="heading-option-right">Iniciar Sesión</h5>
-            <h4 id="heading-option-right2">Registrate</h5>
-            <div class="menu-option-box" id="menu-option-box-1" onmouseout="menuOptionBoxOut()">
+            <h4 id="heading-title" onclick="window.location.href='/'">
+                <img src="/static/img/logo-gris.png" id="heading-title-img">
+            </h4>
+            <h4 id="heading-option" onmouseover="headingOptionHover(); openMenu()" onmouseleave="headingOptionLeave();closeMenu()">
+                Info 
+                <img src="/static/img/chevron.svg" class="chevron"></img>
+                <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
                     <p class="menu-option-box-op" id="menu-option-box-op-1">Preguntas frecuentes</p>
                     <p class="menu-option-box-op">Quiero unirme</p>
                     <p class="menu-option-box-op">Quienes somos</p>
                     <p class="menu-option-box-op">¿Por qué un EcoAsistente?</p>                
-            </div>
+                </div>
+            </h4> 
+            <h4 id="heading-option-right">Iniciar Sesión</h5>
+            <h4 id="heading-option-right2">Registrate</h5>
     </div>
     <div id="top-title-content">
         <h1 id="top-title">Descubrí una nueva</h1>
@@ -266,81 +272,75 @@
 <!--footer starts from here-->
 <footer class="footer">
     <div class="container bottom_border">
-    <div class="row">
-    <div class=" col-sm-4 col-md col-sm-4  col-12 col">
-    <img class="headin5_amrc col_white_amrc pt2 footer-logo" src="/static/img/logo.png" >
-    <!--headin5_amrc-->
-    <h3 id="start-button-footer">Registrarse</h3> 
-    <h3 id="login-button-footer">Iniciar Sesión</h3> 
-
-
-
-    
-    
-    </div>
-    
-    
-    <div class=" col-sm-4 col-md  col-6 col" id="footer-col-1">
-    <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
-    <!--headin5_amrc-->
-    <ul class="footer_ul_amrc">
-    <li><a href="http://webenlance.com">Image Rectoucing</a></li>
-    <li><a href="http://webenlance.com">Clipping Path</a></li>
-    <li><a href="http://webenlance.com">Hollow Man Montage</a></li>
-    <li><a href="http://webenlance.com">Ebay & Amazon</a></li>
-    <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
-    <li><a href="http://webenlance.com">Image Cropping</a></li>
-    </ul>
-    <!--footer_ul_amrc ends here-->
-    </div>
-    
-    
-    <div class=" col-sm-4 col-md  col-6 col" id="footer-col-2">
-    <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
-    <!--headin5_amrc-->
-    <ul class="footer_ul_amrc">
-    <li><a href="http://webenlance.com">Remove Background</a></li>
-    <li><a href="http://webenlance.com">Shadows</a></li>
-    <li><a href="http://webenlance.com">Logo Design</a></li>
-    <li><a href="http://webenlance.com">Vectorization</a></li>
-    <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
-    <li><a href="http://webenlance.com">Image Cropping</a></li>
-    </ul>
-    <!--footer_ul_amrc ends here-->
-    </div>
-    
-    
-    <div class=" col-sm-4 col-md  col-12 col" id="footer-col-3">
-    <h5 class="headin5_amrc col_white_amrc pt2">Sobre nosotros</h5>
-    <!--headin5_amrc ends here-->
-    
-    <ul class="footer_ul2_amrc">
-        <p class="mb10">EcoAsistente fue desarrollado como Proyecto Final de la carrera de Ingeniería en Sistemas de Información, de la Universidad Tecnológica Nacional de Rosario, por Bruno Tomás Caracini y Joaquín Cardona Ruíz.</p>
-        <p><i class="fa fa fa-envelope"></i> bruno98980@gmail.com  </p>
-        <p><i class="fa fa fa-envelope"></i> joaquíncardonaruiz@gmail.com  </p>
-        <p><i class="fa fa fa-code"></i>  Repositorio en Github  </p>
-    </ul>
-    <!--footer_ul2_amrc ends here-->
-    </div>
-    </div>
+        <div class="row">
+            <div class=" col-sm-4 col-md col-sm-4  col-12 col">
+                <img class="headin5_amrc col_white_amrc pt2 footer-logo" src="/static/img/logo.png" >
+                <!--headin5_amrc-->
+                <h3 id="start-button-footer">Registrarse</h3> 
+                <h3 id="login-button-footer">Iniciar Sesión</h3>   
+            </div>
+            
+            
+            <div class=" col-sm-4 col-md  col-6 col" id="footer-col-1">
+                <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+                <!--headin5_amrc-->
+                <ul class="footer_ul_amrc">
+                <li><a href="http://webenlance.com">Image Rectoucing</a></li>
+                <li><a href="http://webenlance.com">Clipping Path</a></li>
+                <li><a href="http://webenlance.com">Hollow Man Montage</a></li>
+                <li><a href="http://webenlance.com">Ebay & Amazon</a></li>
+                <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
+                <li><a href="http://webenlance.com">Image Cropping</a></li>
+                </ul>
+                <!--footer_ul_amrc ends here-->
+            </div>
+            
+            
+            <div class=" col-sm-4 col-md  col-6 col" id="footer-col-2">
+                <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+                <!--headin5_amrc-->
+                <ul class="footer_ul_amrc">
+                <li><a href="http://webenlance.com">Remove Background</a></li>
+                <li><a href="http://webenlance.com">Shadows</a></li>
+                <li><a href="http://webenlance.com">Logo Design</a></li>
+                <li><a href="http://webenlance.com">Vectorization</a></li>
+                <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
+                <li><a href="http://webenlance.com">Image Cropping</a></li>
+                </ul>
+                <!--footer_ul_amrc ends here-->
+            </div>
+            
+            
+            <div class=" col-sm-4 col-md  col-12 col" id="footer-col-3">
+                <h5 class="headin5_amrc col_white_amrc pt2">Sobre nosotros</h5>
+                <!--headin5_amrc ends here-->
+                
+                <ul class="footer_ul2_amrc">
+                    <p class="mb10">EcoAsistente fue desarrollado como Proyecto Final de la carrera de Ingeniería en Sistemas de Información, de la Universidad Tecnológica Nacional de Rosario, por Bruno Tomás Caracini y Joaquín Cardona Ruíz.</p>
+                    <p class="linkeable-p"><i class="fa fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;bruno98980@gmail.com  </p>
+                    <p class="linkeable-p"><i class="fa fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;joaquíncardonaruiz@gmail.com  </p>
+                    <p class="linkeable-p"><i class="fa fa fa-code"></i>&nbsp;&nbsp;&nbsp;Repositorio en Github  </p>
+                </ul>
+                <!--footer_ul2_amrc ends here-->
+            </div>
+        </div>
     </div>
     
     
     <div class="container">
-    <ul class="foote_bottom_ul_amrc">
-    <li><a href="http://webenlance.com">Home</a></li>
-    <li><a href="http://webenlance.com">About</a></li>
-    <li><a href="http://webenlance.com">Services</a></li>
-    <li><a href="http://webenlance.com">Pricing</a></li>
-    <li><a href="http://webenlance.com">Blog</a></li>
-    <li><a href="http://webenlance.com">Contact</a></li>
-    </ul>
-    <!--foote_bottom_ul_amrc ends here-->
-    <p class="text-center">Presentado en marzo de 2021 | EcoAsistente</p>
-
+        <ul class="foote_bottom_ul_amrc">
+        <li><a href="http://webenlance.com">Home</a></li>
+        <li><a href="http://webenlance.com">About</a></li>
+        <li><a href="http://webenlance.com">Services</a></li>
+        <li><a href="http://webenlance.com">Pricing</a></li>
+        <li><a href="http://webenlance.com">Blog</a></li>
+        <li><a href="http://webenlance.com">Contact</a></li>
+        </ul>
+        <!--foote_bottom_ul_amrc ends here-->
+        <p class="text-center">Presentado en marzo de 2021 | EcoAsistente</p>
     </div>
     
-    </footer>
+</footer>
 
 </body>
 <script src="static/js/start-page.js"></script>

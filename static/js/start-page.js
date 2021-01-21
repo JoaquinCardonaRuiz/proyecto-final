@@ -1,3 +1,6 @@
+var circleFilled = false;
+
+
 //Acomoda los margenes en base al tamaño de pantalla. Se llama también cada vez que hay un resize.
 function setMarings(){
     if(parseInt($(window).width()) > 1550){
@@ -11,7 +14,6 @@ function setMarings(){
         $("#page-content-plantas").css({"margin-right":"13%"});
     }
 }
-
 
 //Acomoda los textos en base a la posición de los circulos.
 function orderCirclesText(){
@@ -34,18 +36,7 @@ function orderCirclesText(){
     $("#desc-4-circles").css({top: pos_circulo_4 + 35, position:'absolute'});
 }
 
-function orderMenuBox(){
-    var pos_heading_option_top = document.getElementById("heading-option").offsetTop + 45;
-    var pos_heading_option_left = document.getElementById("heading-option").offsetLeft;
-
-    $("#menu-option-box-1").css({top: pos_heading_option_top, position:'absolute'});
-
-    $("#menu-option-box-1").css({left: pos_heading_option_left, position:'absolute'});
-
-}
-
-var circleFilled = false;
-
+//Maneja las animaciones que dependen de la posición de pantalla de todas las secciones del Landing page
 function animations(){
 
     //alert(window.scrollY);
@@ -177,6 +168,7 @@ function animations(){
     }
 }
 
+//Cambia las las imagenes y los colores de los circulos en la sección de circulos verdes.
 function fillCircles(numero){
     numero = parseInt(numero);
     if (circleFilled != numero){
@@ -214,6 +206,7 @@ function fillCircles(numero){
     circleFilled = numero;
 }
 
+//Animaciones de las preguntaas sección top 5 preguntas
 slidedAns = false; 
 function slideAnswer(numero){
     if (slidedAns == numero){
@@ -242,23 +235,42 @@ function slideAnswer(numero){
     }
 }
 
+//Animación chevron (rota 180 grados cuando se abre el dropdown de la opción "Info" del menú principal)
 function headingOptionHover(){
     $(".chevron").css({cursor: 'pointer', transform: 'rotate(180deg)'});
 }
 
+//Animación chevron (vuelve a su posición original)
 function headingOptionLeave(){
     $(".chevron").css({transform: 'rotate(0deg)'});
+}
+
+//Abre el dropdown de la opción "Info" del menú principal
+function openMenu() {
     $("#menu-option-box-1").show();
+};
+
+//Cierra el dropdown de la opción "Info" del menú principal
+function closeMenu() {
+    $("#menu-option-box-1").hide();
+};
+
+//Animacion seccion graduados (hover)
+function graduadosIn() {
+    $(".card-graduados-title").css({"transition" : "color 0.5s ease-in-out","color": "#95C22B"});
+    $(".card-graduados-title-2").css({"transition" : "color 0.5s ease-in-out","color": "#95C22B"});
+    $(".card-graduados-title-3").css({"transition" : "color 0.5s ease-in-out","color": "#95C22B"});
+    $("#card-graduados").css({"transition":"background-color 1s ease-in-out", "background-color":"#f9f4ff", "transition":"width 1.1s, height 1.1s, transform 1.1s", "transform":"translateY(-15px)"})
+
 }
 
-function menuOptionBoxOut(){
-
+//Animación sección graduados (not hover)
+function graduadosOut() {
+    $(".card-graduados-title").css({"transition" : "color 0.3s ease-in-out","color": "black"});
+    $(".card-graduados-title-2").css({"transition" : "color 0.3s ease-in-out","color": "black"});
+    $(".card-graduados-title-3").css({"transition" : "color 0.3s ease-in-out","color": "black"});
+    $("#card-graduados").css({"transition":"background-color 1s ease-in-out", "background-color":"white", "transition":"width 1.1s, height 1.1s, transform 1.1s", "transform":"translateY(15px)"})
 }
-
-fillCircles(1);
-orderCirclesText();
-setMarings();
-orderMenuBox();
 
 $( window ).resize(function() {
     setMarings();
@@ -273,17 +285,7 @@ $( window ).resize(function() {
     }
 });
 
-function graduadosIn() {
-    $(".card-graduados-title").css({"transition" : "color 0.5s ease-in-out","color": "#95C22B"});
-    $(".card-graduados-title-2").css({"transition" : "color 0.5s ease-in-out","color": "#95C22B"});
-    $(".card-graduados-title-3").css({"transition" : "color 0.5s ease-in-out","color": "#95C22B"});
-    $("#card-graduados").css({"transition":"background-color 1s ease-in-out", "background-color":"#f9f4ff", "transition":"width 1.1s, height 1.1s, transform 1.1s", "transform":"translateY(-15px)"})
+fillCircles(1);
+orderCirclesText();
+setMarings();
 
-}
-
-function graduadosOut() {
-    $(".card-graduados-title").css({"transition" : "color 0.3s ease-in-out","color": "black"});
-    $(".card-graduados-title-2").css({"transition" : "color 0.3s ease-in-out","color": "black"});
-    $(".card-graduados-title-3").css({"transition" : "color 0.3s ease-in-out","color": "black"});
-    $("#card-graduados").css({"transition":"background-color 1s ease-in-out", "background-color":"white", "transition":"width 1.1s, height 1.1s, transform 1.1s", "transform":"translateY(15px)"})
-}

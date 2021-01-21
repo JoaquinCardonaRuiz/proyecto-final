@@ -24,7 +24,7 @@ body{
     position: relative;
     margin: auto;
     width: 900px;
-    margin-top: 3%;
+    margin-top: 3.5%;
     vertical-align: middle;
 }
 
@@ -32,19 +32,24 @@ body{
     float: left;
     position: relative;
     font-size: 28px;
+    height: fit-content;
+}
+
+#heading-title-img{
+    width: 210px;
+    margin-top: -32px;
 }
 
 #heading-title:hover{
     cursor: pointer;
 }
 
-
 #heading-option{
     margin-left: 3%;
     position: relative;
     font-size: 16px;
     font-weight: 400;
-    height: 100px;
+    height: 50px;
     line-height: 38px;
     white-space: nowrap;
 }
@@ -109,6 +114,7 @@ body{
     background-color:white; 
     width: fit-content;
     display: none;
+    margin-top: 8px;
 }
 
 .menu-option-box-op{
@@ -127,13 +133,14 @@ body{
 }
 
 #menu-option-box-op-1{
-    margin-top: 20px !important;
+    margin-top: 10px !important;
 }
 
 /*Page Content*/
 #top-title-content{
     margin: auto;
     width: 900px;
+    margin-top: 55px;
 }
 
 #top-title{
@@ -845,6 +852,7 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 
 .footer_ul2_amrc {margin:0px; list-style-type:none; padding:0px;}
 .footer_ul2_amrc li p { display:table; }
+.linkeable-p:hover { color:#fff; text-decoration:none; cursor: pointer;}
 .footer_ul2_amrc li a:hover { text-decoration:none;}
 .footer_ul2_amrc li i { margin-top:5px;}
 
