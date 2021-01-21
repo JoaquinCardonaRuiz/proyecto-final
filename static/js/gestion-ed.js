@@ -218,13 +218,14 @@ function openAltaModal(){
 }
 
 //Abre el Modal de baja. 
-function openBajaModal(idEntidad){
+function openBajaModal(idEntidad,nombreEntidad){
     //Manejo de elementos de carga
     $("#fieldsRowBaja").show();
     $(".lds-ring").hide();
     $('#bottomBajaModalText').hide();
     $('#primary-btn-alert').prop('disabled', false);
     $('#secondary-btn-baja').prop('disabled', false);
+    document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea eliminar la entidad de destino " + nombreEntidad + "? Una vez eliminada, esta no se podrá recuperar.";
 
     //Manejo de carteles
     jQuery.noConflict();
