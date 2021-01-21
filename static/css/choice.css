@@ -103,6 +103,11 @@
     border-top:2px solid white !important
 }
 
+.center-label{
+  margin-left: 125px;
+  margin-bottom: 10px;
+}
+
 .modalErrorMessage{
     font-size: 15px;
     color: tomato;
