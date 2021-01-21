@@ -272,6 +272,11 @@ function graduadosOut() {
     $("#card-graduados").css({"transition":"background-color 1s ease-in-out", "background-color":"white", "transition":"width 1.1s, height 1.1s, transform 1.1s", "transform":"translateY(15px)"})
 }
 
+//Redirige al url que recibe como parámetro.
+function redirect(link){
+    window.location.href = link;
+}
+
 $( window ).resize(function() {
     setMarings();
     if ($( window ).width() < 1170){
@@ -284,6 +289,8 @@ $( window ).resize(function() {
 
     }
 });
+
+
 
 fillCircles(1);
 orderCirclesText();

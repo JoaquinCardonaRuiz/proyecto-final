@@ -52,15 +52,15 @@
                     <p class="menu-option-box-op">¿Por qué un EcoAsistente?</p>                
                 </div>
             </h4> 
-            <h4 id="heading-option-right">Iniciar Sesión</h5>
-            <h4 id="heading-option-right2">Registrate</h5>
+            <h4 id="heading-option-right" onclick="redirect('/login')">Iniciar Sesión</h5>
+            <h4 id="heading-option-right2" onclick="redirect('/register')">Registrate</h5>
     </div>
     <div id="top-title-content">
         <h1 id="top-title">Descubrí una nueva</h1>
         <h1 id="top-title">manera de</h1>
         <h1 id="top-title">reciclar</h1>
         <h5 id="top-subtitle">Ayudar al planeta nunca fue tan fácil</h5>
-        <h3 id="start-button">Empezar</h3>
+        <h3 id="start-button" onclick="redirect('/register')">Empezar</h3>
     </div>
 </div>
 
@@ -141,7 +141,7 @@
                     </div>
 
                     <div class="vertical-line"></div>
-                    <h3 id="start-button-cell">¡Empezá ahora!</h3> 
+                    <h3 id="start-button-cell" onclick="redirect('/register')">¡Empezá ahora!</h3> 
 
                 </div>
                 <div class="col right-circle-col">
@@ -161,7 +161,6 @@
         </div>
     </div>
 </div>
-
   
 <!--Sección Plantas-->
 <div class="jumbotron" id="page-content-plantas">
@@ -210,7 +209,6 @@
 </div>
 
 <!--Sección Top 5 Preguntas Frecuentes-->
-
 <div class="jumbotron" id="page-content-top-questions">
     <div class="row" style="width: 90%;">
         <div class="col" id="question-img-col">
@@ -268,7 +266,6 @@
     </div>
 </div>
 
-
 <!--footer starts from here-->
 <footer class="footer">
     <div class="container bottom_border">
@@ -276,8 +273,8 @@
             <div class=" col-sm-4 col-md col-sm-4  col-12 col">
                 <img class="headin5_amrc col_white_amrc pt2 footer-logo" src="/static/img/logo.png" >
                 <!--headin5_amrc-->
-                <h3 id="start-button-footer">Registrarse</h3> 
-                <h3 id="login-button-footer">Iniciar Sesión</h3>   
+                <h3 id="start-button-footer" onclick="redirect('/register')">Registrarse</h3> 
+                <h3 id="login-button-footer" onclick="redirect('/login')">Iniciar Sesión</h3>   
             </div>
             
             
@@ -317,9 +314,9 @@
                 
                 <ul class="footer_ul2_amrc">
                     <p class="mb10">EcoAsistente fue desarrollado como Proyecto Final de la carrera de Ingeniería en Sistemas de Información, de la Universidad Tecnológica Nacional de Rosario, por Bruno Tomás Caracini y Joaquín Cardona Ruíz.</p>
-                    <p class="linkeable-p"><i class="fa fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;bruno98980@gmail.com  </p>
-                    <p class="linkeable-p"><i class="fa fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;joaquíncardonaruiz@gmail.com  </p>
-                    <p class="linkeable-p"><i class="fa fa fa-code"></i>&nbsp;&nbsp;&nbsp;Repositorio en Github  </p>
+                    <p class="linkeable-p" onclick="redirect('mailto:bruno98980@gmail.com')"><i class="fa fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;bruno98980@gmail.com  </p>
+                    <p class="linkeable-p" onclick="redirect('mailto:joaquíncardonaruiz@gmail.com')"><i class="fa fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;joaquíncardonaruiz@gmail.com  </p>
+                    <p class="linkeable-p" onclick="redirect('https://github.com/JoaquinCardonaRuiz/proyecto-final')"><i class="fa fa fa-code"></i>&nbsp;&nbsp;&nbsp;Repositorio en Github  </p>
                 </ul>
                 <!--footer_ul2_amrc ends here-->
             </div>
