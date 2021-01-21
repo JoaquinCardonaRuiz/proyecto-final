@@ -277,6 +277,14 @@ function redirect(link){
     window.location.href = link;
 }
 
+//Redirige al url que recibe como parámetro en una nueva pestaña.
+function redirectBlank(link){
+window.open(
+    link,
+    '_blank' // <- This is what makes it open in a new window.
+);
+}
+
 $( window ).resize(function() {
     setMarings();
     if ($( window ).width() < 1170){
