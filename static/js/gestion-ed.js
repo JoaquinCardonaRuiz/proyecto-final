@@ -214,6 +214,7 @@ function openAltaModal(){
     jQuery.noConflict();
     $(".lds-ring").hide();
     $('#altaModal').modal('show');
+    document.getElementById("nombreEntidadError").innerHTML="";
 }
 
 //Abre el Modal de baja. 

@@ -361,7 +361,7 @@
                       <!-- el min y max supuestamente no tiene soporte en navegadores mobile, asi que hay que probar que no se pueda poner 0 -->
                       <input type="number" style="width:60%;" id="cantArtInputAdd" name="cantidad" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onkeydown='document.getElementById("cantidadError").innerHTML=""'>
                       <span class="highlight"></span>
-                      <span class="bar"></span>
+                      <span class="bar" style="width:60%;"></span>
                       <label>Cantidad</label>
                       <p id="cantidadError" class="modalErrorMessage"></p>
                     </div>
