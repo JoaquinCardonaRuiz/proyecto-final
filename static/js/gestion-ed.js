@@ -395,6 +395,7 @@ function openEditModal(idEntidad,nombreEntidad){
     $('#idEntidad').val(String(idEntidad))
     $('#nombreEntidad').val(String(nombreEntidad));
     document.getElementById("EntNombreInput").value = nombreEntidad;
+    document.getElementById("idEntidadInput").value = document.getElementById("idEntidad").value;
     $('#editEntidadModal').modal('show');
     $('.nav-tabs a:first').tab('show');
     document.getElementById("mod-name-btn").disabled = true;

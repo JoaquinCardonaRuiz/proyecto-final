@@ -96,14 +96,13 @@ class DatosEntidadDestino(Datos):
 
 
     @classmethod
-    def update(cls,id,nombre):
+    def update(cls,idEnt,nombre):
         """
         Actualiza el nombre de una entidad de destino en la BD
         """
-
         cls.abrir_conexion()
         try:
-            sql = ("UPDATE entidadesDestino SET nombre = \"{}\" WHERE idEntidad={}".format(nombre,id))
+            sql = ("UPDATE entidadesDestino SET nombre = \"{}\" WHERE idEntidad={}".format(nombre,idEnt))
             cls.cursor.execute(sql)
             cls.db.commit()
             return True

@@ -135,10 +135,9 @@ def baja_entidad_destino(id):
 def edit_entidad_destino():
     if request.method == 'POST':
         nombre = request.form['nombre']
-        id = request.form['id']
-        print(nombre,id)
+        idEnt = request.form['id']
         try:
-            NegocioEntidadDestino.update(id,nombre)
+            NegocioEntidadDestino.update(idEnt,nombre)
         except Exception as e:
             raise e
         return redirect(url_for('gestion_ed'))

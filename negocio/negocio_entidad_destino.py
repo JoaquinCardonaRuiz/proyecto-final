@@ -69,7 +69,7 @@ class NegocioEntidadDestino(Negocio):
                                                    msj_adicional="Error en la capa de Negocio eliminando una Entidad destino de la base de Datos")
 
     @classmethod
-    def update(cls,id,nombre):
+    def update(cls,idEnt,nombre):
         """
         Actualiza el nombre de una entidad de destino en la BD
         """
@@ -83,7 +83,7 @@ class NegocioEntidadDestino(Negocio):
                 raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.update()",
                                                               msj="Error en la capa de negocio al validar regla RN12: Una entidad no puede tener nombre vacio.") 
             else:
-                DatosEntidadDestino.update(id,nombre)
+                DatosEntidadDestino.update(idEnt,nombre)
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_entidad_destino.update()",
                                                    msj=str(e),
