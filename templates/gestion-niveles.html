@@ -88,7 +88,7 @@
             <div class="row" id="fieldsRow1Alta1">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="numeroNivel" onkeyup="validaNumero('{{max_level}}', 'alta')" name="numeroNivel" autocomplete="off"> 
+                        <input type="text" required id="numeroNivel" onkeypress="return isNumberKeyEntiresOnly(this, event);" onkeyup="validaNumero('{{max_level}}', 'alta')" name="numeroNivel" autocomplete="off"> 
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Número de Nivel</label>
@@ -190,7 +190,7 @@
             <div class="row" id="fieldsRow1">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="numeroNivelMod" onkeyup="validaNumero(false, 'mod')" name="numeroNivel" autocomplete="off"> 
+                        <input type="text" required id="numeroNivelMod" onkeypress="return isNumberKeyEntiresOnly(this, event);" onkeyup="validaNumero(false, 'mod')" name="numeroNivel" autocomplete="off"> 
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Número de Nivel</label>

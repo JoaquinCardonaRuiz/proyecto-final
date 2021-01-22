@@ -343,6 +343,14 @@ function isNumberKey(txt, evt) {
     return true;
   }
 
+  function isNumberKeyEntiresOnly(txt, evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if (charCode > 31 &&
+        (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+  }
+
 //Hace aparecer y desaprecer los iconos para eliminar al lado de cada elemento de la lista.
 function removeLevel(){
     if (del == false){

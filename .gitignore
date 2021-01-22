@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
+__pycache__
 *.py[cod]
 *$py.class
 
@@ -129,9 +129,11 @@ dmypy.json
 .pyre/
 
 #Compiled files
+.pyc
 **/*.pyc
 **/**/*.pyc
 
 #vscode
 .vscode/**
 © 2021 GitHub, Inc.
+
