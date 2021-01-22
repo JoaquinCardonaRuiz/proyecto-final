@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EcoAsitente</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/start-page.css')}}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">   
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    
+    
+</head>
+<body style="background-color: white;" onscroll="animations()">
+
+<!--Sección Principal-->
+<div class="top" id="page-top-content">
+    <div class="row" id="page-heading">
+            <h4 id="heading-title" onclick="window.location.href='/'">
+                <img src="/static/img/logo-gris.png" id="heading-title-img">
+            </h4>
+            <h4 id="heading-option" onmouseover="headingOptionHover(); openMenu()" onmouseleave="headingOptionLeave();closeMenu()">
+                Info 
+                <img src="/static/img/chevron.svg" class="chevron"></img>
+                <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
+                    <p class="menu-option-box-op" id="menu-option-box-op-1">Preguntas frecuentes</p>
+                    <p class="menu-option-box-op">Quiero unirme</p>
+                    <p class="menu-option-box-op">Quienes somos</p>
+                    <p class="menu-option-box-op">¿Por qué un EcoAsistente?</p>                
+                </div>
+            </h4> 
+            <h4 id="heading-option-right" onclick="redirect('/login')">Iniciar Sesión</h5>
+            <h4 id="heading-option-right2" onclick="redirect('/register')">Registrate</h5>
+    </div>
+    <div id="top-title-content">
+        <h1 id="top-title">Descubrí una nueva</h1>
+        <h1 id="top-title">manera de</h1>
+        <h1 id="top-title">reciclar</h1>
+        <h5 id="top-subtitle">Ayudar al planeta nunca fue tan fácil</h5>
+        <h3 id="start-button" onclick="redirect('/register')">Empezar</h3>
+    </div>
+</div>
+
+<!--Sección Tarjetas-->
+<div class="jumbotron" id="page-content-1">
+    <h3 class="page-content-title">Qué podés hacer con EcoAsistente</h3>
+    <p class="page-content-subtitle">Descubrí como podes ganar ayudando al medio ambiente y a tu ciudad.</p>
+    <div class="row justify-content-center" id="cards-row">
+        <div class="start-card" id="start-card1">
+            <img src="/static/img/tarjetas-1.png" id="card-img-1">
+            <h5 class="card-title">Depositá residuos</h5>
+            <p class="card-description">Depositá tus residuos en cualquier Punto de Depósito de la ciudad y sumá EcoPuntos por cada depósito.</p>   
+        </div>
+        <div class="start-card" id="start-card2">
+            <img src="/static/img/tarjetas-2.png" id="card-img-2">
+            <h5 class="card-title">Canjea EcoPuntos</h5>
+            <p class="card-description">Explorá nuestra tienda y utilizá tus EcoPuntos para obtener artículos hechos con materiales reciclados.</p>   
+        </div>
+        <div class="start-card" id="start-card3">
+            <img src="/static/img/tarjetas-3.png" id="card-img-3">
+            <h5 class="card-title">Hacé tu vida más sustentable</h5>
+            <p class="card-description">Obtené información para reducir tu uso de energía y encontrá las plantas ideales para a vos.</p>   
+        </div>
+    </div>
+</div>
+
+<!--Sección Flujo Básico-->
+<div class="jumbotron" id="page-content-flujo-basico">
+    <div class="row" id="first-row-page-content-flujo-basico">
+        <div class="col justify-content-center">
+            <img src="/static/img/flat-man-recycling-start-page.png" alt="" id="start-image-flujo-basico">
+        </div>
+        <div class="col justify-content-center" id="right-col-page-content-flujo-basico">
+            <h3 class="page-content-title-flujo-basico">Reciclá y sumá</h3>
+            <h3 class="page-content-title-flujo-basico2">EcoPuntos</h3>
+            <p class="page-content-subtitle-flujo-basico">Separar tus residuos ya no sólo beneficia al medio ambiente, también te beneficia a vos. Podés canjear los EcoPuntos que ganás reciclando por beneficios en nuestro sitio web, y así al mismo tiempo ayudás a fomentar el ciclo de reciclaje.</p>
+        </div>
+    </div>
+</div>
+
+<!--Sección circulos verdes-->
+<div class="jumbotron" id="page-content-circles">
+    <div class="row">
+        <div class="col" id="page-content-img-col">
+            <img src="/static/img/despositivos-1.png" class = "devices-img" id="devices-img-1">
+            <img src="/static/img/despositivos-2.png" class = "devices-img" id="devices-img-2">
+            <img src="/static/img/despositivos-3.png" class = "devices-img" id="devices-img-3">
+            <img src="/static/img/despositivos-4.png" class = "devices-img" id="devices-img-4">
+        </div>
+        <div class="col" id="page-content-circles-col">
+            <div class="row" id="">
+                <h2 class="line-title">Sumáte a una</h2>
+                <h2 class="line-title-2">ciudad sustentable</h2>
+                <div class="left-circle-col">
+                    <div class="vertical-line"></div> 
+                    <div class="circles" id="circle1" onclick="fillCircles(1)">
+                        <img src="/static/img/circles-1-green.png" class="circle-image" id="circle-image-1">
+                        <img src="/static/img/circles-1-white.png" class="circle-image" id="circle-image-1-w">
+                    </div>
+
+                    <div class="vertical-line"></div> 
+                    <div class="circles" id="circle2" onclick="fillCircles(2)">
+                        <img src="/static/img/circles-2-green.png" class="circle-image" id="circle-image-2">
+                        <img src="/static/img/circles-2-white.png" class="circle-image" id="circle-image-2-w">
+                    </div>
+
+                    <div class="vertical-line"></div> 
+                    <div class="circles" id="circle3" onclick="fillCircles(3)">
+                        <img src="/static/img/circles-3-green.png" class="circle-image" id="circle-image-3">
+                        <img src="/static/img/circles-3-white.png" class="circle-image" id="circle-image-3-w">
+
+                    </div>
+                    
+                    <div class="vertical-line"></div> 
+                    <div class="circles" id="circle4" onclick="fillCircles(4)">
+                        <img src="/static/img/circles-4-green.png" class="circle-image" id="circle-image-4">
+                        <img src="/static/img/circles-4-white.png" class="circle-image" id="circle-image-4-w">
+                    </div>
+
+                    <div class="vertical-line"></div>
+                    <h3 id="start-button-cell" onclick="redirect('/register')">¡Empezá ahora!</h3> 
+
+                </div>
+                <div class="col right-circle-col">
+                    <h5 class="circle-title" id="circle-title-1">Depositá tus residuos</h5>
+                    <p class="circle-description" id="desc-1-circles">Depositá tus residuos en cualquier Punto de Depósito de la ciudad.</p>   
+                    
+                    <h5 class="circle-title" id="circle-title-2">Sumá EcoPuntos</h5>
+                    <p class="circle-description" id="desc-2-circles">Sumá EcoPuntos por cada depósito de reisudos que hagas cargando el código obtenido en esta web.</p>   
+                    
+                    <h5 class="circle-title" id="circle-title-3">Canjealos por artículos</h5>
+                    <p class="circle-description" id="desc-3-circles">Canjeá tus EcoPuntos por productos hechos a partir de materiales reciclados.</p> 
+                
+                    <h5 class="circle-title" id="circle-title-4">Retirá tu pedido</h5>
+                    <p class="circle-description" id="desc-4-circles">Retirá tu producto por un Punto de Retiro que elijas dentro de la ciudad.</p>   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+<!--Sección Plantas-->
+<div class="jumbotron" id="page-content-plantas">
+    <div class="row" id="first-row-page-content-plantas">
+        <div class="col justify-content-center" id="left-col-page-content-plantas">
+            <h3 class="page-content-title-plantas">Encontrá la planta</h3>
+            <h3 class="page-content-title-plantas-2">que va con vos</h3>
+            <p class="page-content-subtitle-plantas">EcoAsistente te ayuda a hacer tu casa más verde, encontrando la planta ideal para vos, en base a la cantidad de horas de luz, la cantidad de veces que puedas regarla, y temperatura.</p>
+        </div>
+        <div class="col justify-content-center" id="right-col-page-content-plantas">
+            <img src="/static/img/plantas-start-page.png" alt="" id="start-image-plantas">
+        </div>
+    </div>
+</div>
+
+<!--Gacetilla Verde-->
+<div class="jumbotron" id="page-content-green-board">
+    <h1 class="page-content-title-green-board" id="page-content-title-green-board">Sumate al movimiento ecológico</h1>
+    <div class="row" id="row-page-content-green-board-1">
+        <div class="col">
+            <img src="/static/img/gacetilla-1.png" id="start-image-green-board">
+        </div>
+        <div class="col">
+            <h2 class="page-content-subtitle-green-board">Más reciclás, más ganás</h2>
+            <p class="page-content-description-green-board">Por cada depósito que realices, obtené EcoPuntos que te ayuden a subir de nivel y así obtener descuentos exclusivos para el canje de artículos.</p>
+        </div>
+    </div>
+    <div class="row" id="row-page-content-green-board-2">
+        <div class="col">
+            <h2 class="page-content-subtitle-green-board-left">Sumáte a EcoAsistente</h2>
+            <p class="page-content-description-green-board-left">Sumate a EcoAsistente así nos recibimos y dejamos de codear estas mierdas, y podemos irnos a Europa de una buena vez.</p>
+        </div>
+        <div class="col">
+            <img src="/static/img/gacetilla-2.png" id="start-image-green-board-2">
+        </div>
+    </div>
+    <div class="row" id="row-page-content-green-board-3">
+        <div class="col">
+            <img src="/static/img/gacetilla-3.png" id="start-image-green-board-3">
+        </div>
+        <div class="col">
+            <h2 class="page-content-subtitle-green-board">Conocé los Puntos de Depósito de tu ciudad</h2>
+            <p class="page-content-description-green-board">Consultá la ubicación y disponibilidad de los Puntos de Depósito de toda la ciudad, sus horarios, y que materiales podés depositar en cada uno de ellos.</p>
+        </div>
+    </div>
+</div>
+
+<!--Sección Top 5 Preguntas Frecuentes-->
+<div class="jumbotron" id="page-content-top-questions">
+    <div class="row" style="width: 90%;">
+        <div class="col" id="question-img-col">
+            <img src="/static/img/question-1.png" id="question-img">
+        </div>
+        <div class="col" id="questions-col">
+            <h2 id="top-questions-title">TOP 5 preguntas</h2>
+            <div class="row question-row" onclick="slideAnswer(1);" id="question-row-1">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1"></img>
+                <p class="question" id="question-1">¿Qué es EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-1">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
+            
+            <div class="row question-row" onclick="slideAnswer(2);" id="question-row-2">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2"></img>
+                <p class="question" id="question-2">¿Cómo comienzo a usar EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-2">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
+
+            <div class="row question-row" onclick="slideAnswer(3);" id="question-row-3">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3"></img>
+                <p class="question" id="question-3">¿Cómo obtengo EcoPuntos?</p>
+            </div>
+            <p class="question-answer" id="answer-3">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
+
+            <div class="row question-row" onclick="slideAnswer(4);" id="question-row-4">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4"></img>
+                <p class="question" id="question-4">¿Dónde puedo realizar depósitos?</p>
+            </div>
+            <p class="question-answer" id="answer-4">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
+
+            <div class="row question-row" onclick="slideAnswer(5);" id="question-row-5">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5"></img>
+                <p class="question" id="question-5">¿Qué materiales puedo depositar?</p>
+            </div>
+            <p class="question-answer" id="answer-5">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
+        </div>
+    </div>
+</div>
+
+<!--Sección graduados-->
+<div class="jumbotron" id="page-content-graduados">
+    <div class="container" id="card-graduados" onmouseout="graduadosOut();" onmouseover="graduadosIn();">
+        <div class="row" id="graduados-row">
+            <div class="col" id="graduados-left-col">
+                <h2 class="card-graduados-title">Acá va un título que </h2>
+                <h2 class="card-graduados-title-2">quede bien para</h2>
+                <h2 class="card-graduados-title-3">dar un final</h2>
+                <p class="graduados-description">EcoAsistente es el Proyecto Final de los Alumnos Bruno Tomás Caracini y Joaquín Cardona Ruíz de la carrera Ingeniería en Sistemas de Información, de la Universisdad Tecnológica Nacional de Rosario. Fue presentado en marzo de 2021, y con el concluímos nuestro ciclo como estudiantes universitarios para convertirnos en ingenieros.</p>
+            </div>
+            <div class="col" id="graudados-right-col">
+                <img src="/static/img/graduados.png" id="graduados-img">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--footer starts from here-->
+<footer class="footer">
+    <div class="container bottom_border">
+        <div class="row">
+            <div class=" col-sm-4 col-md col-sm-4  col-12 col">
+                <img class="headin5_amrc col_white_amrc pt2 footer-logo" src="/static/img/logo.png" >
+                <!--headin5_amrc-->
+                <h3 id="start-button-footer" onclick="redirect('/register')">Registrarse</h3> 
+                <h3 id="login-button-footer" onclick="redirect('/login')">Iniciar Sesión</h3>   
+            </div>
+            
+            
+            <div class=" col-sm-4 col-md  col-6 col" id="footer-col-1">
+                <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+                <!--headin5_amrc-->
+                <ul class="footer_ul_amrc">
+                <li><a href="http://webenlance.com">Image Rectoucing</a></li>
+                <li><a href="http://webenlance.com">Clipping Path</a></li>
+                <li><a href="http://webenlance.com">Hollow Man Montage</a></li>
+                <li><a href="http://webenlance.com">Ebay & Amazon</a></li>
+                <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
+                <li><a href="http://webenlance.com">Image Cropping</a></li>
+                </ul>
+                <!--footer_ul_amrc ends here-->
+            </div>
+            
+            
+            <div class=" col-sm-4 col-md  col-6 col" id="footer-col-2">
+                <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+                <!--headin5_amrc-->
+                <ul class="footer_ul_amrc">
+                <li><a href="http://webenlance.com">Remove Background</a></li>
+                <li><a href="http://webenlance.com">Shadows</a></li>
+                <li><a href="http://webenlance.com">Logo Design</a></li>
+                <li><a href="http://webenlance.com">Vectorization</a></li>
+                <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
+                <li><a href="http://webenlance.com">Image Cropping</a></li>
+                </ul>
+                <!--footer_ul_amrc ends here-->
+            </div>
+            
+            
+            <div class=" col-sm-4 col-md  col-12 col" id="footer-col-3">
+                <h5 class="headin5_amrc col_white_amrc pt2">Sobre nosotros</h5>
+                <!--headin5_amrc ends here-->
+                
+                <ul class="footer_ul2_amrc">
+                    <p class="mb10">EcoAsistente fue desarrollado como Proyecto Final de la carrera de Ingeniería en Sistemas de Información, de la Universidad Tecnológica Nacional de Rosario, por Bruno Tomás Caracini y Joaquín Cardona Ruíz.</p>
+                    <p class="linkeable-p" onclick="redirectBlank('mailto:bruno98980@gmail.com')"><i class="fa fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;bruno98980@gmail.com  </p>
+                    <p class="linkeable-p" onclick="redirectBlank('mailto:joaquincardonaruiz@gmail.com')"><i class="fa fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;joaquincardonaruiz@gmail.com  </p>
+                    <p class="linkeable-p" onclick="redirectBlank('https://github.com/JoaquinCardonaRuiz/proyecto-final')"><i class="fa fa fa-code"></i>&nbsp;&nbsp;&nbsp;Repositorio en Github  </p>
+                </ul>
+                <!--footer_ul2_amrc ends here-->
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="container">
+        <ul class="foote_bottom_ul_amrc">
+        <li><a href="http://webenlance.com">Home</a></li>
+        <li><a href="http://webenlance.com">About</a></li>
+        <li><a href="http://webenlance.com">Services</a></li>
+        <li><a href="http://webenlance.com">Pricing</a></li>
+        <li><a href="http://webenlance.com">Blog</a></li>
+        <li><a href="http://webenlance.com">Contact</a></li>
+        </ul>
+        <!--foote_bottom_ul_amrc ends here-->
+        <p class="text-center">Presentado en marzo de 2021 | EcoAsistente</p>
+    </div>
+    
+</footer>
+
+</body>
+<script src="static/js/start-page.js"></script>
+
+

@@ -6,6 +6,10 @@ app = Flask(__name__)
 app.secret_key = 'myscretkey'
 
 @app.route('/', methods = ['GET','POST'])
+def start():
+    return render_template('start-page.html')
+
+@app.route('/main', methods = ['GET','POST'])
 def main():
     return render_template('main.html')
 
@@ -149,6 +153,15 @@ def alta_entidad_destino():
             return error(e,"gestion_ed")
         return redirect(url_for('gestion_ed'))
 
+''' 
+    ---------------------------
+    Puntos de Deposito y Retiro
+    ---------------------------
+'''
+
+@app.route('/elegir-tipo-punto', methods = ['GET','POST'])
+def selection():
+    return render_template('elegir-tipo-punto.html')
 
 @app.route('/gestion-ed/baja/<id>')
 def baja_entidad_destino(id):
