@@ -591,9 +591,10 @@ class EntidadDestino:
         demandas (CantDemanda[]): Arreglo de los artículos demandados por la entidad.
         salidas (SalidaStock[]): Arreglo de las salidas de stock destinadas a la entidad.
     """
-    def __init__(self,id,nombre,demandas=[],salidas=[]):
+    def __init__(self,id,nombre,estado,demandas=[],salidas=[]):
         self.id = id
         self.nombre = nombre
+        self.estado = estado
         self.demandas = demandas
         self.salidas = salidas
 

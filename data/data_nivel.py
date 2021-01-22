@@ -25,8 +25,7 @@ class DatosNivel(Datos):
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_niveles()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obtieniendo los \
-                                                        niveles desde la BD.")
+                                                    msj_adicional="Error obtieniendo los niveles desde la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
@@ -41,12 +40,10 @@ class DatosNivel(Datos):
             values = (nivel.nombre, nivel.minimoEcoPuntos, nivel.maximoEcoPuntos, nivel.descuento)
             cls.cursor.execute(sql, values)
             cls.db.commit()
-            return True
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.alta_nivel()",
                                                     msj=str(e),
-                                                    msj_adicional="Error dando de alta un \
-                                                        nivel en la BD.")
+                                                    msj_adicional="Error dando de alta un nivel en la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
@@ -62,17 +59,15 @@ class DatosNivel(Datos):
             values = (id,)
             cls.cursor.execute(sql, values)
             nivel = cls.cursor.fetchone()
-            if nivel == None:
-                return False
-            else:
+            if nivel != None:
                 nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
-                return nivel
+            else:
+                nivel = None
+            return nivel
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_nivel_id",
                                                     msj=str(e),
-                                                    msj_adicional="Error obteniendo un nivel \
-                                                        en base al id recibido como \
-                                                        parámetro.")
+                                                    msj_adicional="Error obteniendo un nivel en base al id recibido como parámetro.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
@@ -88,17 +83,15 @@ class DatosNivel(Datos):
             values = (str(nombre),)
             cls.cursor.execute(sql, values)
             nivel = cls.cursor.fetchone()
-            if nivel == None:
-                return False
-            else:
+            if nivel != None:
                 nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
-                return nivel
+            else:
+                nivel = None
+            return nivel
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_nivel_nombre",
                                                     msj=str(e),
-                                                    msj_adicional="Error obteniendo un nivel \
-                                                        en base al nombre recibido como \
-                                                        parámetro.")
+                                                    msj_adicional="Error obteniendo un nivel en base al nombre recibido como parámetro.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
@@ -129,8 +122,6 @@ class DatosNivel(Datos):
                 cls.db.commit()
 
 
-                return True
-
             else:
                 #Actualiza mínimo del nivel siguiente.
                 sql = ("UPDATE niveles SET minEcoPuntos = %s WHERE nombre = %s")
@@ -154,12 +145,10 @@ class DatosNivel(Datos):
                 
                 cls.db.commit()
 
-                return True
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.baja_nivel",
                                                     msj=str(e),
-                                                    msj_adicional="Error dando de baja un \
-                                                    nivel de la BD.")
+                                                    msj_adicional="Error dando de baja un nivel de la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
@@ -174,11 +163,8 @@ class DatosNivel(Datos):
             sql = ("select * from niveles where nombre = (select max(nombre) from niveles);")
             cls.cursor.execute(sql)
             nivel = cls.cursor.fetchone()
-            if nivel == None:
-                return False
-            else:
-                nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
-                return nivel
+            nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
+            return nivel
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_max_nivel",
                                                     msj=str(e),
@@ -244,7 +230,6 @@ class DatosNivel(Datos):
             
             cls.db.commit()
             
-            return True 
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_nivel.baja_nivel_mod",
                                                     msj=str(e),
@@ -266,8 +251,7 @@ class DatosNivel(Datos):
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_entidades_destino()",
                                                     msj=str(e),
-                                                    msj_adicional="Error el máximo descuento \
-                                                         de un nivel desde la BD.")
+                                                    msj_adicional="Error el máximo descuento de un nivel desde la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
@@ -286,8 +270,7 @@ class DatosNivel(Datos):
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_entidades_destino()",
                                                     msj=str(e),
-                                                    msj_adicional="Error el máximo de \
-                                                        EcoPuntos de un nivel desde la BD.")
+                                                    msj_adicional="Error el máximo de EcoPuntos de un nivel desde la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
@@ -325,11 +308,8 @@ class DatosNivel(Datos):
                 values = (str(ecoPuntos),)
                 cls.cursor.execute(sql, values)
                 nivel = cls.cursor.fetchone()
-                if nivel == None:
-                    return False
-                else:
-                    nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
-                    return nivel
+                nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
+                return nivel
             else:
                 nivel = Nivel(nivel[0], nivel[1], nivel[2], nivel[3], nivel[4])
                 return nivel

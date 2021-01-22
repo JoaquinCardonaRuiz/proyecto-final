@@ -22,8 +22,7 @@ class Utils():
         except Exception as e:
            raise custom_exceptions.ErrorDeNegocio(origen="negocio.replace_dots()",
                                                    msj=str(e),
-                                                   msj_adicional="Error formateando los \
-                                                       números.")
+                                                   msj_adicional="Error formateando los números.")
     
     @classmethod
     def round_float(cls, number, decimals):
@@ -41,8 +40,7 @@ class Utils():
         except Exception as e:
            raise custom_exceptions.ErrorDeNegocio(origen="negocio.replace_dots()",
                                                    msj=str(e),
-                                                   msj_adicional="Error formateando los \
-                                                       números.") 
+                                                   msj_adicional="Error formateando los números.") 
     @classmethod
     def difference_between_lists(cls, lista1, lista2):
         """

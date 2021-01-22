@@ -22,13 +22,13 @@ class NegocioNivel(Negocio):
                 nivel.minimoEcoPuntos = Utils.replace_dots(nivel.minimoEcoPuntos,0)
                 nivel.maximoEcoPuntos = Utils.replace_dots(nivel.maximoEcoPuntos,0)
             return niveles
-
+        
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_niveles()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio\
-                                                         obtieniendo los niveles de la capa de\
-                                                         Datos.")
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo los niveles de la capa de Datos.")
     
     @classmethod    
     def get_min_max_niveles(cls):
@@ -41,12 +41,13 @@ class NegocioNivel(Negocio):
             max_nivel = (max(niveles, key= operator.attrgetter('nombre')).nombre)
             min_nivel = (min(niveles, key= operator.attrgetter('nombre')).nombre)
             return [min_nivel, max_nivel]
-
+        
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_niveles()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio\
-                                                         calculando el máximo/mínimo nivel.")
+                                                    msj_adicional="Error en la capa de Negocio calculando el máximo/mínimo nivel.")
 
     @classmethod
     def get_nivel_id(cls, id):
@@ -55,14 +56,17 @@ class NegocioNivel(Negocio):
         """
         try:
             nivel = DatosNivel.get_nivel_id(id)
+            if nivel == None:
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_nivel_id()",
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo un nivel en base su ID de la capa de Datos. No existe un nivel con el ID ingresado.")
             return nivel
-
+        
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_nivel_id()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio\
-                                                         obtieniendo un nivel en base su ID de\
-                                                         la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo un nivel en base su ID de la capa de Datos.")
     
     @classmethod
     def get_nivel_nombre(cls, nombre):
@@ -72,13 +76,13 @@ class NegocioNivel(Negocio):
         try:
             nivel = DatosNivel.get_nivel_nombre(nombre)
             return nivel
-
+        
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_nivel_nombre()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio\
-                                                         obtieniendo un nivel en base su \
-                                                         nombre de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo un nivel en base su nombre de la capa de Datos.")
     
     @classmethod
     def alta_nivel(cls, numeroNivel, descuento, minEcoPuntos, maxEcoPuntos):
@@ -99,40 +103,41 @@ class NegocioNivel(Negocio):
             #Validación de Reglas de Negocio:
             if max_level.descuento == 100:
                 #Valida regla RN06
-                return "Error al añadir el nivel. No se pueden añadir más niveles ya que hay uno con un descuento del 100%. Para añadir otro nivel, modifique primero el descuento del último nivel existente."
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_nivel.alta_nivel()",
+                                                        msj_adicional = "Error al añadir el nivel. No se pueden añadir más niveles ya que hay uno con un descuento del 100%. Para añadir otro nivel, modifique primero el descuento del último nivel existente.")
             elif int(numeroNivel) != int(max_nivel + 1):
                 #Valida regla RN01
-                return "Error al añadir el nivel. El número de nivel no es correcto."
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_nivel.alta_nivel()",
+                                                        msj_adicional = "Error al añadir el nivel. El número de nivel no es correcto.")
             elif Utils.round_float(minEcoPuntos,2) >= Utils.round_float(maxEcoPuntos,2):
                 #Valida regla RN02
-                return "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor al\
-                        máximo de EcoPuntos del máximo nivel."
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_nivel.alta_nivel()",
+                                                        msj_adicional = "Error al añadir el nivel. El mínimo de EcoPuntos no puede ser menor al máximo de EcoPuntos del máximo nivel.")
             elif descuento < maxDescuento:
                 #Valida regla RN03
-                return "Error al añadir el nivel. El descuento no puede ser menor al máximo \
-                        descuento asignado (" + str(maxDescuento) + "%)."
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_nivel.alta_nivel()",
+                                                        msj_adicional = "Error al añadir el nivel. El descuento no puede ser menor al máximo descuento asignado (" + str(maxDescuento) + "%).")
             elif descuento < 0 or descuento > 100:
                 #Valida regla RN04
-                return "Error al añadir el nivel. El descuento debe estar entre 0% y 100%."
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_nivel.alta_nivel()",
+                                                        msj_adicional = "Error al añadir el nivel. El descuento debe estar entre 0% y 100%.")
             elif minEcoPuntos != (int(Utils.round_float(maxEP,0)) + 1):
                 #Valida regla RN05
-                return "Error al añadir nivel. El mínimo de EcoPuntos debe ser\
-                     " + str(int(Utils.round_float(maxEP,0))) + " EcoPuntos."
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_nivel.alta_nivel()",
+                                                        msj_adicional = "Error al añadir nivel. El mínimo de EcoPuntos debe ser " + str(int(Utils.round_float(maxEP,0))) + " EcoPuntos.")
             else:
                 nivel = Nivel(None, numeroNivel, minEcoPuntos, maxEcoPuntos, descuento)
-                if DatosNivel.alta_nivel(nivel):
-                    res = NegocioUsuario.actualiza_nivel_all()
-                    if res == True:
-                        return True
-                    else:
-                        return "Error actualizando el nivel de los usuarios en la Base de Datos. Las modificaciones en los niveles se han realizado con éxito. Intente actualizar los niveles de los usuarios manualmente más tarde."
-                else:
-                    return "Error al añadir nivel a la Base de Datos. Intente nuevamente más tarde."
+                DatosNivel.alta_nivel(nivel)
+                NegocioUsuario.actualiza_nivel_all()
+        
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except custom_exceptions.ErrorDeNegocio as e:
+            raise e
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.alta_nivel()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio\
-                                                         dando de alta un nuevo nivel.")
+                                                    msj_adicional="Error en la capa de Negocio dando de alta un nuevo nivel.")
 
     @classmethod
     def obtiene_nivel(cls, ecoPuntos):
@@ -147,20 +152,23 @@ class NegocioNivel(Negocio):
                     if int(ecoPuntos) >= int(nivel.minimoEcoPuntos):
                         return nivel
                     else:
-                        return False
+                        raise custom_exceptions.ErrorDeNegocio(origen="negocio_nivel.obtiene_nivel()",
+                                                        msj_adicional = "Error calculando el nivel del usuario.")
                 else:
                     if (int(ecoPuntos) >= int(nivel.minimoEcoPuntos) and 
                         int(ecoPuntos) <= int(nivel.maximoEcoPuntos)):
                         return nivel
-                    else:
-                        return False
+            
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_nivel.obtiene_nivel()",
+                                                        msj_adicional = "Error calculando el nivel del usuario.")
+        
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.obtiene_nivel()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio\
-                                                          calculando el nivel para una \
-                                                          cantidad de EcoPuntos recibida como \
-                                                          parámetro.")
+                                                    msj_adicional="Error en la capa de Negocio calculando el nivel para una cantidad de EcoPuntos recibida como parámetro.")
 
     @classmethod
     def get_max_ecoPuntos(cls):
@@ -168,13 +176,16 @@ class NegocioNivel(Negocio):
         Obtiene el máximo de EcoPuntos asignados a un nivel.
         """
         try:
-            return int(Utils.replace_dots(DatosNivel.get_max_ecoPuntos(),0))
+            max_ep = DatosNivel.get_max_ecoPuntos()
+            return int(Utils.replace_dots(max_ep,0))
+
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_max_ecoPuntos()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio\
-                                                          obtieniendo el máximo de EcoPuntos \
-                                                          del último nivel la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo el máximo de EcoPuntos del último nivel la capa de Datos.")
 
     @classmethod
     def get_max_descuento(cls):
@@ -182,13 +193,16 @@ class NegocioNivel(Negocio):
         Obtiene el máximo descuento asignado a un nivel.
         """
         try:
-            return Utils.replace_dots(DatosNivel.get_max_descuento(),1)
+            max_descuento = DatosNivel.get_max_descuento()
+            return Utils.replace_dots(max_descuento,1)
+
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_max_descuento()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio\
-                                                          obtieniendo el máximo descuento de \
-                                                          la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo el máximo descuento de la capa de Datos.")
 
     @classmethod
     def baja_nivel(cls, id):
@@ -200,67 +214,45 @@ class NegocioNivel(Negocio):
             min_nivel = min_max_niveles[0]
             max_nivel = min_max_niveles[1]
             nivel = cls.get_nivel_id(id)
-            if nivel == False:
-                return "Error 1 eliminando nivel de la Base de Datos. Intente nuevamente más \
-                    tarde."
-            else:
-                if int(nivel.nombre) == 1:
-                    #Valida regla RN09.
-                    if int(max_nivel) == int(nivel.nombre):
-                        return "Error al eliminar nivel. No se puede eliminar el nivel 1 si no\
-                            existen otros niveles."
-                    else:
-                        nuevo_min = 0
-                        if DatosNivel.baja_nivel(nuevo_min, None, None, None, nivel):
-                            res = NegocioUsuario.actualiza_nivel_all()
-                            if res == True:
-                                return True
-                            else:
-                                return "Error actualizando el nivel de los usuarios en la Base de Datos. Las modificaciones en los niveles se han realizado con éxito. Intente actualizar los niveles de los usuarios manualmente más tarde."
-                        else:
-                            return "Error eliminando nivel de la Base de Datos. Intente \
-                                nuevamente más tarde."
-                elif int(nivel.nombre) == int(max_nivel):
-                    factor_mod =  (nivel.maximoEcoPuntos - nivel.minimoEcoPuntos + 1)/2
-                    nuevo_max = round(nivel.minimoEcoPuntos) - 1
-                    nuevo_min = round(nivel.maximoEcoPuntos - factor_mod,0) + 1
-                    if DatosNivel.baja_nivel(nuevo_min, 
-                                        int(nivel.nombre) + 1, 
-                                        nuevo_max, 
-                                        int(nivel.nombre)-1, 
-                                        nivel):
-                        res = NegocioUsuario.actualiza_nivel_all()
-                        if res == True:
-                            return True
-                        else:
-                            return "Error actualizando el nivel de los usuarios en la Base de Datos. Las modificaciones en los niveles se han realizado con éxito. Intente actualizar los niveles de los usuarios manualmente más tarde."
-                    else:
-                        return "Error eliminando nivel de la Base de Datos. Intente nuevamente\
-                             más tarde."
+           
+            if int(nivel.nombre) == 1:
+                #Valida regla RN09.
+                if int(max_nivel) == int(nivel.nombre):
+                    raise custom_exceptions.ErrorDeNegocio(origen="negocio_nivel.baja_nivel()",
+                                                        msj_adicional = "Error al eliminar nivel. No se puede eliminar el nivel 1 si no existen otros niveles.")
                 else:
-                    #Valida regla RN05 y RN10
-                    factor_mod =  (nivel.maximoEcoPuntos - nivel.minimoEcoPuntos + 1)/2
-                    nuevo_max = round(nivel.minimoEcoPuntos + factor_mod,0) - 1
-                    nuevo_min = round(nivel.maximoEcoPuntos - factor_mod,0) + 1
-                    if DatosNivel.baja_nivel(nuevo_min, 
-                                        int(nivel.nombre) + 1, 
-                                        nuevo_max, 
-                                        int(nivel.nombre)-1, 
-                                        nivel):
-                        res = NegocioUsuario.actualiza_nivel_all()
-                        if res == True:
-                            return True
-                        else:
-                            return "Error actualizando el nivel de los usuarios en la Base de Datos. Las modificaciones en los niveles se han realizado con éxito. Intente actualizar los niveles de los usuarios manualmente más tarde."
-                    else:
-                        return "Error eliminando nivel de la Base de Datos. Intente nuevamente\
-                             más tarde."
+                    nuevo_min = 0
+                    DatosNivel.baja_nivel(nuevo_min, None, None, None, nivel)
+                    NegocioUsuario.actualiza_nivel_all()
+            elif int(nivel.nombre) == int(max_nivel):
+                factor_mod =  (nivel.maximoEcoPuntos - nivel.minimoEcoPuntos + 1)/2
+                nuevo_max = round(nivel.minimoEcoPuntos) - 1
+                nuevo_min = round(nivel.maximoEcoPuntos - factor_mod,0) + 1
+                DatosNivel.baja_nivel(nuevo_min, 
+                                    int(nivel.nombre) + 1, 
+                                    nuevo_max, 
+                                    int(nivel.nombre)-1, 
+                                    nivel)
+                NegocioUsuario.actualiza_nivel_all()
+            else:
+                #Valida regla RN05 y RN10
+                factor_mod =  (nivel.maximoEcoPuntos - nivel.minimoEcoPuntos + 1)/2
+                nuevo_max = round(nivel.minimoEcoPuntos + factor_mod,0) - 1
+                nuevo_min = round(nivel.maximoEcoPuntos - factor_mod,0) + 1
+                DatosNivel.baja_nivel(nuevo_min, 
+                                    int(nivel.nombre) + 1, 
+                                    nuevo_max, 
+                                    int(nivel.nombre)-1, 
+                                    nivel)
+                NegocioUsuario.actualiza_nivel_all()
+        
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
 
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.baja_nivel()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio\
-                                                          dando de baja un nivel.")
+                                                    msj_adicional="Error en la capa de Negocio dando de baja un nivel.")
     
 
     
@@ -285,6 +277,10 @@ class NegocioNivel(Negocio):
                 posterior = DatosNivel.get_nivel_nombre(int(numero)+1).descuento
             result = {'anterior':anterior, 'posterior':posterior}
             return result
+
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.getDescuentosAntPost()",
                                                     msj=str(e),
@@ -294,7 +290,6 @@ class NegocioNivel(Negocio):
     
     @classmethod
     def nivel_validaciones_rn(cls, numero, descuento, minEP, maxEP):
-        #TODO: validar que el descuento no sea mayor que 100.
         """
         Valida las Reglas de Negocio para un nivel, en base a los parametros recibidos. En caso de no cumplirse alguna, devuelve un string con el error de validación. Si pasa las validaciones, lo modifica en la BD.
         """
@@ -303,53 +298,54 @@ class NegocioNivel(Negocio):
             sig_nivel = DatosNivel.get_nivel_nombre(int(numero)+1)
             ant_nivel = DatosNivel.get_nivel_nombre(int(numero)-1)
 
-            if DatosNivel.get_nivel_nombre(numero) == False:
-                return "Error, el nivel que se intenta modificar no existe en la Base de Datos."
+            if DatosNivel.get_nivel_nombre(numero) == None:
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_nivel.nivel_validaciones_rn()",
+                                                        msj_adicional = "Error, el nivel que se intenta modificar no existe en la Base de Datos.")
             #Valida RN02
             elif maxEP <= minEP:
-                return "Error, el máximo de EcoPuntos debe ser mayor al mínimo de EcoPuntos."
+                
+                raise custom_exceptions.ErrorReglaDeNegocio(origen="negocio_nivel.nivel_validaciones_rn()",
+                                                            msj_adicional = "Error, el máximo de EcoPuntos debe ser mayor al mínimo de EcoPuntos.")
             #Valida RN14
             elif minEP < 0:
-                return "Error, el mínimo de EcoPuntos no puede ser menor a 0."
+                raise custom_exceptions.ErrorReglaDeNegocio(origen="negocio_nivel.nivel_validaciones_rn()",
+                                                            msj_adicional = "Error, el mínimo de EcoPuntos no puede ser menor a 0.")
             #Valida RN13
             elif maxEP == 0:
-                return "Error, el máximo de EcoPuntos no puede ser igual a 0."
+                raise custom_exceptions.ErrorReglaDeNegocio(origen="negocio_nivel.nivel_validaciones_rn()",
+                                                            msj_adicional = "Error, el máximo de EcoPuntos no puede ser igual a 0.")
             #Valida RN04
             elif float(descuento) > 100:
-                return "Error, el descuento no puede ser maayor al 100%."
+                raise custom_exceptions.ErrorReglaDeNegocio(origen="negocio_nivel.nivel_validaciones_rn()",
+                                                            msj_adicional = "Error, el descuento no puede ser maayor al 100%.")
             #Valida RN03
-            elif sig_nivel != False:
+
+            elif sig_nivel != None:
                 if int(NegocioNivel.get_min_max_niveles()[1]) == numero:
+                    #get_min_max_niveles()[1] es el minimo, [0] es el maximos
+                    #esto pasa si es el unico nivel
                     return True
                 elif sig_nivel.descuento <= descuento:
-                    return "Error, el descuento del nivel no puede ser mayor o igual al del nivel siguiente. Debe ser menor."
-                elif ant_nivel != False:
+                    # hay un nivel siguiente, pero tiene un descuento menor, error
+                    raise custom_exceptions.ErrorReglaDeNegocio(origen="negocio_nivel.nivel_validaciones_rn()",
+                                                            msj_adicional = "Error, el descuento del nivel no puede ser mayor o igual al del nivel siguiente. Debe ser menor.")
+                elif ant_nivel != None:
+                    #comprobamos el anterior
                     if Nivel == 1:
                         return True
                     elif ant_nivel.descuento >= descuento:
-                        return "Error, el descuento del nivel no puede ser menor o igual al del nivel anterior. Debe ser mayor."
+                        # hay un nivel anterior, pero tiene descuento mayor
+                        raise custom_exceptions.ErrorReglaDeNegocio(origen="negocio_nivel.nivel_validaciones_rn()",
+                                                            msj_adicional= "Error, el descuento del nivel no puede ser menor o igual al del nivel anterior. Debe ser mayor.")
                     else:
                         return True
-                else:
-                    return True
-                
-            #Valida RN03
-            elif ant_nivel != False:
-                if Nivel == 1:
-                    return True
-                elif ant_nivel.descuento >= descuento:
-                    return "Error, el descuento del nivel no puede ser menor o igual al del nivel anterior. Debe ser mayor."
-                elif sig_nivel != False:
-                    if int(NegocioNivel.get_min_max_niveles()[1]) == numero:
-                        return True
-                    elif sig_nivel.descuento <= descuento:
-                        return "Error, el descuento del nivel no puede ser mayor o igual al del nivel siguiente. Debe ser menor."
-                    else:
-                         return True
                 else:
                     return True
             else:
-                return True
+                return True  
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocioNivel.modifica_nivel()",
                                                     msj=str(e),
@@ -398,15 +394,18 @@ class NegocioNivel(Negocio):
                 nuevo_nivel = DatosNivel.get_nivel_EP(nuevo_maxEP)
                 dif = int(nivel) - int(nuevo_nivel.nombre)
                 if dif < 0:
-                    if int(nuevo_nivel.maximoEcoPuntos) == int(nuevo_maxEP) or int(nuevo_nivel.nombre) == max_level:
+                    print(nuevo_nivel)                       
+                    if int(nuevo_nivel.maximoEcoPuntos) <= int(nuevo_maxEP):
                         #Eliminar nivel actual, y todos los que estan en el medio.
                         print(5)
+                        print(dif)
                         for i in range(int(nivel)+1,int(nuevo_nivel.nombre)+1):
                             niveles_baja.append(i)
                     else:
                         #Modifico nivel actual
                         #Elimino SOLO los que estan en el medio.
                         print(6)
+                        print(dif)
                         for i in range(int(nivel)+1,int(nuevo_nivel.nombre)):
                             niveles_baja.append(i)
                 
@@ -428,6 +427,9 @@ class NegocioNivel(Negocio):
             else:
                 return validaciones
 
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocioNivel.modifica_nivel()",
                                                     msj=str(e),
@@ -447,18 +449,12 @@ class NegocioNivel(Negocio):
             nuevos_niveles = Utils.difference_between_lists(niv,niveles_baja)
             mas_cercano_inf = Utils.nearest_element(Utils.lower_higher_elements_than(nuevos_niveles,nivel_mod)[0],nivel_mod)
             mas_cercano_sup = Utils.nearest_element(Utils.lower_higher_elements_than(nuevos_niveles,nivel_mod)[1],nivel_mod)
-            print('Más cercano inf:',mas_cercano_inf)
-            print('Más cercano sup:',mas_cercano_sup)
-            print('Los niveles que quedan son:', nuevos_niveles)
-            print('Los niveles que se eliminan son:',niveles_baja)
-            if DatosNivel.baja_nivel_mod(niveles_baja,nivel_mod,nuevo_des,nuevo_minEP,nuevo_maxEP,mas_cercano_inf,mas_cercano_sup,nuevos_niveles):
-                res = NegocioUsuario.actualiza_nivel_all()
-                if res == True:
-                    return True
-                else:
-                    return "Error actualizando el nivel de los usuarios en la Base de Datos. Las modificaciones en los niveles se han realizado con éxito. Intente actualizar los niveles de los usuarios manualmente más tarde."
-            else:
-                return "Error modificando los niveles en la Base de Datos. Por favor, intente nuevamene más tarde."
+            DatosNivel.baja_nivel_mod(niveles_baja,nivel_mod,nuevo_des,nuevo_minEP,nuevo_maxEP,mas_cercano_inf,mas_cercano_sup,nuevos_niveles)
+            NegocioUsuario.actualiza_nivel_all()
+            
+        
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocioNivel.modifica_nivel_logic()",
                                                     msj=str(e),
