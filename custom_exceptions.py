@@ -32,11 +32,10 @@ class CustomBaseException(Exception):
         self.nombre = "Excepción base personalizada"
 
     def __repr__(self):
-        repr = "\n" + "-"*40 + self.nombre \
-                + " -- Origen: " + self.origen + "\n" \
-                + " -- Mensaje: " + self.msj + "\n" \
-                + " -- Mensaje Adicional: " + self.msj_adicional + "\n" \
-                + "-"*40 + "\n"
+        repr =  self.nombre \
+                + "Origen: " + self.origen + "\n" \
+                + "Mensaje: " + self.msj + "\n" \
+                + "Mensaje Adicional: " + self.msj_adicional + "\n"
         return(repr)
 
     def __str__(self):

@@ -25,11 +25,11 @@ class NegocioDemanda(Negocio):
             if not DatosDemanda.check_repeat(idEnt,idArt):
                 #Valida regla RN15
                 raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio_demanda.add()",
-                                                              msj="Error en la capa de negocio al validar regla RN15: Una Entidad Destino solo puede tener una demanda por Tipo Articulo.") 
+                                                              msj_adicional="Error en la capa de negocio al validar regla RN15: Una Entidad Destino solo puede tener una demanda por Tipo Articulo.") 
             elif cantidad < 1:
                 #Valida regla RN16
                 raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio_demanda.add()",
-                                                              msj="Error en la capa de negocio al validar regla RN16: La cantidad de la demanda debe ser mayor o igual a 1.") 
+                                                              msj_adicional="Error en la capa de negocio al validar regla RN16: La cantidad de la demanda debe ser mayor o igual a 1.") 
             else:
                 DatosDemanda.add(idEnt,idArt,cantidad)
         except Exception as e:
