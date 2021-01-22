@@ -165,6 +165,13 @@ def alta_demanda():
             raise e
         return redirect(url_for('gestion_ed'))
 
+
+@app.route('/error', methods = ['GET','POST'])
+def error(msj=""):
+    if msj=="":
+        msj = "Ha habido un error inesperado. Por favor vuelva a intentarlo. \nSi el problema persiste, contacte a un administrador."
+    return render_template('error.html', msj = msj)
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
