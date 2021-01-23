@@ -549,11 +549,11 @@ function mod_nivel(){
 
 //Funcion para el manejo de los mensajes durante la carga.
 function nextMsgMod() {
-    if (messages.length == 1) {
-        $('#bottomModModalText').html(messages.pop()).fadeIn(500);
+    if (messagesMod.length == 1) {
+        $('#bottomModModalText').html(messagesMod.pop()).fadeIn(500);
 
     } else {
-        $('#bottomModModalText').html(messages.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgMod);
+        $('#bottomModModalText').html(messagesMod.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgMod);
 
     }
 };
@@ -578,7 +578,7 @@ function nextMsgBaja() {
 };
 
 // Lista de mensajes para la carga del Modal de modifcar nivel.
-var messages = [
+var messagesMod = [
     "Estamos aplicando las modificaciones...",
     "Ajustando algunos detalles",
     "¡Casi listo! Últimos retoques"
