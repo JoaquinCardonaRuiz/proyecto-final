@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<!-- Sidebar import -->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+
+
+
+
+    <!-- Heading -->
+
+    <div class="container" id="heading-container">
+        <h1 class="heading">Gestión de Artículos</h1>
+    </div>
+    
+
+
+
+    <!-- Botones Opciones-->
+
+    <div class="container" id="top-container">
+        <div class="row">
+            <div class="container" id="option-left" onclick="openAltaModal();">
+                <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
+                <p class="option-title">Añadir artículo</p>
+            </div>
+            <div class="container" id="option-middle" onclick="modifyEntidad()">
+                <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
+                <p class="option-title" id="custom-title-modificar">Modificar artículo</p>
+            </div>
+            <div class="container" id="option-right" onclick="removeEntidad()">
+                <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
+                <p class="option-title">Eliminar artículo</p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Tabla Articulos-->
+
+    <div class="container" id="table-container">
+        <div class="row">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Nombre</th>
+                    <th scope="col" class="table-heading">Materiales</th>
+                    <th scope="col" class="table-heading">Costo</th>
+                    <th scope="col" class="table-heading">Ganancia</th>
+                    <th scope="col" class="table-heading">Stock</th>
+                    <th scope="col" class="table-heading">Unidad</th>
+                    <th class="table-heading delete-th"></th>
+                    <th class="table-heading modify-th"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {%set nombres = []%}
+                {%for art in articulos%}
+                <!-- Jinja funciona en comentarios... sin esto imprime None en pantalla.-->
+                <!--{{nombres.append(art.nombre)}} -->
+                <tr>
+                    <th scope="row">{{art.nombre}}</th>
+                    <td><a class="custom-link" href='#' onclick="openLoadingRing();getTablaMateriales('{{art.id}}','{{art.nombre}}')">Ver Materiales</a></td>
+                    <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
+                    <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
+                    <td scope="row">{{art.costoTotal}}</td>
+                    <td scope="row">{{art.margenGanancia}}</td>
+                    <td scope="row">{{art.stock}}</td>
+                    <td scope="row">{{art.unidadMedida}}</td>
+                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{art.id}}','{{art.nombre}}')"></i></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{art.id}}','{{art.nombre}}')"></i></td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Loading Modal -->
+<!-- Para mostrar mientras se carga un modal-->
+
+<div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <br><br><br><br><br><br><br><br>
+      <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Tabla Modal -->
+
+<div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="headingModal"></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+          <div id="msj-empty" hidden=true>
+          <br><br>
+              <center><p id="empty-content" style="font-size:20px; color:#888888"></p></center>
+          </div>
+        <table class="table" id="content-table">
+            <thead style=" border-top:none">
+            <tr id=headerRow>
+
+            </tr>
+            </thead>
+            <tbody id="modalTableBody">
+            </tbody>
+
+        </table>
+        <div class="modal-footer">
+          <div type="button" class="btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+<!--Alta Modal -->
+
+<div class="modal fade modal-lg" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Añadir un nuevo artículo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{url_for('alta_entidad_destino')}}" method="POST" class="modal-body" id="altaEntidadForm" autocomplete="off">
+          <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+          </div>
+            <div class="row" id="row-to-hide-alta">
+                <div class="col custom-center-col">
+                    <div class="group">      
+                        <input class="wide-input" type="text" id="nombreInput" onkeyup = "validaNuevoNombre({{nombres|safe}})" name="nombre" >
+                        <span class="highlight"></span>
+                        <span class="bar wide-bar"></span>
+                        <label class="center-label">Nombre de la Entidad</label>
+                        <p id="nombreEntidadError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione el botón "Crear Entidad".</p>
+            </div>
+            
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn" onclick="alta_entidad()" id="primary-btn" name = "add-btn" disabled>Crear Entidad</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!--Delete Modal -->
+
+<div class="modal fade modal-lg" id="bajaEntidadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Eliminar una Entidad de Destino</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body-baja" >
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <p class="b-modal-text-baja" id="baja-custom-text">
+            </p>
+        </div>
+        <p class="bottom-modal-text" id="bottomBajaModalText"></p>
+        <input type="text" name="" id="idEntidad" hidden>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
+          <button type="button" class="btn" onclick="baja_entidad();" id="primary-btn-alert">Eliminar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+<!--Edit Modal -->
+
+<div class="modal fade modal-lg" id="editEntidadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div id="edit-modal-header" class="modal-header"> 
+
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs ed-tabs" id="myTab" role="tablist">
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link active" id="entidad-tab" onClick="configureModalTab(1);" data-toggle="tab" href="#entidad" role="tab" aria-controls="entidad" aria-selected="true">Nombre de Entidad</a>
+            </li>
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link " id="demandas-tab" onClick="configureModalTab(2);" data-toggle="tab" href="#demandas" role="tab" aria-controls="demandas" aria-selected="false">Eliminar Demanda</a>
+            </li>
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link " id="nuevademanda-tab" onClick="configureModalTab(3);" data-toggle="tab" href="#nuevademanda" role="tab" aria-controls="nuevademanda" aria-selected="false">Nueva Demanda</a>
+            </li>
+          </ul>
+        </div>
+
+
+        <!-- Tab panes -->
+        <!-- Contenido de las pestanas -->
+        <div class="tab-content">
+
+          <!-- Tab pane 1 -->
+          <div class="tab-pane active" id="entidad" role="tabpanel" aria-labelledby="entidad-tab">
+            <form action="{{url_for('edit_entidad_destino')}}" method="POST" class="modal-body" id="modEntidadForm" autocomplete="off">
+            <div class="row" id="loadingRow">
+              <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row" id="row-to-hide-mod">
+                <div class="col custom-center-col">
+                    <div class="group">
+                        <input class="wide-input" type="text" id="EntNombreInput" onkeyup = "validaModNombre({{nombres|safe}})" name="nombre">
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight"></span>
+                        <span class="bar wide-bar"></span>
+                        <label class="center-label">Nombre de la Entidad</label>
+                        <p id="modNombreEntidadError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <p class="bottom-modal-text" id="bottomModModalText">Una vez completados todos los datos, presione el botón "Aceptar".</p>
+            </div>
+        </form>
+      </div>
+
+
+          <!-- Tab pane 2 -->
+          <div class="tab-pane" id="demandas" role="tabpanel" aria-labelledby="demandas-tab">
+              <form action="{{url_for('baja_demanda')}}" method="POST" class="modal-body" id="bajaDemandaForm" autocomplete="off">
+                <div class="row" id="loadingRow">
+                  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <div class="row" id="row-to-hide-1">
+                  <div class="col">
+                    <div class="group" style="margin-left: 5%">
+                          <!-- input para que funque el label -->
+                          <input type="text" hidden>
+                          <label for="dd-art-btn-1">Nombre del Artículo</label>
+
+                          <button id="dd-art-btn-1" type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
+                              Elija el nombre del artículo <span class="caret caret-custom"></span>
+                          </button>
+
+                          <ul class="dropdown-menu" role="menu" id="dd-fill-1">
+                          </ul>
+                    </div>
+                  </div>
+                </div>
+                <hr id="hr-to-hide-1">
+                <br id="br-to-hide-1"><br id="br-to-hide-2">
+                <div class="row" id="row-to-hide-2">
+                  <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                      <input type="text" id="idArtInput" name="idArt" hidden>
+                      <input class="data-show-input" type="text" id="nombreArtInput" name="nombre" readonly>
+                      <label>Nombre del Articulo</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                      <input type="text" id="idEntInput" name="idEnt" hidden>
+                      <input style="width:60%;" class="data-show-input" type="text" id="cantArtInput" name="cantidad" readonly>
+                      <label>Cantidad</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <p class="bottom-modal-text" id="bottomBajaDemText">Una vez seleccionado el artículo, presione el botón "Eliminar".</p>
+                </div>
+              </form>
+          </div>
+          
+          <!-- Tab pane 3 -->
+          <div class="tab-pane" id="nuevademanda" role="tabpanel" aria-labelledby="nuevademanda-tab">
+            <form action="{{url_for('alta_demanda')}}" method="POST" class="modal-body" id="altaDemandaForm" autocomplete="off">
+                <div class="row" id="loadingRow">
+                  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <div class="row" id="row-to-hide-3">
+                  <div class="col">
+                    <div class="group" style="margin-left: 5%">
+                          <!-- input para que funque el label -->
+                          <input type="text" hidden>
+                          <label for="dd-art-btn-2">Nombre del Artículo</label>
+
+                          <button id="dd-art-btn-2" type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
+                              Elija el nombre del artículo <span class="caret caret-custom"></span>
+                          </button>
+
+                          <ul class="dropdown-menu" role="menu" id="dd-fill-2">
+                          </ul>
+                    </div>
+                  </div>
+                </div>
+                <hr id="hr-to-hide-2">
+                <br id="br-to-hide-3"><br id="br-to-hide-4">
+                <div class="row" id="row-to-hide-4">
+                  <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                      <input type="text" id="idArtInputAdd" name="idArt" hidden>
+                      <input type="text" id="nombreArtInputAdd" name="nombre" readonly>
+                      <span class="highlight"></span>
+                      <span class="bar"></span>
+                      <label>Nombre del Articulo</label>
+                      <p id="nuevoDemNombreError" class="modalErrorMessage"></p>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                      <input type="text" id="idEntInputAdd" name="idEnt" hidden>
+                      <!-- el onkeypress evita que puedas tipear numeros y puntos, porque type="number" no tiene muy buen soporte en todos los navegadores-->
+                      <!-- el min y max supuestamente no tiene soporte en navegadores mobile, asi que hay que probar que no se pueda poner 0 -->
+                      <input type="number" style="width:60%;" id="cantArtInputAdd" name="cantidad" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onkeydown='document.getElementById("cantidadError").innerHTML=""'>
+                      <span class="highlight"></span>
+                      <span class="bar" style="width:60%;"></span>
+                      <label>Cantidad</label>
+                      <p id="cantidadError" class="modalErrorMessage"></p>
+                    </div>
+                    <label id="unidad-label" class="inline-label"></label>
+                  </div>
+                </div>
+                <div class="row">
+                    <p class="bottom-modal-text" id="bottomAltaDemText">Una vez completados todos los datos, presione el botón "Crear Demanda".</p>
+                </div>
+            </form>
+          </div>
+        </div>
+
+
+
+
+        <input type="text" name="" id="idEntidad" hidden>
+        <input type="text" name="" id="nombreEntidad" hidden>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cerrar</button>
+          <button type="button" class="btn btn-aceptar" onclick="mod_entidad();" id="mod-name-btn" name = "acc-btn" disabled>Aceptar</button>
+          <button type="button" class="btn btn-danger" onclick="baja_demanda();" id="del-dem-btn" name = "del-btn" disabled hidden>Eliminar</button>
+          <button type="button" class="btn btn-aceptar" onclick="alta_demanda();" id="add-dem-btn" name = "add-btn" disabled hidden>Crear Demanda</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<script src="static/js/gestion-ed.js"></script>
+{% endblock %}

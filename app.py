@@ -153,6 +153,7 @@ def alta_entidad_destino():
             return error(e,"gestion_ed")
         return redirect(url_for('gestion_ed'))
 
+
 ''' 
     ---------------------------
     Puntos de Deposito y Retiro
@@ -207,6 +208,7 @@ def alta_demanda():
         return redirect(url_for('gestion_ed'))
 
 
+
 ''' 
     -----------------
     Error Page
@@ -220,6 +222,8 @@ def error(err="", url_redirect="/main"):
         err = "Ha habido un error inesperado. Por favor vuelva a intentarlo. \nSi el problema persiste, contacte a un administrador."
     return render_template('error.html', err = err, url_redirect=url_redirect)
 
+
+
 ''' 
     -----------------
     Puntos de Deposito
@@ -230,6 +234,20 @@ def error(err="", url_redirect="/main"):
 def gestion_pd():
     puntos_deposito = NegocioPuntoDeposito.get_all()
     return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito)
+
+
+''' 
+    -----------------
+    Articulos
+    -----------------
+'''
+
+@app.route('/articulos', methods = ['GET','POST'])
+def gestion_articulos():
+    articulos = NegocioArticulo.get_all()
+    return render_template('gestion-articulos.html',articulos=articulos)
+
+
 
 if __name__ == '__main__':
     app.debug = True
