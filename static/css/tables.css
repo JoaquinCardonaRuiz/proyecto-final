@@ -1,0 +1,39 @@
+#content-table{
+    position: relative;
+    margin-left: 5%;
+    width: 90%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    border-top:2px solid white !important
+}
+
+.table-heading{
+    border-top: none !important;
+}
+
+.delete-row{
+    display: none;
+  }
+  
+  .delete-th{
+    display: none;
+  }
+  
+  .modify-row{
+    display: none;
+  }
+  
+  .modify-th{
+    display: none;
+  }
+
+  #delete-table-icon:hover{
+  color: #d1f089e1;
+  cursor: pointer;
+}
+
+
+#modify-table-icon:hover{
+  color: #d1f089e1;
+  cursor: pointer;
+}   

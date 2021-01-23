@@ -1,0 +1,6 @@
+@import url("loading-elements.css");  /* Elementos de carga */
+@import url("ui-style.css");          /* Propiedades generales de las paginas */ 
+@import url("tables.css");            /* Tablas y listas */
+@import url("modals.css");            /* Propiedades de modals */
+@import url("forms.css");             /* Inputs, Botones, Dropdowns */
+@import url("tabs.css");              /* Pestañas */

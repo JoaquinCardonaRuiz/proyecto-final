@@ -1,0 +1,81 @@
+.modal-title{
+    margin-top: 1%;
+    font-size: 25px;
+    margin-left:4%;
+}
+
+.modalErrorMessage{
+    font-size: 15px;
+    color: tomato;
+}
+
+.bottom-modal-text{
+    text-align: center;
+    width: 100%;
+}
+
+.b-modal-text-baja{
+  text-align: center;
+  width: 100%;
+  color: rgb(100, 100, 100);
+  font-size: 16.5px;
+  margin-bottom: 4% !important;
+  margin-top: 1% !important;
+}
+
+.bottom-modal-text-baja{
+  text-align: center;
+  width: 100%;
+  font-size: 16.5px;
+  margin-top: 1.5%;
+  font-weight: 500;
+
+}
+
+.top-modal-text-baja{
+  text-align: center;
+  width: 100%;
+  font-size: 16.5px;
+  text-align: left; 
+  margin-left:8.5%;
+  font-weight: 500;
+}
+
+.bottom-modal-text-baja-mods{
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+  text-align: left; 
+  margin-left:10%;
+}
+
+.modal{
+	margin-left: 31%;
+}
+
+div.modal-content{
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+    border: white;
+}
+
+.modal-body{
+    margin-top: 5%;
+}
+
+.modal-body-baja{
+  margin-top: 4%;
+}
+
+
+#bottomBajaModalText{
+    display: none;
+  }
+
+#bottomAltaModalTextError{
+  margin-left: 5%;
+  width: 90%;
+  margin-top: 2%;
+}
