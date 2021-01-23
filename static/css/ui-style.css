@@ -126,7 +126,8 @@
 
 #custom-title-modificar{
     margin-right: 12px !important;
-  }
+}
+
 
 #warning-icon{
     text-align: center;
@@ -195,4 +196,12 @@ h2 		 {
 #option2:hover{
     border:2px solid #95C22B;
     cursor: pointer;
+}
+
+.estado-punto-activo{
+    color: #4BB543;
+}
+
+.estado-punto-inactivo{
+    color: #FC100D;
 }

@@ -1,4 +1,5 @@
 import custom_exceptions
+import datetime
 
 class Utils():
     """Clase con funciones de utilidad para el programa."""
@@ -82,4 +83,48 @@ class Utils():
                                                    msj=str(e),
                                                    msj_adicional="Error obteniendo el elemento más cercano.")
     
+    @classmethod
+    def date_format(cls, fecha):
+        """
+        Convierte la fecha del formato utilizado por MySQL (aaaa-mm-dd) al formato (dd/mm/aaaa).
+        """
+        try:
+            fecha = fecha.strftime('%Y-%m-%d')
+            return(datetime.datetime.strptime(fecha, "%Y-%m-%d").strftime("%d/%m/%Y"))
+        except Exception as e:
+           raise custom_exceptions.ErrorDeNegocio(origen="utils.date_format()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error formateando la fecha")
+    
+
+    @classmethod
+    def boolean_tinyInt_converter(cls, value):
+        """
+        Convierte TinyInts a bools y viceversa.
+        """
+        try:
+            if value == 0:
+                return False
+            elif value == 1:
+                return True
+            elif value == False:
+                return 0
+            else: 
+                return 1
+        except Exception as e:
+           raise custom_exceptions.ErrorDeNegocio(origen="utils.boolean_tinyInt_converter()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error convirtiendo TinyInts a booleanos o viceversa.")
+    
+    @classmethod
+    def adress_format(cls, value):
+        """
+        Convierte la dirección al formato deseado para mostrar (elimina la ciudad).
+        """
+        try:
+            return(value.partition(",")[0])
+        except Exception as e:
+           raise custom_exceptions.ErrorDeNegocio(origen="utils.adress_format()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error convirtiendo el formato de la dirección.")
     

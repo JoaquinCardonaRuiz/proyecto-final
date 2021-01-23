@@ -6,7 +6,7 @@ function redirect(tipoPunto) {
     $('#loading-text').show();
     if(tipoPunto=='deposito'){
         //window.location.href = "/gestion-puntos-deposito";
-        window.location.href = "/gestion-niveles";
+        window.location.href = "/gestion-puntos-deposito";
         nextMsgDeposito();
 
     }

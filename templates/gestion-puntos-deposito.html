@@ -1,0 +1,76 @@
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="heading-container">
+        <h1 class="heading">Gestión de Puntos de Depósito</h1>
+    </div>
+    <div class="container" id="top-container">
+        <div class="row">
+            <div class="container" id="option-left"  onclick="openAltaModal();"  >
+                <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
+                <p class="option-title">Añadir Punto</p>
+            </div>
+            <div class="container" id="option-middle" onclick="modificarPunto()">
+                <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
+                <p class="option-title">Modificar Punto</p>
+            </div>
+            <div class="container" id="option-right" onclick="removerPunto()">
+                <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
+                <p class="option-title">Eliminar Punto</p>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="table-container">
+        <div class="row">
+            <table class="table" id="content-table">
+                <thead style="border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Nombre</th>
+                    <th scope="col" class="table-heading">Dirección</th>
+                    <th scope="col" class="table-heading">Estado</th>
+                    <th scope="col" class="table-heading">Horarios</th>
+                    <th scope="col" class="table-heading">Materiales aceptados</th>
+                    <th class="table-heading delete-th"></th>
+                    <th class="table-heading modify-th"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for punto in puntos_deposito%}
+                <tr>
+                    <th scope="row">{{punto.nombre}}</th>
+                    <td>{{punto.direccion}}</td>
+                    {%if punto.estado == True%}
+                        <td class="estado-punto-activo">Activo</td>
+                    {%else%}
+                        <td class="estado-punto-inactivo">Inactivo</td>
+                    {%endif%}
+                    <td><a class="custom-link" href='#' onclick="">Ver horarios</a></td>
+                    <td><a class="custom-link" href='#' onclick="">Ver materiales</a></td>
+                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon"></i></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
+
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="static/js/gestion-puntos-deposito.js"></script>
+{% endblock %}

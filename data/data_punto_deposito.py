@@ -1,5 +1,31 @@
+from werkzeug import utils
+from classes import PuntoDeposito
 from data.data import Datos
 import custom_exceptions
 
 class DatosPuntoDeposito(Datos):
-    pass
+
+    @classmethod
+    def get_all(cls, noClose = False):
+        """
+        Obtiene todos los Puntos de Depósito de la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("select * from puntosDeposito where estadoEliminacion = 'disponible'")
+            cls.cursor.execute(sql)
+            puntosDeposito = cls.cursor.fetchall()
+            puntosDeposito_ = []
+            for punto in puntosDeposito:
+                print(punto[4])
+                #TODO: codificar metodos para obtner ids materiales y horarios.
+                puntosDeposito_.append(PuntoDeposito(punto[0],punto[1],punto[2],punto[3],None,None,punto[4]))
+            return puntosDeposito_
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_niveles()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los niveles desde la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()

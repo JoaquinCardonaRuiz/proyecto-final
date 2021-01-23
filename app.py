@@ -207,11 +207,29 @@ def alta_demanda():
         return redirect(url_for('gestion_ed'))
 
 
+''' 
+    -----------------
+    Error Page
+    -----------------
+'''
+
+
 @app.route('/error', methods = ['GET','POST'])
 def error(err="", url_redirect="/main"):
     if err=="":
         err = "Ha habido un error inesperado. Por favor vuelva a intentarlo. \nSi el problema persiste, contacte a un administrador."
     return render_template('error.html', err = err, url_redirect=url_redirect)
+
+''' 
+    -----------------
+    Puntos de Deposito
+    -----------------
+'''
+
+@app.route('/gestion-puntos-deposito', methods = ['GET','POST'])
+def gestion_pd():
+    puntos_deposito = NegocioPuntoDeposito.get_all()
+    return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito)
 
 if __name__ == '__main__':
     app.debug = True
