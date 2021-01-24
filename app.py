@@ -184,7 +184,10 @@ def selection():
 
 @app.route('/gestion-puntos-deposito', methods = ['GET','POST'])
 def gestion_pd():
-    puntos_deposito = NegocioPuntoDeposito.get_all()
+    try:
+        puntos_deposito = NegocioPuntoDeposito.get_all()
+    except Exception as e:
+        return error(e,"gestion_pd") 
     return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito)
 
 if __name__ == '__main__':

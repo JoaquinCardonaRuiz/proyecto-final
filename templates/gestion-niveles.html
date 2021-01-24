@@ -72,7 +72,7 @@
 
 
 <!--Alta Modal -->
-<div class="modal fade modal-lg" id="altaNivelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-lg" id="altaNivelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -87,10 +87,9 @@
             </div>
             <div class="row" id="fieldsRow1Alta1">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="numeroNivel" onkeypress="return isNumberKeyEntiresOnly(this, event);" onkeyup="validaNumero('{{max_level}}', 'alta')" name="numeroNivel" autocomplete="off"> 
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
+                    <div class="group" style="margin-left: 10%;">
+                        <input type="text" hidden>
+                        <input class="data-show-input" type="text" id="numeroNivel" readonly> 
                         <label>Número de Nivel</label>
                         <p id="numeroNivelError" class="modalErrorMessage">* No se puede modificar el nivel.</p>
                     </div>
@@ -107,8 +106,9 @@
             </div>
             <div class="row" id="fieldsRow1Alta2">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
-                        <input type="text" required id="minEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}', 'alta')" name="minEcoPuntos" autocomplete="off">
+                    <div class="group" style="margin-left: 10%;">  
+                        <input type="text" hidden>    
+                        <input type="text" class="data-show-input-with-border" id="minEcoPuntos" name="minEcoPuntos" autocomplete="off" readonly>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Mínimo EcoPuntos</label>
@@ -142,7 +142,7 @@
 </div>
 
 <!--Delete Modal -->
-<div class="modal fade modal-lg" id="bajaNivelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-lg" id="bajaNivelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -174,7 +174,7 @@
 </div>
 
 <!--Modify Modal -->
-<div class="modal fade modal-lg" id="modificarNivelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-lg" id="modificarNivelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
