@@ -9,6 +9,7 @@ from negocio.negocio_ecopuntos              import NegocioEcoPuntos
 from negocio.negocio_entidad_destino        import NegocioEntidadDestino
 from negocio.negocio_estimacion             import NegocioEstimacion
 from negocio.negocio_horario                import NegocioHorario
+from negocio.negocio_insumo                 import NegocioInsumo
 from negocio.negocio_material               import NegocioMaterial
 from negocio.negocio_modulo                 import NegocioModulo
 from negocio.negocio_nivel                  import NegocioNivel
