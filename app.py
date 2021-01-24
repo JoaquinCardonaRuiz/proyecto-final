@@ -87,7 +87,6 @@ def mod_nivel_request(id):
     -----------------
 '''
 
-
 @app.route('/gestion-ed', methods = ['GET','POST'])
 def gestion_ed():
     try:
@@ -97,28 +96,26 @@ def gestion_ed():
     return render_template('gestion-entidades-destino.html', entidades = entidades)
 
 
-@app.route('/gestion-ed/demandas/<id>')
-def devolver_demandas(id):
+@app.route('/gestion-ed/articulos', methods = ['GET','POST'])
+def get_articulos():
     try:
-        e = NegocioEntidadDestino.get_one(id)
-        a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.demandas])
-
-        demandas_present = [{"idArt":           d[0].idTipoArticulo,
-                            "nombre":          d[1].nombre,
-                            "cantidad":        d[0].cantidad, 
-                            "unidadmedida":    d[1].unidadMedida}
-                            for d in list(zip(e.demandas,a))]
-        return jsonify(demandas_present)
+        articulos = NegocioArticulo.get_all()
+        arts_json = [{"nombre":         a.nombre,
+                      "unidadmedida":   a.unidadMedida,
+                      "id":             a.id,
+                      "stock":          a.stock,
+                      "valor":          a.valor.valor}
+                      for a in articulos]
+        return arts_json
     except Exception as e:
         return error(e,"gestion_ed")
-
 
 @app.route('/gestion-ed/salidas/<id>')
 def devolver_salidas(id):
     try:
         e = NegocioEntidadDestino.get_one(id)
         a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.salidas])
-        salidas_present =  [{"nombre":          s[1].nombre,
+        salidas_present =  [{"nombre":         s[1].nombre,
                             "cantidad":        s[0].cantidad, 
                             "unidadmedida":    s[1].unidadMedida,
                             "fecha":           s[0].fecha.strftime("%d/%m/%Y")}
@@ -126,22 +123,7 @@ def devolver_salidas(id):
         return jsonify(salidas_present)
     except Exception as e:
         return error(e,"gestion_ed")   
-    
 
-
-@app.route('/gestion-ed/articulos/<id>')
-def get_articulos(id):
-    try:
-        e = NegocioEntidadDestino.get_one(id)
-        ids = [i.idTipoArticulo for i in e.demandas]
-        arts = NegocioArticulo.get_by_not_in_id_array(ids)
-        articulos =[{"nombre":          a.nombre,
-                    "unidadmedida":    a.unidadMedida,
-                    "id":              a.id}
-                    for a in arts]
-        return jsonify(articulos)
-    except Exception as e:
-        return error(e,"gestion_ed")
 
 @app.route('/gestion-ed/alta', methods = ['GET','POST'])
 def alta_entidad_destino():
@@ -153,24 +135,6 @@ def alta_entidad_destino():
             return error(e,"gestion_ed")
         return redirect(url_for('gestion_ed'))
 
-''' 
-    ---------------------------
-    Puntos de Deposito y Retiro
-    ---------------------------
-'''
-
-@app.route('/elegir-tipo-punto', methods = ['GET','POST'])
-def selection():
-    return render_template('elegir-tipo-punto.html')
-
-@app.route('/gestion-ed/baja/<id>')
-def baja_entidad_destino(id):
-    id = int(id)
-    try:
-        NegocioEntidadDestino.delete(id)
-    except Exception as e:
-        return error(e,"gestion_ed")
-    return redirect(url_for('gestion_ed'))
 
 @app.route('/gestion-ed/edit', methods = ['GET','POST'])
 def edit_entidad_destino():
@@ -179,29 +143,6 @@ def edit_entidad_destino():
         idEnt = request.form['id']
         try:
             NegocioEntidadDestino.update(idEnt,nombre)
-        except Exception as e:
-            return error(e,"gestion_ed")
-        return redirect(url_for('gestion_ed'))
-
-@app.route('/gestion-ed/baja-demanda',methods = ['GET','POST'])
-def baja_demanda():
-    if request.method == 'POST':
-        idEnt = request.form['idEnt']
-        idArt = request.form['idArt']
-        try:
-            NegocioDemanda.delete(idEnt,idArt)
-        except Exception as e:
-            return error(e,"gestion_ed")
-        return redirect(url_for('gestion_ed'))
-
-@app.route('/gestion-ed/alta-demanda',methods = ['GET','POST'])
-def alta_demanda():
-    if request.method == 'POST':
-        idEnt = request.form['idEnt']
-        idArt = request.form['idArt']
-        cantidad = float(request.form['cantidad'])
-        try:
-            NegocioDemanda.add(idEnt,idArt,cantidad)
         except Exception as e:
             return error(e,"gestion_ed")
         return redirect(url_for('gestion_ed'))
@@ -220,11 +161,26 @@ def error(err="", url_redirect="/main"):
         err = "Ha habido un error inesperado. Por favor vuelva a intentarlo. \nSi el problema persiste, contacte a un administrador."
     return render_template('error.html', err = err, url_redirect=url_redirect)
 
+@app.route('/gestion-ed/baja/<id>')
+def baja_entidad_destino(id):
+    id = int(id)
+    try:
+        NegocioEntidadDestino.delete(id)
+    except Exception as e:
+        return error(e,"gestion_ed")
+    return redirect(url_for('gestion_ed'))
+
+
 ''' 
-    -----------------
-    Puntos de Deposito
-    -----------------
+    ---------------------------
+    Puntos de Deposito y Retiro
+    ---------------------------
 '''
+
+@app.route('/elegir-tipo-punto', methods = ['GET','POST'])
+def selection():
+    return render_template('elegir-tipo-punto.html')
+
 
 @app.route('/gestion-puntos-deposito', methods = ['GET','POST'])
 def gestion_pd():

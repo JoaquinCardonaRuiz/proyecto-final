@@ -62,7 +62,6 @@
                 <thead style=" border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">Nombre de la Entidad</th>
-                    <th scope="col" class="table-heading">Demanda</th>
                     <th scope="col" class="table-heading">Salidas de Stock</th>
                     <th class="table-heading delete-th"></th>
                     <th class="table-heading modify-th"></th>
@@ -75,7 +74,6 @@
                 <!--{{nombres.append(ent.nombre)}} -->
                 <tr>
                     <th scope="row">{{ent.nombre}}</th>
-                    <td><a class="custom-link" href='#' onclick="openLoadingRing();getTablaDemandas('{{ent.id}}','{{ent.nombre}}')">Ver Demandas</a></td>
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
                     <td><a class="custom-link" href='#' onclick="openLoadingRing();getTablaSalidas('{{ent.id}}','{{ent.nombre}}')">Ver Salidas</a></td>
@@ -234,10 +232,10 @@
               <a class="nav-link ed-link active" id="entidad-tab" onClick="configureModalTab(1);" data-toggle="tab" href="#entidad" role="tab" aria-controls="entidad" aria-selected="true">Nombre de Entidad</a>
             </li>
             <li class="nav-item ed-tabs-item">
-              <a class="nav-link ed-link " id="demandas-tab" onClick="configureModalTab(2);" data-toggle="tab" href="#demandas" role="tab" aria-controls="demandas" aria-selected="false">Eliminar Demanda</a>
+              <a class="nav-link ed-link " id="demandas-tab" onClick="configureModalTab(2);" data-toggle="tab" href="#demandas" role="tab" aria-controls="demandas" aria-selected="false"> -- ??? -- </a>
             </li>
             <li class="nav-item ed-tabs-item">
-              <a class="nav-link ed-link " id="nuevademanda-tab" onClick="configureModalTab(3);" data-toggle="tab" href="#nuevademanda" role="tab" aria-controls="nuevademanda" aria-selected="false">Nueva Demanda</a>
+              <a class="nav-link ed-link " id="nuevademanda-tab" onClick="configureModalTab(3);" data-toggle="tab" href="#nuevademanda" role="tab" aria-controls="nuevademanda" aria-selected="false">Nueva Salida</a>
             </li>
           </ul>
         </div>
@@ -275,7 +273,7 @@
 
           <!-- Tab pane 2 -->
           <div class="tab-pane" id="demandas" role="tabpanel" aria-labelledby="demandas-tab">
-              <form action="{{url_for('baja_demanda')}}" method="POST" class="modal-body" id="bajaDemandaForm" autocomplete="off">
+              <form action="" method="POST" class="modal-body" id="bajaDemandaForm" autocomplete="off">
                 <div class="row" id="loadingRow">
                   <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                 </div>
@@ -321,7 +319,7 @@
           
           <!-- Tab pane 3 -->
           <div class="tab-pane" id="nuevademanda" role="tabpanel" aria-labelledby="nuevademanda-tab">
-            <form action="{{url_for('alta_demanda')}}" method="POST" class="modal-body" id="altaDemandaForm" autocomplete="off">
+            <form action="" method="POST" class="modal-body" id="altaDemandaForm" autocomplete="off">
                 <div class="row" id="loadingRow">
                   <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                 </div>
