@@ -675,12 +675,10 @@ class CantInsumo:
     Representa una cantidad de insumos
 
     Atributos:
-        id (string): identificador de la entidad
         cantidad(float): cantidad del insumo asociado
         idInsumo (string): identificador del insumo asociado
     """
-    def __init__(self,id,cantidad,idInsumo):
-        self.id = id
+    def __init__(self,cantidad,idInsumo):
         self.cantidad = cantidad
         self.idInsumo = idInsumo
 

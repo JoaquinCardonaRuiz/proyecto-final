@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\bruno\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
+    "python.pythonPath": "/sbin/python",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }

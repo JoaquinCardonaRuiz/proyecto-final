@@ -1,8 +1,7 @@
 from data.data import Datos
-from data.data_demanda import DatosDemanda
 from data.data_salida_stock import DatosSalidaStock
 import custom_exceptions
-from classes import EntidadDestino, CantDemanda, SalidaStock
+from classes import EntidadDestino, SalidaStock
 
 
 class DatosEntidadDestino(Datos):
@@ -19,17 +18,15 @@ class DatosEntidadDestino(Datos):
             entidades_ = cls.cursor.fetchall()
             entidades = []
             for e in entidades_:
-                demandas =  DatosDemanda.get_demandas_by_entidad(e[0],noClose = True)
                 salidas =   DatosSalidaStock.get_salidas_by_entidad(e[0],noClose = True)
-                entidad_ =  EntidadDestino(e[0],e[1],e[2],demandas,salidas)
+                entidad_ =  EntidadDestino(e[0],e[1],e[2],salidas)
                 entidades.append(entidad_)
             return entidades
             
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.get_entidades_destino()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_entidad_destino.get_all()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obtieniendo las \
-                                                        entidades destino desde la BD.")
+                                                    msj_adicional="Error obtieniendo las entidades destino desde la BD.")
         finally:
             cls.cerrar_conexion()
 
@@ -46,10 +43,9 @@ class DatosEntidadDestino(Datos):
             cls.db.commit()
             return True
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.alta_entidad_destino()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_entidad_destino.add()",
                                                     msj=str(e),
-                                                    msj_adicional="Error dando de alta una \
-                                                        entidad destino en la BD.")
+                                                    msj_adicional="Error dando de alta una entidad destino en la BD.")
         finally:
             cls.cerrar_conexion()
 
@@ -63,12 +59,11 @@ class DatosEntidadDestino(Datos):
             sql = ("SELECT * FROM entidadesDestino WHERE idEntidad = {} AND estado != \"eliminado\";".format(id))
             cls.cursor.execute(sql)
             e = cls.cursor.fetchall()[0]
-            demandas =  DatosDemanda.get_demandas_by_entidad(e[0],noClose = True)
             salidas =   DatosSalidaStock.get_salidas_by_entidad(e[0],noClose = True)
-            entidad = EntidadDestino(e[0],e[1],e[2],demandas,salidas)
+            entidad = EntidadDestino(e[0],e[1],e[2],salidas)
             return entidad
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.get_one_entidad_destino()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_entidad_destino.get_one()",
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo una entidad destino desde la BD.")
         finally:
