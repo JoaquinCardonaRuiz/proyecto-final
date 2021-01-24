@@ -4,7 +4,6 @@
 from negocio.negocio_articulo               import NegocioArticulo
 from negocio.negocio_cant_articulo          import NegocioCantArticulo
 from negocio.negocio_cant_material          import NegocioCantMaterial
-from negocio.negocio_demanda                import NegocioDemanda
 from negocio.negocio_deposito               import NegocioDeposito
 from negocio.negocio_ecopuntos              import NegocioEcoPuntos
 from negocio.negocio_entidad_destino        import NegocioEntidadDestino
