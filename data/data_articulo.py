@@ -20,7 +20,7 @@ class DatosArticulo(Datos):
                            cTotal, \
                            margenGanancia, \
                            unidadMedida, \
-                           cObtencionAlternativa, \
+                           cObtencionAlt, \
                            stock\
                            FROM tiposArticulo;")
             cls.cursor.execute(sql)
@@ -90,7 +90,7 @@ class DatosArticulo(Datos):
                            cTotal, \
                            margenGanancia, \
                            unidadMedida, \
-                           cObtencionAlternativa, \
+                           cObtencionAlt, \
                            stock\
                            FROM tiposArticulo")
             if ids != []:

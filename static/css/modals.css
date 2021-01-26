@@ -69,6 +69,17 @@ div.modal-content{
   margin-top: 4%;
 }
 
+.subheader{
+  font-size: large;
+  color: #aaa;
+}
+
+.subheader-row{
+  height:80px !important;
+  margin-top: -5% !important;
+  margin-left: 5% !important;
+}
+
 
 #bottomBajaModalText{
     display: none;

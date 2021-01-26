@@ -199,9 +199,11 @@ def gestion_pd():
 
 @app.route('/articulos', methods = ['GET','POST'])
 def gestion_articulos():
-    articulos = NegocioArticulo.get_all()
-    return render_template('gestion-articulos.html',articulos=articulos)
-
+    try:
+        articulos = NegocioArticulo.get_all()
+        return render_template('gestion-articulos.html',articulos=articulos)
+    except Exception as e:
+        return error(e,"articulos")
 
 
 if __name__ == '__main__':
