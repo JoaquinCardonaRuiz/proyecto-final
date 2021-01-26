@@ -191,11 +191,6 @@ def gestion_pd():
     return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito)
 
 
-@app.route('/elegir-tipo-punto', methods = ['GET','POST'])
-def selection():
-    return render_template('elegir-tipo-punto.html')
-
-
 ''' 
     -----------------
     Articulos
