@@ -148,6 +148,15 @@ def edit_entidad_destino():
         return redirect(url_for('gestion_ed'))
 
 
+@app.route('/gestion-ed/baja/<id>')
+def baja_entidad_destino(id):
+    id = int(id)
+    try:
+        NegocioEntidadDestino.delete(id)
+    except Exception as e:
+        return error(e,"gestion_ed")
+    return redirect(url_for('gestion_ed'))
+
 ''' 
     -----------------
     Error Page
@@ -160,15 +169,6 @@ def error(err="", url_redirect="/main"):
     if err=="":
         err = "Ha habido un error inesperado. Por favor vuelva a intentarlo. \nSi el problema persiste, contacte a un administrador."
     return render_template('error.html', err = err, url_redirect=url_redirect)
-
-@app.route('/gestion-ed/baja/<id>')
-def baja_entidad_destino(id):
-    id = int(id)
-    try:
-        NegocioEntidadDestino.delete(id)
-    except Exception as e:
-        return error(e,"gestion_ed")
-    return redirect(url_for('gestion_ed'))
 
 
 ''' 
@@ -189,6 +189,25 @@ def gestion_pd():
     except Exception as e:
         return error(e,"gestion_pd") 
     return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito)
+
+
+@app.route('/elegir-tipo-punto', methods = ['GET','POST'])
+def selection():
+    return render_template('elegir-tipo-punto.html')
+
+
+''' 
+    -----------------
+    Articulos
+    -----------------
+'''
+
+@app.route('/articulos', methods = ['GET','POST'])
+def gestion_articulos():
+    articulos = NegocioArticulo.get_all()
+    return render_template('gestion-articulos.html',articulos=articulos)
+
+
 
 if __name__ == '__main__':
     app.debug = True
