@@ -114,9 +114,9 @@ def get_articulos():
 def devolver_salidas(id):
     try:
         e = NegocioEntidadDestino.get_one(id)
-        a = NegocioArticulo.get_by_id_array([i.idTipoArticulo for i in e.salidas])
+        a = NegocioArticulo.get_by_id_array([i.articulos.idTipoArticulo for i in e.salidas])
         salidas_present =  [{"nombre":         s[1].nombre,
-                            "cantidad":        s[0].cantidad, 
+                            "cantidad":        s[0].articulos.cantidad, 
                             "unidadmedida":    s[1].unidadMedida,
                             "fecha":           s[0].fecha.strftime("%d/%m/%Y")}
                             for s in list(zip(e.salidas,a))]

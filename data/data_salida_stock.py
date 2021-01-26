@@ -1,6 +1,7 @@
 from data.data import Datos
+from data.data_articulo import DatosArticulo
 import custom_exceptions
-from classes import SalidaStock
+from classes import SalidaStock, CantArticulo
 
 class DatosSalidaStock(Datos):
     
@@ -8,12 +9,17 @@ class DatosSalidaStock(Datos):
     def get_salidas_by_entidad(cls,id,noClose = False):
         cls.abrir_conexion()
         try:
-            sql = ("SELECT * FROM salidasStock WHERE idEntidad = {};".format(id))
+            sql = ("SELECT idSalida, \
+                           idTipoArticulo, \
+                           fecha, \
+                           cantidadSalida \
+                           FROM salidasStock WHERE idEntidad = {};".format(id))
             cls.cursor.execute(sql)
             salidas = cls.cursor.fetchall()
             salidasStock = []
             for s in salidas:
-                salida = SalidaStock(s[0],s[1],s[2],s[3],s[4])
+                articulos = CantArticulo(s[3],s[1])
+                salida = SalidaStock(s[0],articulos,s[2])
                 salidasStock.append(salida)
             return salidasStock
 

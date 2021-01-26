@@ -407,7 +407,7 @@ class CantArticulo:
         idTipoArticulo (string): Identificador del tipo de artículo correspondiente.
         precioVenta (Currency): Precio de venta de los artículos al momento de ser empleados.
     """
-    def __init__(self,id,cantidad,idTipoArticulo,precioVenta=0.0):
+    def __init__(self,cantidad,idTipoArticulo,precioVenta=0.0):
         self.cantidad = cantidad
         self.idTipoArticulo = idTipoArticulo
         self.precioVenta = precioVenta
@@ -762,15 +762,12 @@ class SalidaStock:
     Atributos:
         id (string): Identificador de la entidad.
         articulos (CantArticulo): Lote de articulos que representa.
-        idEntidad (string): Identificador de la entidad de destino correspondiente.
         fecha (Date): Fecha de la transacción.
-        cantidad (float): Cantidad del artículo representada, en su unidad de medida.
     """
-    def __init__(self,id,articulos,idEntidad,fecha,cantidad):
+    def __init__(self,id,articulos,fecha):
         self.id = id
         self.articulos = articulos
         self.fecha = fecha
-        self.cantidad = cantidad
 
 
 '''

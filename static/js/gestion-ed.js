@@ -67,6 +67,7 @@ function getTablaSalidas(id, nombre){
             document.getElementById("empty-content").innerHTML = "No hay salidas"
             document.getElementById("msj-empty").hidden = false;
         }
+        console.log("Done loading")
         document.getElementById("open-loading-modal").click();
         document.getElementById("open-modal").click();
         

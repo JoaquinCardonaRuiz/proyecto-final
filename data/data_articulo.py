@@ -15,18 +15,21 @@ class DatosArticulo(Datos):
         try:
             sql = ("SELECT idTipoArticulo, \
                            nombre, \
-                           costoProduccion, \
-                           costoInsumos, \
-                           costoTotal, \
+                           cProduccion, \
+                           cInsumos, \
+                           cTotal, \
                            margenGanancia, \
-                           stock FROM tiposArticulo;")
+                           unidadMedida, \
+                           cObtencionAlternativa, \
+                           stock\
+                           FROM tiposArticulo;")
             cls.cursor.execute(sql)
             articulos_ = cls.cursor.fetchall()
             articulos = []
             for a in articulos_:
                 insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
                 valor = DatosValor.get_from_TAid(a[0],noClose=True)
-                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],a[5],valor,a[6],a[7])
+                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8])
                 articulos.append(articulo_)
             return articulos
             
@@ -46,20 +49,22 @@ class DatosArticulo(Datos):
         try:
             sql = ("SELECT idTipoArticulo, \
                            nombre, \
-                           costoProduccion, \
-                           costoInsumos, \
-                           costoTotal, \
+                           cProduccion, \
+                           cInsumos, \
+                           cTotal, \
                            margenGanancia, \
-                           stock FROM tiposArticulo WHERE idTipoArticulo = {};").format(id)
-            values = (id,)
-            cls.cursor.execute(sql, values)
+                           unidadMedida, \
+                           cObtencionAlt, \
+                           stock \
+                           FROM tiposArticulo WHERE idTipoArticulo = {};").format(id)
+            cls.cursor.execute(sql)
             a = cls.cursor.fetchone()
             if a == None:
                 return False
             else:
                 insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
                 valor = DatosValor.get_from_TAid(a[0],noClose=True)
-                articulo = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],a[5],valor,a[6],a[7])
+                articulo = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8])
                 return articulo
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_by_id()",
@@ -80,11 +85,14 @@ class DatosArticulo(Datos):
         try:
             sql = ("SELECT idTipoArticulo, \
                            nombre, \
-                           costoProduccion, \
-                           costoInsumos, \
-                           costoTotal, \
+                           cProduccion, \
+                           cInsumos, \
+                           cTotal, \
                            margenGanancia, \
-                           stock FROM tiposArticulo")
+                           unidadMedida, \
+                           cObtencionAlternativa, \
+                           stock\
+                           FROM tiposArticulo")
             if ids != []:
                 sql += " WHERE idTipoArticulo!={}"
                 for _ in ids[1:]:
@@ -97,7 +105,7 @@ class DatosArticulo(Datos):
             for a in articulos_:
                 insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
                 valor = DatosValor.get_from_TAid(a[0],noClose=True)
-                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],a[5],valor,a[6],a[7])
+                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8])
                 articulos.append(articulo_)
             return articulos
             

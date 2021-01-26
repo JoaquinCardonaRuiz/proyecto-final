@@ -41,10 +41,13 @@ class NegocioArticulo(Negocio):
         """
             Obtiene TiposArticulos de la BD en base a una lista de IDs
         """
-        articulos = []
-        for id in ids:
-            articulos.append(cls.get_by_id(id))
-        return articulos
+        try:
+            articulos = []
+            for id in ids:
+                articulos.append(cls.get_by_id(id))
+            return articulos
+        except Exception as e:
+            raise e
 
     @classmethod
     def get_by_not_in_id_array(cls, ids):
