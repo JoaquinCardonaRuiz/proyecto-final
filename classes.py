@@ -333,6 +333,19 @@ class CantMaterial:
         self.cantidad = cantidad
         self.idMaterial = idMaterial
 
+class EntradaStock:
+    """
+    Representa una entrada de materiales por otro medio que no sea un deposito
+
+    Atributos:
+        id (string): identificador de la entidad
+        materiales (CantMaterial): materiales involucrados en la entrada
+        fecha (Date): fecha de la entrada
+    """
+    def __init__(self,id,materiales,fecha):
+        self.id = id
+        self.materiales = materiales
+        self.fecha = fecha
 
 '''
 ARTICULOS
@@ -413,6 +426,19 @@ class ProduccionArticulo:
         self.articulos = articulos
         self.fecha = fecha
 
+class SalidaStockMunicipalidad:
+    """
+    Representa una salida de stock de articulos para uso de la municipalidad
+
+    Atributos:
+        id (string): Identificador de la entidad
+        articulos (CantArticulo): Articulos involucrados
+        fecha (Date): fecha y hora de salida
+    """
+    def __init__(self,id,articulos,fecha):
+        self.id = id
+        self.articulos=articulos
+        self.fecha=fecha
 
 '''
 INSUMOS
@@ -651,7 +677,7 @@ class Pedido:
         id (string): Identificador de la entidad.
         fechaEncargo (Date): Fecha en la que el pedido fue realizado.
         fechaRetiro (Date): Fecha en la que el pedido puede ser retirado.
-        articulos (CantArticulo[]): Conjunto de Articulos que posee el pedido.
+        articulos (CantArticulo): Conjunto de Articulos que posee el pedido.
         valorTotal (Float): Valor total del pedido, en pesos.
         valorPagoEcoPuntos (Float): Valor del pedido que fue abonado en forma de EcoPuntos.
         idPuntoRetiro (string): Identificador del punto de retiro donde podrá ser retirado el 
@@ -675,6 +701,40 @@ class Pedido:
         self.valorPagoEcoPuntos = valorPagoEcoPuntos
         self.idPuntoRetiro = idPuntoRetiro
         self.estado = estado
+
+class MovimientoStock:
+    """
+    Registra un movimiento de stock de un punto de retiro a otro.
+
+    Atributos:
+        id (string): identificador de la entidad
+        idOrigen (string): identificador del punto de retiro de origen
+        idDestino (string): identificador del punto de retiro destino
+        articulos (CantArticulos): articulos (de un solo tipo articulo) involucrado en el movimiento
+        fecha (Date): fecha en la que se realizó el movimiento
+    """
+    def __init__(self,id,idOrigen,idDestino,articulos,fecha):
+        self.id = id
+        self.idOrigen = idOrigen
+        self.idDestino = idDestino
+        self.articulos = articulos
+        self.fecha=fecha
+
+class MovimientoStockPrincipal:
+    """
+    Registra un movimiento de stock del stock principal a un punto de retiro.
+
+    Atributos:
+        id (string): identificador de la entidad
+        idDestino (string): identificador del punto de retiro destino
+        articulos (CantArticulos): articulos (de un solo tipo articulo) involucrado en el movimiento
+        fecha (Date): fecha en la que se realizó el movimiento
+    """
+    def __init__(self,id,idDestino,articulos,fecha):
+        self.id = id
+        self.idDestino = idDestino
+        self.articulos = articulos
+        self.fecha=fecha
 
 
 '''
@@ -701,15 +761,14 @@ class SalidaStock:
 
     Atributos:
         id (string): Identificador de la entidad.
-        idTipoArticulo (string): Identificador del tipo de artículo correspondiente.
+        articulos (CantArticulo): Lote de articulos que representa.
         idEntidad (string): Identificador de la entidad de destino correspondiente.
         fecha (Date): Fecha de la transacción.
         cantidad (float): Cantidad del artículo representada, en su unidad de medida.
     """
-    def __init__(self,id,idTipoArticulo,idEntidad,fecha,cantidad):
+    def __init__(self,id,articulos,idEntidad,fecha,cantidad):
         self.id = id
-        self.idTipoArticulo = idTipoArticulo
-        self.idEntidad = idEntidad
+        self.articulos = articulos
         self.fecha = fecha
         self.cantidad = cantidad
 
