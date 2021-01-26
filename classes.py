@@ -28,7 +28,10 @@ TODO:
 import custom_exceptions
 from custom_exceptions import *
 
-#Clases almacenadas en BD
+''' 
+USUARIOS
+'''
+
 class Usuario:
     """ Representa a los usuarios del sistema, tanto los administradores como los ciudadanos.
 
@@ -195,21 +198,6 @@ class Nivel:
             self.minimoEcoPuntos = minimoEcoPuntos
             self.maximoEcoPuntos = maximoEcoPuntos
 
-
-class Estimacion:
-    """ Representa una estimación de CO2 o consumo de energía provista al usuario por el
-    sistema.
-
-    Atributos:
-        id (string): Identificador de la entidad.
-        tipo (string): Toma valor "co2" si la estimación es de emisión de CO2, y "energia" si
-            es de consumo de energía eléctrica" (sin tilde ni mayusculas).
-    """
-
-    def __init__(self,id,tipo):
-        self.id = id
-        self.tipo = tipo
-
 class TipoDocumento:
     """ Contiene la información de los distintos posibles tipos de documento que un usuario
     puede poseer.
@@ -232,6 +220,25 @@ class TipoDocumento:
 
     def deshabilitar(self):
         self.estado = False
+
+
+'''
+RECOMENDACIONES
+'''
+
+class Estimacion:
+    """ Representa una estimación de CO2 o consumo de energía provista al usuario por el
+    sistema.
+
+    Atributos:
+        id (string): Identificador de la entidad.
+        tipo (string): Toma valor "co2" si la estimación es de emisión de CO2, y "energia" si
+            es de consumo de energía eléctrica" (sin tilde ni mayusculas).
+    """
+
+    def __init__(self,id,tipo):
+        self.id = id
+        self.tipo = tipo
 
 class Recomendacion:
     """ Representa una recomendación de plantas dada al usuario por el sistema. Guarda
@@ -290,6 +297,189 @@ class Planta:
         self.sol = sol
         self.riego = riego
         self.temp = temp
+
+
+'''
+MATERIALES
+'''
+
+class Material:
+    """ Representa una material que puede ingresar a través de un depósito de usuarios, y ser
+    tornado en artículos para su salida.
+
+    Atributos:
+        id (string): Identificador de la entidad.
+        nombre (string): Nombre del material para identificación por parte del usuario.
+        unidadMedida (string): Unidad en la que se mide la cantidad del material.
+        costoRecoleccion (float): Costo asociado a la recoleccion del material.
+        stock (float): Cantidad del material presente en inventario.
+    """
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock):
+        self.id = id
+        self.nombre = nombre
+        self.unidadMedida = unidadMedida
+        self.costoRecoleccion = costoRecoleccion
+        self.stock = stock
+
+class CantMaterial:
+    """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.
+    
+    Atributos:
+        cantidad (float): Cantidad del material que se representa, en la unidad de medida 
+            especificada por el mismo.
+        idMaterial (string): Identificador del material correspondiente.
+    """
+    def __init__(self,cantidad,idMaterial):
+        self.cantidad = cantidad
+        self.idMaterial = idMaterial
+
+
+'''
+ARTICULOS
+'''
+
+class TipoArticulo:
+    """ Representa un tipo de artículo comprendido por el sistema. Los artículos son objetos
+    generados a partir de materiales, con un costo de producción. 
+
+    Atributos:
+        id (string): Identificador de la entidad.
+        nombre (string): Nombre del tipo artículo para identificación por parte del usuario.
+        insumos (CantInsumos[]): Arreglo de los materiales empleados en la producción del
+            artículo.
+        costoProducción (float): Costo de producción del artículo, separado de los costos de
+            materiales.
+        costoInsumos (float): Costo de los materiales empleados en la producción del 
+            artículo.
+        costoTotal (float): Costo total de manufactura del artículo. Resultado de la suma de
+            costoProduccion y costoMateriales.
+        valor (Valor): Valor de venta del articulo.
+        margenGanancia (float): Valor que indica el porcentaje por sobre el costo total que
+            compondrá el precio final.
+        unidadMedida (float): Unidad en la que se mide la cantidad presente del artículo.
+        stock (float): Cantidad del artículo presente en inventario.
+        costoObtencionAlternativa (float): Costo estimado de obtención del artículo por medios
+            alternativos a la producción a partir de depósitos de ciudadanos.
+    """
+    def __init__(self,
+                id,
+                nombre,
+                insumos,
+                costoProduccion,
+                costoInsumos,
+                costoTotal,
+                valor,
+                margenGanancia,
+                unidadMedida,
+                costoObtencionAlternativa,
+                stock):
+        self.id = id
+        self.nombre = nombre
+        self.insumos = insumos
+        self.costoProduccion = costoProduccion
+        self.costoInsumos = costoInsumos
+        self.costoTotal = costoTotal
+        self.valor = valor
+        self.margenGanancia = margenGanancia
+        self.unidadMedida = unidadMedida
+        self.costoObtencionAlternativa = costoObtencionAlternativa
+        self.stock = stock
+
+class CantArticulo:
+    """ Representa un conjunto de artículos del mismo tipo. Almacena el tipo y la cantidad.
+    
+    Atributos:
+        cantidad (float): Cantidad del tipo de artículo presente en el conjunto, en la unidad
+            de medida especificada por el mismo.
+        idTipoArticulo (string): Identificador del tipo de artículo correspondiente.
+        precioVenta (Currency): Precio de venta de los artículos al momento de ser empleados.
+    """
+    def __init__(self,id,cantidad,idTipoArticulo,precioVenta=0.0):
+        self.cantidad = cantidad
+        self.idTipoArticulo = idTipoArticulo
+        self.precioVenta = precioVenta
+
+class ProduccionArticulo:
+    """
+    Representa la produccion de un lote de articulos
+
+    Atributos:
+        id (string): identificador de la entidad
+        articulos (CantArticulos): articulos involucrados
+        fecha (Date): fecha de produccion
+    """
+    def __init__(self,id,articulos,fecha):
+        self.id = id
+        self.articulos = articulos
+        self.fecha = fecha
+
+
+'''
+INSUMOS
+'''
+
+class Insumo:
+    """
+    Representa un Insumo utilizado en la producción de articulos
+
+    Atributos:
+        id (String): identificador de la entidad
+        nombre (String): nombre del insumo
+        unidadMedida (String): unidad de medida para el insumo
+        costoMateriales (float): costo de los materiales asociados a la produccion
+        costoProduccion (float): costo asociado a la produccion
+        costoTotal (float): costo total del insumo
+        materiales (CantMaterial []): materiales necesarios para su produccion
+        stock (float): existencias del insumo
+    """
+    def __init__(self,
+                 id,
+                 nombre,
+                 unidadMedida,
+                 costoMateriales,
+                 costoProduccion,
+                 costoTotal,
+                 materiales,
+                 stock):
+        self.id = id
+        self.nombre = nombre
+        self.unidadMedida = unidadMedida
+        self.costoMateriales = costoMateriales
+        self.costoProduccion = costoProduccion
+        self.costoTotal = costoTotal
+        self.materiales = materiales
+        self.stock = stock
+
+class CantInsumo:
+    """
+    Representa una cantidad de insumos
+
+    Atributos:
+        cantidad(float): cantidad del insumo asociado
+        idInsumo (string): identificador del insumo asociado
+    """
+    def __init__(self,cantidad,idInsumo):
+        self.cantidad = cantidad
+        self.idInsumo = idInsumo
+
+class ProduccionInsumo:
+    """
+    Representa la produccion de un lote de insumos
+
+    Atributos:
+        id (string): identificador de la entidad
+        insumos (CantInsumo): insumos involucrados
+        fecha (Date): fecha de produccion
+    """
+    def __init__(self,id,insumos,fecha):
+        self.id = id
+        self.insumos = insumos
+        self.fecha = fecha
+
+
+'''
+DEPOSITOS Y VENTA
+'''
 
 class Deposito:
     """ Representa un deposito de materiales realizado por un usuario en uno de los puntos de
@@ -401,6 +591,11 @@ class EcoPuntos:
         return 0
         # Devuelvo 0 porque devolver None hace que el linter piense que hay un error
 
+
+'''
+PUNTOS DEPOSITO Y RETIRO
+'''
+
 class PuntoDeposito:
     """ Representa uno de los puntos donde un ciudadano puede realizar un depósito de
     materiales.
@@ -428,21 +623,26 @@ class PuntoDeposito:
         self.horarios = horarios
         self.fechaComienzoActividad = fechaComienzoActividad
 
-class Horario:
-    """ Representa una ventana de tiempo dentro de un día en la que un punto de depósito
-    o retiro permanece abierto.
-
+class PuntoRetiro:
+    """ Representa una de las ubicaciones físicas donde los usuarios podrán retirar sus 
+    pedidos.
+    
     Atributos:
         id (string): Identificador de la entidad.
-        horaDesde (Time): Tiempo inicial de apertura.
-        horaHasta (Time): Tiempo final de cierre.
-        abierto (bool): ?
+        direccion (string): Direccion física de la ubicación.
+        nombre (string): Nombre de la ubicación para identificación por parte del usuario.
+        estado (bool): Verdadero si el punto esta habilitado, falso sino.
+        horarios (Horario[7]): Arreglo de horarios en los que permanece abierto el punto.
+        stock (CantArticulo[]): Arreglo de articulos que se poseen en stock.
+        demoraFija (Time): Cantidad de tiempo que tarda en prepararse un pedido.
     """
-    def __init__(self,id,horaDesde,horaHasta,abierto):
+    def __init__(self,direccion,nombre,estado,horarios,demoraFija,stock=[]):
         self.id = id
-        self.horaDesde = horaDesde
-        self.horaHasta = horaHasta
-        self.abierto = abierto
+        self.direccion = direccion
+        self.nombre = nombre 
+        self.estado = estado 
+        self.horarios = horarios 
+        self.demoraFija = demoraFija
 
 class Pedido:
     """ Representa un pedido de artículos realizado por un cliente.
@@ -477,100 +677,9 @@ class Pedido:
         self.estado = estado
 
 
-class PuntoRetiro:
-    """ Representa una de las ubicaciones físicas donde los usuarios podrán retirar sus 
-    pedidos.
-    
-    Atributos:
-        id (string): Identificador de la entidad.
-        direccion (string): Direccion física de la ubicación.
-        nombre (string): Nombre de la ubicación para identificación por parte del usuario.
-        estado (bool): Verdadero si el punto esta habilitado, falso sino.
-        horarios (Horario[7]): Arreglo de horarios en los que permanece abierto el punto.
-        stock (CantArticulo[]): Arreglo de articulos que se poseen en stock.
-        demoraFija (Time): Cantidad de tiempo que tarda en prepararse un pedido.
-    """
-    def __init__(self,direccion,nombre,estado,horarios,demoraFija,stock=[]):
-        self.id = id
-        self.direccion = direccion
-        self.nombre = nombre 
-        self.estado = estado 
-        self.horarios = horarios 
-        self.demoraFija = demoraFija
-
-
-class CantArticulo:
-    """ Representa un conjunto de artículos del mismo tipo. Almacena el tipo y la cantidad.
-    
-    Atributos:
-        cantidad (float): Cantidad del tipo de artículo presente en el conjunto, en la unidad
-            de medida especificada por el mismo.
-        idTipoArticulo (string): Identificador del tipo de artículo correspondiente.
-        precioVenta (Currency): Precio de venta de los artículos al momento de ser empleados.
-    """
-    def __init__(self,id,cantidad,idTipoArticulo,precioVenta=0.0):
-        self.cantidad = cantidad
-        self.idTipoArticulo = idTipoArticulo
-        self.precioVenta = precioVenta
-
-class TipoArticulo:
-    """ Representa un tipo de artículo comprendido por el sistema. Los artículos son objetos
-    generados a partir de materiales, con un costo de producción. 
-
-    Atributos:
-        id (string): Identificador de la entidad.
-        nombre (string): Nombre del tipo artículo para identificación por parte del usuario.
-        insumos (CantInsumos[]): Arreglo de los materiales empleados en la producción del
-            artículo.
-        costoProducción (float): Costo de producción del artículo, separado de los costos de
-            materiales.
-        costoInsumos (float): Costo de los materiales empleados en la producción del 
-            artículo.
-        costoTotal (float): Costo total de manufactura del artículo. Resultado de la suma de
-            costoProduccion y costoMateriales.
-        valor (Valor): Valor de venta del articulo.
-        margenGanancia (float): Valor que indica el porcentaje por sobre el costo total que
-            compondrá el precio final.
-        unidadMedida (float): Unidad en la que se mide la cantidad presente del artículo.
-        stock (float): Cantidad del artículo presente en inventario.
-    """
-    def __init__(self,
-                id,
-                nombre,
-                insumos,
-                costoProduccion,
-                costoInsumos,
-                costoTotal,
-                valor,
-                margenGanancia,
-                unidadMedida,
-                stock):
-        self.id = id
-        self.nombre = nombre
-        self.insumos = insumos
-        self.costoProduccion = costoProduccion
-        self.costoInsumos = costoInsumos
-        self.costoTotal = costoTotal
-        self.valor = valor
-        self.margenGanancia = margenGanancia
-        self.unidadMedida = unidadMedida
-        self.stock = stock
-
-class Valor:
-    """ Representa un valor monetario de una entidad en un momento en particular. El objetivo
-    de esta clase es registrar el historial de valores que una entidad adquiere a través del
-    tiempo.
-
-    Atributos:
-        id (string): Identificador de la entidad.
-        precio (float): Valor representado.
-        fecha (Date): fecha asignada al valor.
-    """
-    def __init__(self,id,precio,fecha):
-        self.id = id
-        self.precio = precio
-        self.fecha = fecha
-
+'''
+ENTIDADES DESTINO
+'''
 
 class EntidadDestino:
     """ Representa una organización o sujeto que demanda artículos del sistema. Debe almacenar
@@ -603,109 +712,48 @@ class SalidaStock:
         self.idEntidad = idEntidad
         self.fecha = fecha
         self.cantidad = cantidad
-        
-class Material:
-    """ Representa una material que puede ingresar a través de un depósito de usuarios, y ser
-    tornado en artículos para su salida.
+
+
+'''
+OTROS
+'''
+
+class Horario:
+    """ Representa una ventana de tiempo dentro de un día en la que un punto de depósito
+    o retiro permanece abierto.
 
     Atributos:
         id (string): Identificador de la entidad.
-        nombre (string): Nombre del material para identificación por parte del usuario.
-        unidadMedida (string): Unidad en la que se mide la cantidad del material.
-        costoRecoleccion (float): Costo asociado a la recoleccion del material.
-        costoObtencionAlternativa (float): Costo estimado de obtenciónd el material por medios
-            alternativos a la recolección a partir de depósitos de ciudadanos.
-        stock (float): Cantidad del material presente en inventario.
+        horaDesde (Time): Tiempo inicial de apertura.
+        horaHasta (Time): Tiempo final de cierre.
+        abierto (bool): ?
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,costoObtencionAlternativa,stock):
+    def __init__(self,id,horaDesde,horaHasta,abierto):
         self.id = id
-        self.nombre = nombre
-        self.unidadMedida = unidadMedida
-        self.costoRecoleccion = costoRecoleccion
-        self.costoObtencionAlternativa = costoObtencionAlternativa
-        self.stock = stock
+        self.horaDesde = horaDesde
+        self.horaHasta = horaHasta
+        self.abierto = abierto
 
-
-class CantMaterial:
-    """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.
-    
-    Atributos:
-        cantidad (float): Cantidad del material que se representa, en la unidad de medida 
-            especificada por el mismo.
-        idMaterial (string): Identificador del material correspondiente.
-    """
-    def __init__(self,cantidad,idMaterial):
-        self.cantidad = cantidad
-        self.idMaterial = idMaterial
-
-class Insumo:
-    """
-    Representa un Insumo utilizado en la producción de articulos
+class Valor:
+    """ Representa un valor monetario de una entidad en un momento en particular. El objetivo
+    de esta clase es registrar el historial de valores que una entidad adquiere a través del
+    tiempo.
 
     Atributos:
-        id (String): identificador de la entidad
-        nombre (String): nombre del insumo
-        unidadMedida (String): unidad de medida para el insumo
-        costoMateriales (float): costo de los materiales asociados a la produccion
-        costoProduccion (float): costo asociado a la produccion
-        costoTotal (float): costo total del insumo
-        materiales (CantMaterial []): materiales necesarios para su produccion
-        stock (float): existencias del insumo
+        id (string): Identificador de la entidad.
+        precio (float): Valor representado.
+        fecha (Date): fecha asignada al valor.
     """
-    def __init__(self,
-                 id,
-                 nombre,
-                 unidadMedida,
-                 costoMateriales,
-                 costoProduccion,
-                 costoTotal,
-                 materiales,
-                 stock):
+    def __init__(self,id,precio,fecha):
         self.id = id
-        self.nombre = nombre
-        self.unidadMedida = unidadMedida
-        self.costoMateriales = costoMateriales
-        self.costoProduccion = costoProduccion
-        self.costoTotal = costoTotal
-        self.materiales = materiales
-        self.stock = stock
-
-class CantInsumo:
-    """
-    Representa una cantidad de insumos
-
-    Atributos:
-        cantidad(float): cantidad del insumo asociado
-        idInsumo (string): identificador del insumo asociado
-    """
-    def __init__(self,cantidad,idInsumo):
-        self.cantidad = cantidad
-        self.idInsumo = idInsumo
-
-class ProduccionInsumo:
-    """
-    Representa la produccion de un lote de insumos
-
-    Atributos:
-        id (string): identificador de la entidad
-        insumos (CantInsumo): insumos involucrados
-        fecha (Date): fecha de produccion
-    """
-    def __init__(self,id,insumos,fecha):
-        self.id = id
-        self.insumos = insumos
+        self.precio = precio
         self.fecha = fecha
 
-class ProduccionArticulo:
-    """
-    Representa la produccion de un lote de articulos
 
-    Atributos:
-        id (string): identificador de la entidad
-        articulos (CantArticulos): articulos involucrados
-        fecha (Date): fecha de produccion
-    """
-    def __init__(self,id,articulos,fecha):
-        self.id = id
-        self.articulos = articulos
-        self.fecha = fecha
+
+
+
+
+
+
+
