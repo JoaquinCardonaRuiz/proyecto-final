@@ -18,36 +18,26 @@
 <div class="page-content" style="text-align: left;" id="content">
     <div class="container" id="heading-container">
         <h1 class="heading">Gestión de Puntos de Depósito</h1>
-        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Cree, elimine, modifique y configure los Puntos de Retiro de EcoAsistente.</span></h6>
+        <p>Seleccione el punto que desea gestionar</p>
     </div>
     <div class="container" id="top-container">
-        <div class="row">
-            <div class="container" id="option-left" onclick="openAltaModal();">
-                    <div class="option-text">
-                        <p class="option-title">Añadir Punto</p>
-                        <p class="text-box" style="font-size: 14px; color: #70706f;">Añadir un nuevo Punto de Depósito</p>
-                    </div>
-                    <img id="option-img" src="/static/img/add-icon.png">
+        <div class="row justify-content-left" id="cards-row" onclick="">
+            {%for punto in puntos_deposito%}
+            <div class="cards">
+                <div class="circle">BL</div>
+                <h5 class="card-name">{{punto.nombre}}</h5>
+                <p class="card-direccion">{{punto.direccion}}</p>
+                {%if punto.estado == True%}
+                    <p class="card-estado-activo">Punto Activo</p>
+                {%else%}
+                    <p class="card-estado-inactivo">Punto Inactivo</p>
+                {%endif%}
             </div>
-            <div class="container" id="option-middle" onclick="modificarPunto()">
-                <div class="option-text">
-                    <p class="option-title">Modificar Punto</p>
-                    <p class="text-box" style="font-size: 14px; color: #70706f;">Modificar la configuración de un Punto de Depósito</p>
-                </div>
-                <img id="option-img" src="/static/img/add-icon.png">
-            </div>
-            <div class="container" id="option-right" onclick="removerPunto()">
-                <div class="option-text">
-                    <p class="option-title">Eliminar Punto</p>
-                    <p class="text-box" style="font-size: 14px; color: #70706f;">Añadir un nuevo Punto de Depósito</p>
-                </div>
-                <img id="option-img" src="/static/img/add-icon.png">
-            </div>
+            {%endfor%}
         </div>
     </div>
     <div class="container" id="table-container">
         <div class="row">
-            <h1 class="display-4" style="font-size:30; margin-left: 5%; margin-top: 3%;">Listado de Puntos de Depósito</h1>
             <table class="table" id="content-table">
                 <thead style="border-top:none">
                 <tr>
@@ -66,9 +56,9 @@
                     <th scope="row">{{punto.nombre}}</th>
                     <td>{{punto.direccion}}</td>
                     {%if punto.estado == True%}
-                        <td class="estado-activo">Activo</td>
+                        <td class="estado-punto-activo">Activo</td>
                     {%else%}
-                        <td class="estado-inactivo">Inactivo</td>
+                        <td class="estado-punto-inactivo">Inactivo</td>
                     {%endif%}
                     <td><a class="custom-link" href='#' onclick="">Ver horarios</a></td>
                     <td><a class="custom-link" href='#' onclick="">Ver materiales</a></td>
