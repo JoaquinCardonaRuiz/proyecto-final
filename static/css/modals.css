@@ -71,13 +71,14 @@ div.modal-content{
 
 .subheader{
   font-size: large;
-  color: #aaa;
+  color: #777;
 }
 
 .subheader-row{
   height:80px !important;
   margin-top: -5% !important;
-  margin-left: 5% !important;
+  margin-left: 4% !important;
+  margin-bottom: 2%;
 }
 
 
