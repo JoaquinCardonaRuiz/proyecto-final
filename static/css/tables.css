@@ -1,20 +1,9 @@
 #content-table{
     position: relative;
-    margin-left: 5%;
-    width: 90%;
+    width: 87%;
     margin-top: 2%;
     margin-bottom: 3%;
     border-top:2px solid white !important
-}
-
-#content-table-horarios{
-  position: relative;
-  margin-top: -5%;
-  margin-bottom: 3%;
-  border-top:2px solid white !important;
-  width: 500px;
-  margin: 0;
-  
 }
 
 .table-heading{

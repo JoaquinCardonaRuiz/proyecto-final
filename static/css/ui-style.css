@@ -166,6 +166,7 @@
 
 .custom-link:hover{
   color:#95C22B !important;
+  cursor: pointer;
 }
 
 
@@ -243,59 +244,18 @@ h2 		 {
     cursor: pointer;
 }
 
-.estado-activo{
+#estado-activo{
     color: #4BB543;
-    margin-top: -12px;
-    margin-bottom: 5px;
+    font-size: 12px;
 }
 
-.estado-inactivo{
-    color: #FC100D;
-    margin-top: -12px;
-    margin-bottom: 5px;
+#estado-inactivo{
+    color: #e9322f;
+    font-size: 12px;
 }
 
-.cards{
-    height: fit-content;
-    width: 180px;
+.icon-column{
     text-align: center;
-    border-color: white;
-    padding:20px;
-    box-shadow: 0 0 15px  rgba(95, 95, 95, 0.1);
-    margin-right: 20px;
-    margin-top: 20px;
-    position: relative;
-    border-radius: 3px;
-    transition: transform .2s; /* Animation */
-    background-color: white;
-}
-
-.cards:hover {
-    transform: scale(1.03);
-    cursor: pointer;
-}
-
-.card-name{
-    margin-top: 12px;
-}
-
-.circle {
-    width: 80px;
-    height: 80px;
-    line-height: 80px;
-    border-radius: 80px;
-    font-size: 40px;
-    color: #fff;
-    text-align: center;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 5px;
-    background-color: #bbe45c;
-}
-
-tr{
-    line-height: 30px;
 }
 
 .text-box{

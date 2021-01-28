@@ -79,7 +79,6 @@ function openModalHorarios(id, nombre){
         // Borro contenido anterior
         document.getElementById("modalTableBody"). innerHTML="";
         document.getElementById("headerRow").innerHTML ="";
-        document.getElementById("msj-empty").hidden = true;
 
         // Establezco título
         document.getElementById("headingModal").innerHTML = "Horarios de " + nombre;
@@ -118,10 +117,6 @@ function openModalHorarios(id, nombre){
                 document.getElementById("modalTableBody").appendChild(row);
             }
         }
-        else{
-            document.getElementById("empty-content").innerHTML = "No hay salidas";
-            document.getElementById("msj-empty").hidden = false;
-        }
         document.getElementById("open-loading-modal").click();
         document.getElementById("open-modal").click();
         
@@ -140,3 +135,11 @@ function openLoadingRing(){
     $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
     $(".lds-ring").show();
 }
+
+window.addEventListener("load", function() {
+    document.getElementById("stop").addEventListener("click", function() {
+      [...document.querySelectorAll(".switch input[type=checkbox]")].forEach(function(chk) {
+        chk.checked = false; // and perhaps add chk.onchange() if needed
+      });
+    });
+  });

@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    
 </head>
 
 {% extends 'layout.html' %}
@@ -24,7 +25,7 @@
             <div class="container" id="option-left" onclick="openAltaModal();">
                     <div class="option-text">
                         <p class="option-title">Añadir Punto</p>
-                        <p class="text-box">Añadir un nuevo Punto de Depósito</p>
+                        <p class="text-box">Añadir un nuevo Punto de Depósito al sistema</p>
                     </div>
                     <i class="fa fa-plus option-img" id="option-img-1"></i>
             </div>
@@ -38,21 +39,20 @@
             <div class="container" id="option-right" onclick="removerPunto()">
                 <div class="option-text">
                     <p class="option-title">Eliminar Punto</p>
-                    <p class="text-box">Eliminar un Punto de Depósito ya registrado</p>
+                    <p class="text-box">Eliminar un Punto de Depósito ya registrado en el sistema</p>
                 </div>
                 <i class="fa fa-trash option-img"  id="option-img-3"></i>
             </div>
         </div>
     </div>
     <div class="container" id="table-container">
-        <div class="row">
-            <h1 class="display-4" style="font-size:30; margin-left: 5%; margin-top: 3%;">Listado de Puntos de Depósito</h1>
+        <div class="row d-flex justify-content-center">
             <table class="table" id="content-table">
                 <thead style="border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">Nombre</th>
                     <th scope="col" class="table-heading">Dirección</th>
-                    <th scope="col" class="table-heading">Estado</th>
+                    <th scope="col" class="table-heading">Activo</th>
                     <th scope="col" class="table-heading">Horarios</th>
                     <th scope="col" class="table-heading">Materiales aceptados</th>
                     <th class="table-heading delete-th"></th>
@@ -65,9 +65,19 @@
                     <th scope="row">{{punto.nombre}}</th>
                     <td>{{punto.direccion}}</td>
                     {%if punto.estado == True%}
-                        <td class="estado-activo">Activo</td>
+                        <td>
+                            <div>
+                                <i class="fas fa-circle" id="estado-activo"></i>
+                                Activo
+                            </div>
+                        </td>
                     {%else%}
-                        <td class="estado-inactivo">Inactivo</td>
+                        <td>
+                            <div>
+                                <i class="fas fa-circle" id="estado-inactivo"></i>
+                                Inactivo
+                            </div>
+                        </td>
                     {%endif%}
                     <td><a class="custom-link" onclick="openLoadingRing();openModalHorarios('{{punto.id}}', '{{punto.nombre}}');">Ver horarios</a></td>
                     <td><a class="custom-link" href='#' onclick="">Ver materiales</a></td>
@@ -98,56 +108,36 @@
 </div>
 
 <!-- Tabla Modal -->
-<div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+<div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="headingModal"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style="margin-top: none;">
-            <table class="table table-striped" id="content-table-horarios">
-                <thead style=" border-top:none">
-                <tr id=headerRow>
-    
-                </tr>
-                </thead>
-                <tbody id="modalTableBody">
-                </tbody>
-    
-            </table>
-        </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModal"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body d-flex justify-content-center" style="margin-top: 0px;">
+                <table class="table" id="content-table" style="margin-top: -5px;">
+                    <thead>
+                    <tr id=headerRow>
+                    </tr>
+                    </thead>
+                    <tbody id="modalTableBody">
+                    </tbody>
+        
+                </table>
+            </div>
         <div class="modal-footer">
             <div type="button" class="btn" id="primary-btn" data-dismiss="modal">Listo</div>
         </div>
-      </div>
     </div>
-  </div>
 
-
-
-<div class="modal fade modal-lg" id="tablaModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="headingModal"></h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-          <div id="msj-empty" hidden=true>
-          <br><br>
-              <center><p id="empty-content" style="font-size:20px; color:#888888"></p></center>
-          </div>
-        
-        <div class="modal-footer">
-          <div type="button" class="btn" id="primary-btn" data-dismiss="modal">Listo</div>
-        </div>
-      </div>
     </div>
 </div>
+
+
+
 
 <script src="static/js/gestion-puntos-deposito.js"></script>
 {% endblock %}
