@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
@@ -25,23 +24,23 @@
             <div class="container" id="option-left" onclick="openAltaModal();">
                     <div class="option-text">
                         <p class="option-title">Añadir Punto</p>
-                        <p class="text-box" style="font-size: 14px; color: #70706f;">Añadir un nuevo Punto de Depósito</p>
+                        <p class="text-box">Añadir un nuevo Punto de Depósito</p>
                     </div>
-                    <img id="option-img" src="/static/img/add-icon.png">
+                    <i class="fa fa-plus option-img" id="option-img-1"></i>
             </div>
             <div class="container" id="option-middle" onclick="modificarPunto()">
                 <div class="option-text">
                     <p class="option-title">Modificar Punto</p>
-                    <p class="text-box" style="font-size: 14px; color: #70706f;">Modificar la configuración de un Punto de Depósito</p>
+                    <p class="text-box">Modificar la configuración de un Punto de Depósito</p>
                 </div>
-                <img id="option-img" src="/static/img/add-icon.png">
+                <i class="fa fa-edit option-img" id="option-img-2"></i>
             </div>
             <div class="container" id="option-right" onclick="removerPunto()">
                 <div class="option-text">
                     <p class="option-title">Eliminar Punto</p>
-                    <p class="text-box" style="font-size: 14px; color: #70706f;">Añadir un nuevo Punto de Depósito</p>
+                    <p class="text-box">Eliminar un Punto de Depósito ya registrado</p>
                 </div>
-                <img id="option-img" src="/static/img/add-icon.png">
+                <i class="fa fa-trash option-img"  id="option-img-3"></i>
             </div>
         </div>
     </div>
@@ -70,16 +69,83 @@
                     {%else%}
                         <td class="estado-inactivo">Inactivo</td>
                     {%endif%}
-                    <td><a class="custom-link" href='#' onclick="">Ver horarios</a></td>
+                    <td><a class="custom-link" onclick="openLoadingRing();openModalHorarios('{{punto.id}}', '{{punto.nombre}}');">Ver horarios</a></td>
                     <td><a class="custom-link" href='#' onclick="">Ver materiales</a></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon"></i></td>
                     <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
 
+                    <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
+                    <button id="close-loading-modal" href='#' onclick="cierraModal('loadingModal');" hidden="true"></button>
+                    <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
                 </tr>
                 {%endfor%}
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<!-- Para mostrar mientras se carga un modal-->
+
+<div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+      <br><br><br><br><br><br><br><br>
+      <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+    </div>
+</div>
+
+<!-- Tabla Modal -->
+<div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="margin-top: none;">
+            <table class="table table-striped" id="content-table-horarios">
+                <thead style=" border-top:none">
+                <tr id=headerRow>
+    
+                </tr>
+                </thead>
+                <tbody id="modalTableBody">
+                </tbody>
+    
+            </table>
+        </div>
+        <div class="modal-footer">
+            <div type="button" class="btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<div class="modal fade modal-lg" id="tablaModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="headingModal"></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+          <div id="msj-empty" hidden=true>
+          <br><br>
+              <center><p id="empty-content" style="font-size:20px; color:#888888"></p></center>
+          </div>
+        
+        <div class="modal-footer">
+          <div type="button" class="btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+      </div>
     </div>
 </div>
 

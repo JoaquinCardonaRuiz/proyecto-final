@@ -112,12 +112,30 @@
     height: fit-content;
 }
 
-#option-img {
+.option-imgs {
     text-align: center;
     margin: 0;
     position: relative;
     margin-left: 10%;
-    width: 70px;
+    width: 65px;
+}
+
+#option-img-1 {
+    margin-left: 10%;
+    width: 65px;
+    font-size: 47px;
+}
+
+#option-img-2 {
+    margin-left: 10%;
+    width: 65px;
+    font-size: 43px;
+}
+
+#option-img-3 {
+    margin-left: 10%;
+    width: 65px;
+    font-size:43px;
 }
 
 #option-img-puntos{
@@ -133,7 +151,7 @@
 #table-container{
     background-color: #fff;
     width: 90%; 
-    margin-top: 2.5%;
+    margin-top: 4%;
     margin-bottom: 4%; 
     border-radius: 5px;;
     height: fit-content;
@@ -278,4 +296,9 @@ h2 		 {
 
 tr{
     line-height: 30px;
+}
+
+.text-box{
+    font-size: 14px; 
+    color: #70706f;
 }

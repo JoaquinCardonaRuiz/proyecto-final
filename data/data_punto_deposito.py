@@ -1,3 +1,4 @@
+from data.data_horario import DatosHorario
 from werkzeug import utils
 from classes import PuntoDeposito
 from data.data import Datos
@@ -17,8 +18,8 @@ class DatosPuntoDeposito(Datos):
             puntosDeposito = cls.cursor.fetchall()
             puntosDeposito_ = []
             for punto in puntosDeposito:
-                print(punto[4])
                 #TODO: codificar metodos para obtner ids materiales y horarios.
+                horarios = DatosHorario.get_horariosPD_id(punto[0])
                 puntosDeposito_.append(PuntoDeposito(punto[0],punto[1],punto[2],punto[3],None,None,punto[4]))
             return puntosDeposito_
             

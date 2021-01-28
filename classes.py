@@ -782,13 +782,15 @@ class Horario:
         id (string): Identificador de la entidad.
         horaDesde (Time): Tiempo inicial de apertura.
         horaHasta (Time): Tiempo final de cierre.
+        dia (string): Día al que corresponde el horario.
         abierto (bool): ?
     """
-    def __init__(self,id,horaDesde,horaHasta,abierto):
+    def __init__(self,id,horaDesde,horaHasta,dia,abierto=None):
         self.id = id
         self.horaDesde = horaDesde
         self.horaHasta = horaHasta
         self.abierto = abierto
+        self.dia = dia
 
 class Valor:
     """ Representa un valor monetario de una entidad en un momento en particular. El objetivo

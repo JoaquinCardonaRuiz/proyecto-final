@@ -7,6 +7,16 @@
     border-top:2px solid white !important
 }
 
+#content-table-horarios{
+  position: relative;
+  margin-top: -5%;
+  margin-bottom: 3%;
+  border-top:2px solid white !important;
+  width: 500px;
+  margin: 0;
+  
+}
+
 .table-heading{
     border-top: none !important;
 }

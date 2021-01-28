@@ -1,3 +1,6 @@
+from flask import json
+from flask.json import JSONEncoder
+from classes import Horario
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
 from negocio.capa_negocio import *
 app = Flask(__name__)
@@ -189,6 +192,15 @@ def gestion_pd():
     except Exception as e:
         return error(e,"gestion_pd") 
     return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito)
+
+@app.route('/gestion-puntos-deposito/horarios/<int:id>')
+def horarios_pd(id):
+    try:
+        id = int(id)
+        horarios = NegocioPuntoDeposito.get_horarios_id(id)
+        return jsonify(horarios)
+    except Exception as e:
+        return error(e,"gestion_pd")
 
 
 ''' 
