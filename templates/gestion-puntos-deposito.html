@@ -117,17 +117,59 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body d-flex justify-content-center" style="margin-top: 0px;">
-                <table class="table" id="content-table" style="margin-top: -5px;">
-                    <thead>
-                    <tr id=headerRow>
-                    </tr>
-                    </thead>
-                    <tbody id="modalTableBody">
-                    </tbody>
-        
-                </table>
-            </div>
+            <div class="modal-body" style="margin-top: 0px;">
+                <div class="container modal-large-card">
+                    <div class="row">
+                        <div class="modal-card-col" id="modal-card-col-1">
+                            <img src="/static/img/open-circle-icon.jpg" class="modal-large-card-img">
+                        </div>
+                        <div class="modal-card-col" >
+                            <div class="row d-flex justify-content-center" style="margin-top: 20px;">
+                                <p class="open-letter" id="estado-apertura-pos">Abierto</p>
+                                <p class="open-letter" id="estado-apertura-neg">Cerrado</p>
+                            </div>
+                            <div class="row d-flex justify-content-center" style="margin-top: -20px;">
+                                <p class="text-box">Estado Actual</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col">
+                            <div class="row d-flex justify-content-center" style="margin-top: 20px;">
+                                <p class="open-letter" id="cant-horas-cierre-pos">-</p>
+                                <p class="open-letter" id="cant-horas-cierre-neg">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center" style="margin-top: -20px;">
+                                <p class="text-box">Tiempo para cierre</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col">
+                            <div class="vl">
+                                <div class= "info-container-modal">
+                                    <span class="text-muted"><i class="fa fa-check modal-info-img" id="info-modal-1-pos"></i>Abierto lunes a viernes</span><br>
+                                    <span class="text-muted"><i class="fa fa-times modal-info-img" id="info-modal-1-neg"></i>Abierto lunes a viernes</span><br>
+
+                                    <span class="text-muted"><i class="fa fa-check modal-info-img" id="info-modal-2-pos"></i>Abierto fines de semana</span><br>
+                                    <span class="text-muted"><i class="fa fa-times modal-info-img" id="info-modal-2-neg"></i>Abierto fines de semana</span><br>
+
+                                    <span class="text-muted"><i class="fa fa-clock modal-info-img" id="info-modal-3"></i>Hoy abre 08:00hs y cierra 20:00hs</span>                                                                        
+                                </div>
+                            </div>
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+                    <div class="container modal-large-card d-flex justify-content-center">
+                        <table class="table" id="content-table-modal">
+                            <thead>
+                            <tr id=headerRow>
+                            </tr>
+                            </thead>
+                            <tbody id="modalTableBody">
+                            </tbody>
+                    
+                        </table>
+                    </div>
+            </div>        
         <div class="modal-footer">
             <div type="button" class="btn" id="primary-btn" data-dismiss="modal">Listo</div>
         </div>

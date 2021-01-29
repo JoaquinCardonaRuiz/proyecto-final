@@ -128,3 +128,30 @@ class Utils():
                                                    msj=str(e),
                                                    msj_adicional="Error convirtiendo el formato de la dirección.")
     
+    @classmethod
+    def traductor_nombre_dias(cls, dia):
+        """
+        Traduce el nombre de un día recibido como parámetro de ingles a español.
+        """
+        try:
+            if dia == "Monday":
+                return "Lunes"
+            elif dia == "Tuesday":
+                return "Martes"
+            elif dia == "Wednesday":
+                return "Miércoles"
+            elif dia == "Thursday":
+                return "Jueves"
+            elif dia == "Friday":
+                return "Viernes"
+            elif dia == "Saturday":
+                return "Sábado"
+            elif dia == "Sunday":
+                return "Domingo"
+        except Exception as e:
+           raise custom_exceptions.ErrorDeNegocio(origen="utils.raductor_nombre_dias()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error convtraduciendo el nombre de un día.")
+    
+
+    

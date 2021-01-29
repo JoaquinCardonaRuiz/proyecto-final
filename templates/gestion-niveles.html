@@ -19,20 +19,30 @@
 <div class="page-content" style="text-align: left;" id="content">
     <div class="container" id="heading-container">
         <h1 class="heading">Gestión de niveles</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Cree, elimine, modifique y configure los niveles de usuario de EcoAsistente.</span></h6>
     </div>
     <div class="container" id="top-container">
         <div class="row">
             <div class="container" id="option-left" data-toggle="modal" data-target="#altaNivelModal" onclick="setModalValues('{{max_level}}', '{{maxEP}}', '{{maxDescuento}}')">
-                <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Añadir nivel</p>
+                <div class="option-text">
+                    <p class="option-title">Añadir Nivel</p>
+                    <p class="text-box">Añadir un nuevo nivel de usuario al sistema</p>
+                </div>
+                <i class="fa fa-plus option-img" id="option-img-1"></i>
             </div>
             <div class="container" id="option-middle" onclick="modifyLevel()">
-                <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Modificar nivel</p>
+                <div class="option-text">
+                    <p class="option-title">Modificar Nivel</p>
+                    <p class="text-box">Modificar la configuración de un nivel de usuario</p>
+                </div>
+                <i class="fa fa-edit option-img" id="option-img-2"></i>
             </div>
             <div class="container" id="option-right" onclick="removeLevel()">
-                <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Eliminar nivel</p>
+                <div class="option-text">
+                    <p class="option-title">Eliminar Nivel</p>
+                    <p class="text-box">Eliminar un nivel de usuario ya registrado en el sistema</p>
+                </div>
+                <i class="fa fa-trash option-img"  id="option-img-3"></i>
             </div>
         </div>
     </div>

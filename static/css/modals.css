@@ -90,3 +90,90 @@ div.modal-content{
   width: 90%;
   margin-top: 2%;
 }
+
+.modal-large-card{
+  position: relative;
+  border-radius: 5px;;
+  min-height: 100px;
+  height: fit-content;
+  box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  width: 90% !important;
+  margin-top: 4%;
+  margin-bottom: 4%; 
+}
+
+.modal-large-card-img{
+  width: 70px;
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+.open-letter{
+  font-size: 25px;
+  color:  #7cc22b;
+}
+
+.vl {
+  border-left: 1px solid lightgray;
+  height: 80px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.modal-card-col{
+  position: relative;
+  width: 100px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#modal-card-col-1{
+  margin-right: -15px;
+}
+
+.modal-info-img{
+  margin-right: 5px;
+}
+
+.info-container-modal{
+  justify-content: left;
+  align-items: left;
+  vertical-align: middle;
+  width: 300px; 
+  margin-left: 20px;
+}
+
+#info-modal-1{
+  margin-top: 8px;
+}
+
+#info-modal-1-neg{
+  margin-left: 2px;
+  margin-right: 8px;
+  font-size: 15px;
+  color: #f52926;
+}
+
+#info-modal-2-neg{
+  margin-left: 2px;
+  margin-right: 8px;
+  font-size: 15px;
+  color: #f52926;
+}
+
+#modal-row-2{
+  margin-top: 25px;
+}
+
+#info-modal-3{
+  color: rgb(158, 158, 158);
+}
+
+#estado-apertura-neg{
+  color: #f52926;
+}
+
+#cant-horas-cierre-neg{
+  color: rgb(77, 77, 77);
+}

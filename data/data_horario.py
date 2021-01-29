@@ -18,7 +18,14 @@ class DatosHorario(Datos):
             horarios = cls.cursor.fetchall()
             horarios_ = []
             for horario in horarios:
-                horarios_.append(Horario(horario[0], str(horario[2]), str(horario[3]),horario[4]))
+                if horario[2] != None and horario[3] != None:
+                    horarios_.append(Horario(horario[0], str(horario[2]), str(horario[3]),horario[4]))
+                elif horario[2] == None and horario[3] == None:
+                    horarios_.append(Horario(horario[0], False, False, horario[4]))
+                elif horario[2] == None:
+                    horarios_.append(Horario(horario[0], False, str(horario[3]),horario[4]))
+                elif horario[3] == None:
+                    horarios_.append(Horario(horario[0], str(horario[2]), False,horario[4]))
             return horarios_
             
         except Exception as e:
@@ -28,3 +35,5 @@ class DatosHorario(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+        

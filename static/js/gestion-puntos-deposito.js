@@ -95,7 +95,7 @@ function openModalHorarios(id, nombre){
             }
 
             // Creo contenido
-            for(i=0; i < result.length; i++){
+            for(i=0; i < result.length - 4; i++){
                 // Creo celda de día
                 headCell = document.createElement("th");
                 headCell.scope = "row";
@@ -119,7 +119,29 @@ function openModalHorarios(id, nombre){
         }
         document.getElementById("open-loading-modal").click();
         document.getElementById("open-modal").click();
-        
+    
+    pd_abierto = result[7]
+    cant_horas_cierre = result[8]
+    fines_semana = result[9]
+    toda_semana = result[10]
+
+    if (pd_abierto == true){
+        $("#estado-apertura-neg").hide()
+        $("#cant-horas-cierre-neg").hide();
+
+        $("#estado-apertura-pos").show()
+        $("#cant-horas-cierre-pos").text(cant_horas_cierre);
+        $("#cant-horas-cierre-pos").show();
+    }
+    else {
+        $("#estado-apertura-pos").hide()
+        $("#cant-horas-cierre-pos").hide();
+
+        $("#estado-apertura-neg").show()
+        $("#cant-horas-cierre-neg").show();
+    }
+
+    
     })
 }
 
@@ -135,11 +157,3 @@ function openLoadingRing(){
     $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
     $(".lds-ring").show();
 }
-
-window.addEventListener("load", function() {
-    document.getElementById("stop").addEventListener("click", function() {
-      [...document.querySelectorAll(".switch input[type=checkbox]")].forEach(function(chk) {
-        chk.checked = false; // and perhaps add chk.onchange() if needed
-      });
-    });
-  });
