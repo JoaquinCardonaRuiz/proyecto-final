@@ -121,7 +121,9 @@
                 <div class="container modal-large-card">
                     <div class="row">
                         <div class="modal-card-col" id="modal-card-col-1">
-                            <img src="/static/img/open-circle-icon.jpg" class="modal-large-card-img">
+                            <img src="/static/img/open-circle-icon.jpg" class="modal-large-card-img" id="open-img">
+                            <img src="/static/img/closed-circle-icon.png" class="modal-large-card-img" id="close-img">
+
                         </div>
                         <div class="modal-card-col" >
                             <div class="row d-flex justify-content-center" style="margin-top: 20px;">
@@ -144,13 +146,13 @@
                         <div class="modal-card-col">
                             <div class="vl">
                                 <div class= "info-container-modal">
-                                    <span class="text-muted"><i class="fa fa-check modal-info-img" id="info-modal-1-pos"></i>Abierto lunes a viernes</span><br>
-                                    <span class="text-muted"><i class="fa fa-times modal-info-img" id="info-modal-1-neg"></i>Abierto lunes a viernes</span><br>
+                                    <span class="text-muted" id="toda-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-1-pos"></i>Abierto de lunes a viernes<br></span>
+                                    <span class="text-muted" id="toda-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-1-neg"></i>Abierto de lunes a viernes<br></span>
 
-                                    <span class="text-muted"><i class="fa fa-check modal-info-img" id="info-modal-2-pos"></i>Abierto fines de semana</span><br>
-                                    <span class="text-muted"><i class="fa fa-times modal-info-img" id="info-modal-2-neg"></i>Abierto fines de semana</span><br>
+                                    <span class="text-muted" id="fines-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-2-pos"></i>Abierto fines de semana<br></span>
+                                    <span class="text-muted" id="fines-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-2-neg"></i>Abierto fines de semana<br></span>
 
-                                    <span class="text-muted"><i class="fa fa-clock modal-info-img" id="info-modal-3"></i>Hoy abre 08:00hs y cierra 20:00hs</span>                                                                        
+                                    <i class="fa fa-clock modal-info-img" id="info-modal-3"></i><span class="text-muted" id="horarios-apertura">Hoy abre 08:00hs y cierra 20:00hs</span>                                                                        
                                 </div>
                             </div>
                             

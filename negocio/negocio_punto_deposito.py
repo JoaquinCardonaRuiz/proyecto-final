@@ -46,7 +46,8 @@ class NegocioPuntoDeposito(Negocio):
             horarios = DatosHorario.get_horariosPD_id(id)
             horarios_ = []
             for horario in horarios:
-                horarios_.append({"id":horario.id,"horaDesde":horario.horaDesde,"horaHasta":horario.horaHasta,"dia":horario.dia})
+
+                horarios_.append({"id":horario.id,"horaDesde":horario.formato_horaDesde(), "horaHasta":horario.formato_horaHasta(),"dia":horario.dia})
             estado_actual = NegocioPuntoDeposito.esta_abierto(horarios)
 
             #Chequea si está abierto
@@ -57,7 +58,9 @@ class NegocioPuntoDeposito(Negocio):
             horarios_.append(NegocioPuntoDeposito.abre_fin_semana(horarios))
             #Chequea si el punto abre los dias de la semana.
             horarios_.append(NegocioPuntoDeposito.abre_toda_semana(horarios))
-            
+            #Añade los horarios correspendientes al día actual
+            horarios_.append(estado_actual[2])
+
             return horarios_
         except custom_exceptions.ErrorDeConexion as e:
             raise e
@@ -81,9 +84,13 @@ class NegocioPuntoDeposito(Negocio):
             for horario in horarios:
                 if horario.dia == current_day:
                     if horario.horaDesde != False and horario.horaHasta != False:
+                        times = [horario.horaDesde[:-3],horario.horaHasta[:-3]]
                         if datetime.strptime(horario.horaDesde, '%H:%M:%S').time() < current_time and datetime.strptime(horario.horaHasta, '%H:%M:%S').time() > current_time:
-                            return [True, NegocioPuntoDeposito.tiempo_cierre(datetime.strptime(horario.horaHasta, '%H:%M:%S'),current_time)]
-            return [False,False]
+                            return [True, NegocioPuntoDeposito.tiempo_cierre(datetime.strptime(horario.horaHasta, '%H:%M:%S'),current_time),times]
+                    else:
+                        times = False
+
+            return [False,False,times]
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
@@ -160,3 +167,5 @@ class NegocioPuntoDeposito(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+
+        

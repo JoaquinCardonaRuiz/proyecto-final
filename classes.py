@@ -791,6 +791,19 @@ class Horario:
         self.horaHasta = horaHasta
         self.abierto = abierto
         self.dia = dia
+    
+    def formato_horaDesde(self):
+        if self.horaDesde == False:
+            return False
+        else:
+            return self.horaDesde[:-3]
+
+    def formato_horaHasta(self):
+        if self.horaHasta == False:
+            return False
+        else:
+            return self.horaHasta[:-3]
+
 
 class Valor:
     """ Representa un valor monetario de una entidad en un momento en particular. El objetivo

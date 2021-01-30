@@ -95,7 +95,7 @@ function openModalHorarios(id, nombre){
             }
 
             // Creo contenido
-            for(i=0; i < result.length - 4; i++){
+            for(i=0; i < result.length - 5; i++){
                 // Creo celda de día
                 headCell = document.createElement("th");
                 headCell.scope = "row";
@@ -103,7 +103,12 @@ function openModalHorarios(id, nombre){
     
                 // Creo celda de horarios
                 bodyCell1 = document.createElement("td");
-                bodyCell1.innerHTML = "Desde las " + result[i]["horaDesde"] + " hasta las " + result[i]["horaHasta"];
+                if(result[i]["horaDesde"] == false || result[i]["horaHasta"] == false){
+                    bodyCell1.innerHTML = "No abre este día";
+                }
+                else{
+                    bodyCell1.innerHTML = "Desde las " + result[i]["horaDesde"] + " hasta las " + result[i]["horaHasta"];
+                }
 
     
                 // Creo fila
@@ -124,24 +129,52 @@ function openModalHorarios(id, nombre){
     cant_horas_cierre = result[8]
     fines_semana = result[9]
     toda_semana = result[10]
+    horario_apertura = result[11]
 
     if (pd_abierto == true){
         $("#estado-apertura-neg").hide()
         $("#cant-horas-cierre-neg").hide();
+        $("#close-img").hide();
 
         $("#estado-apertura-pos").show()
         $("#cant-horas-cierre-pos").text(cant_horas_cierre);
         $("#cant-horas-cierre-pos").show();
+        $("#open-img").show();
     }
     else {
         $("#estado-apertura-pos").hide()
         $("#cant-horas-cierre-pos").hide();
+        $("#open-img").hide();
+
 
         $("#estado-apertura-neg").show()
         $("#cant-horas-cierre-neg").show();
+        $("#close-img").show();
+    }
+    if (fines_semana == true){
+        $("#fines-semana-pos").show();
+        $("#fines-semana-neg").hide();
+    }
+    else{
+        $("#fines-semana-pos").hide();
+        $("#fines-semana-neg").show();
     }
 
-    
+    if (toda_semana == true){
+        $("#toda-semana-pos").show();
+        $("#toda-semana-neg").hide();
+    }
+    else{
+        $("#toda-semana-pos").hide();
+        $("#toda-semana-neg").show();
+    }
+
+    if (horario_apertura == false){
+        $("#horarios-apertura").text('No abre el día de hoy');
+    }
+    else{
+        $("#horarios-apertura").text('Hoy abre ' + horario_apertura[0] + "hs y cierra " + horario_apertura[1] + "hs");
+    }
     })
 }
 

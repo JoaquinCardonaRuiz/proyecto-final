@@ -142,10 +142,7 @@ div.modal-content{
   vertical-align: middle;
   width: 300px; 
   margin-left: 20px;
-}
-
-#info-modal-1{
-  margin-top: 8px;
+  margin-top: 15px;
 }
 
 #info-modal-1-neg{
@@ -176,4 +173,12 @@ div.modal-content{
 
 #cant-horas-cierre-neg{
   color: rgb(77, 77, 77);
+}
+
+#fines-semana-neg{
+  display: none;
+}
+
+#fines-semana-pos{
+  display: none;
 }
