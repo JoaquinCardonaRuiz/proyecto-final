@@ -373,6 +373,9 @@ class TipoArticulo:
         stock (float): Cantidad del artículo presente en inventario.
         costoObtencionAlternativa (float): Costo estimado de obtención del artículo por medios
             alternativos a la producción a partir de depósitos de ciudadanos.
+        otrosCostos (float): costos miscelaneos adicionales
+        imagen (string): url de imagen del articulo
+        ventaUsuario (bool): verdadero si el articulo se vende a usuarios, falso si no
     """
     def __init__(self,
                 id,
@@ -385,7 +388,10 @@ class TipoArticulo:
                 margenGanancia,
                 unidadMedida,
                 costoObtencionAlternativa,
-                stock):
+                stock,
+                otrosCostos,
+                imagen,
+                ventaUsuario):
         self.id = id
         self.nombre = nombre
         self.insumos = insumos
@@ -397,6 +403,9 @@ class TipoArticulo:
         self.unidadMedida = unidadMedida
         self.costoObtencionAlternativa = costoObtencionAlternativa
         self.stock = stock
+        self.otrosCostos = otrosCostos
+        self.imagen = imagen,
+        self.ventaUsuario = ventaUsuario
 
 class CantArticulo:
     """ Representa un conjunto de artículos del mismo tipo. Almacena el tipo y la cantidad.
@@ -457,6 +466,7 @@ class Insumo:
         costoTotal (float): costo total del insumo
         materiales (CantMaterial []): materiales necesarios para su produccion
         stock (float): existencias del insumo
+        otrosCostos (float): costos miscelaneos adicionales
     """
     def __init__(self,
                  id,
@@ -466,7 +476,8 @@ class Insumo:
                  costoProduccion,
                  costoTotal,
                  materiales,
-                 stock):
+                 stock,
+                 otrosCostos):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -475,6 +486,7 @@ class Insumo:
         self.costoTotal = costoTotal
         self.materiales = materiales
         self.stock = stock
+        self.otrosCostos = otrosCostos,
 
 class CantInsumo:
     """

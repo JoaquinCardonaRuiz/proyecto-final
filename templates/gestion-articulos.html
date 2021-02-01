@@ -35,13 +35,29 @@
 
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container" id="option1" onclick="openAltaModal()" style="margin-bottom:0% !important">
-                <i class="fa fa-plus fa-4x" style="float: left;" id="option-img-puntos"></i>
-                <p class="option-title option-title-puntos">Alta artículo</p>
-                <p class="option-description">Cargar un nuevo artículo en EcoAsistente.</p>
+            <div class="container" id="option-left" onclick="openAltaModal();">
+                    <div class="option-text">
+                        <p class="option-title">Añadir Artíclo</p>
+                        <p class="text-box">Añadir un nuevo Artículo al sistema</p>
+                    </div>
+                    <i class="fa fa-plus option-img" id="option-img-1"></i>
+            </div>
+            <div class="container" id="option-middle" onclick="openEditModal()">
+                <div class="option-text">
+                    <p class="option-title">Modificar Artíclo</p>
+                    <p class="text-box">Modificar los datos de un Artículo</p>
+                </div>
+                <i class="fa fa-edit option-img" id="option-img-2"></i>
+            </div>
+            <div class="container" id="option-right" onclick="openDeleteModal()">
+                <div class="option-text">
+                    <p class="option-title">Eliminar Artíclo</p>
+                    <p class="text-box">Eliminar un Artículo ya registrado en el sistema</p>
+                </div>
+                <i class="fa fa-trash option-img"  id="option-img-3"></i>
             </div>
         </div>
-      </div>
+    </div>
 
 
 
@@ -127,6 +143,11 @@
               <label class="subheader">Costos</label>
               </div>
             </div>
+            <div class="row subheader-row" id="subheader-pag-3" style="display:none;">
+              <div class="col">
+              <label class="subheader">Valor</label>
+              </div>
+            </div>
             <div class="row" id="row-pag-1-1" style="display:none;">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
@@ -139,7 +160,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="unidadInput" name="unidad" >
+                        <input type="text" id="unidadInput" name="unidad" onkeyup = "validaUnidad();">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Unidad Medida</label>
@@ -154,14 +175,14 @@
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Imagen</label>
-                        <p id="imagen" class="modalErrorMessage"></p>
+                        <p id="imgArtError" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%">
                         <div class="form-check">
-                          <label style="margin-left: 8%">Venta a usuarios</label>
-                          <input style="margin-left: -49%;margin-top: 4.5%" class="form-check-input" type="checkbox" id="usuariosCheck"></input>
+                          <label style="margin-top: 1%;">Venta a usuarios</label>
+                          <input style="margin-left: -3%;margin-top: 6%;" class="form-check-input" type="checkbox" id="usuariosCheck"></input>
                         </div>
                       </div>
                   </div>
@@ -169,52 +190,73 @@
             <div class="row" id="row-pag-2-1" style="display:none;">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="ciInput" name="costoInsumos" >
+                        <input type="text" id="ciInput" name="costoInsumos" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("ins")' onkeyup='document.getElementById("costoIArtError").innerHTML="";calcularCosto("ins");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Costo de Insumos</label>
-                        <p id="nombreArtError" class="modalErrorMessage"></p>
+                        <p id="costoIArtError" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="cpInput" name="costoProduccion" >
+                    <div class="group" style="margin-left: 10%;">
+                        <input type="text" id="cpInput" name="costoProduccion" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("prod")' onkeyup='document.getElementById("costoPArtError").innerHTML="";calcularCosto("prod");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Costo de Producción</label>
-                        <p id="unidadArtError" class="modalErrorMessage"></p>
+                        <p id="costoPArtError" class="modalErrorMessage"></p>
                     </div>
                 </div>
             </div>
             <div class="row" id="row-pag-2-2" style="display:none;">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="ctInput" onkeyup = "validaNuevoNombre({{nombres|safe}})" name="costoTotal" >
+                    <div class="group" style="margin-left: 10%;">
+                        <input type="text" id="ocInput" name="otrosCostos" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("otros")' onkeyup='document.getElementById("costoOArtError").innerHTML="";calcularCosto("otros");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
-                        <label>Costo Total </label>
-                        <p id="nombreArtError" class="modalErrorMessage"></p>
+                        <label>Otros Costos</label>
+                        <p id="costoOArtError" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="coaInput" name="costoObtencionAlt" >
+                    <div class="group" style="margin-left: 10%;">
+                        <input type="text" id="coaInput" name="costoObtencionAlt" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("alt")' onkeyup='document.getElementById("costoOAArtError").innerHTML="";calcularCosto("alt");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Costo de Obtención Alternativa</label>
-                        <p id="unidadArtError" class="modalErrorMessage"></p>
+                        <p id="costoOAArtError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="row-pag-3-1" style="display:none;">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">      
+                        <input style="width:60%;" id="margenInput" name="margen" required onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularValor()' onkeyup='document.getElementById("costoOArtError").innerHTML="";calcularValor();'>
+                        <span class="highlight"></span>
+                        <span class="bar" style="width:60%;"></span>
+                        <label>Margen Ganancia</label>
+                        <p id="margenArtError" class="modalErrorMessage"></p>
+                    </div>
+                    <label style="margin-left: 65%;">%</label>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input readonly type="text" id="valorInput" name="valor" >
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Precio</label>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados los datos, presione el botón "Siguiente".</p>
+                <p class="bottom-modal-text" id="bottomAltaModalText"></p>
             </div>
             
         </form>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn" style="display:none;">Cancelar</button>
           <button type="button" class="btn" onclick="pasar_pagina(-1)" id="atras-btn" style="display:none;">Atrás</button>
-          <button type="button" class="btn" onclick="pasar_pagina(1)" id="primary-btn" name ="add-btn">Siguiente</button>
+          <button type="button" class="btn" onclick="pasar_pagina(1)" id="primary-btn" name ="add-btn" disabled>Siguiente</button>
         </div>
       </div>
     </div>
