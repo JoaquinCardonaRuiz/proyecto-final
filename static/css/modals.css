@@ -1,7 +1,15 @@
 .modal-title{
     margin-top: 1%;
     font-size: 25px;
-    margin-left:5.4%;
+    margin-left:4%;
+}
+
+#headingModalHorarios{
+  margin-left:5.4%;
+}
+
+#headingModalMat{
+  margin-left:5.7%;
 }
 
 .modalErrorMessage{
@@ -99,8 +107,24 @@ div.modal-content{
   box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   width: 90% !important;
+  margin-top: 20px;
+  margin-bottom: 15px; 
+}
+
+#modal-large-card-2{
   margin-top: 4%;
-  margin-bottom: 4%; 
+}
+
+.modal-large-card-sm{
+  position: relative;
+  border-radius: 5px;;
+  min-height: 50px;
+  height: fit-content;
+  box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  width: 85% !important;
+  margin-top: 17px;
+  margin-bottom: 10px; 
 }
 
 .modal-large-card-img{
@@ -198,4 +222,28 @@ div.modal-content{
 
 .modal-body-card{
   margin-top: 0px;
+}
+
+.card-first-row-sm{
+  margin-top: 12px;
+}
+
+.material-card-title{
+  font-size: 20px;
+}
+
+.material-card-subtitle{
+  font-size: 13px;
+}
+
+.materiales-large-card-img{
+  margin-top: 8px;
+  margin-left: 10px;
+}
+
+.modal-card-col-sm{
+  position: relative;
+  width: 100px;
+  margin-left: 20px;
+  margin-right: 20px;
 }

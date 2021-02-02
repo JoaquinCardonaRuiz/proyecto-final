@@ -1,3 +1,4 @@
+from data.data_material import DatosMaterial
 from negocio.negocio_entidad_destino import NegocioEntidadDestino
 from data.data_horario import DatosHorario
 from flask.json import jsonify
@@ -161,6 +162,25 @@ class NegocioPuntoDeposito(Negocio):
                             if viernes.horaDesde != False and viernes.horaHasta != False:
                                 return True
             return False
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+
+    @classmethod
+    def get_materialesPd_by_id(cls, idPunto):
+        """
+        Dtermina si un Punto de Depósito abre de lunes a viernes.
+        """
+        #Conexión con el motor de BD.
+        try:
+            materiales = DatosMaterial.get_all_byIdPuntoDep(idPunto)
+            materiales_ = []
+            for material in materiales:
+                materiales_.append({"id":material.id, "nombre":material.nombre, "unidadMedida":material.unidadMedida, "color":material.color})
+            return materiales_
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:

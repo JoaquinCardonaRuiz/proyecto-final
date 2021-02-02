@@ -313,13 +313,15 @@ class Material:
         unidadMedida (string): Unidad en la que se mide la cantidad del material.
         costoRecoleccion (float): Costo asociado a la recoleccion del material.
         stock (float): Cantidad del material presente en inventario.
+        color(string): Código hexadecimal del color con que se muestra un material.
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock):
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
         self.costoRecoleccion = costoRecoleccion
         self.stock = stock
+        self.color = color
 
 class CantMaterial:
     """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.
@@ -783,13 +785,11 @@ class Horario:
         horaDesde (Time): Tiempo inicial de apertura.
         horaHasta (Time): Tiempo final de cierre.
         dia (string): Día al que corresponde el horario.
-        abierto (bool): ?
     """
-    def __init__(self,id,horaDesde,horaHasta,dia,abierto=None):
+    def __init__(self,id,horaDesde,horaHasta,dia):
         self.id = id
         self.horaDesde = horaDesde
         self.horaHasta = horaHasta
-        self.abierto = abierto
         self.dia = dia
     
     def formato_horaDesde(self):

@@ -201,6 +201,15 @@ def horarios_pd(id):
         return jsonify(horarios)
     except Exception as e:
         return error(e,"gestion_pd")
+    
+@app.route('/gestion-puntos-deposito/materiales/<int:id>')
+def materiales_pd(id):
+    try:
+        id = int(id)
+        materiales = NegocioPuntoDeposito.get_materialesPd_by_id(id)
+        return jsonify(materiales)
+    except Exception as e:
+        return error(e,"gestion_pd")
 
 
 ''' 

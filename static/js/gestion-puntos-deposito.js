@@ -81,7 +81,7 @@ function openModalHorarios(id, nombre, estado){
         document.getElementById("headerRow").innerHTML ="";
 
         // Establezco título
-        document.getElementById("headingModal").innerHTML = "Horarios de " + nombre;
+        document.getElementById("headingModalHorarios").innerHTML = "Horarios de " + nombre;
 
         if(result.length > 0){
             // Creo títulos de columnas
@@ -202,6 +202,35 @@ function openModalHorarios(id, nombre, estado){
         else{
             $("#horarios-apertura").text('Hoy abrió  ' + horario_apertura[0] + "hs y cerró " + horario_apertura[1] + "hs");
         }
+    })
+}
+
+function openModalMateriales(id, nombre){
+    $.getJSON("/gestion-puntos-deposito/materiales/"+String(id),function (result){
+        
+        card = $("#material-card").clone();
+        $("#materiales-modal-body").children("#material-card").remove();
+        // Borro contenido anterior
+        document.getElementById("modalTableBody"). innerHTML="";
+        document.getElementById("headerRow").innerHTML ="";
+
+        // Establezco título
+        document.getElementById("headingModalMat").innerHTML = "Materiales aceptados por " + nombre;
+        document.getElementById("open-loading-modal").click();
+        document.getElementById("open-modal-mat").click();
+
+        row = document.getElementById("material-card");
+        for(i=0; i < result.length ; i++){
+            clone = card.clone();
+            clone.find("#nombre-material").text(result[i]["nombre"]);
+            clone.find("#unidad-medida").text(result[i]["unidadMedida"]);
+            clone.find("#material-img").css('background-color',result[i]["color"]);
+            clone.find("#material-img").text(result[i]["nombre"][0]);
+            clone.find("#id-material").text(result[i]["id"]);
+            clone.appendTo("#materiales-modal-body");
+
+        }
+    
     })
 }
 

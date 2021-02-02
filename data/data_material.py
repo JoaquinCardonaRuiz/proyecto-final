@@ -1,3 +1,4 @@
+from classes import Material
 from data.data import Datos
 import custom_exceptions
 
@@ -10,14 +11,14 @@ class DatosMaterial(Datos):
         """
         cls.abrir_conexion()
         try:
-            sql = ("select materiales.nombre, materiales.unidadMedida from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s;")
+            sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' order by materiales.nombre ASC;")
             values = (idPuntoDep,)
             cls.cursor.execute(sql, values)
             materiales = cls.cursor.fetchall()
+            materiales_ = []
             for material in materiales:
-                
-            
-            return 
+                materiales_.append(Material(material[3], material[0], material[1], None, None, material[2])) 
+            return materiales_
             
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_all_byIdPunto()",
