@@ -73,7 +73,7 @@ function modificarPunto(){
     }
 }
 
-function openModalHorarios(id, nombre){
+function openModalHorarios(id, nombre, estado){
     $.getJSON("/gestion-puntos-deposito/horarios/"+String(id),function (result){
         
         // Borro contenido anterior
@@ -130,11 +130,26 @@ function openModalHorarios(id, nombre){
     fines_semana = result[9]
     toda_semana = result[10]
     horario_apertura = result[11]
-
-    if (pd_abierto == true){
+    
+    //Setea el estado.
+    if (estado == "False"){
+        $("#estado-apertura-pos").hide()
+        $("#cant-horas-cierre-pos").hide();
         $("#estado-apertura-neg").hide()
         $("#cant-horas-cierre-neg").hide();
+        $("#open-img").hide();
         $("#close-img").hide();
+
+        $("#estado-apertura-inac").show()
+        $("#cant-horas-cierre-neg").show();
+        $("#inactive-img").show();
+    }
+    else if (pd_abierto == true){
+        $("#estado-apertura-neg").hide()
+        $("#cant-horas-cierre-neg").hide();
+        $("#estado-apertura-inac").hide()
+        $("#close-img").hide();
+        $("#inactive-img").hide();
 
         $("#estado-apertura-pos").show()
         $("#cant-horas-cierre-pos").text(cant_horas_cierre);
@@ -144,13 +159,17 @@ function openModalHorarios(id, nombre){
     else {
         $("#estado-apertura-pos").hide()
         $("#cant-horas-cierre-pos").hide();
+        $("#estado-apertura-inac").hide()
         $("#open-img").hide();
+        $("#inactive-img").hide();
 
 
         $("#estado-apertura-neg").show()
         $("#cant-horas-cierre-neg").show();
         $("#close-img").show();
     }
+
+    //Setea si abre o no los fines de semana.
     if (fines_semana == true){
         $("#fines-semana-pos").show();
         $("#fines-semana-neg").hide();
@@ -160,6 +179,7 @@ function openModalHorarios(id, nombre){
         $("#fines-semana-neg").show();
     }
 
+    //Setea si abre o no de lunes a viernes.
     if (toda_semana == true){
         $("#toda-semana-pos").show();
         $("#toda-semana-neg").hide();
@@ -169,12 +189,19 @@ function openModalHorarios(id, nombre){
         $("#toda-semana-neg").show();
     }
 
+    //Setea el horario de apertura.
     if (horario_apertura == false){
         $("#horarios-apertura").text('No abre el día de hoy');
     }
-    else{
+    else if (estado == "False"){
+        $("#horarios-apertura").text('No abre mientras esté inactivo');
+        }
+        else if (pd_abierto == true){
         $("#horarios-apertura").text('Hoy abre ' + horario_apertura[0] + "hs y cierra " + horario_apertura[1] + "hs");
-    }
+        }
+        else{
+            $("#horarios-apertura").text('Hoy abrió  ' + horario_apertura[0] + "hs y cerró " + horario_apertura[1] + "hs");
+        }
     })
 }
 

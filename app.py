@@ -198,7 +198,6 @@ def horarios_pd(id):
     try:
         id = int(id)
         horarios = NegocioPuntoDeposito.get_horarios_id(id)
-        print(horarios)
         return jsonify(horarios)
     except Exception as e:
         return error(e,"gestion_pd")

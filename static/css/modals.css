@@ -1,7 +1,7 @@
 .modal-title{
     margin-top: 1%;
     font-size: 25px;
-    margin-left:4%;
+    margin-left:5.4%;
 }
 
 .modalErrorMessage{
@@ -171,6 +171,11 @@ div.modal-content{
   color: #f52926;
 }
 
+#estado-apertura-inac{
+  color: rgb(77, 77, 77);
+}
+
+
 #cant-horas-cierre-neg{
   color: rgb(77, 77, 77);
 }
@@ -181,4 +186,16 @@ div.modal-content{
 
 #fines-semana-pos{
   display: none;
+}
+
+.card-second-row{
+  margin-top: -20px;
+}
+
+.card-first-row{
+  margin-top: 20px;
+}
+
+.modal-body-card{
+  margin-top: 0px;
 }

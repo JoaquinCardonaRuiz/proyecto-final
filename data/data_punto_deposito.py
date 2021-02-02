@@ -18,8 +18,7 @@ class DatosPuntoDeposito(Datos):
             puntosDeposito = cls.cursor.fetchall()
             puntosDeposito_ = []
             for punto in puntosDeposito:
-                #TODO: codificar metodos para obtner ids materiales y horarios.
-                horarios = DatosHorario.get_horariosPD_id(punto[0])
+                #Se instancia sin los materiales y sin los horarios ya que no se muestran, para no generar tráfico de datos innecesario.
                 puntosDeposito_.append(PuntoDeposito(punto[0],punto[1],punto[2],punto[3],None,None,punto[4]))
             return puntosDeposito_
             
