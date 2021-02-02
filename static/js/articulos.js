@@ -1,6 +1,8 @@
 var pagina = 1;
 var costoTotal = 0;
 var pag1cargada = false;
+var del = false;
+var mod = false;
 
 function submitForm(n){
     document.getElementById(n).submit();
@@ -196,7 +198,83 @@ function nextMsgAlta() {
     }
 }
 
+function nextMsgBaja() {
+    if (messagesBaja.length == 1) {
+        $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500);
+
+    } else {
+        $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgBaja);
+    }
+};
+
 var messagesAlta = [
     "Estamos añadiendo el artículo...",
     "¡Casi listo! Últimos retoques"
 ].reverse();
+
+var messagesBaja = [
+    "Estamos eliminando el artículo...",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+
+function removeEntidad(){
+    if (del == false){
+        $('.modify-row').hide()
+        $('.modify-th').hide()
+        $('.delete-row').fadeIn()
+        $('.delete-th').fadeIn()
+        del = true;
+        mod = false;
+        $('#option-middle').css('border', '2px solid transparent');
+        $('#option-right').css('border', '2px solid #95C22B');
+        var y = window.scrollY + document.querySelector('#table-container').getBoundingClientRect().top; // Y
+        var x = window.scrollX + document.querySelector('#table-container').getBoundingClientRect().left; // X
+        window.scrollTo(x, y);
+        
+    }
+    else{
+        $('.delete-row').fadeOut()
+        $('.delete-th').fadeOut()
+        del = false;
+        $('#option-right').css('border', '2px solid transparent');
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+}
+
+
+
+//Abre el Modal de baja. 
+function openBajaModal(idArticulo,nombreArticulo){
+    //Manejo de elementos de carga
+    $("#fieldsRowBaja").show();
+    $(".lds-ring").hide();
+    $('#bottomBajaModalText').hide();
+    $('#primary-btn-alert').prop('disabled', false);
+    $('#secondary-btn-baja').prop('disabled', false);
+    document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea eliminar el artículo " + nombreArticulo + "? Una vez eliminado, este no se podrá recuperar.";
+
+    //Manejo de carteles
+    jQuery.noConflict();
+    $('#primary-btn-alert').prop('disabled', false); 
+    $('#idArticulo').val(String(idArticulo));
+    $('#bajaArticulodModal').modal('show');
+}
+
+function baja_entidad(){
+
+    //Manejo de elementos para la carga
+    $(".b-modal-text-baja").hide();
+    $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $('#bottomBajaModalText').show();
+    $('#primary-btn-alert').prop('disabled', true);
+    $('#secondary-btn-baja').prop('disabled', true);
+
+    //Manejo de datos
+    id = $('#idArticulo').val();
+    window.location.href='/articulos/baja/' + String(id)
+
+    //Funcion que va cambiando los mensajes de carga.
+    nextMsgBaja()
+}

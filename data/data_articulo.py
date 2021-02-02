@@ -25,7 +25,7 @@ class DatosArticulo(Datos):
                            otrosCostos, \
                            img, \
                            vUsuario \
-                           FROM tiposArticulo;")
+                           FROM tiposArticulo WHERE estado!=\"eliminado\";")
             cls.cursor.execute(sql)
             articulos_ = cls.cursor.fetchall()
             articulos = []
@@ -62,7 +62,7 @@ class DatosArticulo(Datos):
                            otrosCostos, \
                            img, \
                            vUsuario \
-                           FROM tiposArticulo WHERE idTipoArticulo = {};").format(id)
+                           FROM tiposArticulo WHERE idTipoArticulo = {} WHERE estado!=\"eliminado\";").format(id)
             cls.cursor.execute(sql)
             a = cls.cursor.fetchone()
             if a == None:
@@ -101,9 +101,9 @@ class DatosArticulo(Datos):
                            otrosCostos, \
                            img, \
                            vUsuario \
-                           FROM tiposArticulo")
+                           FROM tiposArticulo WHERE estado!=\"eliminado\"")
             if ids != []:
-                sql += " WHERE idTipoArticulo!={}"
+                sql += " AND idTipoArticulo!={}"
                 for _ in ids[1:]:
                     sql += " AND idTipoArticulo!={}"
             sql += ";"
@@ -132,8 +132,8 @@ class DatosArticulo(Datos):
         """
         cls.abrir_conexion()
         try:
-            sql= ("INSERT INTO tiposArticulo (nombre,unidadMedida,img,vUsuario,cInsumos,cProduccion,otrosCostos,cObtencionAlt,cTotal,margenGanancia,stock) \
-                   VALUES (\"{}\",\"{}\",\"{}\",{},{},{},{},{},{},{},0);".format(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen))
+            sql= ("INSERT INTO tiposArticulo (nombre,unidadMedida,img,vUsuario,cInsumos,cProduccion,otrosCostos,cObtencionAlt,cTotal,margenGanancia,stock,estado) \
+                   VALUES (\"{}\",\"{}\",\"{}\",{},{},{},{},{},{},{},0,\"disponible\");".format(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen))
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
@@ -141,5 +141,25 @@ class DatosArticulo(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_articulo.add()",
                                                     msj=str(e),
                                                     msj_adicional="Error dando de alta un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def delete(cls, id):
+        """
+        Elimina un artículo de la BD a partir de su id.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("UPDATE tiposArticulo SET estado = \"eliminado\" WHERE idTipoArticulo={}".format(id))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.delete()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error eliminando un articulo en la BD.")
         finally:
             cls.cerrar_conexion()

@@ -76,3 +76,16 @@ class NegocioArticulo(Negocio):
             DatosValor.add(idArt,datetime.now().strftime('%Y-%m-%d %H:%M:%S'),valor)
         except Exception as e:
             raise(e)
+
+    
+    @classmethod
+    def delete(cls,id):
+        """
+        Elimina un artículo de la BD a partir de su id
+        """
+        try:
+            DatosArticulo.delete(id)
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.delete()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error en la capa de Negocio eliminando un artículo de la base de Datos")

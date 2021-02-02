@@ -232,6 +232,16 @@ def alta_articulo():
         return redirect(url_for('gestion_articulos'))
 
 
+@app.route('/articulos/baja/<id>')
+def baja_articulo(id):
+    id = int(id)
+    try:
+        NegocioArticulo.delete(id)
+    except Exception as e:
+        return error(e,"articulos")
+    return redirect(url_for('gestion_articulos'))
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
