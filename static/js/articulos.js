@@ -2,6 +2,10 @@ var pagina = 1;
 var costoTotal = 0;
 var pag1cargada = false;
 
+function submitForm(n){
+    document.getElementById(n).submit();
+}
+
 function openAltaModal(){
     pagina = 1;
     jQuery.noConflict();
@@ -19,16 +23,18 @@ function pasar_pagina(n){
 function cargar_pagina(){
     if(pagina == 1){
         if(pag1cargada){
-            document.getElementById("primary-btn").disabled = false;
+            document.getElementById("siguiente-btn").disabled = false;
         }else{
             pag1cargada = true;
         }
-        document.getElementById("primary-btn").innerHTML="Siguiente";
+        document.getElementById("siguiente-btn").hidden = false;
+        document.getElementById("alta-btn").hidden = true;
         document.getElementById("bottomAltaModalText").innerHTML="Una vez completados los datos, presione el botón \"Siguiente\".";
         $("#secondary-btn").show();
         $("#atras-btn").hide();
         $("#subheader-pag-1").fadeIn(400);
         $("#subheader-pag-2").hide();
+        $("#subheader-pag-3").hide();
         $("#row-pag-1-1").fadeIn(400);
         $("#row-pag-1-2").fadeIn(400);
         $("#row-pag-2-1").hide();
@@ -36,12 +42,14 @@ function cargar_pagina(){
         $("#row-pag-3-1").hide();
     }
     else if(pagina == 2){
-        document.getElementById("primary-btn").innerHTML="Siguiente";
+        document.getElementById("siguiente-btn").hidden = false;
+        document.getElementById("alta-btn").hidden = true;
         document.getElementById("bottomAltaModalText").innerHTML="Costo Total: ARS $"+String(costoTotal);
         $("#secondary-btn").hide();
         $("#atras-btn").show();
         $("#subheader-pag-1").hide();
         $("#subheader-pag-2").fadeIn(400);
+        $("#subheader-pag-3").hide();
         $("#row-pag-1-1").hide();
         $("#row-pag-1-2").hide();
         $("#row-pag-2-1").fadeIn(400);
@@ -50,12 +58,14 @@ function cargar_pagina(){
         calcularCosto("");
     }
     else if(pagina == 3){
-        document.getElementById("primary-btn").innerHTML="Crear Artículo";
+        document.getElementById("siguiente-btn").hidden = true;
+        document.getElementById("alta-btn").hidden = false;
         document.getElementById("bottomAltaModalText").innerHTML="Una vez completados los datos, presione el botón \"Crear Artículo\".";
         $("#secondary-btn").hide();
         $("#atras-btn").show();
         $("#subheader-pag-1").hide();
-        $("#subheader-pag-2").fadeIn(400);
+        $("#subheader-pag-2").hide();
+        $("#subheader-pag-3").fadeIn(400);
         $("#row-pag-1-1").hide();
         $("#row-pag-1-2").hide();
         $("#row-pag-2-1").hide();
@@ -70,17 +80,17 @@ function validaNuevoNombre(nombres){
     if(nombres.includes(n)){
         //Se comprueba regla RN17
         document.getElementById("nombreArtError").innerHTML = "* Ese nombre ya ha sido registrado.";
-        document.getElementById("primary-btn").disabled = true;
+        document.getElementById("siguiente-btn").disabled = true;
     }
     else if (!n){
         //Se comprueba regla RN18
         document.getElementById("nombreArtError").innerHTML = "* Este campo debe ser completado.";
-        document.getElementById("primary-btn").disabled = true;
+        document.getElementById("siguiente-btn").disabled = true;
     }
     else if(document.getElementById("nombreInput").value && document.getElementById("unidadInput").value){
         document.getElementById("unidadArtError").innerHTML = "";
         document.getElementById("nombreArtError").innerHTML = "";
-        document.getElementById("primary-btn").disabled = false;
+        document.getElementById("siguiente-btn").disabled = false;
     }
 }
 
@@ -131,9 +141,9 @@ function calcularCosto(input){
 
 
     if(costoProd == 0 || costoIns == 0 || otrosCostos == 0 || costoAlt == 0){
-        document.getElementById("primary-btn").disabled = true;
+        document.getElementById("siguiente-btn").disabled = true;
     }else{
-        document.getElementById("primary-btn").disabled = false;
+        document.getElementById("siguiente-btn").disabled = false;
     }
     costoTotal = costoProd + costoIns + otrosCostos;
     document.getElementById("bottomAltaModalText").innerHTML="Costo Total: ARS $"+String(costoTotal);
@@ -144,9 +154,9 @@ function calcularValor(){
     if(isNaN(margen) || margen==0){
         margen=0;
         document.getElementById("margenArtError").innerHTML = "El margen debe ser un número mayor a 0.";
-        document.getElementById("primary-btn").disabled = true;
+        document.getElementById("alta-btn").disabled = true;
     }else{
-        document.getElementById("primary-btn").disabled = false;
+        document.getElementById("alta-btn").disabled = false;
         document.getElementById("margenArtError").innerHTML = "";
     }
     document.getElementById("valorInput").value =  (costoTotal * (1+(margen/100))).toFixed(2);;
@@ -156,11 +166,37 @@ function validaUnidad(){
     var u = document.getElementById("unidadInput").value;
     if (!u){
         document.getElementById("unidadArtError").innerHTML = "* Este campo debe ser completado.";
-        document.getElementById("primary-btn").disabled = true;
+        document.getElementById("siguiente-btn").disabled = true;
     }
     else if(document.getElementById("nombreInput").value && document.getElementById("unidadInput").value){
         document.getElementById("unidadArtError").innerHTML = "";
         document.getElementById("nombreArtError").innerHTML = "";
-        document.getElementById("primary-btn").disabled = false;
+        document.getElementById("siguiente-btn").disabled = false;
     }
 }
+
+function alta_articulo(){
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $("#row-pag-3-1").hide();
+    $("#subheader-pag-3").hide();
+    $('#alta-btn').prop('disabled', true);
+    $('#atras-btn').prop('disabled', true);
+    submitForm('altaArticuloForm');
+    nextMsgAlta();
+}
+
+function nextMsgAlta() {
+    if (messagesAlta.length == 1) {
+        $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500);
+
+    } else {
+        $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgAlta);
+
+    }
+}
+
+var messagesAlta = [
+    "Estamos añadiendo el artículo...",
+    "¡Casi listo! Últimos retoques"
+].reverse();

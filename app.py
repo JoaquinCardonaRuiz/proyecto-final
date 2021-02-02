@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
 from negocio.capa_negocio import *
+from utils import Utils
 app = Flask(__name__)
 
 #Session
@@ -204,6 +205,31 @@ def gestion_articulos():
         return render_template('gestion-articulos.html',articulos=articulos)
     except Exception as e:
         return error(e,"articulos")
+
+@app.route('/articulos/alta', methods = ['GET','POST'])
+def alta_articulo():
+    if request.method == 'POST':
+        nombre =                request.form['nombre']
+        unidad =                request.form['unidad']
+        imagen =                request.form['imagen']
+        ventaUsuario = None
+        try: 
+            request.form['ventaUsuario']
+            ventaUsuario = 1
+        except:
+            ventaUsuario = 0
+        costoInsumos =          request.form['costoInsumos']
+        costoProduccion =       request.form['costoProduccion']
+        otrosCostos =           request.form['otrosCostos']
+        costoObtencionAlt =     request.form['costoObtencionAlt']
+        margen =                request.form['margen']
+        valor =                 request.form['valor']
+
+        try:
+            NegocioArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor)
+        except Exception as e:
+            return error(e,"articulos")
+        return redirect(url_for('gestion_articulos'))
 
 
 if __name__ == '__main__':

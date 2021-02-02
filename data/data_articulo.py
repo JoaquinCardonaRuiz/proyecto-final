@@ -31,7 +31,7 @@ class DatosArticulo(Datos):
             articulos = []
             for a in articulos_:
                 insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
-                valor = DatosValor.get_from_TAid(a[0],noClose=True)
+                valor = DatosValor.get_from_TAid(a[0],noClose=True)[2]
                 articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
                 articulos.append(articulo_)
             return articulos
@@ -69,7 +69,7 @@ class DatosArticulo(Datos):
                 return False
             else:
                 insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
-                valor = DatosValor.get_from_TAid(a[0],noClose=True)
+                valor = DatosValor.get_from_TAid(a[0],noClose=True)[2]
                 articulo = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
                 return articulo
         except Exception as e:
@@ -113,7 +113,7 @@ class DatosArticulo(Datos):
             articulos = []
             for a in articulos_:
                 insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
-                valor = DatosValor.get_from_TAid(a[0],noClose=True)
+                valor = DatosValor.get_from_TAid(a[0],noClose=True)[2]
                 articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
                 articulos.append(articulo_)
             return articulos
@@ -122,5 +122,24 @@ class DatosArticulo(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_by_not_in_id_array()",
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo articulos desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
+    def add(cls,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal):
+        """
+        Agrega un articulo a la BD
+        """
+        cls.abrir_conexion()
+        try:
+            sql= ("INSERT INTO tiposArticulo (nombre,unidadMedida,img,vUsuario,cInsumos,cProduccion,otrosCostos,cObtencionAlt,cTotal,margenGanancia,stock) \
+                   VALUES (\"{}\",\"{}\",\"{}\",{},{},{},{},{},{},{},0);".format(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.add()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error dando de alta un articulo en la BD.")
         finally:
             cls.cerrar_conexion()
