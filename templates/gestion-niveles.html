@@ -119,7 +119,7 @@
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">  
                         <input type="text" hidden>    
-                        <input type="text" class="data-show-input-with-border" id="minEcoPuntos" name="minEcoPuntos" autocomplete="off" readonly>
+                        <input type="text" required id="minEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}', 'alta')" name="minEcoPuntos" autocomplete="off">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Mínimo EcoPuntos</label>
