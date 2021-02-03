@@ -98,8 +98,9 @@
             <div class="row" id="fieldsRow1Alta1">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <input type="text" hidden>
-                        <input class="data-show-input" type="text" id="numeroNivel" readonly> 
+                        <input type="text" required id="numeroNivel" onkeyup="validaNumero('{{max_level}}', 'alta')" name="numeroNivel" autocomplete="off"> 
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
                         <label>Número de Nivel</label>
                         <p id="numeroNivelError" class="modalErrorMessage">* No se puede modificar el nivel.</p>
                     </div>
