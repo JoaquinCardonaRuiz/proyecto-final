@@ -206,6 +206,40 @@ def gestion_articulos():
         return error(e,"articulos")
 
 
+
+
+''' 
+    -----------------
+    Insumos
+    -----------------
+'''
+
+@app.route('/insumos', methods = ['GET','POST'])
+def gestion_insumos():
+    try:
+        insumos = NegocioInsumo.get_all()
+        return render_template('gestion-insumos.html',insumos=insumos)
+    except Exception as e:
+        return error(e,"insumos")
+
+
+@app.route('/insumos/alta', methods = ['GET','POST'])
+def alta_insumo():
+    try:
+        insumos = NegocioInsumo.get_all()
+        return render_template('gestion-insumos.html',insumos=insumos)
+    except Exception as e:
+        return error(e,"insumos")
+
+@app.route('/insumos/edit', methods = ['GET','POST'])
+def edit_insumo():
+    try:
+        insumos = NegocioInsumo.get_all()
+        return render_template('gestion-insumos.html',insumos=insumos)
+    except Exception as e:
+        return error(e,"insumos")
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)

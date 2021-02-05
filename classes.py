@@ -466,7 +466,8 @@ class Insumo:
                  costoProduccion,
                  costoTotal,
                  materiales,
-                 stock):
+                 stock,
+                 otrosCostos):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -475,6 +476,7 @@ class Insumo:
         self.costoTotal = costoTotal
         self.materiales = materiales
         self.stock = stock
+        self.otrosCostos = otrosCostos
 
 class CantInsumo:
     """
