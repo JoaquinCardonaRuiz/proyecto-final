@@ -404,7 +404,7 @@ class TipoArticulo:
         self.costoObtencionAlternativa = costoObtencionAlternativa
         self.stock = stock
         self.otrosCostos = otrosCostos
-        self.imagen = imagen,
+        self.imagen = imagen
         self.ventaUsuario = ventaUsuario
 
 class CantArticulo:

@@ -77,6 +77,21 @@ class NegocioArticulo(Negocio):
         except Exception as e:
             raise(e)
 
+    @classmethod
+    def update(cls,idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor):
+        """
+        Actualiza un articulo en la BD
+        """
+        try:
+            costoTotal = float(costoInsumos)+float(costoProduccion)+float(otrosCostos)
+            margen=float(margen)/100
+            DatosArticulo.update(idArt, nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal)
+            valor_anterior = DatosValor.get_from_TAid(idArt)
+            if valor_anterior[2] != float(valor):
+                DatosValor.add(idArt,datetime.now().strftime('%Y-%m-%d %H:%M:%S'),valor)
+        except Exception as e:
+            raise(e)
+
     
     @classmethod
     def delete(cls,id):

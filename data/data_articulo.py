@@ -163,3 +163,23 @@ class DatosArticulo(Datos):
                                                     msj_adicional="Error eliminando un articulo en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def update(cls,idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal):
+        """
+        Agrega un articulo a la BD
+        """
+        cls.abrir_conexion()
+        try:
+            sql= ("UPDATE tiposArticulo SET nombre=\"{}\",unidadMedida=\"{}\",img=\"{}\",vUsuario={},cInsumos={},cProduccion={},otrosCostos={},cObtencionAlt={},cTotal={},margenGanancia={},stock=0,estado=\"disponible\" WHERE idTipoArticulo={};").format(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen,idArt)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.update()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()
