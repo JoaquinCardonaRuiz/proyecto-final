@@ -37,3 +37,23 @@ class DatosInsumo(Datos):
                                                     msj_adicional="Error obtieniendo los insumos desde la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+    @classmethod
+    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal):
+        """
+        Agrega un articulo a la BD
+        """
+        cls.abrir_conexion()
+        try:
+            sql= ("INSERT INTO insumos (nombre,unidadMedida,cMateriales,cProduccion,otrosCostos,cTotal,stock,estado) \
+                   VALUES (\"{}\",\"{}\",{},{},{},{},0,\"disponible\");".format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.add()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error dando de alta un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()

@@ -17,3 +17,15 @@ class NegocioInsumo(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_insumos.get_all()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obteniendo los insumos de la capa de Datos.")
+
+
+    @classmethod
+    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos):
+        """
+        Agrega un insumo a la BD
+        """
+        try:
+            costoTotal = float(costoMateriales)+float(costoProduccion)+float(otrosCostos)
+            DatosInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal)
+        except Exception as e:
+            raise(e)
