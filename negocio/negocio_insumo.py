@@ -41,3 +41,16 @@ class NegocioInsumo(Negocio):
             DatosInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal)
         except Exception as e:
             raise(e)
+
+
+    @classmethod
+    def delete(cls,id):
+        """
+        Elimina un insumo de la BD a partir de su id
+        """
+        try:
+            DatosInsumo.delete(id)
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_insumo.delete()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error en la capa de Negocio eliminando un insumo de la base de Datos")

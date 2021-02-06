@@ -254,6 +254,16 @@ def edit_insumo():
         return redirect(url_for('gestion_insumos'))
 
 
+@app.route('/insumos/baja/<id>')
+def baja_insumo(id):
+    id = int(id)
+    try:
+        NegocioInsumo.delete(id)
+    except Exception as e:
+        return error(e,"insumos")
+    return redirect(url_for('gestion_insumos'))
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)

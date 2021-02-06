@@ -76,3 +76,23 @@ class DatosInsumo(Datos):
                                                     msj_adicional="Error actualizando un insumo en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def delete(cls, id):
+        """
+        Elimina un insumo de la BD a partir de su id.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("UPDATE insumos SET estado = \"eliminado\" WHERE idInsumo={}".format(id))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.delete()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error eliminando un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()
