@@ -5,11 +5,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    
     
 </head>
 
@@ -67,14 +64,14 @@
                     {%if punto.estado == True%}
                         <td>
                             <div>
-                                <i class="fas fa-circle" id="estado-activo"></i>
+                                <i class="fas fa-circle color-activo" id="estado-activo"></i>
                                 Activo
                             </div>
                         </td>
                     {%else%}
                         <td>
                             <div>
-                                <i class="fas fa-circle" id="estado-inactivo"></i>
+                                <i class="fas fa-circle color-inactivo" id="estado-inactivo"></i>
                                 Inactivo
                             </div>
                         </td>
@@ -104,7 +101,7 @@
       <br><br><br><br><br><br><br><br>
       <div class="row" id="loadingRow">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-            </div>
+        </div>
     </div>
 </div>
 
@@ -175,7 +172,7 @@
                     </div>
             </div>        
         <div class="modal-footer">
-            <div type="button" class="btn" id="primary-btn" data-dismiss="modal">Listo</div>
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
         </div>
     </div>
 
@@ -226,10 +223,101 @@
                 </div>
             </div>        
         <div class="modal-footer">
-            <div type="button" class="btn" id="primary-btn" data-dismiss="modal">Listo</div>
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
         </div>
     </div>
 
+    </div>
+</div>
+
+<!--Alta Modal -->
+<div class="modal fade modal-lg" id="altaPDModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document" style="height: fit-content;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Añadir un Punto de Depósito</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modal-body-card" style="height: fit-content;">
+            <!--Loading Ring -->
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>            
+            <form action="{{url_for('alta_pd')}}" method="POST" id="altaPdForm">
+                <div class="row subheader-row" id="subheader-alta-pd">
+                    <div class="col">
+                        <label class="subheader" id="subheader-alta">Datos Básicos</label>
+                    </div>
+                </div>
+                <!--Página 1 Alta -->
+                <div id="modal-alta-p1">
+                    <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px;">
+                        <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
+                            <input type="text" required id="nombrePD" onkeyup="validaNombrePD();" name="nombrePD" autocomplete="off" style="width: 90%;"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 90%;"></span>
+                            <span class="bar" style="width: 90%;"></span>
+                            <label>Nombre Punto de Depósito</label>
+                            <p id="nombrePDError" class="modalErrorMessage">* Este nombre ya ha sido utilizado en otro Punto de Depósito.</p>
+                        </div>
+                    </div>
+                    <div class="row" id="fieldsRow1AltaPD2">
+                        <div class="col">
+                            <div class="group" style="margin-left: 13.5%;">  
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch1" name="customSwitch1" checked>
+                                    <label class="custom-control-label" for="customSwitch1"></label>
+                                </div>
+                            </div>
+                            <p class="color-activo" id="pdActivo">Punto de Depósito Activo</p>
+                            <p class="color-inactivo" id="pdInactivo">Punto de Depósito Inactivo</p>
+                        </div>
+                    </div>
+                </div>
+                <!--Página 2 Alta -->
+                <div id="modal-alta-p2" style="display: none;">
+                    <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px;">
+                        <div class="col">
+                            <div class="group" style="margin-left: 17%; width: 122%; margin-top: 2%;">
+                                <input type="text" required id="callePD" onkeyup="updateMap();" name="nombrePD" autocomplete="off" style="width: 90%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 90%;"></span>
+                                <span class="bar" style="width: 90%;"></span>
+                                <label>Calle</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="margin-left: 35%; width:50%; margin-top: 2%;">
+                                <input type="text" required id="alturaPD" onkeyup="updateMap();" name="nombrePD" autocomplete="off" style="width: 90%;" autocomplete="off"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 90%;"></span>
+                                <span class="bar" style="width: 90%;"></span>
+                                <label>Altura</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="fieldsRow1AltaPD2">
+                        <div class="mapouter" style="margin-left: 10%;">
+                            <div class="gmap_canvas">
+                                <iframe width="603" height="280" id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            <div class="row">
+                <p class="bottom-modal-text" id="bottomAltaModalTextAltaPD">Una vez completados todos los datos, presione el "Siguiente".</p>
+                <p class="bottom-modal-text" id="bottomAltaModalText"></p>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" id="secondary-btn" onclick="previous_page();">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="next_page();" id="primary-btn-alta">Siguiente</button>
+        </div>
+      </div>
     </div>
 </div>
 
@@ -237,4 +325,5 @@
 
 
 <script src="static/js/gestion-puntos-deposito.js"></script>
+
 {% endblock %}

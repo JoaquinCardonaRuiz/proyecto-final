@@ -188,4 +188,19 @@ class NegocioPuntoDeposito(Negocio):
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
 
+    
+    @classmethod
+    def get_all_names(cls):
+        """
+        Obtiene todos los Puntos de Depósito de la BD.
+        """
+        #Conexión con el motor de BD.
+        try:
+            return DatosPuntoDeposito.get_all_names()
         
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")

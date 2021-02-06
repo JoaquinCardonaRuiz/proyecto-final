@@ -211,6 +211,25 @@ def materiales_pd(id):
     except Exception as e:
         return error(e,"gestion_pd")
 
+@app.route('/gestion-puntos-deposito/nombres-pd/')
+def nombres_pd():
+    try:
+        nombres = NegocioPuntoDeposito.get_all_names()
+        return jsonify(nombres)
+    except Exception as e:
+        return error(e,"gestion_pd")
+
+
+@app.route('/gestion-puntos-deposito/alta', methods = ['GET','POST'])
+def alta_pd():
+    if request.method == 'POST':
+        try:
+            nombre = request.form['nombrePD']
+            estado = request.form['customSwitch1']
+            print(estado, nombre)
+        except Exception as e:
+            return error(e,"gestion-puntos-deposito")
+    return redirect(url_for('gestion_pd'))
 
 ''' 
     -----------------

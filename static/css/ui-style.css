@@ -244,13 +244,19 @@ h2 		 {
     cursor: pointer;
 }
 
+.color-activo{
+    color: #7cc22b !important;
+}
+
+.color-inactivo{
+    color: rgb(170, 170, 170) !important;
+}
+
 #estado-activo{
-    color: #7cc22b;
     font-size: 11px;
 }
 
 #estado-inactivo{
-    color: rgb(170, 170, 170);
     font-size: 11px;
 }
 

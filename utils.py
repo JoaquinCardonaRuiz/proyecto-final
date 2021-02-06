@@ -151,7 +151,21 @@ class Utils():
         except Exception as e:
            raise custom_exceptions.ErrorDeNegocio(origen="utils.raductor_nombre_dias()",
                                                    msj=str(e),
-                                                   msj_adicional="Error convtraduciendo el nombre de un día.")
+                                                   msj_adicional="Error traduciendo el nombre de un día.")
     
 
+    @classmethod
+    def js_py_bool_converter(cls, bool):
+        """
+        Convierte el String que devuelve Javascript como booleano al tipo Bool de Python.
+        """
+        try:
+            if bool == "true":
+                return True
+            else:
+                return False
+        except Exception as e:
+           raise custom_exceptions.ErrorDeNegocio(origen="utils.js_py_bool_converter()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error convirtiendo booleanos entre front-end y back-end.")
     
