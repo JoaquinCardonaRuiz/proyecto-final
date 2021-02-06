@@ -57,3 +57,22 @@ class DatosInsumo(Datos):
                                                     msj_adicional="Error dando de alta un insumo en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+    @classmethod
+    def update(cls,idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal):
+        """
+        Actualiza un insumo en la BD
+        """
+        cls.abrir_conexion()
+        try:
+            sql= ("UPDATE insumos SET nombre=\"{}\",unidadMedida=\"{}\",cMateriales={},cProduccion={},otrosCostos={},cTotal={},stock=0,estado=\"disponible\" WHERE idInsumo={};").format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,idIns)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.update()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()

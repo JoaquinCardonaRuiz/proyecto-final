@@ -91,7 +91,7 @@
                     <td scope="row">{{ins.unidadMedida}}</td>
 
                     <td class="row"><i class="far fa-eye" style="font-size: 23px;" id="" onclick="console.log('{{ins.id}}')"></i></td>
-                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoInsumos}}','{{ins.costoTotal}}','{{ins.valor}}','{{ins.margenGanancia}}','{{ins.unidadMedida}}','{{ins.costoObtencionAlternativa}}','{{ins.otrosCostos}}','{{ins.imagen}}','{{ins.ventaUsuario}}')"></i></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}')"></i></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{ins.id}}','{{ins.nombre}}')"></i></td>
                 </tr>
                 {%endfor%}
@@ -214,143 +214,80 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="headingModal">Editar un nuevo Artículo</h5>
+          <h5 class="modal-title" id="headingModal">Añadir un nuevo Insumo</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{url_for('edit_insumo')}}" method="POST" class="modal-body" id="editArticuloForm" autocomplete="off">
+        <form action="{{url_for('edit_insumo')}}" method="POST" class="modal-body" id="editInsumoForm" autocomplete="off">
           <div class="row" id="loadingRow">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
-            <div class="row subheader-row" id="subheader-pag-1" style="display:none;">
-              <div class="col">
-              <label class="subheader">Datos Básicos</label>
-              </div>
-            </div>
-            <div class="row subheader-row" id="subheader-pag-2" style="display:none;">
-              <div class="col">
-              <label class="subheader">Costos</label>
-              </div>
-            </div>
-            <div class="row subheader-row" id="subheader-pag-3" style="display:none;">
-              <div class="col">
-              <label class="subheader">Valor</label>
-              </div>
-            </div>
-
-            
-            <div class="row" id="row-pag-1-1-mod" style="display:none;">
+            <div class="row" id="row-to-hide-1-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <input type="text" name="idArticulo" id="idArticuloMod" hidden>
-                        <input type="text" id="nombreInput-mod" onkeyup = "validaNuevoNombreMod({{nombres|safe}})" name="nombre" >
+                        <input type="text" id="idInputMod" required hidden name="id" >
+                        <input type="text" id="nombreInputMod" required onkeyup = "validaNuevoNombreMod({{nombres|safe}})" name="nombre" >
                         <span class="highlight"></span>
                         <span class="bar"></span>
-                        <label>Nombre del Artículo</label>
-                        <p id="nombreArtError-mod" class="modalErrorMessage"></p>
+                        <label>Nombre del Insumo</label>
+                        <p id="nombreInsErrorMod" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="unidadInput-mod" name="unidad" onkeyup = "validaUnidadMod();">
+                        <input type="text" id="unidadInputMod" required name="unidad" onkeyup = "validaUnidadMod();">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Unidad Medida</label>
-                        <p id="unidadArtError-mod" class="modalErrorMessage"></p>
+                        <p id="unidadInsErrorMod" class="modalErrorMessage"></p>
                     </div>
                 </div>
             </div>
-            <div class="row" id="row-pag-1-2-mod" style="display:none;">
-                  <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="imagenInput-mod" name="imagen" >
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Imagen</label>
-                        <p id="imgArtError-mod" class="modalErrorMessage"></p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="group" style="margin-left: 10%">
-                        <div class="form-check">
-                          <label style="margin-top: 1%;">Venta a usuarios</label>
-                          <input style="margin-left: -3%;margin-top: 6%;" class="form-check-input" type="checkbox" id="usuariosCheck-mod" name="ventaUsuario"></input>
-                        </div>
-                      </div>
-                  </div>
-              </div>
-            <div class="row" id="row-pag-2-1-mod" style="display:none;">
+            <div class="row" id="row-to-hide-2-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="ciInput-mod" name="costoInsumos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("ins")' onkeyup='document.getElementById("costoIArtError").innerHTML="";calcularCostoMod("ins");'>
+                        <input type="text" id="cmInputMod" name="costoMateriales" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("mat")' onkeyup='document.getElementById("costoMInsErrorMod").innerHTML="";calcularCostoMod("mat");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
-                        <label>Costo de Insumos</label>
-                        <p id="costoIArtError-mod" class="modalErrorMessage"></p>
+                        <label>Costo de Materiales</label>
+                        <p id="costoMInsErrorMod" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <input type="text" id="cpInput-mod" name="costoProduccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("prod")' onkeyup='document.getElementById("costoPArtError").innerHTML="";calcularCostoMod("prod");'>
+                        <input type="text" id="cpInputMod" name="costoProduccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("prod")' onkeyup='document.getElementById("costoPInsErrorMod").innerHTML="";calcularCostoMod("prod");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Costo de Producción</label>
-                        <p id="costoPArtError-mod" class="modalErrorMessage"></p>
+                        <p id="costoPInsErrorMod" class="modalErrorMessage"></p>
                     </div>
                 </div>
             </div>
-            <div class="row" id="row-pag-2-2-mod" style="display:none;">
+            <div class="row" id="row-to-hide-3-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <input type="text" id="ocInput-mod" name="otrosCostos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("otros")' onkeyup='document.getElementById("costoOArtError").innerHTML="";calcularCostoMod("otros");'>
+                        <input type="text" id="ocInputMod" name="otrosCostos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("otros")' onkeyup='document.getElementById("costoOInsErrorMod").innerHTML="";calcularCostoMod("otros");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Otros Costos</label>
-                        <p id="costoOArtError-mod" class="modalErrorMessage"></p>
+                        <p id="costoOInsErrorMod" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <input type="text" id="coaInput-mod" name="costoObtencionAlt" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("alt")' onkeyup='document.getElementById("costoOAArtError").innerHTML="";calcularCostoMod("alt");'>
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Costo de Obtención Alternativa</label>
-                        <p id="costoOAArtError-mod" class="modalErrorMessage"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="row" id="row-pag-3-1-mod" style="display:none;">
-                <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
-                        <input style="width:60%;" id="margenInput-mod" name="margen" required onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularValorMod()' onkeyup='document.getElementById("costoOArtError").innerHTML="";calcularValorMod();'>
-                        <span class="highlight"></span>
-                        <span class="bar" style="width:60%;"></span>
-                        <label>Margen Ganancia</label>
-                        <p id="margenArtError-mod" class="modalErrorMessage"></p>
-                    </div>
-                    <label style="margin-left: 65%;">%</label>
-                </div>
-                <div class="col">
-                    <div class="group" style="margin-left: 10%;">
-                        <input hidden>
-                        <input readonly type="text" id="valorInput-mod" name="valor" >
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Precio</label>
+                        <label id="cTotalLabelMod">Costo Total: </label>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalText-mod"></p>
+                <p class="bottom-modal-text" id="bottomAltaModalTextMod"></p>
             </div>
             
         </form>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-mod" style="display:none;">Cancelar</button>
-          <button type="button" class="btn" onclick="pasar_pagina_mod(-1)" id="atras-btn-mod" style="display:none;">Atrás</button>
-          <button type="button" class="primary-btn btn" onclick="pasar_pagina_mod(1)" id="siguiente-btn-mod" name ="add-btn" disabled>Siguiente</button>
-          <button type="button" class="primary-btn btn" onclick="edit_articulo()" id="alta-btn-mod" name ="add-btn" disabled>Actualizar Artículo</button>
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-mod">Cancelar</button>
+          <button type="button" class="primary-btn btn" onclick="edit_insumo()" id="alta-btn-mod" name ="add-btn" disabled>Actualizar Insumo</button>
         </div>
       </div>
     </div>

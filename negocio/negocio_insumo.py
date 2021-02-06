@@ -29,3 +29,15 @@ class NegocioInsumo(Negocio):
             DatosInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal)
         except Exception as e:
             raise(e)
+
+
+    @classmethod
+    def update(cls,idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos):
+        """
+        Actualiza un insumo en la BD
+        """
+        try:
+            costoTotal = float(costoMateriales)+float(costoProduccion)+float(otrosCostos)
+            DatosInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal)
+        except Exception as e:
+            raise(e)

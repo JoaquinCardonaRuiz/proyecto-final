@@ -228,7 +228,7 @@ def alta_insumo():
     if request.method == 'POST':
         nombre =                request.form['nombre']
         unidad =                request.form['unidad']
-        costoMateriales =          request.form['costoMateriales']
+        costoMateriales =       request.form['costoMateriales']
         costoProduccion =       request.form['costoProduccion']
         otrosCostos =           request.form['otrosCostos']
         try:
@@ -240,11 +240,18 @@ def alta_insumo():
 
 @app.route('/insumos/edit', methods = ['GET','POST'])
 def edit_insumo():
-    try:
-        insumos = NegocioInsumo.get_all()
-        return render_template('gestion-insumos.html',insumos=insumos)
-    except Exception as e:
-        return error(e,"insumos")
+    if request.method == 'POST':
+        idIns =                 request.form["id"]
+        nombre =                request.form['nombre']
+        unidad =                request.form['unidad']
+        costoMateriales =       request.form['costoMateriales']
+        costoProduccion =       request.form['costoProduccion']
+        otrosCostos =           request.form['otrosCostos']
+        try:
+            NegocioInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos)
+        except Exception as e:
+            return error(e,"insumos")
+        return redirect(url_for('gestion_insumos'))
 
 
 if __name__ == '__main__':
