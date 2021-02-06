@@ -313,13 +313,15 @@ class Material:
         unidadMedida (string): Unidad en la que se mide la cantidad del material.
         costoRecoleccion (float): Costo asociado a la recoleccion del material.
         stock (float): Cantidad del material presente en inventario.
+        color(string): Código hexadecimal del color con que se muestra un material.
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock):
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
         self.costoRecoleccion = costoRecoleccion
         self.stock = stock
+        self.color = color
 
 class CantMaterial:
     """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.

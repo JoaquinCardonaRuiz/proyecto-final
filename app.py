@@ -205,6 +205,20 @@ def gestion_articulos():
     except Exception as e:
         return error(e,"articulos")
 
+''' 
+    -----------------
+    Materiales
+    -----------------
+'''
+
+@app.route('/materiales', methods = ['GET','POST'])
+def gestion_materiales():
+    try:
+        materiales = NegocioMaterial.get_all()
+        return render_template('gestion-materiales.html',materiales=materiales)
+    except Exception as e:
+        return error(e,"materiales")
+
 
 if __name__ == '__main__':
     app.debug = True
