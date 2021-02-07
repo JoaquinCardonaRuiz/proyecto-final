@@ -91,7 +91,7 @@
                     <td scope="row">{{mat.unidadMedida}}</td>
                     <td scope="row">{{mat.costoRecoleccion}}</td>
 
-                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{mat.id}}','{{mat.nombre}}','{{mat.costoRecoleccion}}','{{mat.unidadMedida}}')"></i></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{mat.id}}','{{mat.nombre}}','{{mat.costoRecoleccion}}','{{mat.unidadMedida}}','{{mat.color}}')"></i></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{mat.id}}','{{mat.nombre}}')"></i></td>
                 </tr>
                 {%endfor%}
@@ -199,24 +199,24 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="headingModal">Añadir un nuevo Insumo</h5>
+          <h5 class="modal-title" id="headingModal">Actualizar un Material</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="" method="POST" class="modal-body" id="editInsumoForm" autocomplete="off">
+        <form action="{{url_for('edit_material')}}" method="POST" class="modal-body" id="editMaterialForm" autocomplete="off">
           <div class="row" id="loadingRow">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
             <div class="row" id="row-to-hide-1-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <input type="text" id="idInputMod" required hidden name="id" >
+                        <input id="idInputMod" name="id" hidden>
                         <input type="text" id="nombreInputMod" required onkeyup = "validaNuevoNombreMod({{nombres|safe}})" name="nombre" >
                         <span class="highlight"></span>
                         <span class="bar"></span>
-                        <label>Nombre del Insumo</label>
-                        <p id="nombreInsErrorMod" class="modalErrorMessage"></p>
+                        <label>Nombre del Material</label>
+                        <p id="nombreMatErrorMod" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col">
@@ -225,54 +225,39 @@
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Unidad Medida</label>
-                        <p id="unidadInsErrorMod" class="modalErrorMessage"></p>
+                        <p id="unidadMatErrorMod" class="modalErrorMessage"></p>
                     </div>
                 </div>
             </div>
             <div class="row" id="row-to-hide-2-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="cmInputMod" name="costoMateriales" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("mat")' onkeyup='document.getElementById("costoMInsErrorMod").innerHTML="";calcularCostoMod("mat");'>
+                        <input type="text" id="crInputMod" name="costoRecoleccion" required min=0 max=999999999 onkeypress='' onclick='calcularCostoMod()' onkeyup='document.getElementById("costoRMatError").innerHTML="";calcularCostoMod();'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
-                        <label>Costo de Materiales</label>
-                        <p id="costoMInsErrorMod" class="modalErrorMessage"></p>
+                        <label>Costo de Recolección</label>
+                        <p id="costoRMatErrorMod" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <input type="text" id="cpInputMod" name="costoProduccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("prod")' onkeyup='document.getElementById("costoPInsErrorMod").innerHTML="";calcularCostoMod("prod");'>
+                        <input type="text" id="colorInputMod" required name="color" onkeyup = "checkColorMod()" style="display: inline;" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 70) || (event.charCode >= 97 && event.charCode <= 102) || (event.charCode == 35)'>
+                        <i id="color-markerMod" style="margin-left:-8%; color:red;display: inline;" class="fas fa-circle" onclick='randomColorMod();'></i>
                         <span class="highlight"></span>
                         <span class="bar"></span>
-                        <label>Costo de Producción</label>
-                        <p id="costoPInsErrorMod" class="modalErrorMessage"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="row" id="row-to-hide-3-mod">
-                <div class="col">
-                    <div class="group" style="margin-left: 10%;">
-                        <input type="text" id="ocInputMod" name="otrosCostos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("otros")' onkeyup='document.getElementById("costoOInsErrorMod").innerHTML="";calcularCostoMod("otros");'>
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Otros Costos</label>
-                        <p id="costoOInsErrorMod" class="modalErrorMessage"></p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="group" style="margin-left: 10%;">
-                        <label id="cTotalLabelMod">Costo Total: </label>
+                        <label>Color</label>
+                        <p id="colorErrorMod" class="modalErrorMessage"></p>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalTextMod"></p>
+                <p class="bottom-modal-text" id="bottomEditModalText"></p>
             </div>
             
         </form>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-mod">Cancelar</button>
-          <button type="button" class="primary-btn btn" onclick="edit_insumo()" id="alta-btn-mod" name ="add-btn" disabled>Actualizar Insumo</button>
+          <button type="button" class="primary-btn btn" onclick="edit_material()" id="edit-btn" name ="add-btn" disabled>Crear Material</button>
         </div>
       </div>
     </div>

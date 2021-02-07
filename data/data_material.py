@@ -52,3 +52,23 @@ class DatosMaterial(Datos):
                                                     msj_adicional="Error dando de alta un material en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def update(cls,idMat,nombre,unidad,costoRecoleccion,color):
+        """
+        Actualiza un material en la BD
+        """
+        cls.abrir_conexion()
+        try:
+            sql= ("UPDATE materiales SET nombre=\"{}\",unidadMedida=\"{}\",costoRecoleccion={},color=\"{}\",stock=0,estado=\"disponible\" WHERE idMaterial={};").format(nombre,unidad,costoRecoleccion,color,idMat)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.update()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando un material en la BD.")
+        finally:
+            cls.cerrar_conexion()

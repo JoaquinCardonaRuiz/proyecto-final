@@ -27,3 +27,14 @@ class NegocioMaterial(Negocio):
             DatosMaterial.add(nombre,unidad,costoRecoleccion,color)
         except Exception as e:
             raise(e)
+
+    
+    @classmethod
+    def update(cls,idMat,nombre,unidad,costoRecoleccion,color):
+        """
+        Actualiza un material en la BD
+        """
+        try:
+            DatosMaterial.update(idMat,nombre,unidad,costoRecoleccion,color)
+        except Exception as e:
+            raise(e)

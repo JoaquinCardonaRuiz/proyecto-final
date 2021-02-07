@@ -234,6 +234,21 @@ def alta_material():
         return redirect(url_for('gestion_materiales'))
 
 
+@app.route('/materiales/edit', methods = ['GET','POST'])
+def edit_material():
+    if request.method == 'POST':
+        idMat =                 request.form["id"]
+        nombre =                request.form['nombre']
+        unidad =                request.form['unidad']
+        costoRecoleccion =      request.form['costoRecoleccion']
+        color =                 request.form['color']
+        try:
+            NegocioMaterial.update(idMat,nombre,unidad,costoRecoleccion,color)
+        except Exception as e:
+            return error(e,"materiales")
+        return redirect(url_for('gestion_materiales'))
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
