@@ -3,6 +3,7 @@ var costoTotal = 0;
 var pag1cargada = false;
 var del = false;
 var mod = false;
+var nombreOriginal = "";
 
 function submitForm(n){
     document.getElementById(n).submit();
@@ -357,6 +358,7 @@ function openEditModal(id,nombre,costoProduccion,costoInsumos,costoTotalA,valor,
     $('#coaInput-mod').val(String(costoObtencionAlternativa));
     $('#ocInput-mod').val(String(otrosCostos));
     $('#imagenInput-mod').val(String(imagen));
+    nombreOriginal = String(nombre);
     document.getElementById("usuariosCheck-mod").checked = Boolean(Number(ventaUsuario));
     $('#editModal').modal('show');
     $('.nav-tabs a:first').tab('show');
@@ -422,7 +424,7 @@ function validaNuevoNombreMod(nombres){
     if(document.getElementById("nombreInput-mod").value && document.getElementById("unidadInput").value){
         document.getElementById("siguiente-btn-mod").disabled = false;
     }
-    if(nombres.includes(n)){
+    if(nombres.includes(n) && n != nombreOriginal){
         //Se comprueba regla RN17
         document.getElementById("nombreArtError-mod").innerHTML = "* Ese nombre ya ha sido registrado.";
         document.getElementById("siguiente-btn-mod").disabled = true;
