@@ -100,10 +100,9 @@ function validaUnidad(){
 
 
 function calcularCosto(){
-    var costoRec = Number(document.getElementById("crInput").value);
-    if(costoRec==0 || isNaN(costoRec)){
-        costoRec = 0;
-        document.getElementById("costoRMatError").innerHTML = "El costo debe ser un número mayor a 0.";
+    var costoRec = document.getElementById("crInput").value;
+    if(isNaN(Number(costoRec)) || !costoRec){
+        document.getElementById("costoRMatError").innerHTML = "El costo debe ser un número mayor o igual a 0.";
         costoCompleto = false;
     }else{
         document.getElementById("costoRMatError").innerHTML = "";
@@ -290,10 +289,9 @@ function validaUnidadMod(){
 
 
 function calcularCostoMod(){
-    var costoRec = Number(document.getElementById("crInputMod").value);
-    if(costoRec==0 || isNaN(costoRec)){
-        costoRec = 0;
-        document.getElementById("costoRMatErrorMod").innerHTML = "El costo debe ser un número mayor a 0.";
+    var costoRec = document.getElementById("crInputMod").value;
+    if(isNaN(Number(costoRec)) || !costoRec){
+        document.getElementById("costoRMatErrorMod").innerHTML = "El costo debe ser un número o igual a 0.";
         costoCompletoMod = false;
     }else{
         document.getElementById("costoRMatErrorMod").innerHTML = "";

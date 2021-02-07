@@ -157,7 +157,7 @@
             <div class="row" id="row-to-hide-2">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="crInput" name="costoRecoleccion" required min=0 max=999999999 onkeypress='' onclick='calcularCosto()' onkeyup='document.getElementById("costoRMatError").innerHTML="";calcularCosto();'>
+                        <input type="text" id="crInput" name="costoRecoleccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto()' onkeyup='document.getElementById("costoRMatError").innerHTML="";calcularCosto();'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Costo de Recolección</label>
@@ -232,7 +232,7 @@
             <div class="row" id="row-to-hide-2-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="crInputMod" name="costoRecoleccion" required min=0 max=999999999 onkeypress='' onclick='calcularCostoMod()' onkeyup='document.getElementById("costoRMatError").innerHTML="";calcularCostoMod();'>
+                        <input type="text" id="crInputMod" name="costoRecoleccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod()' onkeyup='document.getElementById("costoRMatError").innerHTML="";calcularCostoMod();'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Costo de Recolección</label>
