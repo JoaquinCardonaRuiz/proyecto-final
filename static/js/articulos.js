@@ -4,6 +4,14 @@ var pag1cargada = false;
 var del = false;
 var mod = false;
 var nombreOriginal = "";
+var costoProdCompleto = false;
+var costoInsCompleto = false;
+var otrosCostosCompleto = false;
+var costoAltCompleto = false;
+var costoProdCompletoMod = false;
+var costoInsCompletoMod = false;
+var otrosCostosCompletoMod = false;
+var costoAltCompletoMod = false;
 
 function submitForm(n){
     document.getElementById(n).submit();
@@ -107,59 +115,59 @@ function validaNuevoNombre(nombres){
     } 
 }
 
+function permitirCostos(){
+    if(costoProdCompleto && costoInsCompleto && otrosCostosCompleto && costoAltCompleto){
+        document.getElementById("siguiente-btn").disabled = false;
+    }else{
+        document.getElementById("siguiente-btn").disabled = true;
+    }
+}
 
 function calcularCosto(input){
-    var costoProd = Number(document.getElementById("cpInput").value);
-    var costoIns = Number(document.getElementById("ciInput").value);
-    var otrosCostos = Number(document.getElementById("ocInput").value);
-    var costoAlt = Number(document.getElementById("coaInput").value);
+    var costoProd = document.getElementById("cpInput").value;
+    var costoIns = document.getElementById("ciInput").value;
+    var otrosCostos = document.getElementById("ocInput").value;
+    var costoAlt = document.getElementById("coaInput").value;
     if(input=='prod'){
-        if(costoProd==0 || isNaN(costoProd)){
-            costoProd = 0;
-            document.getElementById("costoPArtError").innerHTML = "El costo debe ser un número mayor a 0.";
+        if(isNaN(Number(costoProd)) || !costoProd){
+            document.getElementById("costoPArtError").innerHTML = "El costo debe ser un número mayor o igual a 0.";
+            costoProdCompleto = false;
         }else{
+            costoProdCompleto = true;
             document.getElementById("costoPArtError").innerHTML = "";
         }
     }
     if(input=='ins'){
-        if(costoIns==0 || isNaN(costoIns)){
-            costoIns = 0;
-            document.getElementById("costoIArtError").innerHTML = "El costo debe ser un número mayor a 0.";
+        if(isNaN(Number(costoIns)) || !costoIns){
+            document.getElementById("costoIArtError").innerHTML = "El costo debe ser un número mayor o igual a 0.";
+            costoInsCompleto = false;
         }else{
+            costoInsCompleto = true;
             document.getElementById("costoIArtError").innerHTML = "";
         }
     }
     if(input=='otros'){
-        if(otrosCostos==0 || isNaN(otrosCostos)){
-            otrosCostos = 0;
-            document.getElementById("costoOArtError").innerHTML = "El costo debe ser un número mayor a 0.";
+        if(isNaN(Number(otrosCostos)) || !otrosCostos){
+            document.getElementById("costoOArtError").innerHTML = "El costo debe ser un número mayor o igual a 0.";
+            otrosCostosCompleto = false;
         }else{
+            otrosCostosCompleto = true;
             document.getElementById("costoOArtError").innerHTML = "";
         }
     }
     if(input=='alt'){
-        if(costoAlt==0 || isNaN(costoAlt)){
-            costoAlt = 0;
-            document.getElementById("costoOAArtError").innerHTML = "El costo debe ser un número mayor a 0.";
+        if(isNaN(Number(costoAlt)) || !costoAlt){
+            document.getElementById("costoOAArtError").innerHTML = "El costo debe ser un número mayor o igual a 0.";
+            costoAltCompleto = false;
         }else{
+            costoAltCompleto = true;
             document.getElementById("costoOAArtError").innerHTML = "";
         }
     }
-    // La logica de esto es una mierda porque esto lo chequée arriba ya, pero arriba solo lo chequée si es el caso correcto,
-    // pero tengo que seguir haciendo eso para que no salten mensajes de error en todos apenas entras, porque estan todos vacíos, y devuelven 0
-    if(isNaN(costoProd)){costoProd = 0;document.getElementById("costoPArtError").innerHTML = "El costo debe ser un número mayor a 0.";}
-    if(isNaN(costoIns)){costoIns = 0;document.getElementById("costoIArtError").innerHTML = "El costo debe ser un número mayor a 0.";}
-    if(isNaN(otrosCostos)){otrosCostos = 0;document.getElementById("costoOArtError").innerHTML = "El costo debe ser un número mayor a 0.";}
-    if(isNaN(costoAlt)){costoAlt = 0;document.getElementById("costoOAArtError").innerHTML = "El costo debe ser un número mayor a 0.";}
 
-
-    if(costoProd == 0 || costoIns == 0 || otrosCostos == 0 || costoAlt == 0){
-        document.getElementById("siguiente-btn").disabled = true;
-    }else{
-        document.getElementById("siguiente-btn").disabled = false;
-    }
-    costoTotal = costoProd + costoIns + otrosCostos;
+    costoTotal = Number(costoProd) + Number(costoIns) + Number(otrosCostos);
     document.getElementById("bottomAltaModalText").innerHTML="Costo Total: ARS $"+String(costoTotal);
+    permitirCostos();
 }
 
 function calcularValor(){
@@ -440,59 +448,62 @@ function validaNuevoNombreMod(nombres){
 }
 
 
+function permitirCostosMod(){
+    if(costoProdCompletoMod && costoInsCompletoMod && otrosCostosCompletoMod && costoAltCompletoMod){
+        document.getElementById("siguiente-btn-mod").disabled = false;
+    }else{
+        document.getElementById("siguiente-btn-mod").disabled = true;
+    }
+}
+
 function calcularCostoMod(input){
-    var costoProd = Number(document.getElementById("cpInput-mod").value);
-    var costoIns = Number(document.getElementById("ciInput-mod").value);
-    var otrosCostos = Number(document.getElementById("ocInput-mod").value);
-    var costoAlt = Number(document.getElementById("coaInput-mod").value);
+    var costoProd = document.getElementById("cpInput-mod").value;
+    var costoIns = document.getElementById("ciInput-mod").value;
+    var otrosCostos = document.getElementById("ocInput-mod").value;
+    var costoAlt = document.getElementById("coaInput-mod").value;
     if(input=='prod'){
-        if(costoProd==0 || isNaN(costoProd)){
-            costoProd = 0;
-            document.getElementById("costoPArtError-mod").innerHTML = "El costo debe ser un número mayor a 0.";
+        if(isNaN(Number(costoProd)) || !costoProd){
+            document.getElementById("costoPArtError-mod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
+            costoProdCompletoMod = false;
         }else{
+            costoProdCompletoMod = true;
             document.getElementById("costoPArtError-mod").innerHTML = "";
         }
     }
     if(input=='ins'){
-        if(costoIns==0 || isNaN(costoIns)){
-            costoIns = 0;
-            document.getElementById("costoIArtError-mod").innerHTML = "El costo debe ser un número mayor a 0.";
+        if(isNaN(Number(costoIns)) || !costoIns){
+            document.getElementById("costoIArtError-mod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
+            costoInsCompletoMod = false;
         }else{
+            costoInsCompletoMod = true;
             document.getElementById("costoIArtError-mod").innerHTML = "";
         }
     }
     if(input=='otros'){
-        if(otrosCostos==0 || isNaN(otrosCostos)){
-            otrosCostos = 0;
-            document.getElementById("costoOArtError-mod").innerHTML = "El costo debe ser un número mayor a 0.";
+        if(isNaN(Number(otrosCostos)) || !otrosCostos){
+            document.getElementById("costoOArtError-mod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
+            otrosCostosCompletoMod = false;
         }else{
+            otrosCostosCompletoMod = true;
             document.getElementById("costoOArtError-mod").innerHTML = "";
         }
     }
     if(input=='alt'){
-        if(costoAlt==0 || isNaN(costoAlt)){
-            costoAlt = 0;
-            document.getElementById("costoOAArtError-mod").innerHTML = "El costo debe ser un número mayor a 0.";
+        if(isNaN(Number(costoAlt)) || !costoAlt){
+            document.getElementById("costoOAArtError-mod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
+            costoAltCompletoMod = false;
         }else{
+            costoAltCompletoMod = true;
             document.getElementById("costoOAArtError-mod").innerHTML = "";
         }
     }
-    // La logica de esto es una mierda porque esto lo chequée arriba ya, pero arriba solo lo chequée si es el caso correcto,
-    // pero tengo que seguir haciendo eso para que no salten mensajes de error en todos apenas entras, porque estan todos vacíos, y devuelven 0
-    if(isNaN(costoProd)){costoProd = 0;document.getElementById("costoPArtError-mod").innerHTML = "El costo debe ser un número mayor a 0.";}
-    if(isNaN(costoIns)){costoIns = 0;document.getElementById("costoIArtError-mod").innerHTML = "El costo debe ser un número mayor a 0.";}
-    if(isNaN(otrosCostos)){otrosCostos = 0;document.getElementById("costoOArtError-mod").innerHTML = "El costo debe ser un número mayor a 0.";}
-    if(isNaN(costoAlt)){costoAlt = 0;document.getElementById("costoOAArtError-mod").innerHTML = "El costo debe ser un número mayor a 0.";}
 
-
-    if(costoProd == 0 || costoIns == 0 || otrosCostos == 0 || costoAlt == 0){
-        document.getElementById("siguiente-btn-mod").disabled = true;
-    }else{
-        document.getElementById("siguiente-btn-mod").disabled = false;
-    }
-    costoTotal = costoProd + costoIns + otrosCostos;
+    costoTotal = Number(costoProd) + Number(costoIns) + Number(otrosCostos);
     document.getElementById("bottomAltaModalText-mod").innerHTML="Costo Total: ARS $"+String(costoTotal);
+    permitirCostosMod();
 }
+
+
 
 function calcularValorMod(){
     var margen = Number(document.getElementById("margenInput-mod").value);
