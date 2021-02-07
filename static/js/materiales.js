@@ -6,6 +6,7 @@ var costoCompletoMod = false;
 var nombreCompletoMod = false;
 var unidadCompletoMod = false;
 var colorCompletoMod = false;
+var nombreOriginal = "";
 var del = false;
 var mod = false;
 
@@ -210,6 +211,7 @@ function openEditModal(id,nombre,costoRecoleccion,unidadMedida,color,){
     $('#colorInputMod').val(String(color));
     $('#editModal').modal('show');
     $('.nav-tabs a:first').tab('show');
+    nombreOriginal = String(nombre);
     costoCompletoMod = true;
     nombreCompletoMod = true;
     unidadCompletoMod = true;
@@ -254,7 +256,7 @@ function checkColorMod(){
 
 function validaNuevoNombreMod(nombres){
     var n = document.getElementById("nombreInputMod").value;
-    if(nombres.includes(n)){
+    if(nombres.includes(n) && n != nombreOriginal){
         //Se comprueba regla RN21
         document.getElementById("nombreMatErrorMod").innerHTML = "* Ese nombre ya ha sido registrado.";
         nombreCompletoMod = false;
