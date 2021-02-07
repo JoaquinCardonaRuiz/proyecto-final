@@ -4,6 +4,7 @@ var unidadCompleto = false;
 var costosCompletoMod = false;
 var nombreCompletoMod = false;
 var unidadCompletoMod = false;
+var nombreOriginal = "";
 var del = false;
 var mod = false;
 
@@ -206,6 +207,7 @@ function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otro
     $('#ocInputMod').val(String(otrosCostos));
     $('#editModal').modal('show');
     $('.nav-tabs a:first').tab('show');
+    nombreOriginal = String(nombre);
     costosCompletoMod = true;
     nombreCompletoMod = true;
     unidadCompletoMod = true;
@@ -271,7 +273,7 @@ function permiteEdit(){
 
 function validaNuevoNombreMod(nombres){
     var n = document.getElementById("nombreInputMod").value;
-    if(nombres.includes(n)){
+    if(nombres.includes(n) && n != nombreOriginal){
         //Se comprueba regla RN19
         document.getElementById("nombreInsErrorMod").innerHTML = "* Ese nombre ya ha sido registrado.";
         nombreCompletoMod = false;
