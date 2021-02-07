@@ -15,9 +15,6 @@
   box-shadow:rgb(100, 100, 100) !important;
 }
 
-.data-show-input-with-border{
-}
-
 .btn {
     text-transform: none !important;
   }
@@ -235,3 +232,12 @@
 #pdInactivo{
   display: none;
 }
+
+.time-input{
+  width: 60px i !important;
+}
+
+
+
+
+

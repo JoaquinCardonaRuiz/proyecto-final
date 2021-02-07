@@ -189,9 +189,10 @@ def selection():
 def gestion_pd():
     try:
         puntos_deposito = NegocioPuntoDeposito.get_all()
+        dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
     except Exception as e:
         return error(e,"gestion_pd") 
-    return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito)
+    return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito, dias = dias)
 
 @app.route('/gestion-puntos-deposito/horarios/<int:id>')
 def horarios_pd(id):
@@ -222,11 +223,24 @@ def nombres_pd():
 
 @app.route('/gestion-puntos-deposito/alta', methods = ['GET','POST'])
 def alta_pd():
+    
+    dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    horarios = []
+    
     if request.method == 'POST':
         try:
             nombre = request.form['nombrePD']
             estado = request.form['customSwitch1']
-            print(estado, nombre)
+            calle = request.form['callePD']
+            altura = request.form['alturaPD']
+            ciudad = request.form['ciudadPD']
+            provincia = request.form['provinciaPD']
+            pais = request.form['paisPD']
+            
+            for dia in dias:
+                horaDesde = request.form[dia + '-horaDesde']
+                horaHasta = request.form[dia + '-horaHasta']
+                horarios.append([horaDesde,horaHasta])
         except Exception as e:
             return error(e,"gestion-puntos-deposito")
     return redirect(url_for('gestion_pd'))

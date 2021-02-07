@@ -3,6 +3,11 @@ var del = false;
 var mod = false;
 var nombres = false;
 var alta_form_page = 1;
+var provincia = true;
+var pais = true;
+var ciudad = true;
+var altura = false;
+var calle = false;
 
 $.getJSON("/gestion-puntos-deposito/nombres-pd/",function (result){
     nombres = result;
@@ -254,10 +259,10 @@ function openLoadingRing(){
 }
 
 function openAltaModal(){
-    
+    var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
     jQuery.noConflict();
 
-    
+    //Define que se debe mostrar y que se oculta.
     $("#bottomAltaModalText").hide();
     $("#nombrePDError").hide();
     $(".lds-ring").hide();
@@ -266,8 +271,22 @@ function openAltaModal(){
     $("#nombrePD").val("");
     $("#customSwitch1").val(true);
     $('#primary-btn-alta').prop('disabled', true);
+    
+    for (var i in dias){
+        dia = dias[i];
+        $("#" + String(dia) + "-horaDesde").val("08:00");
+        $("#" + String(dia) + "-horaHasta").val("20:00");
+    }
+
+    //Seteo de valores iniciales.
+    $("#callePD").val("");
+    $("#alturaPD").val("");
+    $("#ciudadPD").val("Rosario");
+    $("#provinciaPD").val("Santa Fe");
+    $("#paisPD").val("Argentina");
 }
 
+//Valida que el campo Nombre PD no esté repetido ni vacío.
 function validaNombrePD(){
     if ((String($("#nombrePD").val()).trim()) == ""){
         $("#nombrePDError").text("* El nombre no puede quedar vacío.");
@@ -285,6 +304,133 @@ function validaNombrePD(){
     }
 }
 
+//Valida que ningún campo de horario tenga un valor incorrecto.
+function validaHorarioPD(){
+  var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  desactiva = false;
+  activa = false;
+  pre_desactiva = false;
+  while(desactiva == false && activa == false){
+    for (var i in dias){
+        dia = dias[i];
+        horaHasta = $("#" + String(dia) + "-horaHasta").val();
+        horaDesde = $("#" + String(dia) + "-horaDesde").val();
+        if ( ( horaHasta== "" ||  horaDesde == "") && $("#" + String(dia) + "-switch").is(":checked") == true){
+            pre_desactiva = true;
+            if (horaHasta == ""){
+                $("#" + String(dia) + "-error-horaHasta").show();
+            }
+            else{
+                $("#" + String(dia) + "-error-horaHasta").hide();
+            }
+
+            if (horaDesde == ""){
+                $("#" + String(dia) + "-error-horaDesde").show();
+            }
+            else{
+                $("#" + String(dia) + "-error-horaDesde").hide();
+            }
+        }
+        else{
+            $("#" + String(dia) + "-error-horaDesde").hide();
+            $("#" + String(dia) + "-error-horaHasta").hide();
+        }
+        
+      }
+    if (pre_desactiva == true)
+        desactiva = true;
+    else{
+        activa = true;
+    }
+  }
+  if (desactiva == true){
+    $('#primary-btn-alta').prop('disabled', true);
+  }
+  else{
+    $('#primary-btn-alta').prop('disabled', false);
+  }
+  
+  
+}
+
+//Valida que ningún campo de la dirección tenga un valor.
+function validaDireccion(campoValidacion){
+    if (campoValidacion == 'provincia'){
+        if ($("#provinciaPD").val() == ""){
+            provincia = false;
+            $("#error-provincia").show();
+        }
+        else{
+            provincia = true;
+            $("#error-provincia").hide(); 
+        }
+    }
+    else if (campoValidacion == 'ciudad'){
+        if ($("#ciudadPD").val() == ""){
+            ciudad = false;
+            $("#error-ciudad").show();
+        }
+        else{
+            ciudad = true; 
+            $("#error-ciudad").hide();
+        }
+    }
+    else if (campoValidacion == 'pais'){
+        if ($("#paisPD").val() == ""){
+            pais = false;
+            $("#error-pais").show();
+        }
+        else{
+            pais = true; 
+            $("#error-pais").hide();
+        }
+    }
+    else if (campoValidacion == 'altura'){
+        if ($("#alturaPD").val() == ""){
+            altura = false;
+            $("#error-altura").show();
+        }
+        else{
+            altura = true;
+            $("#error-altura").hide(); 
+        }
+    }
+    else if (campoValidacion == 'calle'){
+        if ($("#callePD").val() == ""){
+            calle = false;
+            $("#error-calle").show(); 
+        }
+        else{
+            calle = true;
+            $("#error-calle").hide();  
+        }
+    }
+    if (provincia == true && ciudad == true && pais == true && calle == true && altura == true){
+        $('#primary-btn-alta').prop('disabled', false);
+    }
+    else{
+        $('#primary-btn-alta').prop('disabled', true);
+    }
+}
+
+//Valida e impide que los input sean caracteres distintos de numeros.
+function isNumberKey(txt, evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode == 46) {
+      //Check if the text already contains the . character
+      if (txt.value.indexOf('.') === -1) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if (charCode > 31 &&
+        (charCode < 48 || charCode > 57))
+        return false;
+    }
+    return true;
+  }
+
 $("#customSwitch1").click(function() {
     if($("#customSwitch1").is(":checked") == true){
         $("#pdInactivo").fadeOut();    
@@ -296,6 +442,7 @@ $("#customSwitch1").click(function() {
     }
 });
 
+//Setea la posición del label para el witch de la página 1 del modal de alta.
 function labelPosition(){
     var pos_switch = document.getElementById("customSwitch1").offsetTop;
     var pos_switch_left = document.getElementById("customSwitch1").offsetLeft;
@@ -304,6 +451,39 @@ function labelPosition(){
 
     $("#pdInactivo").css({top: pos_switch - 24, position:'absolute'});
     $("#pdInactivo").css({left: pos_switch_left + 140, position:'absolute'});
+}
+
+//Habilita y deshabilita los horarios para un día determinado.
+function habilitaHorario(dia){
+    
+    if ($("#" + String(dia) + "-switch").is(":checked") == true){
+
+        $("#" + String(dia) + "-horaDesde").val("08:00");
+        $("#" + String(dia) + "-horaHasta").val("20:00");
+        $("#" + String(dia) + "-horaDesde").prop( "readonly", false );
+        $("#" + String(dia) + "-horaHasta").prop( "readonly", false );
+        $("#" + String(dia) + "-horaDesde").removeClass("data-show-input");
+        $("#" + String(dia) + "-horaHasta").removeClass("data-show-input");
+        $("#" + String(dia) + "-span-horaDesde").show();
+        $("#" + String(dia) + "-bar-horaDesde").show();
+        $("#" + String(dia) + "-span-horaHasta").show();
+        $("#" + String(dia) + "-bar-horaHasta").show();
+        validaHorarioPD();
+    }
+    else{
+        $("#" + String(dia) + "-horaDesde").val("");
+        $("#" + String(dia) + "-horaHasta").val("");
+        $("#" + String(dia) + "-horaDesde").prop('readonly', true);
+        $("#" + String(dia) + "-horaDesde").addClass("data-show-input");
+        $("#" + String(dia) + "-horaHasta").prop('readonly', true);
+        $("#" + String(dia) + "-horaHasta").addClass("data-show-input");
+        $("#" + String(dia) + "-span-horaDesde").hide();
+        $("#" + String(dia) + "-bar-horaDesde").hide();
+        $("#" + String(dia) + "-span-horaHasta").hide();
+        $("#" + String(dia) + "-bar-horaHasta").hide();
+        validaHorarioPD()
+        
+    }
 }
 
 //Hace el submit de un form, recibiendo su ID como parametro.
@@ -334,13 +514,15 @@ function submitForm(idForm){
 
 }
 
-
+//Gestiona el avance de páginas del modal de alta.
 function next_page(){
     if (alta_form_page == 1){
         alta_form_page = 2;
+        validaDireccion('');
     }
     else if (alta_form_page == 2){
         alta_form_page = 3;
+        validaHorarioPD();
     }
     else{
         submitForm('altaPdForm');
@@ -348,19 +530,23 @@ function next_page(){
     display_page();
 }
 
+//Gestiona el retroceso de páginas del modal de alta.
 function previous_page(){
     if (alta_form_page == 1){
        $("#altaPDModal").modal("hide");
     }
     else if (alta_form_page == 2){
         alta_form_page = 1;
+        validaNombrePD();
     }
     else{
         alta_form_page = 2;
+        validaDireccion('');
     }
     display_page();
 }
 
+//Gestiona lo que debe mostrarse en cada página del modal de alta.
 function display_page(){
     if (alta_form_page == 1){
         $("#modal-alta-p3").hide();
@@ -439,7 +625,7 @@ var messagesBaja = [
 ].reverse();
 
 function updateMap(){
-    direccion = encodeURI(String($("#callePD").val()) + String($("#alturaPD").val()))
+    direccion = encodeURI(String($("#callePD").val()) + String($("#alturaPD").val()) + String($("#ciudadPD").val()) + String($("#provinciaPD").val()) + String($("#paisPD").val()))
     src_value = "https://maps.google.com/maps?q=" + direccion + "&t=&z=15&ie=UTF8&iwloc=&output=embed";
     $("#gmap_canvas").attr("src",src_value);
 }
