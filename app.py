@@ -236,11 +236,10 @@ def alta_pd():
             ciudad = request.form['ciudadPD']
             provincia = request.form['provinciaPD']
             pais = request.form['paisPD']
-            
             for dia in dias:
                 horaDesde = request.form[dia + '-horaDesde']
                 horaHasta = request.form[dia + '-horaHasta']
-                horarios.append([horaDesde,horaHasta])
+                horarios.append([horaDesde,horaHasta, dia])
         except Exception as e:
             return error(e,"gestion-puntos-deposito")
     return redirect(url_for('gestion_pd'))

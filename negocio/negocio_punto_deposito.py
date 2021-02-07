@@ -1,6 +1,7 @@
 from data.data_material import DatosMaterial
-from negocio.negocio_entidad_destino import NegocioEntidadDestino
+from negocio.negocio_horario import NegocioHorario
 from data.data_horario import DatosHorario
+from classes import PuntoDeposito
 from flask.json import jsonify
 from utils import Utils
 from werkzeug import utils
@@ -198,6 +199,53 @@ class NegocioPuntoDeposito(Negocio):
         try:
             return DatosPuntoDeposito.get_all_names()
         
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+
+    
+    @classmethod
+    def alta_pd(cls, nombre, estado, calle, altura, ciudad, provincia, pais, horarios):
+        """
+        Obtiene todos los Puntos de Depósito de la BD.
+        """
+        #Conexión con el motor de BD.
+        try:
+            #Valida RN23
+            if nombre == "":
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
+                                                        msj_adicional = "Error al añadir el Punto de Depósito. El nombre no puede quedar vacío.")
+            #Valida RN27
+            elif altura == "":
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
+                                                        msj_adicional = "Error al añadir el Punto de Depósito. La altura no puede quedar vacía.")
+            #Valida RN32
+            elif isinstance(int(altura), int):
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
+                                                        msj_adicional = "Error al añadir el Punto de Depósito. La altura debe ser numérica.")
+            #Valida RN26
+            elif calle == "":
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
+                                                        msj_adicional = "Error al añadir el Punto de Depósito. La calle no puede quedar vacía.")
+            #Valida RN28
+            elif ciudad == "":
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
+                                                        msj_adicional = "Error al añadir el Punto de Depósito. La ciudad no puede quedar vacía.")
+            #Valida RN29
+            elif provincia == "":
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
+                                                        msj_adicional = "Error al añadir el Punto de Depósito. La provincia no puede quedar vacía.")
+            #Valida RN30
+            elif pais == "":
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
+                                                        msj_adicional = "Error al añadir el Punto de Depósito. El país no puede quedar vacío.")
+            horarios_ = []
+            for horario in horarios:
+                horarios_.append(NegocioHorario.valida_horaios(horario))
+
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
