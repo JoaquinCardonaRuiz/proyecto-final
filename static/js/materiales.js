@@ -311,3 +311,68 @@ function edit_material(){
     submitForm('editMaterialForm');
     nextMsgEdit();
 }
+
+
+
+function removeEntidad(){
+    if (del == false){
+        $('.modify-row').hide()
+        $('.modify-th').hide()
+        $('.delete-row').fadeIn()
+        $('.delete-th').fadeIn()
+        del = true;
+        mod = false;
+        $('#option-middle').css('border', '2px solid transparent');
+        $('#option-right').css('border', '2px solid #95C22B');
+        var y = window.scrollY + document.querySelector('#table-container').getBoundingClientRect().top; // Y
+        var x = window.scrollX + document.querySelector('#table-container').getBoundingClientRect().left; // X
+        window.scrollTo(x, y);
+        
+    }
+    else{
+        $('.delete-row').fadeOut()
+        $('.delete-th').fadeOut()
+        del = false;
+        $('#option-right').css('border', '2px solid transparent');
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+}
+
+
+
+
+function openBajaModal(idMat,nombreMat){
+    //Manejo de elementos de carga
+    $("#fieldsRowBaja").show();
+    $(".lds-ring").hide();
+    $('#bottomBajaModalText').hide();
+    $('#primary-btn-alert').prop('disabled', false);
+    $('#secondary-btn-baja').prop('disabled', false);
+    document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea eliminar el material " + nombreMat + "? Una vez eliminado, este no se podrá recuperar.";
+
+    //Manejo de carteles
+    jQuery.noConflict();
+    $('#primary-btn-alert').prop('disabled', false); 
+    $('#idMaterial').val(String(idMat));
+    $('#bajaInsumodModal').modal('show');
+}
+
+
+function baja_entidad(){
+
+    //Manejo de elementos para la carga
+    $(".b-modal-text-baja").hide();
+    $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $('#bottomBajaModalText').show();
+    $('#primary-btn-alert').prop('disabled', true);
+    $('#secondary-btn-baja').prop('disabled', true);
+
+    //Manejo de datos
+    id = $('#idMaterial').val();
+    window.location.href='/materiales/baja/' + String(id)
+
+    //Funcion que va cambiando los mensajes de carga.
+    nextMsgBaja()
+}

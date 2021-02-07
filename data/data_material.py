@@ -72,3 +72,22 @@ class DatosMaterial(Datos):
                                                     msj_adicional="Error actualizando un material en la BD.")
         finally:
             cls.cerrar_conexion()
+
+    
+    @classmethod
+    def delete(cls, id):
+        """
+        Elimina un material de la BD a partir de su id.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("UPDATE materiales SET estado = \"eliminado\" WHERE idMaterial={}".format(id))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.delete()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error eliminando un material en la BD.")
+        finally:
+            cls.cerrar_conexion()

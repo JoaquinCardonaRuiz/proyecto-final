@@ -249,6 +249,16 @@ def edit_material():
         return redirect(url_for('gestion_materiales'))
 
 
+@app.route('/materiales/baja/<id>')
+def baja_material(id):
+    id = int(id)
+    try:
+        NegocioMaterial.delete(id)
+    except Exception as e:
+        return error(e,"materiales")
+    return redirect(url_for('gestion_materiales'))
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
