@@ -32,3 +32,23 @@ class DatosMaterial(Datos):
                                                     msj_adicional="Error obtieniendo los materiales desde la BD.")
         finally:
             cls.cerrar_conexion()
+
+    
+    @classmethod
+    def add(cls,nombre,unidad,costoRecoleccion,color):
+        """
+        Agrega un material a la BD
+        """
+        cls.abrir_conexion()
+        try:
+            sql= ("INSERT INTO materiales (nombre,unidadMedida,costoRecoleccion,color,stock,estado) \
+                   VALUES (\"{}\",\"{}\",{},\"{}\",0,\"disponible\");".format(nombre,unidad,costoRecoleccion,color))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.add()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error dando de alta un material en la BD.")
+        finally:
+            cls.cerrar_conexion()

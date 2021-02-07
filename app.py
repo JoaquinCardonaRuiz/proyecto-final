@@ -220,6 +220,20 @@ def gestion_materiales():
         return error(e,"materiales")
 
 
+@app.route('/materiales/alta', methods = ['GET','POST'])
+def alta_material():
+    if request.method == 'POST':
+        nombre =                request.form['nombre']
+        unidad =                request.form['unidad']
+        costoRecoleccion =      request.form['costoRecoleccion']
+        color =                 request.form['color']
+        try:
+            NegocioMaterial.add(nombre,unidad,costoRecoleccion,color)
+        except Exception as e:
+            return error(e,"materiales")
+        return redirect(url_for('gestion_materiales'))
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)

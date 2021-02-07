@@ -125,12 +125,12 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="headingModal">Añadir un nuevo Insumo</h5>
+          <h5 class="modal-title" id="headingModal">Añadir un nuevo Material</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="" method="POST" class="modal-body" id="altaInsumoForm" autocomplete="off">
+        <form action="{{url_for('alta_material')}}" method="POST" class="modal-body" id="altaMaterialForm" autocomplete="off">
           <div class="row" id="loadingRow">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
@@ -140,8 +140,8 @@
                         <input type="text" id="nombreInput" required onkeyup = "validaNuevoNombre({{nombres|safe}})" name="nombre" >
                         <span class="highlight"></span>
                         <span class="bar"></span>
-                        <label>Nombre del Insumo</label>
-                        <p id="nombreInsError" class="modalErrorMessage"></p>
+                        <label>Nombre del Material</label>
+                        <p id="nombreMatError" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col">
@@ -150,43 +150,28 @@
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Unidad Medida</label>
-                        <p id="unidadInsError" class="modalErrorMessage"></p>
+                        <p id="unidadMatError" class="modalErrorMessage"></p>
                     </div>
                 </div>
             </div>
             <div class="row" id="row-to-hide-2">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="cmInput" name="costoMateriales" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("mat")' onkeyup='document.getElementById("costoMInsError").innerHTML="";calcularCosto("mat");'>
+                        <input type="text" id="crInput" name="costoRecoleccion" required min=0 max=999999999 onkeypress='' onclick='calcularCosto()' onkeyup='document.getElementById("costoRMatError").innerHTML="";calcularCosto();'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
-                        <label>Costo de Materiales</label>
-                        <p id="costoMInsError" class="modalErrorMessage"></p>
+                        <label>Costo de Recolección</label>
+                        <p id="costoRMatError" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <input type="text" id="cpInput" name="costoProduccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("prod")' onkeyup='document.getElementById("costoPInsError").innerHTML="";calcularCosto("prod");'>
+                        <input type="text" id="colorInput" required name="color" onkeyup = "checkColorAlta()" style="display: inline;" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 70) || (event.charCode >= 97 && event.charCode <= 102) || (event.charCode == 35)'>
+                        <i id="color-marker" style="margin-left:-8%; color:red;display: inline;" class="fas fa-circle" onclick='randomColorAlta();'></i>
                         <span class="highlight"></span>
                         <span class="bar"></span>
-                        <label>Costo de Producción</label>
-                        <p id="costoPInsError" class="modalErrorMessage"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="row" id="row-to-hide-3">
-                <div class="col">
-                    <div class="group" style="margin-left: 10%;">
-                        <input type="text" id="ocInput" name="otrosCostos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("otros")' onkeyup='document.getElementById("costoOInsError").innerHTML="";calcularCosto("otros");'>
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Otros Costos</label>
-                        <p id="costoOInsError" class="modalErrorMessage"></p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="group" style="margin-left: 10%;">
-                        <label id="cTotalLabel">Costo Total: </label>
+                        <label>Color</label>
+                        <p id="colorError" class="modalErrorMessage"></p>
                     </div>
                 </div>
             </div>
@@ -197,7 +182,7 @@
         </form>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="primary-btn btn" onclick="alta_insumo()" id="alta-btn" name ="add-btn" disabled>Crear Insumo</button>
+          <button type="button" class="primary-btn btn" onclick="alta_material()" id="alta-btn" name ="add-btn" disabled>Crear Material</button>
         </div>
       </div>
     </div>
@@ -325,5 +310,5 @@
     </div>
 </div>
 
-<script src="static/js/insumos.js"></script>
+<script src="static/js/materiales.js"></script>
 {% endblock %}

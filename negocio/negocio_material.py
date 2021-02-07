@@ -6,7 +6,7 @@ class NegocioMaterial(Negocio):
     @classmethod
     def get_all(cls):
         """
-        Obtiene todos los insumos de la BD.
+        Obtiene todos los materiales de la BD.
         """
         try:
             materiales = DatosMaterial.get_all()
@@ -16,3 +16,14 @@ class NegocioMaterial(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_materiales.get_all()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obteniendo los materiales de la capa de Datos.")
+
+    
+    @classmethod
+    def add(cls,nombre,unidad,costoRecoleccion,color):
+        """
+        Agrega un material a la BD
+        """
+        try:
+            DatosMaterial.add(nombre,unidad,costoRecoleccion,color)
+        except Exception as e:
+            raise(e)
