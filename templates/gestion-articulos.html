@@ -77,7 +77,6 @@
                     <th scope="col" class="table-heading">Stock</th>
                     <th scope="col" class="table-heading">Unidad</th>
                     <th scope="col" class="table-heading">Publico</th>
-                    <th class="table-heading see-th"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -99,7 +98,6 @@
                     {% else %}
                         <td scope="row">No</td>
                     {% endif %}
-                    <td class="row"><i class="far fa-eye" style="font-size: 23px;" id="" onclick="console.log('{{art.id}}')"></i></td>
                     <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{art.id}}','{{art.nombre}}','{{art.costoProduccion}}','{{art.costoInsumos}}','{{art.costoTotal}}','{{art.valor}}','{{art.margenGanancia}}','{{art.unidadMedida}}','{{art.costoObtencionAlternativa}}','{{art.otrosCostos}}','{{art.imagen}}','{{art.ventaUsuario}}')"></i></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{art.id}}','{{art.nombre}}')"></i></td>
                 </tr>
