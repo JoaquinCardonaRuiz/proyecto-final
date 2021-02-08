@@ -253,6 +253,20 @@
                 </div>
                 <!--Página 1 Alta -->
                 <div id="modal-alta-p1">
+                    <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px; margin-bottom: 400px;">
+                        <div class="dropdown-box">
+                            <h4 id="heading-option" onclick="dropdownManager();">
+                                Seleccionar Materiales 
+                                <img src="/static/img/chevron.svg" class="chevron"></img>
+                            </h4>
+                            <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
+                                <p class="menu-option-box-op" id="menu-option-box-op-1"><i class="fa fa-check dropdown-option-check" id="info-modal-1-pos"></i>Madera</p>
+                                <p class="menu-option-box-op">Plástico</p>
+                                <p class="menu-option-box-op">Vidrio</p>
+                                <p class="menu-option-box-op">Aluminio</p>                
+                            </div>       
+                        </div>                 
+                    </div>
                     <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px;">
                         <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
                             <input type="text" required id="nombrePD" onkeyup="validaNombrePD();" name="nombrePD" autocomplete="off" style="width: 90%;"> 
@@ -387,6 +401,9 @@
                     </div> 
                     {%endfor%}
                 </div>
+                <div id="modal-alta-p4" style="display: none;">
+                    
+                </div>
             </form>
             <div class="row">
                 <p class="bottom-modal-text" id="bottomAltaModalTextAltaPD">Una vez completados todos los datos, presione el "Siguiente".</p>
@@ -400,7 +417,6 @@
       </div>
     </div>
 </div>
-
 
 
 

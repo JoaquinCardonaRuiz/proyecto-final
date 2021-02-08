@@ -16,11 +16,11 @@ class NegocioHorario(Negocio):
             horaDesde = horario_[0]
             horaHasta = horario_[1]
             dia = horario_[2]
-            #Valida RN34
+            #Valida RN33
             if horaDesde == "" and horaHasta != "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_horarios.valida_horarios()",
                                                       msj_adicional = "Error al añadir el Horario. El horario de cierre no puede quedar vacío si el horario de apertura está asignado.")
-            #Valida RN34
+            #Valida RN33
             elif  horaDesde != "" and horaHasta == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_horarios.valida_horarios()",
                                                         msj_adicional = "Error al añadir el Horario. El horario de apertura no puede quedar vacío si el horario de cierre está asignado.")
@@ -29,7 +29,7 @@ class NegocioHorario(Negocio):
                 horario = Horario(None,None,None,dia)
             else:
                 horario = Horario(None,datetime.strptime(horaDesde, '%H:%M').time(),datetime.strptime(horaHasta, '%H:%M').time(),dia)
-                #Valida RN33
+                #Valida RN32
                 if horario.horaDesde >= horario.horaHasta:
                     raise custom_exceptions.ErrorDeNegocio(origen="neogocio_horarios.valida_horarios()",
                                                             msj_adicional = "Error al añadir el Horario. La hora de apertura debe ser menor a la de cierre.")

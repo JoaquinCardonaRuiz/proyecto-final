@@ -17,7 +17,7 @@ class NegocioDireccion(Negocio):
             if altura == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",
                                                         msj_adicional = "Error al añadir el Punto de Depósito. La altura no puede quedar vacía.")
-            #Valida RN32
+            #Valida RN31
             elif not(isinstance(int(altura), int)):
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",
                                                         msj_adicional = "Error al añadir el Punto de Depósito. La altura debe ser numérica.")

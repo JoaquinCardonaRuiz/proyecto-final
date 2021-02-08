@@ -8,7 +8,40 @@ var pais = true;
 var ciudad = true;
 var altura = false;
 var calle = false;
+var menuShown = false;
 
+function headingOptionHover(){
+    $(".chevron").css({cursor: 'pointer', transform: 'rotate(180deg)'});
+}
+
+function headingOptionLeave(){
+    $(".chevron").css({transform: 'rotate(0deg)'});
+}
+
+function openMenu() {
+    $("#menu-option-box-1").show();
+    $(".dropdown-box").css("border","1px solid #95C22B");
+};
+
+//Cierra el dropdown de la opción "Info" del menú principal
+function closeMenu() {
+    $("#menu-option-box-1").hide();
+    $(".dropdown-box").css("border","1px solid rgb(184, 184, 184)");
+};
+
+function dropdownManager(){
+    if (menuShown == false){
+        openMenu();
+        headingOptionHover();
+        menuShown = true
+    }
+    else{
+        closeMenu();
+        headingOptionLeave();
+        menuShown=false;
+    }
+
+}
 $.getJSON("/gestion-puntos-deposito/nombres-pd/",function (result){
     nombres = result;
 });
@@ -528,6 +561,9 @@ function next_page(){
         alta_form_page = 3;
         validaHorarioPD();
     }
+    else if (alta_form_page == 3){
+        alta_form_page = 4;
+    }
     else{
         submitForm('altaPdForm');
     }
@@ -543,9 +579,13 @@ function previous_page(){
         alta_form_page = 1;
         validaNombrePD();
     }
-    else{
+    else if (alta_form_page == 3){
         alta_form_page = 2;
         validaDireccion('');
+    }
+    else{
+        alta_form_page = 3;
+        validaHorarioPD();
     }
     display_page();
 }
@@ -555,6 +595,7 @@ function display_page(){
     if (alta_form_page == 1){
         $("#modal-alta-p3").hide();
         $("#modal-alta-p2").hide();
+        $("#modal-alta-p4").hide();
         $("#modal-alta-p1").fadeIn();
         $("#secondary-btn").text("Cancelar");
         $("#subheader-alta").text("Datos Básicos");
@@ -562,17 +603,27 @@ function display_page(){
      else if (alta_form_page == 2){
         $("#modal-alta-p1").hide();
         $("#modal-alta-p3").hide();
+        $("#modal-alta-p4").hide();
         $("#modal-alta-p2").fadeIn();
         $("#secondary-btn").text("Anterior");
         $("#subheader-alta").text("Dirección");
      }
-     else{
+     else if (alta_form_page == 3){
         $("#modal-alta-p1").hide();
         $("#modal-alta-p2").hide();
+        $("#modal-alta-p4").hide();
         $("#modal-alta-p3").fadeIn();
         $("#secondary-btn").text("Anterior");
         $("#subheader-alta").text("Horarios");
      } 
+     else{
+        $("#modal-alta-p1").hide();
+        $("#modal-alta-p2").hide();
+        $("#modal-alta-p3").hide();
+        $("#modal-alta-p4").fadeIn();
+        $("#secondary-btn").text("Anterior");
+        $("#subheader-alta").text("Materiales");
+     }
 }
 
 //Funcion para el manejo de los mensajes durante la carga.

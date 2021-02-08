@@ -238,6 +238,71 @@
 }
 
 
+/*Multiple Select Dropdown*/
 
+.menu-option-box{
+  border-radius: 10px;
+  position: absolute; 
+  background-color:white; 
+  width: 350px;
+  display: none;
+  margin-top: -8px;
+  box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
 
+}
+
+.menu-option-box-op{
+  margin-left: 5%;
+  margin-top: 10px;
+  margin-right: 20px;
+  height: 30px;
+  color: rgb(92, 92, 92);
+  transition: transform .2s; /* Animation */
+}
+
+.menu-option-box-op:hover{
+  color: #95C22B;
+  cursor: pointer;
+  transform: scale(1.03); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+#menu-option-box-op-1{
+  margin-top: 10px !important;
+}
+
+#heading-option{
+  position: relative;
+  font-size: 16px;
+  font-weight: 400;
+  height: 50px;
+  line-height: 38px;
+  white-space: nowrap;
+  margin-left: 5%;
+}
+
+.chevron {
+  margin-top: -1px;
+  width: 13px;
+  height: 13px;
+  transition: width 0.3s, height 0.3s, transform 0.3s;
+  margin-left: 40%;
+}
+
+.dropdown-box{
+  width: 350px;
+  height: 40px;
+  border: 1px solid rgb(184, 184, 184);
+  border-radius: 5px;
+  margin-left: 20% !important;
+
+}
+
+.dropdown-box:hover{
+  cursor: pointer;
+}
+
+.dropdown-option-check{
+  margin-right: 10px;
+  margin-left: 5px;
+}
 

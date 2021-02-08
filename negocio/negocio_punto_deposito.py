@@ -217,7 +217,11 @@ class NegocioPuntoDeposito(Negocio):
             if nombre == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
                                                         msj_adicional = "Error al añadir el Punto de Depósito. El nombre no puede quedar vacío.")
-            
+            #Valida RN25
+            if nombre in cls.get_all_names():
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
+                                                        msj_adicional = "Error al añadir el Punto de Depósito. El nombre ya fue utilizado.")
+
             #Valida RN24
             estado = Utils.js_py_bool_converter(estado)
             if estado != True and estado != False:
