@@ -197,7 +197,8 @@
               </div>
             <div class="row" id="row-pag-2-1" style="display:none;">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="ciInput" name="costoInsumos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("ins")' onkeyup='document.getElementById("costoIArtError").innerHTML="";calcularCosto("ins");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -207,6 +208,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="cpInput" name="costoProduccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("prod")' onkeyup='document.getElementById("costoPArtError").innerHTML="";calcularCosto("prod");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -218,6 +220,7 @@
             <div class="row" id="row-pag-2-2" style="display:none;">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="ocInput" name="otrosCostos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("otros")' onkeyup='document.getElementById("costoOArtError").innerHTML="";calcularCosto("otros");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -227,6 +230,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="coaInput" name="costoObtencionAlt" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("alt")' onkeyup='document.getElementById("costoOAArtError").innerHTML="";calcularCosto("alt");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -237,7 +241,8 @@
             </div>
             <div class="row" id="row-pag-3-1" style="display:none;">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input style="width:60%;" id="margenInput" name="margen" required onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularValor()' onkeyup='document.getElementById("costoOArtError").innerHTML="";calcularValor();'>
                         <span class="highlight"></span>
                         <span class="bar" style="width:60%;"></span>
@@ -350,7 +355,8 @@
               </div>
             <div class="row" id="row-pag-2-1-mod" style="display:none;">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden> 
                         <input type="text" id="ciInput-mod" name="costoInsumos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("ins")' onkeyup='document.getElementById("costoIArtError").innerHTML="";calcularCostoMod("ins");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -360,6 +366,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="cpInput-mod" name="costoProduccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("prod")' onkeyup='document.getElementById("costoPArtError").innerHTML="";calcularCostoMod("prod");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -371,6 +378,7 @@
             <div class="row" id="row-pag-2-2-mod" style="display:none;">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="ocInput-mod" name="otrosCostos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("otros")' onkeyup='document.getElementById("costoOArtError").innerHTML="";calcularCostoMod("otros");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -380,6 +388,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="coaInput-mod" name="costoObtencionAlt" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("alt")' onkeyup='document.getElementById("costoOAArtError").innerHTML="";calcularCostoMod("alt");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -390,7 +399,8 @@
             </div>
             <div class="row" id="row-pag-3-1-mod" style="display:none;">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input style="width:60%;" id="margenInput-mod" name="margen" required onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularValorMod()' onkeyup='document.getElementById("costoOArtError").innerHTML="";calcularValorMod();'>
                         <span class="highlight"></span>
                         <span class="bar" style="width:60%;"></span>
