@@ -518,9 +518,9 @@ function calcularValorMod(){
     document.getElementById("valorInput-mod").value =  (costoTotal * (1+(margen/100))).toFixed(2);
 }
 
-function validaUnidadModMod(){
+function validaUnidadMod(){
     var u = document.getElementById("unidadInput-mod").value;
-    if(document.getElementById("nombreInput-mod").value && document.getElementById("unidadInput").value){
+    if(document.getElementById("nombreInput-mod").value && document.getElementById("unidadInput-mod").value){
         document.getElementById("siguiente-btn-mod").disabled = false;
     }
     if (!u){
