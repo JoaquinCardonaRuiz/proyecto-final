@@ -60,7 +60,7 @@
                 {%for punto in puntos_deposito%}
                 <tr>
                     <th scope="row">{{punto.nombre}}</th>
-                    <td>{{punto.direccion}}</td>
+                    <td>{{punto.direccion.calle}} {{punto.direccion.altura}}, {{punto.direccion.ciudad}}</td>
                     {%if punto.estado == True%}
                         <td>
                             <div>

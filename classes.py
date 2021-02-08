@@ -642,17 +642,14 @@ class PuntoDeposito:
             punto de deposito acepta.
         horarios (Horario[7]): Arreglo con los horarios en los que el punto de depósito está
             habilitado.
-        fechaComienzoActividad (Date): Fecha en el que el punto de depósito fue puesto en
-            funcionamiento por primera vez.
     """
-    def __init__(self,id,direccion,estado,nombre,iDsMaterial=[],horarios=[],fechaComienzoActividad=None):
+    def __init__(self,id,direccion,estado,nombre,iDsMaterial=[],horarios=[]):
         self.id = id
         self.direccion = direccion
         self.estado = estado
         self.nombre = nombre
         self.iDsMaterial = iDsMaterial
         self.horarios = horarios
-        self.fechaComienzoActividad = fechaComienzoActividad
 
 class PuntoRetiro:
     """ Representa una de las ubicaciones físicas donde los usuarios podrán retirar sus 

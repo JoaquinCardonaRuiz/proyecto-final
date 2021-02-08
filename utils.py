@@ -103,14 +103,14 @@ class Utils():
         Convierte TinyInts a bools y viceversa.
         """
         try:
-            if value == 0:
+            if value:
+                return 1
+            elif value == False:
+                return 0
+            elif value == 0:
                 return False
             elif value == 1:
                 return True
-            elif value == False:
-                return 0
-            else: 
-                return 1
         except Exception as e:
            raise custom_exceptions.ErrorDeNegocio(origen="utils.boolean_tinyInt_converter()",
                                                    msj=str(e),

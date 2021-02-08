@@ -240,6 +240,7 @@ def alta_pd():
                 horaDesde = request.form[dia + '-horaDesde']
                 horaHasta = request.form[dia + '-horaHasta']
                 horarios.append([horaDesde,horaHasta, dia])
+            NegocioPuntoDeposito.alta_pd(nombre, estado, calle, altura, ciudad, provincia, pais, horarios)
         except Exception as e:
             return error(e,"gestion-puntos-deposito")
     return redirect(url_for('gestion_pd'))

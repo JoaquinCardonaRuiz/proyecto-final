@@ -1,6 +1,7 @@
 from data.data_material import DatosMaterial
 from negocio.negocio_horario import NegocioHorario
 from data.data_horario import DatosHorario
+from negocio.negocio_direccion import NegocioDireccion
 from classes import PuntoDeposito
 from flask.json import jsonify
 from utils import Utils
@@ -26,9 +27,7 @@ class NegocioPuntoDeposito(Negocio):
         try:
             puntos_deposito = DatosPuntoDeposito.get_all()
             for punto_dep in puntos_deposito:
-                punto_dep.direccion = Utils.adress_format(punto_dep.direccion)
                 punto_dep.estado = Utils.boolean_tinyInt_converter(punto_dep.estado)
-                punto_dep.fechaComienzoActividad = Utils.date_format(punto_dep.fechaComienzoActividad)
             return puntos_deposito
         
         except custom_exceptions.ErrorDeConexion as e:
@@ -218,33 +217,28 @@ class NegocioPuntoDeposito(Negocio):
             if nombre == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
                                                         msj_adicional = "Error al añadir el Punto de Depósito. El nombre no puede quedar vacío.")
-            #Valida RN27
-            elif altura == "":
+            
+            #Valida RN24
+            estado = Utils.js_py_bool_converter(estado)
+            if estado != True and estado != False:
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. La altura no puede quedar vacía.")
-            #Valida RN32
-            elif isinstance(int(altura), int):
-                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. La altura debe ser numérica.")
-            #Valida RN26
-            elif calle == "":
-                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. La calle no puede quedar vacía.")
-            #Valida RN28
-            elif ciudad == "":
-                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. La ciudad no puede quedar vacía.")
-            #Valida RN29
-            elif provincia == "":
-                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. La provincia no puede quedar vacía.")
-            #Valida RN30
-            elif pais == "":
-                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. El país no puede quedar vacío.")
+                                                        msj_adicional = "Error al añadir el Punto de Depósito. El estado no puede ser distinto de True o False.")
+            
+            estado = Utils.boolean_tinyInt_converter(estado)
+            
+            #Alta de la direccion.
+            idDireccion = NegocioDireccion.alta_direccion(calle, altura, ciudad, provincia, pais)
+            
+            #Alta Punto de Depósito
+            DatosPuntoDeposito.alta_pd(PuntoDeposito(None, None, estado, nombre, None, None),idDireccion)
+            
+            #Alta horarios
             horarios_ = []
             for horario in horarios:
                 horarios_.append(NegocioHorario.valida_horaios(horario))
+
+            #TODO:alta materiales
+            
 
         except custom_exceptions.ErrorDeConexion as e:
             raise e
