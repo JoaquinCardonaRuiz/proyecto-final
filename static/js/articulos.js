@@ -8,10 +8,10 @@ var costoProdCompleto = false;
 var costoInsCompleto = false;
 var otrosCostosCompleto = false;
 var costoAltCompleto = false;
-var costoProdCompletoMod = false;
-var costoInsCompletoMod = false;
-var otrosCostosCompletoMod = false;
-var costoAltCompletoMod = false;
+var costoProdCompletoMod = true;
+var costoInsCompletoMod = true;
+var otrosCostosCompletoMod = true;
+var costoAltCompletoMod = true;
 
 function submitForm(n){
     document.getElementById(n).submit();
