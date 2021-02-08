@@ -45,6 +45,7 @@ class Usuario:
         ecopuntos (EcoPuntos[]): Arreglo de los ecopuntos que el usuario posee.
         IDTipoUsuario (string): Identificador de la instancia de TipoUsuario que corresponde
             a la entidad.
+        direccion (Direccion): Dirección física del domicilio del usuario
         despositosActivos (Deposito[]): Arreglo de depositos que siguen vigentes.
         depositosVencidos (Deposito[]): Arreglo de depositos que se encuentran vencidos.
         mediosPago (MedioPago[]): Arreglo de medios de pago con los que cuenta el usuario.
@@ -67,6 +68,7 @@ class Usuario:
                 apellido, 
                 password, 
                 idTipoUsuario,
+                direccion,
                 ecoPuntos=[],
                 depositosActivos=[],
                 depositosVencidos=[],
@@ -84,6 +86,7 @@ class Usuario:
         self.apellido = apellido
         self.password = password
         self.idTipoUsuario = idTipoUsuario
+        self.direccion = direccion
         self.ecoPuntos = ecoPuntos
         self.depositosActivos = depositosActivos
         self.depositosVencidos = depositosVencidos
@@ -750,12 +753,14 @@ class EntidadDestino:
     Atributos:
         id (string): Identificador de la entidad.
         nombre (string): Nombre para identificación por parte del usuario.
+        direccion (Direccion): dirección física donde se ubica la entidad destino
         salidas (SalidaStock[]): Arreglo de las salidas de stock destinadas a la entidad.
     """
-    def __init__(self,id,nombre,estado,salidas=[]):
+    def __init__(self,id,nombre,estado,direccion,salidas=[]):
         self.id = id
         self.nombre = nombre
         self.estado = estado
+        self.direccion = direccion
         self.salidas = salidas
 
 class SalidaStock:
@@ -821,7 +826,25 @@ class Valor:
         self.fecha = fecha
 
 
+class Direccion:
+    """
+    Representa una dirección geográfica para localizar un punto de deposito, retiro, o una entidad de destino
 
+    Atributos:
+        id (string): Identificador de la entidad
+        calle (string): Nombre de la calle
+        altura (string): Numero de la dirección
+        ciudad (string): Ciudad donde se encuentra la dirección
+        provincia (string): Provincia '' ''        '' ''
+        pais (string): Pais           '' ''        '' ''
+    """
+    def __init__(self,id,calle,altura,ciudad,provincia,pais):
+        self.id = id
+        self.calle = calle
+        self.altura = altura
+        self.ciudad = ciudad
+        self.provincia = provincia
+        self.pais = pais
 
 
 
