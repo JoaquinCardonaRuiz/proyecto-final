@@ -12,13 +12,13 @@ class NegocioDireccion(Negocio):
         """
         #Conexión con el motor de BD.
         try:
-    
+            print(altura)
             #Valida RN27
             if altura == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",
                                                         msj_adicional = "Error al añadir el Punto de Depósito. La altura no puede quedar vacía.")
             #Valida RN32
-            elif isinstance(int(altura), int):
+            elif not(isinstance(int(altura), int)):
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",
                                                         msj_adicional = "Error al añadir el Punto de Depósito. La altura debe ser numérica.")
             #Valida RN26
@@ -50,7 +50,7 @@ class NegocioDireccion(Negocio):
     @classmethod
     def alta_direccion(cls, calle, altura, ciudad, provincia, pais):
         """
-        Realiza las validaciones de negocio de una direccion.
+        Añade una dirección a la BD.
         """
         #Conexión con el motor de BD.
         try:

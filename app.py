@@ -230,7 +230,7 @@ def alta_pd():
     if request.method == 'POST':
         try:
             nombre = request.form['nombrePD']
-            estado = request.form['customSwitch1']
+            estado = request.form['switch-value']
             calle = request.form['callePD']
             altura = request.form['alturaPD']
             ciudad = request.form['ciudadPD']

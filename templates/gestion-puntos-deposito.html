@@ -15,7 +15,7 @@
 <div class="page-content" style="text-align: left;" id="content">
     <div class="container" id="heading-container">
         <h1 class="heading">Gestión de Puntos de Depósito</h1>
-        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Cree, elimine, modifique y configure los Puntos de Retiro de EcoAsistente.</span></h6>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Cree, elimine, modifique y configure los Puntos de Depósito de EcoAsistente.</span></h6>
     </div>
     <div class="container" id="top-container">
         <div class="row">
@@ -270,6 +270,7 @@
                                     <input type="checkbox" class="custom-control-input" id="customSwitch1" name="customSwitch1" checked>
                                     <label class="custom-control-label" for="customSwitch1"></label>
                                 </div>
+                                <input type="text" id="switch-value" name = "switch-value" hidden>
                             </div>
                             <p class="color-activo" id="pdActivo">Punto de Depósito Activo</p>
                             <p class="color-inactivo" id="pdInactivo">Punto de Depósito Inactivo</p>
@@ -370,6 +371,7 @@
                                 <span class="bar" style="width: 100%;" id="{{dia + '-bar-horaDesde'}}"></span>
                                 <label>Horario apertura</label>
                                 <p id="{{dia + '-error-horaDesde'}}" class="modalErrorMessage" style="display: none;">* Horario inválido.</p>
+                                <p id="{{dia + '-error'}}" class="modalErrorMessage" style="width: 250%; display: none;">* El horario de apertura debe ser menor al de cierre.</p>
                             </div>
                         </div>
                         <div class="col">

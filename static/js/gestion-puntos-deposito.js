@@ -330,10 +330,19 @@ function validaHorarioPD(){
             else{
                 $("#" + String(dia) + "-error-horaDesde").hide();
             }
+            $("#" + String(dia) + "-error").hide();
+        }
+        else if ((horaDesde) >= (horaHasta) && $("#" + String(dia) + "-switch").is(":checked") == true){
+            pre_desactiva = true;
+            $("#" + String(dia) + "-error-horaDesde").hide();
+            $("#" + String(dia) + "-error-horaHasta").hide();
+            $("#" + String(dia) + "-error").show();
+
         }
         else{
             $("#" + String(dia) + "-error-horaDesde").hide();
             $("#" + String(dia) + "-error-horaHasta").hide();
+            $("#" + String(dia) + "-error").hide();
         }
         
       }
@@ -416,29 +425,24 @@ function validaDireccion(campoValidacion){
 //Valida e impide que los input sean caracteres distintos de numeros.
 function isNumberKey(txt, evt) {
     var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if (charCode == 46) {
-      //Check if the text already contains the . character
-      if (txt.value.indexOf('.') === -1) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      if (charCode > 31 &&
-        (charCode < 48 || charCode > 57))
+    if (charCode > 31 && (charCode < 48 || charCode > 57)){
         return false;
     }
-    return true;
+    else{
+        return true;
+    }
   }
 
 $("#customSwitch1").click(function() {
     if($("#customSwitch1").is(":checked") == true){
         $("#pdInactivo").fadeOut();    
         $("#pdActivo").fadeIn();
+        $("#switch-value").val("true");
     }
     else{
         $("#pdActivo").fadeOut(); 
-        $("#pdInactivo").fadeIn(); 
+        $("#pdInactivo").fadeIn();
+        $("#switch-value").val("false");
     }
 });
 

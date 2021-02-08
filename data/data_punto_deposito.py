@@ -66,10 +66,18 @@ class DatosPuntoDeposito(Datos):
         """
         cls.abrir_conexion()
         try:
+            #Obtengo el ID que se le va a asignar para poder guardarlo en el Horario.
+            sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'puntosDeposito'")
+            cls.cursor.execute(sql)
+            id_asignado = cls.cursor.fetchone()[0]
+
+            #Hago el alta del PD en la BD.
             sql = ("INSERT into puntosDeposito (estado,nombre,estadoEliminacion,idDireccion) values (%s, %s, %s, %s)")
             values =  (puntoDep.estado, puntoDep.nombre, 'disponible', idDireccion)
             cls.cursor.execute(sql, values)
             cls.db.commit()
+
+            return id_asignado
             
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_niveles()",

@@ -230,12 +230,10 @@ class NegocioPuntoDeposito(Negocio):
             idDireccion = NegocioDireccion.alta_direccion(calle, altura, ciudad, provincia, pais)
             
             #Alta Punto de Depósito
-            DatosPuntoDeposito.alta_pd(PuntoDeposito(None, None, estado, nombre, None, None),idDireccion)
+            idPuntoDep = DatosPuntoDeposito.alta_pd(PuntoDeposito(None, None, estado, nombre, None, None),idDireccion)
             
             #Alta horarios
-            horarios_ = []
-            for horario in horarios:
-                horarios_.append(NegocioHorario.valida_horaios(horario))
+            NegocioHorario.alta_horarios(horarios, idPuntoDep)
 
             #TODO:alta materiales
             
