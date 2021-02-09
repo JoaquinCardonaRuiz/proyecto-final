@@ -12,7 +12,6 @@ class NegocioDireccion(Negocio):
         """
         #Conexión con el motor de BD.
         try:
-            print(altura)
             #Valida RN27
             if altura == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",

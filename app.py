@@ -3,6 +3,7 @@ from flask.json import JSONEncoder
 from classes import Horario
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
 from negocio.capa_negocio import *
+import ast
 app = Flask(__name__)
 
 #Session
@@ -188,11 +189,12 @@ def selection():
 @app.route('/gestion-puntos-deposito', methods = ['GET','POST'])
 def gestion_pd():
     try:
+        materiales = NegocioMaterial.get_all()
         puntos_deposito = NegocioPuntoDeposito.get_all()
         dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
     except Exception as e:
         return error(e,"gestion_pd") 
-    return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito, dias = dias)
+    return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito, dias = dias, materiales = materiales)
 
 @app.route('/gestion-puntos-deposito/horarios/<int:id>')
 def horarios_pd(id):
@@ -240,6 +242,7 @@ def alta_pd():
                 horaDesde = request.form[dia + '-horaDesde']
                 horaHasta = request.form[dia + '-horaHasta']
                 horarios.append([horaDesde,horaHasta, dia])
+            materiales = ast.literal_eval(request.form['materiales-altaPD'])
             NegocioPuntoDeposito.alta_pd(nombre, estado, calle, altura, ciudad, provincia, pais, horarios)
         except Exception as e:
             return error(e,"gestion-puntos-deposito")

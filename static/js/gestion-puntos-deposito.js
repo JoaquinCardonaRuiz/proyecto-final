@@ -9,7 +9,9 @@ var ciudad = true;
 var altura = false;
 var calle = false;
 var menuShown = false;
+var selectedOptions = [];
 
+//Funciones específicas que manejan el dropdwon.
 function headingOptionHover(){
     $(".chevron").css({cursor: 'pointer', transform: 'rotate(180deg)'});
 }
@@ -19,16 +21,73 @@ function headingOptionLeave(){
 }
 
 function openMenu() {
-    $("#menu-option-box-1").show();
+    $("#menu-option-box-1").fadeIn();
     $(".dropdown-box").css("border","1px solid #95C22B");
+    $('#cards-row-materiales').css({"transform":"translateY(200px)"});
+    $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(200px)"});
+    $(".margin-row").show();
+    $(".margin-row").css({"transform":"translateY(200px)"});
+    $("#bottomAltaModalTextAltaPD").css({"margin-bottom":"25px"});
 };
 
-//Cierra el dropdown de la opción "Info" del menú principal
+
 function closeMenu() {
     $("#menu-option-box-1").hide();
     $(".dropdown-box").css("border","1px solid rgb(184, 184, 184)");
+    $('#cards-row-materiales').css({"transform":"translateY(0px)"});
+    $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(0px)"});
+    $("#bottomAltaModalTextAltaPD").css({"margin-bottom":""});
+    $(".margin-row").css({"transform":"translateY(0px)"});
+    $(".margin-row").hide();
 };
 
+function dropdownOptionSelect(idOption, nameOption, color){
+    if (selectedOptions.includes(idOption)){
+        const index = selectedOptions.indexOf(idOption);
+        if (index > -1) {
+            selectedOptions.splice(index, 1);
+        }
+        $("#" + String(nameOption) + "-check").fadeOut();
+        $("#" + String(nameOption) + "-card").fadeOut();
+    }
+    else{
+        selectedOptions.push(idOption);
+        $("#" + String(nameOption) + "-check").fadeIn();
+        setColor(nameOption,color);
+        $("#" + String(nameOption) + "-card").fadeIn();
+    }
+    labelShowHide();
+    $("#materiales-altaPD").val("[" + selectedOptions + "]");  
+     
+}
+
+function labelShowHide(){
+    if (selectedOptions.length == 0){
+        $(".indicator-label-2").hide();
+        $("#warning-label-altaPD").fadeIn(1000);
+    }
+    else{
+        $(".indicator-label-2").show();
+        $("#warning-label-altaPD").hide();
+    }
+}
+
+function setColor(nombre,color){
+    $("#"+String(nombre)+"-img").css("background-color", String(color));
+}
+
+//Cierra el dropdown al clickear fuera de el y su
+$(document).on('click', function (e) {
+    if ($(e.target).closest("#dropdown-altaPD").length === 0) {
+        if (menuShown == true){
+            closeMenu();
+            headingOptionLeave();
+            menuShown=false;
+        }
+    }
+});
+
+//Funcion principal de manejo del compartamiento el dropdown.
 function dropdownManager(){
     if (menuShown == false){
         openMenu();
@@ -42,6 +101,7 @@ function dropdownManager(){
     }
 
 }
+
 $.getJSON("/gestion-puntos-deposito/nombres-pd/",function (result){
     nombres = result;
 });
@@ -288,7 +348,6 @@ function openLoadingRing(){
     $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
     $(".lds-ring").show();
     $("#loadingRow").show();
-    
 }
 
 function openAltaModal(){
@@ -304,19 +363,21 @@ function openAltaModal(){
     $("#nombrePD").val("");
     $("#customSwitch1").val(true);
     $('#primary-btn-alta').prop('disabled', true);
-    
+    $(".card-altaPD").hide();
+    $(".dropdown-option-check").hide();
+
+    //Seteo de valores iniciales.
     for (var i in dias){
         dia = dias[i];
         $("#" + String(dia) + "-horaDesde").val("08:00");
         $("#" + String(dia) + "-horaHasta").val("20:00");
     }
-
-    //Seteo de valores iniciales.
     $("#callePD").val("");
     $("#alturaPD").val("");
     $("#ciudadPD").val("Rosario");
     $("#provinciaPD").val("Santa Fe");
     $("#paisPD").val("Argentina");
+    selectedOptions = [];
 }
 
 //Valida que el campo Nombre PD no esté repetido ni vacío.
@@ -598,7 +659,9 @@ function display_page(){
         $("#modal-alta-p4").hide();
         $("#modal-alta-p1").fadeIn();
         $("#secondary-btn").text("Cancelar");
+        $("#primary-btn-alta").text("Siguiente");
         $("#subheader-alta").text("Datos Básicos");
+        goToTopOfPage();
      }
      else if (alta_form_page == 2){
         $("#modal-alta-p1").hide();
@@ -606,7 +669,9 @@ function display_page(){
         $("#modal-alta-p4").hide();
         $("#modal-alta-p2").fadeIn();
         $("#secondary-btn").text("Anterior");
+        $("#primary-btn-alta").text("Siguiente");
         $("#subheader-alta").text("Dirección");
+        goToTopOfPage();
      }
      else if (alta_form_page == 3){
         $("#modal-alta-p1").hide();
@@ -614,16 +679,29 @@ function display_page(){
         $("#modal-alta-p4").hide();
         $("#modal-alta-p3").fadeIn();
         $("#secondary-btn").text("Anterior");
+        $("#primary-btn-alta").text("Siguiente");
         $("#subheader-alta").text("Horarios");
+        $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(0px)"});
+        $(".margin-row").hide();
+        goToTopOfPage();
      } 
      else{
+        closeMenu();
+        labelShowHide();
         $("#modal-alta-p1").hide();
         $("#modal-alta-p2").hide();
         $("#modal-alta-p3").hide();
         $("#modal-alta-p4").fadeIn();
         $("#secondary-btn").text("Anterior");
+        $("#primary-btn-alta").text("Crear Punto de  Depósito");
         $("#subheader-alta").text("Materiales");
+        goToTopOfPage();
      }
+}
+
+//Traslada el scroll al tope de la pagina en el form de alta de un PD.
+function goToTopOfPage(){
+    $('#modalAltaPDBody').scrollTop(0);    
 }
 
 //Funcion para el manejo de los mensajes durante la carga.

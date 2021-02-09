@@ -197,7 +197,7 @@
                         </div>
                         <div class="modal-card-col-sm" >
                             <div class="row d-flex justify-content-center card-first-row-sm">
-                                <p class="material-card-title" id="nombre-material">Abierto</p>
+                                <p class="material-card-title" id="nombre-material">Nombre</p>
                             </div>
                             <div class="row d-flex justify-content-center card-second-row">
                                 <p class="text-box material-card-subtitle">Nombre material</p>
@@ -232,7 +232,7 @@
 
 <!--Alta Modal -->
 <div class="modal fade modal-lg" id="altaPDModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document" style="height: fit-content;">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document" style="height: fit-content;"id="altaPDModalContent">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="headingModal">Añadir un Punto de Depósito</h5>
@@ -240,7 +240,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body modal-body-card" style="height: fit-content;">
+        <div class="modal-body modal-body-card" style="height: fit-content;" id="modalAltaPDBody">
             <!--Loading Ring -->
             <div class="row" id="loadingRow">
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -253,20 +253,6 @@
                 </div>
                 <!--Página 1 Alta -->
                 <div id="modal-alta-p1">
-                    <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px; margin-bottom: 400px;">
-                        <div class="dropdown-box">
-                            <h4 id="heading-option" onclick="dropdownManager();">
-                                Seleccionar Materiales 
-                                <img src="/static/img/chevron.svg" class="chevron"></img>
-                            </h4>
-                            <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
-                                <p class="menu-option-box-op" id="menu-option-box-op-1"><i class="fa fa-check dropdown-option-check" id="info-modal-1-pos"></i>Madera</p>
-                                <p class="menu-option-box-op">Plástico</p>
-                                <p class="menu-option-box-op">Vidrio</p>
-                                <p class="menu-option-box-op">Aluminio</p>                
-                            </div>       
-                        </div>                 
-                    </div>
                     <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px;">
                         <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
                             <input type="text" required id="nombrePD" onkeyup="validaNombrePD();" name="nombrePD" autocomplete="off" style="width: 90%;"> 
@@ -357,6 +343,7 @@
                         </div>
                     </div>
                 </div>
+                <!--Página 3 Alta -->
                 <div id="modal-alta-p3" style="display: none;">
                     {%for dia in dias%}
                     <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
@@ -401,14 +388,67 @@
                     </div> 
                     {%endfor%}
                 </div>
+                <!--Página 4 Alta -->
                 <div id="modal-alta-p4" style="display: none;">
-                    
+                    <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                        <h7 class="indicator-label">Seleccione los materiales que aceptará el Punto de Depósito:</h7>
+                        <div class="dropdown-box" id="dropdown-altaPD">
+                            <h4 id="heading-option" onclick="dropdownManager();">
+                                Seleccionar Materiales 
+                                <img src="/static/img/chevron.svg" class="chevron"></img>
+                            </h4>
+                            <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
+                                {%for material in materiales%}
+                                <p class="menu-option-box-op" onclick="dropdownOptionSelect('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check" id="{{material.nombre + '-check'}}" style="display: none;"></i>{{material.nombre}}</p>              
+                                {%endfor%}
+                            </div>       
+                        </div>                 
+                    </div>
+                    <div class="row" id="cards-row-materiales">
+                        <h7 class="indicator-label-2">El Punto de Depósito aceptará:</h7>
+                        <p id="warning-label-altaPD"><i class="fa fa-exclamation-triangle" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
+                        {% for material in materiales %}
+                        <div class="container modal-large-card-sm card-altaPD" id="{{material.nombre + '-card'}}" style="display: none;">
+                            <div class="row">
+                                <div class="modal-card-col-sm">
+                                    <div class="circle materiales-large-card-img" id="{{material.nombre + '-img'}}">{{material.nombre[0]}}</div>
+                                </div>
+                                <div class="modal-card-col-sm" >
+                                    <div class="row d-flex justify-content-center card-first-row-sm">
+                                        <p class="material-card-title" id="nombre-material">{{material.nombre}}</p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center card-second-row">
+                                        <p class="text-box material-card-subtitle">Nombre material</p>
+                                    </div>
+                                </div>
+                                <div class="modal-card-col-sm">
+                                    <div class="row d-flex justify-content-center card-first-row-sm">
+                                        <p class="material-card-title" id="unidad-medida">{{material.unidadMedida}}</p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center card-second-row">
+                                        <p class="text-box material-card-subtitle">Unidad de medida</p>
+                                    </div>
+                                </div>
+                                <div class="modal-card-col-sm">
+                                    <div class="row d-flex justify-content-center card-first-row-sm">
+                                        <p class="material-card-title" id="id-material">{{material.id}}</p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center card-second-row">
+                                        <p class="text-box material-card-subtitle">ID material</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%}
+                        <input type="text" id="materiales-altaPD" name = "materiales-altaPD" hidden>
+                    </div>
                 </div>
             </form>
             <div class="row">
                 <p class="bottom-modal-text" id="bottomAltaModalTextAltaPD">Una vez completados todos los datos, presione el "Siguiente".</p>
                 <p class="bottom-modal-text" id="bottomAltaModalText"></p>
             </div>
+            <div class="row margin-row" style="display: none;"></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn secondary-btn" id="secondary-btn" onclick="previous_page();">Cancelar</button>
