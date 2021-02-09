@@ -3,7 +3,6 @@ from flask.json import JSONEncoder
 from classes import Horario
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
 from negocio.capa_negocio import *
-import ast
 app = Flask(__name__)
 
 #Session
@@ -242,8 +241,9 @@ def alta_pd():
                 horaDesde = request.form[dia + '-horaDesde']
                 horaHasta = request.form[dia + '-horaHasta']
                 horarios.append([horaDesde,horaHasta, dia])
-            materiales = ast.literal_eval(request.form['materiales-altaPD'])
-            NegocioPuntoDeposito.alta_pd(nombre, estado, calle, altura, ciudad, provincia, pais, horarios)
+            materiales = request.form['materiales-altaPD']
+            
+            NegocioPuntoDeposito.alta_pd(nombre, estado, calle, altura, ciudad, provincia, pais, horarios, materiales)
         except Exception as e:
             return error(e,"gestion-puntos-deposito")
     return redirect(url_for('gestion_pd'))

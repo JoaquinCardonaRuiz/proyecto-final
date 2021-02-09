@@ -43,15 +43,28 @@ class NegocioHorario(Negocio):
                                                     msj_adicional="Error en la capa de Negocio obtieniendo los niveles de la capa de Datos.")
 
     @classmethod
-    def alta_horarios(cls, horarios, idPuntoDep):
+    def alta_horarios(cls, horarios, idPuntoDep, validar=False):
         """
         Añade los horarios de un PD o un PR a la BD.
         """
         #Conexión con el motor de BD.
         try:
-            for horario in horarios:
-                horario = cls.valida_horarios(horario)
-                DatosHorario.alta_horario_PD(horario, idPuntoDep)
+            
+                for horario in horarios:
+                    if validar:
+                        horario = cls.valida_horarios(horario)
+                        DatosHorario.alta_horario_PD(horario, idPuntoDep)
+                    else:
+                
+                        horaDesde = horario[0]
+                        horaHasta = horario[1]
+                        dia = horario[2]
+                        if horaDesde == "" and horaHasta =="":
+                            horario = Horario(None,None,None,dia)
+                        else:
+                            horario = Horario(None,datetime.strptime(horaDesde, '%H:%M').time(),datetime.strptime(horaHasta, '%H:%M').time(),dia)
+
+                    DatosHorario.alta_horario_PD(horario, idPuntoDep)
 
         except custom_exceptions.ErrorDeConexion as e:
             raise e

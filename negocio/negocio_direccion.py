@@ -47,16 +47,17 @@ class NegocioDireccion(Negocio):
 
 
     @classmethod
-    def alta_direccion(cls, calle, altura, ciudad, provincia, pais):
+    def alta_direccion(cls, calle, altura, ciudad, provincia, pais, validar=False):
         """
         Añade una dirección a la BD.
         """
         #Conexión con el motor de BD.
         try:
-            if NegocioDireccion.valida_direccion(calle, altura, ciudad, provincia, pais):
-                id_direccion = DatosDireccion.alta_direccion(Direccion(None,calle, altura, ciudad, provincia, pais))
-
-            return id_direccion
+            if validar:
+                if NegocioDireccion.valida_direccion(calle, altura, ciudad, provincia, pais):
+                    return DatosDireccion.alta_direccion(Direccion(None,calle, altura, ciudad, provincia, pais))
+            else:
+                return DatosDireccion.alta_direccion(Direccion(None,calle, altura, ciudad, provincia, pais))
 
         except custom_exceptions.ErrorDeConexion as e:
             raise e

@@ -348,4 +348,6 @@
   display: none;
 }
 
-
+.loadingRingAlta{
+  margin-top: 30px !important;
+}

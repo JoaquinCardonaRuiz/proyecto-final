@@ -378,6 +378,8 @@ function openAltaModal(){
     $("#provinciaPD").val("Santa Fe");
     $("#paisPD").val("Argentina");
     selectedOptions = [];
+    $("#switch-value").val("true");
+
 }
 
 //Valida que el campo Nombre PD no esté repetido ni vacío.
@@ -661,6 +663,7 @@ function display_page(){
         $("#secondary-btn").text("Cancelar");
         $("#primary-btn-alta").text("Siguiente");
         $("#subheader-alta").text("Datos Básicos");
+        $("#bottomAltaModalTextAltaPD").text('Una vez completados todos los datos, presione el botón "Siguiente".');
         goToTopOfPage();
      }
      else if (alta_form_page == 2){
@@ -671,6 +674,7 @@ function display_page(){
         $("#secondary-btn").text("Anterior");
         $("#primary-btn-alta").text("Siguiente");
         $("#subheader-alta").text("Dirección");
+        $("#bottomAltaModalTextAltaPD").text('Una vez completada la dirección, presione el botón "Siguiente".');
         goToTopOfPage();
      }
      else if (alta_form_page == 3){
@@ -683,6 +687,7 @@ function display_page(){
         $("#subheader-alta").text("Horarios");
         $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(0px)"});
         $(".margin-row").hide();
+        $("#bottomAltaModalTextAltaPD").text('Una vez elegidos los horarios, presione el botón "Siguiente".');
         goToTopOfPage();
      } 
      else{
@@ -695,6 +700,7 @@ function display_page(){
         $("#secondary-btn").text("Anterior");
         $("#primary-btn-alta").text("Crear Punto de  Depósito");
         $("#subheader-alta").text("Materiales");
+        $("#bottomAltaModalTextAltaPD").text('Una vez elegidos los materiales, presione "Crear Punto de  Depósito" para añadir el nuevo Punto.');
         goToTopOfPage();
      }
 }
@@ -710,7 +716,7 @@ function nextMsgMod() {
         $('#bottomModModalText').html(messagesMod.pop()).fadeIn(500);
 
     } else {
-        $('#bottomModModalText').html(messagesMod.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgMod);
+        $('#bottomModModalText').html(messagesMod.pop()).fadeIn(500).delay(7500).fadeOut(500, nextMsgMod);
 
     }
 };
@@ -720,7 +726,7 @@ function nextMsgAlta() {
         $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500);
 
     } else {
-        $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgAlta);
+        $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500).delay(7500).fadeOut(500, nextMsgAlta);
 
     }
 };
@@ -730,7 +736,7 @@ function nextMsgBaja() {
         $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500);
 
     } else {
-        $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgBaja);
+        $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500).delay(7500).fadeOut(500, nextMsgBaja);
     }
 };
 

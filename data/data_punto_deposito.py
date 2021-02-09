@@ -86,3 +86,25 @@ class DatosPuntoDeposito(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+    @classmethod
+    def alta_materialPD(cls, materiales, idPunto, noClose = False):
+        """
+        Añade un los materiales aceptados por un Punto de Depósito a la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            for material in materiales:
+                print(str(material))
+                sql = ("INSERT into puntosDep_mat (idMaterial, idPunto, estado) values (%s,%s,%s)")
+                values = (str(material), idPunto, "disponible")
+                cls.cursor.execute(sql,values)
+            cls.db.commit()
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.alta_materialPD()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error añadiendo los materiales aceptados por un Punto de Depósito a la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()

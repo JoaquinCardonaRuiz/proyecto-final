@@ -13,6 +13,8 @@ import time
 from datetime import datetime, timezone, timedelta
 import pytz
 import math
+import ast
+
 
 class NegocioPuntoDeposito(Negocio):
     """Clase que representa la capa de negocio para la entidad Punto de Depósito. Hereda de Negocio."""      
@@ -207,7 +209,7 @@ class NegocioPuntoDeposito(Negocio):
 
     
     @classmethod
-    def alta_pd(cls, nombre, estado, calle, altura, ciudad, provincia, pais, horarios):
+    def alta_pd(cls, nombre, estado, calle, altura, ciudad, provincia, pais, horarios, materiales):
         """
         Obtiene todos los Puntos de Depósito de la BD.
         """
@@ -230,16 +232,21 @@ class NegocioPuntoDeposito(Negocio):
             
             estado = Utils.boolean_tinyInt_converter(estado)
             
-            #Alta de la direccion.
-            idDireccion = NegocioDireccion.alta_direccion(calle, altura, ciudad, provincia, pais)
+            #Validación de direccion
+            NegocioDireccion.valida_direccion(calle, altura, ciudad, provincia, pais)
+            #Validacion horarios
+            for horario in horarios:
+                NegocioHorario.valida_horarios(horario)
             
+            #Alta de la direccion
+            idDireccion = NegocioDireccion.alta_direccion(calle, altura, ciudad, provincia, pais)
             #Alta Punto de Depósito
             idPuntoDep = DatosPuntoDeposito.alta_pd(PuntoDeposito(None, None, estado, nombre, None, None),idDireccion)
-            
             #Alta horarios
             NegocioHorario.alta_horarios(horarios, idPuntoDep)
+            #alta materiales_PD
+            DatosPuntoDeposito.alta_materialPD(ast.literal_eval(materiales), idPuntoDep)
 
-            #TODO:alta materiales
             
 
         except custom_exceptions.ErrorDeConexion as e:
