@@ -330,7 +330,7 @@
                     <div class="row" id="row-pag-1-2-mod">
                         <div class="col">
                             <div class="group" style="margin-left: 10%;">      
-                                <input type="text" id="imagenInput-mod" name="imagen" >
+                                <input type="text" id="imagenInput-mod" name="imagen" onkeyup='check_imagen();'>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Imagen</label>
@@ -341,7 +341,7 @@
                             <div class="group" style="margin-left: 10%">
                                 <div class="form-check">
                                     <label style="margin-top: 1%;">Venta a usuarios</label>
-                                    <input style="margin-left: -3%;margin-top: 6%;" class="form-check-input" type="checkbox" id="usuariosCheck-mod" name="ventaUsuario"></input>
+                                    <input style="margin-left: -3%;margin-top: 6%;" class="form-check-input" type="checkbox" id="usuariosCheck-mod" name="ventaUsuario" onClick='check_venta_u();'></input>
                                 </div>
                             </div>
                         </div>
@@ -414,9 +414,7 @@
                     <div class="col">
                         <div class="group" style="margin-left: 10%;">
                             <input hidden>
-                            <input readonly type="text" id="valorInput-mod" name="valor" >
-                            <span class="highlight"></span>
-                            <span class="bar"></span>
+                            <input class="data-show-input" readonly type="text" id="valorInput-mod" name="valor" >
                             <label>Precio</label>
                         </div>
                     </div>

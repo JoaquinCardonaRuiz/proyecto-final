@@ -240,6 +240,9 @@ def edit_articulo():
         unidad =                request.form['unidad']
         imagen =                request.form['imagen']
         ventaUsuario = None
+        #Aparentemente cuando un input tipo checkbox está "no chequeado"
+        #no se manda en el form, asi que chequeo si puedo leerlo, para
+        #ver si esta activado
         try: 
             request.form['ventaUsuario']
             ventaUsuario = 1

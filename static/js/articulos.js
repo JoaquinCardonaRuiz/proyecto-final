@@ -526,3 +526,24 @@ function check_edit(){
         document.getElementById("error-mark-p").hidden = true;
     }
 }
+
+
+function check_venta_u(){
+    valor = document.getElementById("usuariosCheck-mod").checked;
+    if(valor == vars_or[3]){
+        mod_vars[3] = 0;
+    }else{
+        mod_vars[3] = 1;
+    }
+    check_edit();
+}
+
+function check_imagen(){
+    valor = document.getElementById("imagenInput-mod").value;
+    if(valor == vars_or[2]){
+        mod_vars[2] = 0;
+    }else{
+        mod_vars[2] = 1;
+    }
+    check_edit();
+}
