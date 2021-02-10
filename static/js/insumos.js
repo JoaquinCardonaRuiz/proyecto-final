@@ -1,18 +1,84 @@
-var costosCompleto = false;
+var costosCompletoProd = false;
+var costosCompletoMat = false;
+var costosCompletoOtros = false;
 var nombreCompleto = false;
 var unidadCompleto = false;
-var costosCompletoMod = false;
+var colorCompleto = false;
+var costosCompletoProdMod = false;
+var costosCompletoMatMod = false;
+var costosCompletoOtrosMod = false;
 var nombreCompletoMod = false;
 var unidadCompletoMod = false;
+var colorCompletoMod = false;
 var nombreOriginal = "";
 var del = false;
 var mod = false;
 
 function openAltaModal(){
     jQuery.noConflict();
+    $("#colorInput").val("#" + (Math.random().toString(16) + "000000").slice(2, 8))
     $(".lds-ring").hide();
     $('#altaModal').modal('show');
+    checkColorAlta();
+    calcularCosto("");
 }
+
+function randomColorAlta(){
+    $("#colorInput").val("#" + (Math.random().toString(16) + "000000").slice(2, 8));
+    checkColorAlta();
+}
+
+function randomColorMod(){
+    $("#colorInputMod").val("#" + (Math.random().toString(16) + "000000").slice(2, 8));
+    checkColorMod();
+}
+
+
+function checkColorAlta(){
+    var c = document.getElementById("colorInput").value;
+    if(!c){
+        document.getElementById("colorError").innerHTML = "Este campo debe ser completado";
+        colorCompleto = false;
+    }
+    else if(c[0] != "#"){
+        document.getElementById("colorError").innerHTML = "Formato Erróneo";
+        colorCompleto = false;
+    }
+    else if(c.length != 7){
+        document.getElementById("colorError").innerHTML = "Formato Erróneo";
+        colorCompleto = false;
+    }
+    else{
+        document.getElementById("colorError").innerHTML = "";
+        document.getElementById("color-marker").style.color = c;
+        colorCompleto = true;
+    }
+    console.log(colorCompleto);
+    permiteAlta();
+}
+
+function checkColorMod(){
+    var c = document.getElementById("colorInputMod").value;
+    if(!c){
+        document.getElementById("colorErrorMod").innerHTML = "Este campo debe ser completado";
+        colorCompletoMod = false;
+    }
+    else if(c[0] != "#"){
+        document.getElementById("colorErrorMod").innerHTML = "Formato Erróneo";
+        colorCompletoMod = false;
+    }
+    else if(c.length != 7){
+        document.getElementById("colorErrorMod").innerHTML = "Formato Erróneo";
+        colorCompletoMod = false;
+    }
+    else{
+        document.getElementById("colorErrorMod").innerHTML = "";
+        document.getElementById("color-markerMod").style.color = c;
+        colorCompletoMod = true;
+    }
+    permiteEdit();
+}
+
 
 function submitForm(n){
     document.getElementById(n).submit();
@@ -20,7 +86,7 @@ function submitForm(n){
 
 
 function permiteAlta(){
-    if(costosCompleto && nombreCompleto && unidadCompleto){
+    if(costosCompletoProd && costosCompletoMat && costosCompletoOtros && nombreCompleto && unidadCompleto && colorCompleto){
         document.getElementById("alta-btn").disabled = false;
     }else{
         document.getElementById("alta-btn").disabled = true;
@@ -63,36 +129,38 @@ function validaUnidad(){
 
 
 function calcularCosto(input){
-    costosCompleto = true;
     var costoProd = document.getElementById("cpInput").value;
     var costoMat = document.getElementById("cmInput").value;
     var otrosCostos = document.getElementById("ocInput").value;
     if(input=='prod'){
         if(isNaN(Number(costoProd)) || !costoProd){
-            costosCompleto = false;
+            costosCompletoProd = false;
             document.getElementById("costoPInsError").innerHTML = "El costo debe ser un número mayor o igual a 0.";
         }else{
+            costosCompletoProd = true;
             document.getElementById("costoPInsError").innerHTML = "";
         }
     }
     if(input=='mat'){
         if(isNaN(Number(costoMat)) || !costoMat){
-            costosCompleto = false;
+            costosCompletoMat = false;
             document.getElementById("costoMInsError").innerHTML = "El costo debe ser un número mayor o igual a 0.";
         }else{
+            costosCompletoMat = true;
             document.getElementById("costoMInsError").innerHTML = "";
         }
     }
     if(input=='otros'){
         if(isNaN(Number(otrosCostos)) || !otrosCostos){
-            costosCompleto = false;
+            costosCompletoOtros = false;
             document.getElementById("costoOInsError").innerHTML = "El costo debe ser un número mayor o igual a 0.";
         }else{
+            costosCompletoOtros = true;
             document.getElementById("costoOInsError").innerHTML = "";
         }
     }
     var costoTotal = Number(costoProd) + Number(costoMat) + Number(otrosCostos);
-    document.getElementById("cTotalLabel").innerHTML="Costo Total: ARS $"+(costoTotal);
+    document.getElementById("bottomAltaModalText").innerHTML="Costo Total: ARS $"+(costoTotal);
     permiteAlta();
 }
 
@@ -180,7 +248,7 @@ function modifyEntidad(){
 }
 
 
-function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otrosCostos){
+function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otrosCostos,color){
     jQuery.noConflict();
     $(".lds-ring").hide();
     document.getElementById('nombreInsErrorMod').innerHTML="";
@@ -188,60 +256,68 @@ function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otro
     document.getElementById('costoMInsErrorMod').innerHTML="";
     document.getElementById('costoPInsErrorMod').innerHTML="";
     document.getElementById('costoOInsErrorMod').innerHTML="";
+    document.getElementById('colorErrorMod').innerHTML="";
     $('#idInputMod').val(String(id))
     $('#nombreInputMod').val(String(nombre));
     $('#cpInputMod').val(String(costoProduccion))
     $('#cmInputMod').val(String(costoMaterial));
     $('#unidadInputMod').val(String(unidadMedida));
     $('#ocInputMod').val(String(otrosCostos));
+    $('#colorInputMod').val(String(color));
     $('#editModal').modal('show');
     $('.nav-tabs a:first').tab('show');
     nombreOriginal = String(nombre);
-    costosCompletoMod = true;
+    costosCompletoProdMod = true;
+    costosCompletoMatMod = true;
+    costosCompletoOtrosMod = true;
+    colorCompletoMod = true;
     nombreCompletoMod = true;
     unidadCompletoMod = true;
     calcularCostoMod("");
+    checkColorMod();
     permiteEdit();
 }
 
 
 function calcularCostoMod(input){
-    costosCompletoMod = true;
     var costoProd = document.getElementById("cpInputMod").value;
     var costoMat = document.getElementById("cmInputMod").value;
     var otrosCostos = document.getElementById("ocInputMod").value;
     if(input=='prod'){
         if(isNaN(Number(costoProd)) || !costoProd){
-            costosCompletoMod = false;
+            costosCompletoProdMod = false;
             document.getElementById("costoPInsErrorMod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
         }else{
+            costosCompletoProdMod = true;
             document.getElementById("costoPInsErrorMod").innerHTML = "";
         }
     }
     if(input=='mat'){
         if(isNaN(Number(costoMat)) || !costoMat){
-            costosCompletoMod = false;
+            costosCompletoMatMod = false;
             document.getElementById("costoMInsErrorMod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
         }else{
+            costosCompletoMatMod = true;
             document.getElementById("costoMInsErrorMod").innerHTML = "";
         }
     }
     if(input=='otros'){
         if(isNaN(Number(otrosCostos)) || !otrosCostos){
-            costosCompletoMod = false;
+            costosCompletoOtrosMod = false;
             document.getElementById("costoOInsErrorMod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
         }else{
+            costosCompletoOtrosMod = true;
             document.getElementById("costoOInsErrorMod").innerHTML = "";
         }
     }
     var costoTotal = Number(costoProd) + Number(costoMat) + Number(otrosCostos);
-    document.getElementById("cTotalLabelMod").innerHTML="Costo Total: ARS $"+(costoTotal);
+    document.getElementById("bottomAltaModalTextMod").innerHTML="Costo Total: ARS $"+(costoTotal);
     permiteEdit();
 }
 
 
 function permiteEdit(){
-    if(costosCompletoMod && nombreCompletoMod && unidadCompletoMod){
+    if(costosCompletoProdMod && costosCompletoMatMod && costosCompletoOtrosMod && nombreCompletoMod && unidadCompletoMod && colorCompletoMod){
         document.getElementById("alta-btn-mod").disabled = false;
     }else{
         document.getElementById("alta-btn-mod").disabled = true;
@@ -354,3 +430,6 @@ function baja_entidad(){
     //Funcion que va cambiando los mensajes de carga.
     nextMsgBaja()
 }
+
+
+

@@ -20,14 +20,15 @@ class DatosInsumo(Datos):
                            cProduccion, \
                            cTotal, \
                            stock, \
-                           otrosCostos \
+                           otrosCostos, \
+                           color \
                            FROM insumos WHERE estado!=\"eliminado\";")
             cls.cursor.execute(sql)
             insumos_ = cls.cursor.fetchall()
             insumos = []
             for i in insumos_:
                 materiales = DatosCantMaterial.get_from_Insid(i[0],noClose=True)
-                insumo_ = Insumo(i[0],i[1],i[2],i[3],i[4],i[5],materiales,i[6],i[7])
+                insumo_ = Insumo(i[0],i[1],i[2],i[3],i[4],i[5],materiales,i[6],i[7],i[8])
                 insumos.append(insumo_)
             return insumos
             
@@ -40,14 +41,14 @@ class DatosInsumo(Datos):
 
 
     @classmethod
-    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal):
+    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color):
         """
         Agrega un articulo a la BD
         """
         cls.abrir_conexion()
         try:
-            sql= ("INSERT INTO insumos (nombre,unidadMedida,cMateriales,cProduccion,otrosCostos,cTotal,stock,estado) \
-                   VALUES (\"{}\",\"{}\",{},{},{},{},0,\"disponible\");".format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal))
+            sql= ("INSERT INTO insumos (nombre,unidadMedida,cMateriales,cProduccion,otrosCostos,cTotal,color,stock,estado) \
+                   VALUES (\"{}\",\"{}\",{},{},{},{},\"{}\",0,\"disponible\");".format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color))
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
@@ -60,13 +61,13 @@ class DatosInsumo(Datos):
 
 
     @classmethod
-    def update(cls,idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal):
+    def update(cls,idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color):
         """
         Actualiza un insumo en la BD
         """
         cls.abrir_conexion()
         try:
-            sql= ("UPDATE insumos SET nombre=\"{}\",unidadMedida=\"{}\",cMateriales={},cProduccion={},otrosCostos={},cTotal={},stock=0,estado=\"disponible\" WHERE idInsumo={};").format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,idIns)
+            sql= ("UPDATE insumos SET nombre=\"{}\",unidadMedida=\"{}\",cMateriales={},cProduccion={},otrosCostos={},cTotal={},color=\"{}\",stock=0,estado=\"disponible\" WHERE idInsumo={};").format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color,idIns)
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid

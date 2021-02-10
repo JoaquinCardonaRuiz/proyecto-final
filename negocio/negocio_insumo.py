@@ -20,25 +20,25 @@ class NegocioInsumo(Negocio):
 
 
     @classmethod
-    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos):
+    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color):
         """
         Agrega un insumo a la BD
         """
         try:
             costoTotal = float(costoMateriales)+float(costoProduccion)+float(otrosCostos)
-            DatosInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal)
+            DatosInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color)
         except Exception as e:
             raise(e)
 
 
     @classmethod
-    def update(cls,idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos):
+    def update(cls,idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color):
         """
         Actualiza un insumo en la BD
         """
         try:
             costoTotal = float(costoMateriales)+float(costoProduccion)+float(otrosCostos)
-            DatosInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal)
+            DatosInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color)
         except Exception as e:
             raise(e)
 

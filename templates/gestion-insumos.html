@@ -63,13 +63,14 @@
 
 
 
-    <!-- Tabla Articulos-->
+    <!-- Tabla Insumos-->
 
     <div class="container" id="table-container">
         <div class="row">
             <table class="table" id="content-table">
                 <thead style=" border-top:none">
                 <tr>
+                    <th scope="col" class="table-heading"></th>
                     <th scope="col" class="table-heading">Nombre</th>
                     <th scope="col" class="table-heading">Costo</th>
                     <th scope="col" class="table-heading">Stock</th>
@@ -82,6 +83,7 @@
                 <!-- Jinja funciona en comentarios... sin esto imprime None en pantalla.-->
                 <!--{{nombres.append(ins.nombre)}} -->
                 <tr>
+                    <th><div><i class="fas fa-circle" style="color:{{ins.color}}"></i></div></th>
                     <th scope="row">{{ins.nombre}}</th>
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
@@ -89,7 +91,7 @@
                     <td scope="row">{{ins.stock}}</td>
                     <td scope="row">{{ins.unidadMedida}}</td>
 
-                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}')"></i></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}','{{ins.color}}')"></i></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{ins.id}}','{{ins.nombre}}')"></i></td>
                 </tr>
                 {%endfor%}
@@ -184,12 +186,17 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <label id="cTotalLabel">Costo Total: </label>
+                        <input type="text" id="colorInput" required name="color" onkeyup = "checkColorAlta()" style="display: inline;" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 70) || (event.charCode >= 97 && event.charCode <= 102) || (event.charCode == 35)'>
+                        <i id="color-marker" style="margin-left:-8%; color:red;display: inline;" class="fas fa-circle" onclick='randomColorAlta();'></i>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Color</label>
+                        <p id="colorError" class="modalErrorMessage"></p>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione el botón "Crear Insumo"</p>
+                <p class="bottom-modal-text" id="bottomAltaModalText"></p>
             </div>
             
         </form>
@@ -274,12 +281,17 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <label id="cTotalLabelMod">Costo Total: </label>
+                        <input type="text" id="colorInputMod" required name="color" onkeyup = "checkColorMod()" style="display: inline;" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 70) || (event.charCode >= 97 && event.charCode <= 102) || (event.charCode == 35)'>
+                        <i id="color-markerMod" style="margin-left:-8%; color:red;display: inline;" class="fas fa-circle" onclick='randomColorMod();'></i>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Color</label>
+                        <p id="colorErrorMod" class="modalErrorMessage"></p>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalTextMod">Una vez completados todos los datos, presione el botón "Actualizar Insumo"</p>
+                <p class="bottom-modal-text" id="bottomAltaModalTextMod"></p>
             </div>
             
         </form>
