@@ -26,6 +26,7 @@
 
     <div class="container" id="heading-container">
         <h1 class="heading">Gestión de Materiales</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Cree, elimine, modifique y configure los Materiales de EcoAsistente.</span></h6>
     </div>
     
 
@@ -84,7 +85,7 @@
                 <!--{{nombres.append(mat.nombre)}} -->
                 <tr>
                     <th><div><i class="fas fa-circle" style="color:{{mat.color}}"></i></div></th>
-                    <td scope="row">{{mat.nombre}}</td>
+                    <td scope="row"><b>{{mat.nombre}}</b></td>
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
                     <td scope="row">{{mat.stock}}</td>
@@ -137,6 +138,7 @@
             <div class="row" id="row-to-hide-1">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="nombreInput" required onkeyup = "validaNuevoNombre({{nombres|safe}})" name="nombre" >
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -145,7 +147,8 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="unidadInput" required name="unidad" onkeyup = "validaUnidad();">
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -156,7 +159,8 @@
             </div>
             <div class="row" id="row-to-hide-2">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="crInput" name="costoRecoleccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto()' onkeyup='document.getElementById("costoRMatError").innerHTML="";calcularCosto();'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -176,7 +180,7 @@
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalText"></p>
+                <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione el botón "Crear Material"</p>
             </div>
             
         </form>
@@ -251,13 +255,13 @@
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomEditModalText"></p>
+                <p class="bottom-modal-text" id="bottomEditModalText">Una vez completados todos los datos, presione el botón "Actualizar Material"</p>
             </div>
             
         </form>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-mod">Cancelar</button>
-          <button type="button" class="primary-btn btn" onclick="edit_material()" id="edit-btn" name ="add-btn" disabled>Crear Material</button>
+          <button type="button" class="primary-btn btn" onclick="edit_material()" id="edit-btn" name ="add-btn" disabled>Actualizar Material</button>
         </div>
       </div>
     </div>
