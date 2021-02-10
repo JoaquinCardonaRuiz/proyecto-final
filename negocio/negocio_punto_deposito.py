@@ -29,7 +29,7 @@ class NegocioPuntoDeposito(Negocio):
         try:
             puntos_deposito = DatosPuntoDeposito.get_all()
             for punto_dep in puntos_deposito:
-                punto_dep.estado = Utils.boolean_tinyInt_converter(punto_dep.estado)
+                punto_dep.estado = bool(punto_dep.estado)
             return puntos_deposito
         
         except custom_exceptions.ErrorDeConexion as e:
