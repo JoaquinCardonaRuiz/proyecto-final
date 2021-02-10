@@ -317,14 +317,16 @@ class Material:
         costoRecoleccion (float): Costo asociado a la recoleccion del material.
         stock (float): Cantidad del material presente en inventario.
         color(string): Código hexadecimal del color con que se muestra un material.
+        estado(string): Estado en el que se encuentra un material.
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color):
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color, estado="disponible"):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
         self.costoRecoleccion = costoRecoleccion
         self.stock = stock
         self.color = color
+        self.estado = estado
 
 class CantMaterial:
     """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.

@@ -41,13 +41,14 @@ class DatosMaterial(Datos):
                            unidadMedida, \
                            costoRecoleccion, \
                            stock, \
-                           color \
-                           FROM materiales WHERE estado!=\"eliminado\";")
+                           color, \
+                           estado \
+                           FROM materiales WHERE estado!=\"eliminado\" order by nombre ASC;")
             cls.cursor.execute(sql)
             materiales_ = cls.cursor.fetchall()
             materiales = []
             for m in materiales_:
-                material_ = Material(m[0],m[1],m[2],m[3],m[4],m[5])
+                material_ = Material(m[0],m[1],m[2],m[3],m[4],m[5],m[6])
                 materiales.append(material_)
             return materiales
             

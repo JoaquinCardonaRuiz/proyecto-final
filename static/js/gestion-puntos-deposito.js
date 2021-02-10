@@ -20,6 +20,10 @@ function headingOptionLeave(){
     $(".chevron").css({transform: 'rotate(0deg)'});
 }
 
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+
 function openMenu() {
     $("#menu-option-box-1").fadeIn();
     $(".dropdown-box").css("border","1px solid #95C22B");

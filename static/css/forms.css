@@ -264,6 +264,15 @@
   transition: transform .2s; /* Animation */
 }
 
+.menu-option-box-op-suspended{
+  margin-left: 5%;
+  margin-top: 10px;
+  margin-right: 20px;
+  height: 30px;
+  color: darkgray; 
+  text-decoration:line-through;
+}
+
 .menu-option-box-op:hover{
   color: #95C22B;
   cursor: pointer;
@@ -308,6 +317,11 @@
 .dropdown-option-check{
   margin-right: 10px;
   margin-left: 5px;
+}
+
+.dropdown-option-check-info{
+  color: rgb(189, 189, 189);
+  margin-left: 10px;
 }
 
 .indicator-label{

@@ -15,7 +15,7 @@ class DatosPuntoDeposito(Datos):
         """
         cls.abrir_conexion()
         try:
-            sql = ("select * from puntosDeposito where estadoEliminacion = 'disponible'")
+            sql = ("select * from puntosDeposito where estadoEliminacion = 'disponible' order by nombre ASC")
             cls.cursor.execute(sql)
             puntosDeposito = cls.cursor.fetchall()
             puntosDeposito_ = []
