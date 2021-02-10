@@ -230,8 +230,6 @@ class NegocioPuntoDeposito(Negocio):
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
                                                         msj_adicional = "Error al añadir el Punto de Depósito. El estado no puede ser distinto de True o False.")
             
-            estado = Utils.boolean_tinyInt_converter(estado)
-            
             #Validación de direccion
             NegocioDireccion.valida_direccion(calle, altura, ciudad, provincia, pais)
             #Validacion horarios

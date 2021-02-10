@@ -96,25 +96,6 @@ class Utils():
                                                    msj=str(e),
                                                    msj_adicional="Error formateando la fecha")
     
-
-    @classmethod
-    def boolean_tinyInt_converter(cls, value):
-        """
-        Convierte TinyInts a bools y viceversa.
-        """
-        try:
-            if value:
-                return 1
-            elif value == False:
-                return 0
-            elif value == 0:
-                return False
-            elif value == 1:
-                return True
-        except Exception as e:
-           raise custom_exceptions.ErrorDeNegocio(origen="utils.boolean_tinyInt_converter()",
-                                                   msj=str(e),
-                                                   msj_adicional="Error convirtiendo TinyInts a booleanos o viceversa.")
     
     @classmethod
     def adress_format(cls, value):
