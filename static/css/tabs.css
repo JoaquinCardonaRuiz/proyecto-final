@@ -17,3 +17,23 @@
   .ed-tabs .ed-link, .ed-tabs .ed-link{
     color: #888 !important;
   }
+
+  .pd-tabs-item{
+    width: 190px;
+    text-align: center;
+  }
+  
+  .pd-tabs .pd-link.active, .pd-tabs .pd-link.active:focus {
+    box-shadow: inset 0 -2px 0 #95C22B !important;
+    color: #95C22B !important;
+  }
+  
+  
+  .pd-tabs .pd-link:hover, .pd-tabs .pd-link:hover{
+    box-shadow: inset 0 -2px 0 #95C22B !important;
+    background: #fff !important;
+  }
+  
+  .pd-tabs .pd-link, .pd-tabs .pd-link{
+    color: #888 !important;
+  }

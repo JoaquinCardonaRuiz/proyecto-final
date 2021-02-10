@@ -466,21 +466,24 @@
 
 <!--Modify Modal -->
 <div class="modal fade modal-lg" id="modPDModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
       <div class="modal-content">
         <div id="edit-modal-header" class="modal-header"> 
 
           <!-- Nav tabs -->
-          <ul class="nav nav-tabs ed-tabs" id="myTab" role="tablist">
-            <li class="nav-item ed-tabs-item">
-              <a class="nav-link ed-link active" onClick="configureModalTab(1);" data-toggle="tab" href="#entidad" role="tab" aria-controls="datos-basicos" aria-selected="true">Nombre de Entidad</a>
+          <ul class="nav nav-tabs pd-tabs" id="myTab" role="tablist">
+            <li class="nav-item pd-tabs-item">
+              <a class="nav-link pd-link active" onClick="configureModalTab(1);" data-toggle="tab" href="#entidad" role="tab" aria-controls="datos-basicos" aria-selected="true">Datos Básicos</a>
             </li>
-            <li class="nav-item ed-tabs-item">
-              <a class="nav-link ed-link " id="demandas-tab" onClick="configureModalTab(2);" data-toggle="tab" href="#demandas" role="tab" aria-controls="direccion" aria-selected="false"> -- ??? -- </a>
+            <li class="nav-item pd-tabs-item">
+              <a class="nav-link pd-link " id="demandas-tab" onClick="configureModalTab(2);" data-toggle="tab" href="#demandas" role="tab" aria-controls="direccion" aria-selected="false">Dirección</a>
             </li>
-            <li class="nav-item ed-tabs-item">
-              <a class="nav-link ed-link " id="nuevademanda-tab" onClick="configureModalTab(3);" data-toggle="tab" href="#nuevademanda" role="tab" aria-controls="nuevademanda" aria-selected="false">Nueva Salida</a>
+            <li class="nav-item pd-tabs-item">
+              <a class="nav-link pd-link " id="nuevademanda-tab" onClick="configureModalTab(3);" data-toggle="tab" href="#nuevademanda" role="tab" aria-controls="nuevademanda" aria-selected="false">Horarios</a>
             </li>
+            <li class="nav-item pd-tabs-item">
+                <a class="nav-link pd-link " id="nuevademanda-tab" onClick="configureModalTab(3);" data-toggle="tab" href="#nuevademanda" role="tab" aria-controls="nuevademanda" aria-selected="false">Materiales</a>
+              </li>
           </ul>
         </div>
 
