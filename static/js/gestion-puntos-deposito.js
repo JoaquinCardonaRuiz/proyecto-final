@@ -20,9 +20,10 @@ function headingOptionLeave(){
     $(".chevron").css({transform: 'rotate(0deg)'});
 }
 
+//Manejo del tooltip.
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
-  })
+})
 
 function openMenu() {
     $("#menu-option-box-1").fadeIn();
@@ -65,6 +66,7 @@ function dropdownOptionSelect(idOption, nameOption, color){
      
 }
 
+//Manejo de carteles en la seleccion de materiales del dropdown.
 function labelShowHide(){
     if (selectedOptions.length == 0){
         $(".indicator-label-2").hide();
@@ -76,6 +78,7 @@ function labelShowHide(){
     }
 }
 
+//Setea el color de las tarjetas de materiales.
 function setColor(nombre,color){
     $("#"+String(nombre)+"-img").css("background-color", String(color));
 }
@@ -773,7 +776,11 @@ function updateMap(){
     $("#gmap_canvas").attr("src",src_value);
 }
 
+function openModModal(){
+    jQuery.noConflict();
 
+    $("#modPDModal").modal("show");
+}
 labelPosition();
 
 
