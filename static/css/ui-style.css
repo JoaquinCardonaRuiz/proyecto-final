@@ -262,3 +262,16 @@ h2 		 {
     font-size: 14px; 
     color: #70706f;
 }
+
+.tab-icon{
+    scale:0.6;
+    margin-left:2% !important;
+}
+
+.warning{
+    color:#999 !important;
+}
+
+.error{
+    color:#dd0000 !important;
+}

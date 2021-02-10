@@ -8,10 +8,8 @@ var costoProdCompleto = false;
 var costoInsCompleto = false;
 var otrosCostosCompleto = false;
 var costoAltCompleto = false;
-var costoProdCompletoMod = true;
-var costoInsCompletoMod = true;
-var otrosCostosCompletoMod = true;
-var costoAltCompletoMod = true;
+vars_or = [0,0,0,0,0,0,0,0,0];
+var mod_vars = [0,0,0,0,0,0,0,0,0];
 
 function submitForm(n){
     document.getElementById(n).submit();
@@ -28,11 +26,6 @@ function openAltaModal(){
 function pasar_pagina(n){
     pagina += n;
     cargar_pagina();
-}
-
-function pasar_pagina_mod(n){
-    pagina += n;
-    cargar_pagina_mod();
 }
 
 function cargar_pagina(){
@@ -278,9 +271,6 @@ function removeEntidad(){
 }
 
 
-
-
-
 //Abre el Modal de baja. 
 function openBajaModal(idArticulo,nombreArticulo){
     //Manejo de elementos de carga
@@ -346,8 +336,11 @@ function modifyEntidad(){
 function openEditModal(id,nombre,costoProduccion,costoInsumos,costoTotalA,valor,margenGanancia,unidadMedida,costoObtencionAlternativa,otrosCostos,imagen,ventaUsuario){
     jQuery.noConflict();
     pagina = 1;
-    cargar_pagina_mod();
     $(".lds-ring").hide();
+    mod_vars = [0,0,0,0,0,0,0,0,0];
+    vars_or = [String(nombre),String(unidadMedida),String(imagen),Boolean(Number(ventaUsuario)),
+               String(costoInsumos),String(costoProduccion),String(otrosCostos),String(costoObtencionAlternativa),
+               String(margenGanancia)];
     document.getElementById('nombreArtError-mod').innerHTML="";
     document.getElementById('unidadArtError-mod').innerHTML="";
     document.getElementById('imgArtError-mod').innerHTML="";
@@ -370,91 +363,37 @@ function openEditModal(id,nombre,costoProduccion,costoInsumos,costoTotalA,valor,
     document.getElementById("usuariosCheck-mod").checked = Boolean(Number(ventaUsuario));
     $('#editModal').modal('show');
     $('.nav-tabs a:first').tab('show');
+    check_edit();
+    calcularCostoMod();
 }
 
 
 
 
-function cargar_pagina_mod(){
-    if(pagina == 1){
-        document.getElementById("siguiente-btn-mod").disabled = false;
-        document.getElementById("siguiente-btn-mod").hidden = false;
-        document.getElementById("alta-btn-mod").hidden = true;
-        document.getElementById("bottomAltaModalText-mod").innerHTML="Una vez completados los datos, presione el botón \"Siguiente\".";
-        $("#secondary-btn-mod").show();
-        $("#atras-btn-mod").hide();
-        $("#subheader-pag-1-mod").fadeIn(400);
-        $("#subheader-pag-2-mod").hide();
-        $("#subheader-pag-3-mod").hide();
-        $("#row-pag-1-1-mod").fadeIn(400);
-        $("#row-pag-1-2-mod").fadeIn(400);
-        $("#row-pag-2-1-mod").hide();
-        $("#row-pag-2-2-mod").hide();
-        $("#row-pag-3-1-mod").hide();
-    }
-    else if(pagina == 2){
-        document.getElementById("siguiente-btn-mod").hidden = false;
-        document.getElementById("alta-btn-mod").hidden = true;
-        document.getElementById("bottomAltaModalText-mod").innerHTML="Costo Total: ARS $"+String(costoTotal);
-        $("#secondary-btn-mod").hide();
-        $("#atras-btn-mod").show();
-        $("#subheader-pag-1-mod").hide();
-        $("#subheader-pag-2-mod").fadeIn(400);
-        $("#subheader-pag-3-mod").hide();
-        $("#row-pag-1-1-mod").hide();
-        $("#row-pag-1-2-mod").hide();
-        $("#row-pag-2-1-mod").fadeIn(400);
-        $("#row-pag-2-2-mod").fadeIn(400);
-        $("#row-pag-3-1-mod").hide();
-        calcularCostoMod("");
-    }
-    else if(pagina == 3){
-        document.getElementById("siguiente-btn-mod").hidden = true;
-        document.getElementById("alta-btn-mod").hidden = false;
-        document.getElementById("bottomAltaModalText-mod").innerHTML="Una vez completados los datos, presione el botón \"Actualizar Artículo\".";
-        $("#secondary-btn-mod").hide();
-        $("#atras-btn-mod").show();
-        $("#subheader-pag-1-mod").hide();
-        $("#subheader-pag-2-mod").hide();
-        $("#subheader-pag-3-mod").fadeIn(400);
-        $("#row-pag-1-1-mod").hide();
-        $("#row-pag-1-2-mod").hide();
-        $("#row-pag-2-1-mod").hide();
-        $("#row-pag-2-2-mod").hide();
-        $("#row-pag-3-1-mod").fadeIn(400);
-        calcularValorMod();
-    }
-}
 
 
 function validaNuevoNombreMod(nombres){
     var n = document.getElementById("nombreInput-mod").value;
-    if(document.getElementById("nombreInput-mod").value && document.getElementById("unidadInput").value){
-        document.getElementById("siguiente-btn-mod").disabled = false;
-    }
-    if(nombres.includes(n) && n != nombreOriginal){
+    if(nombres.includes(n) && n != vars_or[0]){
         //Se comprueba regla RN17
         document.getElementById("nombreArtError-mod").innerHTML = "* Ese nombre ya ha sido registrado.";
-        document.getElementById("siguiente-btn-mod").disabled = true;
+        mod_vars[0] = NaN;
     }
     else if (!n){
         //Se comprueba regla RN18
         document.getElementById("nombreArtError-mod").innerHTML = "* Este campo debe ser completado.";
-        document.getElementById("siguiente-btn-mod").disabled = true;
+        mod_vars[0] = NaN;
     }
-    else{
+    else if(n == vars_or[0]){
+        mod_vars[0] = 0;
+        document.getElementById("nombreArtError-mod").innerHTML = "";
+    }else{
+        mod_vars[0] = 1;
         document.getElementById("nombreArtError-mod").innerHTML = "";
     }
+    check_edit();
 }
 
-
-function permitirCostosMod(){
-    if(costoProdCompletoMod && costoInsCompletoMod && otrosCostosCompletoMod && costoAltCompletoMod){
-        document.getElementById("siguiente-btn-mod").disabled = false;
-    }else{
-        document.getElementById("siguiente-btn-mod").disabled = true;
-    }
-}
 
 function calcularCostoMod(input){
     var costoProd = document.getElementById("cpInput-mod").value;
@@ -464,43 +403,55 @@ function calcularCostoMod(input){
     if(input=='prod'){
         if(isNaN(Number(costoProd)) || !costoProd){
             document.getElementById("costoPArtError-mod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
-            costoProdCompletoMod = false;
+            mod_vars[5] = NaN;
+        }else if(Number(costoProd) == Number(vars_or[5])){
+            mod_vars[5] = 0;
+            document.getElementById("costoPArtError-mod").innerHTML = "";
         }else{
-            costoProdCompletoMod = true;
+            mod_vars[5] = 1;
             document.getElementById("costoPArtError-mod").innerHTML = "";
         }
     }
     if(input=='ins'){
         if(isNaN(Number(costoIns)) || !costoIns){
             document.getElementById("costoIArtError-mod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
-            costoInsCompletoMod = false;
+            mod_vars[4] = NaN;
+        }else if(Number(costoIns) == Number(vars_or[4])){
+            mod_vars[4] = 0;
+            document.getElementById("costoIArtError-mod").innerHTML = "";
         }else{
-            costoInsCompletoMod = true;
+            mod_vars[4] = 1;
             document.getElementById("costoIArtError-mod").innerHTML = "";
         }
     }
     if(input=='otros'){
         if(isNaN(Number(otrosCostos)) || !otrosCostos){
             document.getElementById("costoOArtError-mod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
-            otrosCostosCompletoMod = false;
+            mod_vars[6] = NaN;
+        }else if(Number(otrosCostos) == Number(vars_or[6])){
+            mod_vars[6] = 0;
+            document.getElementById("costoOArtError-mod").innerHTML = "";
         }else{
-            otrosCostosCompletoMod = true;
+            mod_vars[6] = 1;
             document.getElementById("costoOArtError-mod").innerHTML = "";
         }
     }
     if(input=='alt'){
         if(isNaN(Number(costoAlt)) || !costoAlt){
             document.getElementById("costoOAArtError-mod").innerHTML = "El costo debe ser un número mayor o igual a 0.";
-            costoAltCompletoMod = false;
+            mod_vars[7] = NaN;
+        }else if(Number(costoAlt) == Number(vars_or[7])){
+            mod_vars[7] = 0;
+            document.getElementById("costoOAArtError-mod").innerHTML = "";
         }else{
-            costoAltCompletoMod = true;
+            mod_vars[7] = 1;
             document.getElementById("costoOAArtError-mod").innerHTML = "";
         }
     }
 
     costoTotal = Number(costoProd) + Number(costoIns) + Number(otrosCostos);
     document.getElementById("bottomAltaModalText-mod").innerHTML="Costo Total: ARS $"+String(costoTotal);
-    permitirCostosMod();
+    check_edit();
 }
 
 
@@ -510,36 +461,68 @@ function calcularValorMod(){
     if(isNaN(margen) || margen==0){
         margen=0;
         document.getElementById("margenArtError-mod").innerHTML = "El margen debe ser un número mayor a 0.";
-        document.getElementById("alta-btn-mod").disabled = true;
+        mod_vars[8] = NaN;
+    }else if(margen/100 == Number(vars_or[8])){
+        mod_vars[8] = 0;
+        document.getElementById("margenArtError-mod").innerHTML = "";
     }else{
-        document.getElementById("alta-btn-mod").disabled = false;
+        mod_vars[8] = 1;
         document.getElementById("margenArtError-mod").innerHTML = "";
     }
     document.getElementById("valorInput-mod").value =  (costoTotal * (1+(margen/100))).toFixed(2);
+    check_edit();
 }
 
 function validaUnidadMod(){
     var u = document.getElementById("unidadInput-mod").value;
-    if(document.getElementById("nombreInput-mod").value && document.getElementById("unidadInput-mod").value){
-        document.getElementById("siguiente-btn-mod").disabled = false;
-    }
     if (!u){
         document.getElementById("unidadArtError-mod").innerHTML = "* Este campo debe ser completado.";
-        document.getElementById("siguiente-btn-mod").disabled = true;
+        mod_vars[1] = NaN;
     }
-    else {
+    else if(u == vars_or[1]){
+        mod_vars[1] = 0;
+        document.getElementById("unidadArtError-mod").innerHTML = "";
+    }else{
+        mod_vars[1] = 1;
         document.getElementById("unidadArtError-mod").innerHTML = "";
     }
+    check_edit();
 }
 
 
 function edit_articulo(){
     $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
     $(".lds-ring").show().fadeIn(500);
-    $("#row-pag-3-1-mod").hide();
-    $("#subheader-pag-3-mod").hide();
-    $('#alta-btn-mod').prop('disabled', true);
-    $('#atras-btn-mod').prop('disabled', true);
     submitForm('editArticuloForm');
     nextMsgEdit();
+}
+
+
+function check_edit(){
+    sum = mod_vars.reduce((a, b) => a + b, 0);
+    if(isNaN(sum)){
+        document.getElementById("edit-btn").disabled = true;
+        if(isNaN(mod_vars[0])||isNaN(mod_vars[1])||isNaN(mod_vars[2])||isNaN(mod_vars[3])){
+            document.getElementById("error-mark-db").hidden = false;
+        }
+        if(isNaN(mod_vars[4])||isNaN(mod_vars[5])||isNaN(mod_vars[6])||isNaN(mod_vars[7])){
+            document.getElementById("error-mark-c").hidden = false;
+        }
+        if(isNaN(mod_vars[8])){
+            document.getElementById("error-mark-p").hidden = false;
+        }
+        
+    }else if(sum == 0){
+        document.getElementById("edit-btn").innerHTML = "Confirmar 0 cambios."
+        document.getElementById("edit-btn").disabled = true;
+        document.getElementById("error-mark-db").hidden = true;
+        document.getElementById("error-mark-c").hidden = true;
+        document.getElementById("error-mark-p").hidden = true;
+    }else{
+        document.getElementById("edit-btn").innerHTML = "Confirmar " + String(sum)+ " cambios."
+        document.getElementById("edit-btn").disabled = false;
+        document.getElementById("error-mark-db").hidden = true;
+        document.getElementById("error-mark-c").hidden = true;
+        document.getElementById("error-mark-p").hidden = true;
+    }
 }
