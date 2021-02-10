@@ -74,7 +74,6 @@
                     <th scope="col" class="table-heading">Costo</th>
                     <th scope="col" class="table-heading">Stock</th>
                     <th scope="col" class="table-heading">Unidad</th>
-                    <th class="table-heading see-th"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -90,7 +89,6 @@
                     <td scope="row">{{ins.stock}}</td>
                     <td scope="row">{{ins.unidadMedida}}</td>
 
-                    <td class="row"><i class="far fa-eye" style="font-size: 23px;" id="" onclick="console.log('{{ins.id}}')"></i></td>
                     <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}')"></i></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{ins.id}}','{{ins.nombre}}')"></i></td>
                 </tr>
@@ -191,7 +189,7 @@
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalText"></p>
+                <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione el botón "Crear Insumo"</p>
             </div>
             
         </form>
@@ -281,7 +279,7 @@
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalTextMod"></p>
+                <p class="bottom-modal-text" id="bottomAltaModalTextMod">Una vez completados todos los datos, presione el botón "Actualizar Insumo"</p>
             </div>
             
         </form>
