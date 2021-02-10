@@ -137,6 +137,7 @@
             <div class="row" id="row-to-hide-1">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="nombreInput" required onkeyup = "validaNuevoNombre({{nombres|safe}})" name="nombre" >
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -145,7 +146,8 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="unidadInput" required name="unidad" onkeyup = "validaUnidad();">
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -156,7 +158,8 @@
             </div>
             <div class="row" id="row-to-hide-2">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="cmInput" name="costoMateriales" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("mat")' onkeyup='document.getElementById("costoMInsError").innerHTML="";calcularCosto("mat");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -166,6 +169,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="cpInput" name="costoProduccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("prod")' onkeyup='document.getElementById("costoPInsError").innerHTML="";calcularCosto("prod");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -177,6 +181,7 @@
             <div class="row" id="row-to-hide-3">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="ocInput" name="otrosCostos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("otros")' onkeyup='document.getElementById("costoOInsError").innerHTML="";calcularCosto("otros");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -186,6 +191,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="colorInput" required name="color" onkeyup = "checkColorAlta()" style="display: inline;" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 70) || (event.charCode >= 97 && event.charCode <= 102) || (event.charCode == 35)'>
                         <i id="color-marker" style="margin-left:-8%; color:red;display: inline;" class="fas fa-circle" onclick='randomColorAlta();'></i>
                         <span class="highlight"></span>
@@ -240,7 +246,8 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="unidadInputMod" required name="unidad" onkeyup = "validaUnidadMod();">
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -251,7 +258,8 @@
             </div>
             <div class="row" id="row-to-hide-2-mod">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="cmInputMod" name="costoMateriales" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("mat")' onkeyup='document.getElementById("costoMInsErrorMod").innerHTML="";calcularCostoMod("mat");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -261,6 +269,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="cpInputMod" name="costoProduccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("prod")' onkeyup='document.getElementById("costoPInsErrorMod").innerHTML="";calcularCostoMod("prod");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -272,6 +281,7 @@
             <div class="row" id="row-to-hide-3-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="ocInputMod" name="otrosCostos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("otros")' onkeyup='document.getElementById("costoOInsErrorMod").innerHTML="";calcularCostoMod("otros");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -281,6 +291,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="colorInputMod" required name="color" onkeyup = "checkColorMod()" style="display: inline;" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 70) || (event.charCode >= 97 && event.charCode <= 102) || (event.charCode == 35)'>
                         <i id="color-markerMod" style="margin-left:-8%; color:red;display: inline;" class="fas fa-circle" onclick='randomColorMod();'></i>
                         <span class="highlight"></span>

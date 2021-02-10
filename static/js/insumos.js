@@ -189,10 +189,10 @@ function nextMsgAlta() {
 
 function nextMsgEdit() {
     if (messagesEdit.length == 1) {
-        $('#bottomAltaModalText').html(messagesEdit.pop()).fadeIn(500);
+        $('#bottomAltaModalTextMod').html(messagesEdit.pop()).fadeIn(500);
 
     } else {
-        $('#bottomAltaModalText').html(messagesEdit.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgEdit);
+        $('#bottomAltaModalTextMod').html(messagesEdit.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgEdit);
 
     }
 }
