@@ -170,6 +170,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="colorInput" required name="color" onkeyup = "checkColorAlta()" style="display: inline;" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 70) || (event.charCode >= 97 && event.charCode <= 102) || (event.charCode == 35)'>
                         <i id="color-marker" style="margin-left:-8%; color:red;display: inline;" class="fas fa-circle" onclick='randomColorAlta();'></i>
                         <span class="highlight"></span>
@@ -224,7 +225,8 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="unidadInputMod" required name="unidad" onkeyup = "validaUnidadMod();">
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -235,7 +237,8 @@
             </div>
             <div class="row" id="row-to-hide-2-mod">
                 <div class="col">
-                    <div class="group" style="margin-left: 10%;">      
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="crInputMod" name="costoRecoleccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod()' onkeyup='document.getElementById("costoRMatError").innerHTML="";calcularCostoMod();'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
@@ -245,6 +248,7 @@
                 </div>
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
+                        <input hidden>
                         <input type="text" id="colorInputMod" required name="color" onkeyup = "checkColorMod()" style="display: inline;" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 70) || (event.charCode >= 97 && event.charCode <= 102) || (event.charCode == 35)'>
                         <i id="color-markerMod" style="margin-left:-8%; color:red;display: inline;" class="fas fa-circle" onclick='randomColorMod();'></i>
                         <span class="highlight"></span>

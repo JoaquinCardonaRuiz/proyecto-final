@@ -1,5 +1,6 @@
 from negocio.negocio import Negocio
 from data.data_material import DatosMaterial
+from data.data_cant_material import DatosCantMaterial
 import custom_exceptions
 
 class NegocioMaterial(Negocio):
@@ -47,6 +48,7 @@ class NegocioMaterial(Negocio):
         """
         try:
             DatosMaterial.delete(id)
+            DatosCantMaterial.deshabilitar(id,True)
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_material.delete()",
                                                    msj=str(e),
