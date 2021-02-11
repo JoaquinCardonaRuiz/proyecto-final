@@ -79,7 +79,7 @@
                     <td><a class="custom-link" onclick="openLoadingRing();openModalHorarios('{{punto.id}}', '{{punto.nombre}}', '{{punto.estado}}');">Ver horarios</a></td>
                     <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{punto.id}}', '{{punto.nombre}}');">Ver materiales</a></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon"></i></td>
-                    <td class="modify-row" onclick="openModModal('{{punto.nombre}}','{{punto.estado}}');"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
+                    <td class="modify-row" onclick="openModModal('{{punto.nombre}}','{{punto.estado}}', '{{punto.direccion.calle}}', '{{punto.direccion.altura}}', '{{punto.direccion.ciudad}}', '{{punto.direccion.provincia}}', '{{punto.direccion.pais}}' );"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
 
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true"></button>
                     <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
@@ -282,7 +282,7 @@
                     <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
                         <div class="col">
                             <div class="group" style="margin-top: 2%;">
-                                <input type="text" required id="callePD" onkeyup="updateMap(); validaDireccion('calle');" name="callePD" autocomplete="off" style="width: 215%;"> 
+                                <input type="text" required id="callePD" onkeyup="updateMap('alta'); validaDireccion('alta','calle');" name="callePD" autocomplete="off" style="width: 215%;"> 
                                 <input type="text" id="idEntidadInput" name="id" hidden>
                                 <span class="highlight" style="width: 215%;"></span>
                                 <span class="bar" style="width: 215%;"></span>
@@ -293,7 +293,7 @@
                         </div>
                         <div class="col" style="margin-left: 33.3%;">
                             <div class="group" style=" margin-top: 2%;">
-                                <input type="text" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap(); validaDireccion('altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                                <input type="text" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('alta'); validaDireccion('alta','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
                                 <input type="text" id="idEntidadInput" name="id" hidden>
                                 <span class="highlight" style="width: 100%;"></span>
                                 <span class="bar" style="width: 100%;"></span>
@@ -305,7 +305,7 @@
                     <div class="row" id="fieldsRow1AltaPD2" style="margin-left: 6.5%; margin-right: 8%;">
                         <div class="col">
                             <div class="group" style="margin-top: 2%;">
-                                <input type="text" required id="ciudadPD" onkeyup="updateMap(); validaDireccion('ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;"> 
+                                <input type="text" required id="ciudadPD" onkeyup="updateMap('alta'); validaDireccion('alta','ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;"> 
                                 <input type="text" id="idEntidadInput" name="id" hidden>
                                 <span class="highlight" style="width: 100%;"></span>
                                 <span class="bar" style="width: 100%;"></span>
@@ -315,7 +315,7 @@
                         </div>
                         <div class="col">
                             <div class="group" style="margin-top: 2%;">
-                                <input type="text" required id="provinciaPD" onkeyup="updateMap(); validaDireccion('provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                                <input type="text" required id="provinciaPD" onkeyup="updateMap('alta'); validaDireccion('alta','provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
                                 <input type="text" id="idEntidadInput" name="id" hidden>
                                 <span class="highlight" style="width: 100%;"></span>
                                 <span class="bar" style="width: 100%;"></span>
@@ -326,7 +326,7 @@
                         </div>
                         <div class="col">
                             <div class="group" style="margin-top: 2%;">
-                                <input type="text" required id="paisPD" onkeyup="updateMap(); validaDireccion('pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                                <input type="text" required id="paisPD" onkeyup="updateMap('alta'); validaDireccion('alta','pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
                                 <input type="text" id="idEntidadInput" name="id" hidden>
                                 <span class="highlight" style="width: 100%;"></span>
                                 <span class="bar" style="width: 100%;"></span>
@@ -473,16 +473,16 @@
           <!-- Nav tabs -->
           <ul class="nav nav-tabs pd-tabs" id="myTab" role="tablist">
             <li class="nav-item pd-tabs-item">
-              <a class="nav-link pd-link active" onClick="configureModalTab(1);" data-toggle="tab" role="tab" aria-selected="true">Datos Básicos</a>
+              <a class="nav-link pd-link active" onClick="configureModalTab(1);" data-toggle="tab" role="tab" aria-selected="true">Datos Básicos<span class="error-tab" id="db-error-tab"> *</span></span></a>
             </li>
             <li class="nav-item pd-tabs-item">
-              <a class="nav-link pd-link " id="demandas-tab" onClick="configureModalTab(2);" data-toggle="tab" role="tab" aria-selected="false">Dirección</a>
+              <a class="nav-link pd-link " id="demandas-tab" onClick="configureModalTab(2);" data-toggle="tab" role="tab" aria-selected="false">Dirección<span class="error-tab" id="dir-error-tab"> *</span></span></a>
             </li>
             <li class="nav-item pd-tabs-item">
-              <a class="nav-link pd-link " id="nuevademanda-tab" onClick="configureModalTab(3);" data-toggle="tab" role="tab" aria-selected="false">Horarios</a>
+              <a class="nav-link pd-link " id="nuevademanda-tab" onClick="configureModalTab(3);" data-toggle="tab" role="tab" aria-selected="false">Horarios<span class="error-tab" id="hor-error-tab"> *</span></span></a>
             </li>
             <li class="nav-item pd-tabs-item">
-                <a class="nav-link pd-link " id="nuevademanda-tab" onClick="configureModalTab(4);" data-toggle="tab" role="tab" aria-selected="false">Materiales</a>
+                <a class="nav-link pd-link " id="nuevademanda-tab" onClick="configureModalTab(4);" data-toggle="tab" role="tab" aria-selected="false">Materiales<span class="error-tab" id="mat-error-tab"> *</span></span></a>
               </li>
           </ul>
         </div>
@@ -522,60 +522,61 @@
                     </div>
                 </div>
             </div>
+            <!--Pestaña 2 - Dirección-->
             <div id="modal-mod-p2" style="display: none;">
                 <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="callePD" onkeyup="updateMap(); validaDireccion('calle');" name="callePD" autocomplete="off" style="width: 215%;"> 
+                            <input type="text" required id="callePDMod" onkeyup="updateMap(); validaDireccion('mod','calle');" name="callePD" autocomplete="off" style="width: 215%;"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 215%;"></span>
                             <span class="bar" style="width: 215%;"></span>
                             <label>Calle</label>
-                            <p id="error-calle" class="modalErrorMessage" style="display: none; width: 215%;">* La calle no puede quedar vacía.</p>
+                            <p id="error-calle-mod" class="modalErrorMessage" style="display: none; width: 215%;">* La calle no puede quedar vacía.</p>
 
                         </div>
                     </div>
                     <div class="col" style="margin-left: 33.3%;">
                         <div class="group" style=" margin-top: 2%;">
-                            <input type="text" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap(); validaDireccion('altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                            <input type="text" required id="alturaPDMod" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap(); validaDireccion('mod','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
                             <label>Altura</label>
-                            <p id="error-altura" class="modalErrorMessage" style="display: none;">* Complete la altura.</p>
+                            <p id="error-altura-mod" class="modalErrorMessage" style="display: none;">* Complete la altura.</p>
                         </div>
                     </div>
                 </div>
                 <div class="row" id="fieldsRow1AltaPD2" style="margin-left: 6.5%; margin-right: 8%;">
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="ciudadPD" onkeyup="updateMap(); validaDireccion('ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;"> 
+                            <input type="text" required id="ciudadPDMod" onkeyup="updateMap(); validaDireccion('mod','ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
                             <label>Ciudad</label>
-                            <p id="error-ciudad" class="modalErrorMessage" style="display: none;">* Complete la ciudad.</p>
+                            <p id="error-ciudad-mod" class="modalErrorMessage" style="display: none;">* Complete la ciudad.</p>
                         </div>
                     </div>
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="provinciaPD" onkeyup="updateMap(); validaDireccion('provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                            <input type="text" required id="provinciaPDMod" onkeyup="updateMap(); validaDireccion('mod','provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
                             <label>Provincia</label>
-                            <p id="error-provincia" class="modalErrorMessage" style="display: none;">* Complete la provincia.</p>
+                            <p id="error-provincia-mod" class="modalErrorMessage" style="display: none;">* Complete la provincia.</p>
 
                         </div>
                     </div>
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="paisPD" onkeyup="updateMap(); validaDireccion('pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                            <input type="text" required id="paisPDMod" onkeyup="updateMap(); validaDireccion('mod','pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
                             <label>País</label>
-                            <p id="error-pais" class="modalErrorMessage" style="display: none;">* Complete el país.</p>
+                            <p id="error-pais-mod" class="modalErrorMessage" style="display: none;">* Complete el país.</p>
                         </div>
                     </div>
                 </div>

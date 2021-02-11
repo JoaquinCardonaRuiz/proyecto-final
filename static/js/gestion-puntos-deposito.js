@@ -10,8 +10,27 @@ var altura = false;
 var calle = false;
 var menuShown = false;
 var selectedOptions = [];
-var cambios_db = 0;
+
+//Cambios
+var cambios_nombre = false;
+var cambio_estado = false;
+var cambio_provincia = false;
+
+//Valores originales
 var nombre_ant = false;
+var estado_ant;
+var provincia_ant;
+var calle_ant = false;
+var altura_ant = false;
+var ciudad_ant = false;
+var provincia_ant = false;
+var pais_ant = false;
+
+
+//Asteriscos de error
+var error_nombre = false;
+var error_provincia = false;
+
 
 //Funciones específicas que manejan el dropdwon.
 function headingOptionHover(){
@@ -413,40 +432,40 @@ function validaNombrePD(tipo){
     else if (tipo == "mod"){
         if ((String($("#nombrePDMod").val()).trim()) == nombre_ant){
             $("#nombrePDErrorMod").hide();
-            if (cambios_db > 0){
-                cambios_db -=1;
-            }
+            cambios_nombre = false;
+            error_nombre = false;
         }
         else if ((String($("#nombrePDMod").val()).trim()) == ""){
             $("#nombrePDErrorMod").text("* El nombre no puede quedar vacío.");
             $("#nombrePDErrorMod").show();
-            if (cambios_db > 0){
-                cambios_db -=1;
-            }
+            cambios_nombre = true;
+            error_nombre = true;
         }
         else if (nombres.includes(($("#nombrePDMod").val()).trim())){
             $("#nombrePDErrorMod").text("* Este nombre ya ha sido utilizado en otro Punto de Depósito.");
             $("#nombrePDErrorMod").show();
-            if (cambios_db > 0){
-                cambios_db -=1;
-            }
+            cambios_nombre = true;
+            error_nombre = true;
         }
         else{
             $("#nombrePDErrorMod").hide();
-            if (cambios_db == 0){
-                cambios_db +=1;
-            }
+            cambios_nombre = true;
+            error_nombre = false;
         }
         calc_cant_cambios();
+        error_datos_basicos();
     }
     
 }
 
-function calc_cant_cambios(){
-    cant_cambios = cambios_db;
-    $("#primary-btn-mod").text("Confirmar " + String(cant_cambios) + " cambios");
+function error_datos_basicos(){
+    if (error_nombre == true){
+        $("#db-error-tab").show();
+    }
+    else{
+        $("#db-error-tab").hide();
+    }
 }
-
 //Valida que ningún campo de horario tenga un valor incorrecto.
 function validaHorarioPD(){
   var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
@@ -506,63 +525,112 @@ function validaHorarioPD(){
 }
 
 //Valida que ningún campo de la dirección tenga un valor.
-function validaDireccion(campoValidacion){
-    if (campoValidacion == 'provincia'){
-        if ($("#provinciaPD").val() == ""){
-            provincia = false;
-            $("#error-provincia").show();
+function validaDireccion(modal_type, campoValidacion){
+    if (modal_type == 'alta'){
+        if (campoValidacion == 'provincia'){
+            if ($("#provinciaPD").val() == ""){
+                provincia = false;
+                $("#error-provincia").show();
+            }
+            else{
+                provincia = true;
+                $("#error-provincia").hide(); 
+            }
+        }
+        else if (campoValidacion == 'ciudad'){
+            if ($("#ciudadPD").val() == ""){
+                ciudad = false;
+                $("#error-ciudad").show();
+            }
+            else{
+                ciudad = true; 
+                $("#error-ciudad").hide();
+            }
+        }
+        else if (campoValidacion == 'pais'){
+            if ($("#paisPD").val() == ""){
+                pais = false;
+                $("#error-pais").show();
+            }
+            else{
+                pais = true; 
+                $("#error-pais").hide();
+            }
+        }
+        else if (campoValidacion == 'altura'){
+            if ($("#alturaPD").val() == ""){
+                altura = false;
+                $("#error-altura").show();
+            }
+            else{
+                altura = true;
+                $("#error-altura").hide(); 
+            }
+        }
+        else if (campoValidacion == 'calle'){
+            if ($("#callePD").val() == ""){
+                calle = false;
+                $("#error-calle").show(); 
+            }
+            else{
+                calle = true;
+                $("#error-calle").hide();  
+            }
+        }
+        if (provincia == true && ciudad == true && pais == true && calle == true && altura == true){
+            $('#primary-btn-alta').prop('disabled', false);
         }
         else{
-            provincia = true;
-            $("#error-provincia").hide(); 
+            $('#primary-btn-alta').prop('disabled', true);
         }
     }
-    else if (campoValidacion == 'ciudad'){
-        if ($("#ciudadPD").val() == ""){
-            ciudad = false;
-            $("#error-ciudad").show();
+    else if (modal_type == 'mod'){
+        if (campoValidacion == 'provincia'){
+            if ($("#provinciaPDMod").val() == ""){
+                cambio_provincia = true;
+                error_provincia = true;
+                $("#error-provincia-mod").show();
+            }
+            else if ($("#provinciaPDMod").val() == provincia_ant){
+                cambio_provincia = false;
+                error_provincia = false;
+                $("#error-provincia-mod").hide(); 
+            }
+            else{
+                cambio_provincia = true;
+                error_provincia = false;
+                $("#error-provincia-mod").hide(); 
+            }
         }
-        else{
-            ciudad = true; 
-            $("#error-ciudad").hide();
-        }
+        error_direccion();
+        calc_cant_cambios();
+
     }
-    else if (campoValidacion == 'pais'){
-        if ($("#paisPD").val() == ""){
-            pais = false;
-            $("#error-pais").show();
-        }
-        else{
-            pais = true; 
-            $("#error-pais").hide();
-        }
-    }
-    else if (campoValidacion == 'altura'){
-        if ($("#alturaPD").val() == ""){
-            altura = false;
-            $("#error-altura").show();
-        }
-        else{
-            altura = true;
-            $("#error-altura").hide(); 
-        }
-    }
-    else if (campoValidacion == 'calle'){
-        if ($("#callePD").val() == ""){
-            calle = false;
-            $("#error-calle").show(); 
-        }
-        else{
-            calle = true;
-            $("#error-calle").hide();  
-        }
-    }
-    if (provincia == true && ciudad == true && pais == true && calle == true && altura == true){
-        $('#primary-btn-alta').prop('disabled', false);
+    
+}
+
+function error_direccion(){
+    if (error_provincia == true){
+        $("#dir-error-tab").show();
     }
     else{
-        $('#primary-btn-alta').prop('disabled', true);
+        $("#dir-error-tab").hide();
     }
+}
+
+//Calcula la cantidad total de cambios en el Modal de Modificar.
+function calc_cant_cambios(){
+    cant_cambios = 0;
+    if (cambios_nombre == true){
+        cant_cambios +=1;
+    }
+    if (cambio_estado == true){
+        cant_cambios += 1;
+    }
+    if (cambio_provincia == true){
+        cant_cambios += 1;
+    }
+    $("#primary-btn-mod").text("Confirmar " + String(cant_cambios) + " cambios");
 }
 
 //Valida e impide que los input sean caracteres distintos de numeros.
@@ -818,10 +886,18 @@ var messagesBaja = [
     "¡Casi listo! Últimos retoques"
 ].reverse();
 
-function updateMap(){
-    direccion = encodeURI(String($("#callePD").val()) + String($("#alturaPD").val()) + String($("#ciudadPD").val()) + String($("#provinciaPD").val()) + String($("#paisPD").val()))
-    src_value = "https://maps.google.com/maps?q=" + direccion + "&t=&z=15&ie=UTF8&iwloc=&output=embed";
-    $("#gmap_canvas").attr("src",src_value);
+function updateMap(modal_type){
+    if (modal_type == 'alta'){
+        direccion = encodeURI(String($("#callePD").val()) + String($("#alturaPD").val()) + String($("#ciudadPD").val()) + String($("#provinciaPD").val()) + String($("#paisPD").val()))
+        src_value = "https://maps.google.com/maps?q=" + direccion + "&t=&z=15&ie=UTF8&iwloc=&output=embed";
+        $("#gmap_canvas").attr("src",src_value);
+    }
+    else if (modal_type == 'mod'){
+        direccion = encodeURI(String($("#callePDmod").val()) + String($("#alturaPDmod").val()) + String($("#ciudadPDmod").val()) + String($("#provinciaPDmod").val()) + String($("#paisPDmod").val()))
+        src_value = "https://maps.google.com/maps?q=" + direccion + "&t=&z=15&ie=UTF8&iwloc=&output=embed";
+        $("#gmap_canvas").attr("src",src_value);
+    }
+    
 }
 
 function setEstadoMod(estado){
@@ -835,20 +911,35 @@ function setEstadoMod(estado){
     }
 }
 
-function openModModal(nombre, estado){
+function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais){
     jQuery.noConflict();
     
     //Define que se debe mostrar y que se oculta.
-
-
-    //Seteo de valores iniciales.
-    $("#nombrePDMod").val(nombre);
-    $("#primary-btn-mod").text("Confirmar " + String(cambios_db) + " cambios");
+    $("#db-error-tab").hide();
+    $("#dir-error-tab").hide();
+    $("#hor-error-tab").hide();
+    $("#mat-error-tab").hide();
+    $("#error-provincia-mod").hide(); 
     $("#nombrePDErrorMod").hide();
     $("#pdInactivoMod").hide();
     $("#pdActivoMod").hide();
-    nombre_ant = nombre;
 
+    //Seteo de valores iniciales.
+    $("#nombrePDMod").val(nombre);
+    $("#provinciaPDMod").val(provincia);
+    $("#ciudadPDMod").val(ciudad);
+    $("#callePDMod").val(calle);
+    $("#alturaPDMod").val(altura);
+    $("#paisPDMod").val(pais);
+
+    $("#primary-btn-mod").text("Confirmar 0 cambios");
+    nombre_ant = nombre;
+    estado_ant = estado;
+    calle_ant = calle;
+    altura_ant = altura;
+    ciudad_ant = ciudad;
+    provincia_ant = provincia;
+    pais_ant = pais;
     setEstadoMod(estado);
 
     //TODO: Ver si los errores suman al conteo de cambios o no.
@@ -899,16 +990,32 @@ function configureModalTab(mod_form_page){
         goToTopOfPage();
      }
 }
+
 $("#customSwitch2").click(function() {
     if($("#customSwitch2").is(":checked") == true){
         $("#pdInactivoMod").fadeOut();    
         $("#pdActivoMod").fadeIn();
         $("#switch-value-mod").val("true");
+        if (estado_ant == "True"){
+            cambio_estado = false;
+        }
+        else{
+            cambio_estado = true;
+        }
+        
+        calc_cant_cambios();
     }
     else{
         $("#pdActivoMod").fadeOut(); 
         $("#pdInactivoMod").fadeIn();
         $("#switch-value-mod").val("false");
+        if (estado_ant == "False"){
+            cambio_estado = false;
+        }
+        else{
+            cambio_estado = true;
+        }
+        calc_cant_cambios();
     }
 });
 

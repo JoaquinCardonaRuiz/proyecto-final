@@ -48,3 +48,7 @@
   .modal-content-tabs{
     border-top: 0 none;
   }
+
+  .error-tab{
+    color: #f52926;
+  }
