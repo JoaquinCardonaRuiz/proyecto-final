@@ -10,6 +10,8 @@ var altura = false;
 var calle = false;
 var menuShown = false;
 var selectedOptions = [];
+var cambios_db = 0;
+var nombre_ant = false;
 
 //Funciones específicas que manejan el dropdwon.
 function headingOptionHover(){
@@ -390,21 +392,59 @@ function openAltaModal(){
 }
 
 //Valida que el campo Nombre PD no esté repetido ni vacío.
-function validaNombrePD(){
-    if ((String($("#nombrePD").val()).trim()) == ""){
-        $("#nombrePDError").text("* El nombre no puede quedar vacío.");
-        $("#nombrePDError").show();
-        $('#primary-btn-alta').prop('disabled', true);
+function validaNombrePD(tipo){
+    if (tipo == "alta"){
+        if ((String($("#nombrePD").val()).trim()) == ""){
+            $("#nombrePDError").text("* El nombre no puede quedar vacío.");
+            $("#nombrePDError").show();
+            $('#primary-btn-alta').prop('disabled', true);
+        }
+        else if (nombres.includes(($("#nombrePD").val()).trim())){
+            $("#nombrePDError").text("* Este nombre ya ha sido utilizado en otro Punto de Depósito.");
+            $("#nombrePDError").show();
+            $('#primary-btn-alta').prop('disabled', true);
+        }
+        else{
+            $("#nombrePDError").hide();
+            $('#primary-btn-alta').prop('disabled', false);
+        }
     }
-    else if (nombres.includes(($("#nombrePD").val()).trim())){
-        $("#nombrePDError").text("* Este nombre ya ha sido utilizado en otro Punto de Depósito.");
-        $("#nombrePDError").show();
-        $('#primary-btn-alta').prop('disabled', true);
+
+    else if (tipo == "mod"){
+        if ((String($("#nombrePDMod").val()).trim()) == nombre_ant){
+            $("#nombrePDErrorMod").hide();
+            if (cambios_db > 0){
+                cambios_db -=1;
+            }
+        }
+        else if ((String($("#nombrePDMod").val()).trim()) == ""){
+            $("#nombrePDErrorMod").text("* El nombre no puede quedar vacío.");
+            $("#nombrePDErrorMod").show();
+            if (cambios_db > 0){
+                cambios_db -=1;
+            }
+        }
+        else if (nombres.includes(($("#nombrePDMod").val()).trim())){
+            $("#nombrePDErrorMod").text("* Este nombre ya ha sido utilizado en otro Punto de Depósito.");
+            $("#nombrePDErrorMod").show();
+            if (cambios_db > 0){
+                cambios_db -=1;
+            }
+        }
+        else{
+            $("#nombrePDErrorMod").hide();
+            if (cambios_db == 0){
+                cambios_db +=1;
+            }
+        }
+        calc_cant_cambios();
     }
-    else{
-        $("#nombrePDError").hide();
-        $('#primary-btn-alta').prop('disabled', false);
-    }
+    
+}
+
+function calc_cant_cambios(){
+    cant_cambios = cambios_db;
+    $("#primary-btn-mod").text("Confirmar " + String(cant_cambios) + " cambios");
 }
 
 //Valida que ningún campo de horario tenga un valor incorrecto.
@@ -784,16 +824,39 @@ function updateMap(){
     $("#gmap_canvas").attr("src",src_value);
 }
 
-function openModModal(){
+function setEstadoMod(estado){
+    if (estado == "True"){
+        $("#customSwitch2").prop("checked", true);
+        $("#pdActivoMod").show();
+    }
+    else{
+        $("#customSwitch2").prop("checked", false);
+        $("#pdInactivoMod").show();
+    }
+}
+
+function openModModal(nombre, estado){
     jQuery.noConflict();
     
     //Define que se debe mostrar y que se oculta.
 
 
     //Seteo de valores iniciales.
+    $("#nombrePDMod").val(nombre);
+    $("#primary-btn-mod").text("Confirmar " + String(cambios_db) + " cambios");
+    $("#nombrePDErrorMod").hide();
+    $("#pdInactivoMod").hide();
+    $("#pdActivoMod").hide();
+    nombre_ant = nombre;
 
+    setEstadoMod(estado);
 
+    //TODO: Ver si los errores suman al conteo de cambios o no.
     $("#modPDModal").modal("show");
+}
+
+function closeModModal(){
+    $("#modPDModal").modal("hide");
 }
 
 function configureModalTab(mod_form_page){
@@ -801,7 +864,7 @@ function configureModalTab(mod_form_page){
         $("#modal-mod-p3").hide();
         $("#modal-mod-p2").hide();
         $("#modal-mod-p4").hide();
-        $("#modal-mod-p1").fadeIn();
+        $("#modal-mod-p1").show();
         $("#subheader-mod").text("Datos Básicos");
         goToTopOfPage();
      }
@@ -809,19 +872,16 @@ function configureModalTab(mod_form_page){
         $("#modal-mod-p1").hide();
         $("#modal-mod-p3").hide();
         $("#modal-mod-p4").hide();
-        $("#modal-mod-p2").fadeIn();
+        $("#modal-mod-p2").show();
         $("#subheader-mod").text("Dirección");
         goToTopOfPage();
      }
      else if (mod_form_page == 3){
-        $("#modal-alta-p1").hide();
-        $("#modal-alta-p2").hide();
-        $("#modal-alta-p4").hide();
-        $("#modal-alta-p3").fadeIn();
-        $("#secondary-btn").text("Anterior");
-        $("#primary-btn-alta").text("Siguiente");
-        $("#subheader-alta").text("Horarios");
-        $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(0px)"});
+        $("#modal-mod-p1").hide();
+        $("#modal-mod-p2").hide();
+        $("#modal-mod-p4").hide();
+        $("#modal-mod-p3").show();
+        $("#subheader-mod").text("Horarios");
         $(".margin-row").hide();
         $("#bottomAltaModalTextAltaPD").text('Una vez elegidos los horarios, presione el botón "Siguiente".');
         goToTopOfPage();
@@ -829,11 +889,10 @@ function configureModalTab(mod_form_page){
      else{
         closeMenu();
         labelShowHide();
-        $("#modal-alta-p1").hide();
-        $("#modal-alta-p2").hide();
-        $("#modal-alta-p3").hide();
-        $("#modal-alta-p4").fadeIn();
-        $("#secondary-btn").text("Anterior");
+        $("#modal-mod-p1").hide();
+        $("#modal-mod-p2").hide();
+        $("#modal-mod-p3").hide();
+        $("#modal-mod-p4").show();
         $("#primary-btn-alta").text("Crear Punto de  Depósito");
         $("#subheader-alta").text("Materiales");
         $("#bottomAltaModalTextAltaPD").text('Una vez elegidos los materiales, presione "Crear Punto de  Depósito" para añadir el nuevo Punto.');

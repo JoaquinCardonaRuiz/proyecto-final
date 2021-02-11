@@ -18,9 +18,16 @@
     color: #888 !important;
   }
 
+
+ 
+
   .pd-tabs-item{
-    width: 190px;
+    width: 187px;
     text-align: center;
+  }
+
+  .pd-tabs-item:hover{
+    cursor: pointer;
   }
   
   .pd-tabs .pd-link.active, .pd-tabs .pd-link.active:focus {
@@ -36,4 +43,8 @@
   
   .pd-tabs .pd-link, .pd-tabs .pd-link{
     color: #888 !important;
+  }
+
+  .modal-content-tabs{
+    border-top: 0 none;
   }
