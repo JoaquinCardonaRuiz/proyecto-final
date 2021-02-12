@@ -76,6 +76,7 @@
                     <th scope="col" class="table-heading">Stock</th>
                     <th scope="col" class="table-heading">Unidad</th>
                     <th scope="col" class="table-heading">Costo R.</th>
+                    <th scope="col" class="table-heading">Depositos</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -91,8 +92,22 @@
                     <td scope="row">{{mat.stock}}</td>
                     <td scope="row">{{mat.unidadMedida}}</td>
                     <td scope="row">{{mat.costoRecoleccion}}</td>
-
-                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{mat.id}}','{{mat.nombre}}','{{mat.costoRecoleccion}}','{{mat.unidadMedida}}','{{mat.color}}')"></i></td>
+                    {%if mat.estado == "habilitado"%}
+                        <td>
+                            <div>
+                                <i class="fas fa-circle color-activo" id="estado-activo" style="margin-right:2px"></i>
+                                Habilitados
+                            </div>
+                        </td>
+                    {%else%}
+                        <td>
+                            <div>
+                                <i class="fas fa-circle color-inactivo" id="estado-inactivo" style="margin-right:2px"></i>
+                                Suspendidos
+                            </div>
+                        </td>
+                    {%endif%}
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{mat.id}}','{{mat.nombre}}','{{mat.costoRecoleccion}}','{{mat.unidadMedida}}','{{mat.color}}','{{mat.estado}}')"></i></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{mat.id}}','{{mat.nombre}}')"></i></td>
                 </tr>
                 {%endfor%}
@@ -180,6 +195,19 @@
                     </div>
                 </div>
             </div>
+            <div class="row" id="row-to-hide-3">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">  
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch1" name="customSwitch1" checked>
+                            <label class="custom-control-label" for="customSwitch1" style="top: 0px !important"></label>
+                        </div>
+                        <input type="text" id="switch-value" name = "estado" hidden>
+                    </div>
+                    <p class="color-activo" id="pdActivo" style="top: 0px !important;">Depósitos Habilitados</p>
+                    <p class="color-inactivo" id="pdInactivo" style="display:none;top: 0px !important;">Depósitos Suspendidos</p>
+                </div>
+            </div>
             <div class="row">
                 <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione el botón "Crear Material"</p>
             </div>
@@ -256,6 +284,19 @@
                         <label>Color</label>
                         <p id="colorErrorMod" class="modalErrorMessage"></p>
                     </div>
+                </div>
+            </div>
+            <div class="row" id="row-to-hide-3-mod">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">  
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch2" name="customSwitch2" checked>
+                            <label class="custom-control-label" for="customSwitch2" style="top: 0px !important"></label>
+                        </div>
+                        <input type="text" id="switch-value-mod" name = "estado" hidden>
+                    </div>
+                    <p class="color-activo" id="pdActivoMod" style="top: 0px !important;">Depósitos Habilitados</p>
+                    <p class="color-inactivo" id="pdInactivoMod" style="display:none;top: 0px !important;">Depósitos Suspendidos</p>
                 </div>
             </div>
             <div class="row">

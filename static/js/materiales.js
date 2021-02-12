@@ -9,12 +9,17 @@ var colorCompletoMod = false;
 var nombreOriginal = "";
 var del = false;
 var mod = false;
+labelPosition();
 
 function openAltaModal(){
     jQuery.noConflict();
     $("#colorInput").val("#" + (Math.random().toString(16) + "000000").slice(2, 8))
     $(".lds-ring").hide();
     $('#altaModal').modal('show');
+    $("#customSwitch1").prop("checked", true);
+    $("#pdInactivo").fadeOut();    
+    $("#pdActivo").fadeIn();
+    $("#switch-value").val("habilitado");
     checkColorAlta();
 }
 
@@ -117,6 +122,7 @@ function alta_material(){
     $(".lds-ring").show().fadeIn(500);
     $("#row-to-hide-1").hide();
     $("#row-to-hide-2").hide();
+    $("#row-to-hide-3").hide();
     $('#alta-btn').prop('disabled', true);
     $('#secondary-btn').prop('disabled', true);
     submitForm('altaMaterialForm');
@@ -196,7 +202,7 @@ function modifyEntidad(){
 }
 
 
-function openEditModal(id,nombre,costoRecoleccion,unidadMedida,color,){
+function openEditModal(id,nombre,costoRecoleccion,unidadMedida,color,estado){
     jQuery.noConflict();
     $(".lds-ring").hide();
     document.getElementById('nombreMatErrorMod').innerHTML="";
@@ -208,6 +214,17 @@ function openEditModal(id,nombre,costoRecoleccion,unidadMedida,color,){
     $('#crInputMod').val(String(costoRecoleccion));
     $('#unidadInputMod').val(String(unidadMedida));
     $('#colorInputMod').val(String(color));
+    if(estado=="habilitado"){
+        $("#customSwitch2").prop("checked", true);
+        $("#pdInactivoMod").fadeOut();    
+        $("#pdActivoMod").fadeIn();
+        $("#switch-value-mod").val("habilitado");
+    }else{
+        $("#customSwitch2").prop("checked", false);
+        $("#pdActivoMod").fadeOut(); 
+        $("#pdInactivoMod").fadeIn();
+        $("#switch-value-mod").val("suspendido");
+    }
     $('#editModal').modal('show');
     $('.nav-tabs a:first').tab('show');
     nombreOriginal = String(nombre);
@@ -306,6 +323,7 @@ function edit_material(){
     $(".lds-ring").show().fadeIn(500);
     $("#row-to-hide-1-mod").hide();
     $("#row-to-hide-2-mod").hide();
+    $("#row-to-hide-3-mod").hide();
     $('#edit-btn').prop('disabled', true);
     $('#secondary-btn-mod').prop('disabled', true);
     submitForm('editMaterialForm');
@@ -375,4 +393,49 @@ function baja_entidad(){
 
     //Funcion que va cambiando los mensajes de carga.
     nextMsgBaja()
+}
+
+
+$("#customSwitch1").click(function() {
+    if($("#customSwitch1").is(":checked") == true){
+        $("#pdInactivo").fadeOut();    
+        $("#pdActivo").fadeIn();
+        $("#switch-value").val("habilitado");
+    }
+    else{
+        $("#pdActivo").fadeOut(); 
+        $("#pdInactivo").fadeIn();
+        $("#switch-value").val("suspendido");
+    }
+});
+
+
+$("#customSwitch2").click(function() {
+    if($("#customSwitch2").is(":checked") == true){
+        $("#pdInactivoMod").fadeOut();    
+        $("#pdActivoMod").fadeIn();
+        $("#switch-value-mod").val("habilitado");
+    }
+    else{
+        $("#pdActivoMod").fadeOut(); 
+        $("#pdInactivoMod").fadeIn();
+        $("#switch-value-mod").val("suspendido");
+    }
+});
+
+function labelPosition(){
+    var pos_switch = document.getElementById("customSwitch1").offsetTop;
+    var pos_switch_left = document.getElementById("customSwitch1").offsetLeft;
+    $("#pdActivo").css({top: 0, position:'absolute'});
+    $("#pdActivo").css({left: pos_switch_left + 140, position:'absolute'});
+    $("#pdInactivo").css({top: 0, position:'absolute'});
+    $("#pdInactivo").css({left: pos_switch_left + 140, position:'absolute'});
+
+    var pos_switch = document.getElementById("customSwitch2").offsetTop;
+    var pos_switch_left = document.getElementById("customSwitch2").offsetLeft;
+    $("#pdActivoMod").css({top: 0, position:'absolute'});
+    $("#pdActivoMod").css({left: pos_switch_left + 140, position:'absolute'});
+
+    $("#pdInactivoMod").css({top: 0, position:'absolute'});
+    $("#pdInactivoMod").css({left: pos_switch_left + 140, position:'absolute'});
 }

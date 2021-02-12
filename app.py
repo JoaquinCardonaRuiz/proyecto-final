@@ -227,8 +227,9 @@ def alta_material():
         unidad =                request.form['unidad']
         costoRecoleccion =      request.form['costoRecoleccion']
         color =                 request.form['color']
+        estado =                request.form['estado']
         try:
-            NegocioMaterial.add(nombre,unidad,costoRecoleccion,color)
+            NegocioMaterial.add(nombre,unidad,costoRecoleccion,color,estado)
         except Exception as e:
             return error(e,"materiales")
         return redirect(url_for('gestion_materiales'))
@@ -242,8 +243,9 @@ def edit_material():
         unidad =                request.form['unidad']
         costoRecoleccion =      request.form['costoRecoleccion']
         color =                 request.form['color']
+        estado =                request.form['estado']
         try:
-            NegocioMaterial.update(idMat,nombre,unidad,costoRecoleccion,color)
+            NegocioMaterial.update(idMat,nombre,unidad,costoRecoleccion,color,estado)
         except Exception as e:
             return error(e,"materiales")
         return redirect(url_for('gestion_materiales'))

@@ -20,23 +20,23 @@ class NegocioMaterial(Negocio):
 
     
     @classmethod
-    def add(cls,nombre,unidad,costoRecoleccion,color):
+    def add(cls,nombre,unidad,costoRecoleccion,color,estado):
         """
         Agrega un material a la BD
         """
         try:
-            DatosMaterial.add(nombre,unidad,costoRecoleccion,color)
+            DatosMaterial.add(nombre,unidad,costoRecoleccion,color,estado)
         except Exception as e:
             raise(e)
 
     
     @classmethod
-    def update(cls,idMat,nombre,unidad,costoRecoleccion,color):
+    def update(cls,idMat,nombre,unidad,costoRecoleccion,color,estado):
         """
         Actualiza un material en la BD
         """
         try:
-            DatosMaterial.update(idMat,nombre,unidad,costoRecoleccion,color)
+            DatosMaterial.update(idMat,nombre,unidad,costoRecoleccion,color,estado)
         except Exception as e:
             raise(e)
 

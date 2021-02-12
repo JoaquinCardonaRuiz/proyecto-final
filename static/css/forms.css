@@ -249,3 +249,11 @@ input:focus ~ .highlight {
 }
 
 * { box-sizing:border-box; }
+
+
+
+.custom-control-input{
+  background-color: #95C22B !important;
+  border-color: #95C22B !important;
+  color: #95C22B !important;
+}

@@ -16,13 +16,14 @@ class DatosMaterial(Datos):
                            unidadMedida, \
                            costoRecoleccion, \
                            stock, \
-                           color \
+                           color, \
+                           estado \
                            FROM materiales WHERE estado!=\"eliminado\";")
             cls.cursor.execute(sql)
             materiales_ = cls.cursor.fetchall()
             materiales = []
             for m in materiales_:
-                material_ = Material(m[0],m[1],m[2],m[3],m[4],m[5])
+                material_ = Material(m[0],m[1],m[2],m[3],m[4],m[5],m[6])
                 materiales.append(material_)
             return materiales
             
@@ -35,14 +36,14 @@ class DatosMaterial(Datos):
 
     
     @classmethod
-    def add(cls,nombre,unidad,costoRecoleccion,color):
+    def add(cls,nombre,unidad,costoRecoleccion,color,estado):
         """
         Agrega un material a la BD
         """
         cls.abrir_conexion()
         try:
             sql= ("INSERT INTO materiales (nombre,unidadMedida,costoRecoleccion,color,stock,estado) \
-                   VALUES (\"{}\",\"{}\",{},\"{}\",0,\"disponible\");".format(nombre,unidad,costoRecoleccion,color))
+                   VALUES (\"{}\",\"{}\",{},\"{}\",0,\"{}\");".format(nombre,unidad,costoRecoleccion,color,estado))
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
@@ -56,13 +57,13 @@ class DatosMaterial(Datos):
 
 
     @classmethod
-    def update(cls,idMat,nombre,unidad,costoRecoleccion,color):
+    def update(cls,idMat,nombre,unidad,costoRecoleccion,color,estado):
         """
         Actualiza un material en la BD
         """
         cls.abrir_conexion()
         try:
-            sql= ("UPDATE materiales SET nombre=\"{}\",unidadMedida=\"{}\",costoRecoleccion={},color=\"{}\",stock=0,estado=\"disponible\" WHERE idMaterial={};").format(nombre,unidad,costoRecoleccion,color,idMat)
+            sql= ("UPDATE materiales SET nombre=\"{}\",unidadMedida=\"{}\",costoRecoleccion={},color=\"{}\",estado=\"{}\" WHERE idMaterial={};").format(nombre,unidad,costoRecoleccion,color,estado,idMat)
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
