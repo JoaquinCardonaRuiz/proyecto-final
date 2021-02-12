@@ -4,6 +4,14 @@
   margin-left:4%;
 }
 
+#headingModalHorarios{
+margin-left:5.4%;
+}
+
+#headingModalMat{
+margin-left:5.7%;
+}
+
 .modalErrorMessage{
   font-size: 15px;
   color: tomato;
@@ -51,6 +59,7 @@ margin-left:10%;
 
 .modal{
 margin-left: 31%;
+height: fit-content;
 }
 
 div.modal-content{
@@ -71,14 +80,13 @@ margin-top: 4%;
 
 .subheader{
 font-size: large;
-color: #777;
+color: #aaa;
 }
 
 .subheader-row{
 height:80px !important;
 margin-top: -5% !important;
-margin-left: 4% !important;
-margin-bottom: 2%;
+margin-left: 5% !important;
 }
 
 
@@ -91,3 +99,185 @@ margin-left: 5%;
 width: 90%;
 margin-top: 2%;
 }
+
+.modal-large-card{
+position: relative;
+border-radius: 5px;;
+min-height: 100px;
+height: fit-content;
+box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
+background-color: #fff;
+width: 90% !important;
+margin-top: 20px;
+margin-bottom: 15px; 
+}
+
+#modal-large-card-2{
+margin-top: 4%;
+}
+
+.modal-large-card-sm{
+position: relative;
+border-radius: 5px;;
+min-height: 50px;
+height: fit-content;
+box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
+background-color: #fff;
+width: 85% !important;
+margin-top: 17px;
+margin-bottom: 10px; 
+}
+
+.modal-large-card-img{
+width: 70px;
+margin-top: 15px;
+margin-left: 10px;
+}
+
+.open-letter{
+font-size: 25px;
+color:  #7cc22b;
+}
+
+.vl {
+border-left: 1px solid lightgray;
+height: 80px;
+margin-top: 10px;
+margin-left: 10px;
+}
+
+.modal-card-col{
+position: relative;
+width: 100px;
+margin-left: 10px;
+margin-right: 10px;
+}
+
+#modal-card-col-1{
+margin-right: -15px;
+}
+
+.modal-info-img{
+margin-right: 5px;
+}
+
+.info-container-modal{
+justify-content: left;
+align-items: left;
+vertical-align: middle;
+width: 300px; 
+margin-left: 20px;
+margin-top: 15px;
+}
+
+#info-modal-1-neg{
+margin-left: 2px;
+margin-right: 8px;
+font-size: 15px;
+color: #f52926;
+}
+
+#info-modal-2-neg{
+margin-left: 2px;
+margin-right: 8px;
+font-size: 15px;
+color: #f52926;
+}
+
+#modal-row-2{
+margin-top: 25px;
+}
+
+#info-modal-3{
+color: rgb(158, 158, 158);
+}
+
+#estado-apertura-neg{
+color: #f52926;
+}
+
+#estado-apertura-inac{
+color: rgb(77, 77, 77);
+}
+
+
+#cant-horas-cierre-neg{
+color: rgb(77, 77, 77);
+}
+
+#fines-semana-neg{
+display: none;
+}
+
+#fines-semana-pos{
+display: none;
+}
+
+.card-second-row{
+margin-top: -20px;
+}
+
+.card-first-row{
+margin-top: 20px;
+}
+
+.modal-body-card{
+margin-top: 0px;
+}
+
+.card-first-row-sm{
+margin-top: 12px;
+}
+
+.material-card-title{
+font-size: 20px;
+}
+
+.material-card-subtitle{
+font-size: 13px;
+}
+
+.materiales-large-card-img{
+margin-top: 8px;
+margin-left: 10px;
+}
+
+.modal-card-col-sm{
+position: relative;
+width: 100px;
+margin-left: 20px;
+margin-right: 20px;
+}
+
+.subheader{
+font-size: large;
+color: #aaa;
+}
+
+.subheader-row{
+height:80px !important;
+margin-top: -5% !important;
+margin-left: 5% !important;
+}
+
+#subheader-alta-pd{
+margin-left: 8% !important;
+margin-top: 1% !important;
+}
+
+
+#bottomAltaModalTextAltaPD{
+margin-bottom: 2% !important;
+}
+
+
+#modalModPDBody{
+margin-top: -17px ;
+}
+
+.button-row{
+display: none;
+}
+
+.mapouter{position:relative;text-align:right;height:354px;width:600px;}
+.gmap_canvas {overflow:hidden;background:none!important;height:354px;width:600px;}

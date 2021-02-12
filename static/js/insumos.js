@@ -14,6 +14,21 @@ var nombreOriginal = "";
 var del = false;
 var mod = false;
 
+function openLoadingRing(){
+    document.getElementById("open-loading-modal").click();
+    $(".lds-ring").hide();
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show();
+    $("#loadingRow").show();
+}
+
+function closeLoadingRing(){
+    document.getElementById("open-loading-modal").click();
+    $(".lds-ring").hide();
+    $("#loadingRow").hide();
+}
+
+
 function openAltaModal(){
     jQuery.noConflict();
     $("#colorInput").val("#" + (Math.random().toString(16) + "000000").slice(2, 8))
@@ -432,4 +447,37 @@ function baja_entidad(){
 }
 
 
+function openModalMateriales(nombre, materiales,cantidades){
+    cantidades = cantidades.substring(1, cantidades.length-1).split(',');
+    console.log(cantidades);
+    $.getJSON("/insumos/materiales/"+materiales,function (result){
+        if(result.length > 0){
+            console.log(result);
+            card = $("#material-card").clone();
+            $("#materiales-modal-body").children("#material-card").remove();
+            // Borro contenido anterior
+            //document.getElementById("modalTableBody"). innerHTML="";
+            //document.getElementById("headerRow").innerHTML ="";
 
+            // Establezco título
+            document.getElementById("headingModalMat").innerHTML = "Materiales aceptados por " + nombre;
+            document.getElementById("open-loading-modal").click();
+            document.getElementById("open-modal-mat").click();
+
+            row = document.getElementById("material-card");
+            for(i=0; i < result.length ; i++){
+                clone = card.clone();
+                clone.find("#nombre-material").text(result[i]["nombre"]);
+                clone.find("#unidad-medida").text(result[i]["unidadmedida"]);
+                clone.find("#material-img").css('background-color',result[i]["color"]);
+                clone.find("#material-img").text(result[i]["nombre"][0]);
+                clone.find("#cantidad").text(cantidades[i]);
+                clone.appendTo("#materiales-modal-body");
+        
+            }
+        }else{
+            document.getElementById("open-loading-modal").click();
+            document.getElementById("open-mat-vacio").click();
+        }
+    })
+}

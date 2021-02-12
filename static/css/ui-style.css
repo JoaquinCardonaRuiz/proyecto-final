@@ -262,3 +262,17 @@ h2 		 {
     font-size: 14px; 
     color: #70706f;
 }
+
+
+.circle {
+    width: 58px;
+    height: 58px;
+    line-height: 58px;
+    border-radius: 58px;
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(226, 192, 128);
+}

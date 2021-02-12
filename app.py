@@ -266,6 +266,26 @@ def baja_insumo(id):
     return redirect(url_for('gestion_insumos'))
 
 
+
+@app.route('/insumos/materiales/<ids>')
+def get_materiales(ids):
+    # esto es probablemente lo mas inseguro que se puede hacer en un sistema web
+    # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
+    # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
+    #TODO: CAMBIAR ESTA LINEA:
+    ids = eval(ids)
+    try:
+        materiales = NegocioMaterial.get_by_id_array(ids)
+        materiales_dic =  [{"nombre":          m.nombre,
+                            "unidadmedida":    m.unidadMedida,
+                            "color":           m.color}
+                            for m in materiales]
+        return jsonify(materiales_dic)
+    except Exception as e:
+        return error(e,"materiales")
+    return redirect(url_for('gestion_materiales'))
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
