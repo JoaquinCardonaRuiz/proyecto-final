@@ -15,6 +15,11 @@ var selectedOptions = [];
 var cambios_nombre = false;
 var cambio_estado = false;
 var cambio_provincia = false;
+var cambio_calle = false;
+var cambio_altura = false;
+var cambio_ciudad = false;
+var cambio_pais = false;
+var cambio_horarios = [false, false, false, false, false, false, false];
 
 //Valores originales
 var nombre_ant = false;
@@ -25,11 +30,20 @@ var altura_ant = false;
 var ciudad_ant = false;
 var provincia_ant = false;
 var pais_ant = false;
+var horarios_mod = false;
+var estado_horario_ant = [true,true,true,true,true,true,true];
+var estado_horario = [true,true,true,true,true,true,true];
+ 
 
 
 //Asteriscos de error
 var error_nombre = false;
 var error_provincia = false;
+var error_calle = false;
+var error_altura = false;
+var error_pais = false;
+var error_ciudad = false;
+var error_horarios = [false, false, false, false, false, false, false];
 
 
 //Funciones específicas que manejan el dropdwon.
@@ -502,6 +516,7 @@ function validaHorarioPD(){
 
         }
         else{
+            pre_desactiva = true;
             $("#" + String(dia) + "-error-horaDesde").hide();
             $("#" + String(dia) + "-error-horaHasta").hide();
             $("#" + String(dia) + "-error").hide();
@@ -522,6 +537,80 @@ function validaHorarioPD(){
   }
   
   
+}
+
+function validaHorarioPDMod(){
+    var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    desactivaMod = false;
+    activaMod = false;
+    pre_desactivaMod = false;
+    while(desactivaMod == false && activaMod == false){
+      for (var i in dias){
+          dia = dias[i];
+          horaHasta = $("#" + String(dia) + "-horaHasta-mod").val();
+          horaDesde = $("#" + String(dia) + "-horaDesde-mod").val();
+          if ( ( horaHasta== "" ||  horaDesde == "") && $("#" + String(dia) + "-switch-mod").is(":checked") == true){
+              pre_desactivaMod = true;
+              if (horaHasta == ""){
+                  $("#" + String(dia) + "-error-horaHasta-mod").show();
+                  error_horarios[i] = true;
+              }
+              else{
+                  $("#" + String(dia) + "-error-horaHasta-mod").hide();
+                  error_horarios[i] = false;
+              }
+  
+              if (horaDesde == ""){
+                  $("#" + String(dia) + "-error-horaDesde-mod").show();
+                  error_horarios[i] = true;
+              }
+              else{
+                  $("#" + String(dia) + "-error-horaDesde-mod").hide();
+                  error_horarios[i] = false;
+              }
+              
+              $("#" + String(dia) + "-error-mod").hide();
+          }
+          else if ((horaDesde) >= (horaHasta) && $("#" + String(dia) + "-switch-mod").is(":checked") == true){
+              pre_desactivaMod = true;
+              $("#" + String(dia) + "-error-horaDesde-mod").hide();
+              $("#" + String(dia) + "-error-horaHasta-mod").hide();
+              $("#" + String(dia) + "-error-mod").show();
+              error_horarios[i] = true;
+          }
+          else{
+              pre_desactivaMod = true;
+              $("#" + String(dia) + "-error-horaDesde-mod").hide();
+              $("#" + String(dia) + "-error-horaHasta-mod").hide();
+              $("#" + String(dia) + "-error-mod").hide();
+              error_horarios[i] = false;
+          }
+      }
+      if (pre_desactivaMod == true)
+          desactivaMod = true;
+      else{
+          activaMod = true;
+      }
+    }
+    if (desactivaMod == true){
+      //Botón
+    }
+    else{
+      //Botón
+    }
+    error_horario();
+    calc_cant_cambios();
+}
+
+
+
+function error_horario(){
+    if (error_horarios.includes(true)){
+        $("#hor-error-tab").show();
+    }
+    else{
+        $("#hor-error-tab").hide();
+    }
 }
 
 //Valida que ningún campo de la dirección tenga un valor.
@@ -602,6 +691,74 @@ function validaDireccion(modal_type, campoValidacion){
                 $("#error-provincia-mod").hide(); 
             }
         }
+        else if (campoValidacion == 'calle'){
+            if ($("#callePDMod").val() == ""){
+                cambio_calle = true;
+                error_calle = true;
+                $("#error-calle-mod").show();
+            }
+            else if ($("#callePDMod").val() == calle_ant){
+                cambio_calle = false;
+                error_calle = false;
+                $("#error-calle-mod").hide(); 
+            }
+            else{
+                cambio_calle = true;
+                error_calle = false;
+                $("#error-calle-mod").hide(); 
+            }
+        }
+        else if (campoValidacion == 'altura'){
+            if ($("#alturaPDMod").val() == ""){
+                cambio_altura = true;
+                error_altura = true;
+                $("#error-altura-mod").show();
+            }
+            else if ($("#alturaPDMod").val() == altura_ant){
+                cambio_altura = false;
+                error_altura = false;
+                $("#error-altura-mod").hide(); 
+            }
+            else{
+                cambio_altura = true;
+                error_altura = false;
+                $("#error-altura-mod").hide(); 
+            }
+        }
+        else if (campoValidacion == 'ciudad'){
+            if ($("#ciudadPDMod").val() == ""){
+                cambio_ciudad = true;
+                error_ciudad = true;
+                $("#error-ciudad-mod").show();
+            }
+            else if ($("#ciudadPDMod").val() == ciudad_ant){
+                cambio_ciudad = false;
+                error_ciudad = false;
+                $("#error-ciudad-mod").hide(); 
+            }
+            else{
+                cambio_ciudad = true;
+                error_ciudad = false;
+                $("#error-ciudad-mod").hide(); 
+            }
+        }
+        else if (campoValidacion == 'pais'){
+            if ($("#paisPDMod").val() == ""){
+                cambio_pais = true;
+                error_pais = true;
+                $("#error-pais-mod").show();
+            }
+            else if ($("#paisPDMod").val() == pais_ant){
+                cambio_pais = false;
+                error_pais = false;
+                $("#error-pais-mod").hide(); 
+            }
+            else{
+                cambio_ciudad = true;
+                error_ciudad = false;
+                $("#error-ciudad-mod").hide(); 
+            }
+        }
         error_direccion();
         calc_cant_cambios();
 
@@ -610,7 +767,7 @@ function validaDireccion(modal_type, campoValidacion){
 }
 
 function error_direccion(){
-    if (error_provincia == true){
+    if (error_provincia == true || error_calle == true || error_altura == true || error_ciudad == true || error_pais == true){
         $("#dir-error-tab").show();
     }
     else{
@@ -630,6 +787,23 @@ function calc_cant_cambios(){
     if (cambio_provincia == true){
         cant_cambios += 1;
     }
+    if (cambio_calle == true){
+        cant_cambios += 1;
+    }
+    if (cambio_altura == true){
+        cant_cambios += 1;
+    }
+    if (cambio_ciudad == true){
+        cant_cambios += 1;
+    }
+    if (cambio_pais == true){
+        cant_cambios += 1;
+    }
+    cant_cambios += cambio_horarios.reduce(function(n, val) {
+        return n + (val === true);
+    }, 0);
+    
+    
     $("#primary-btn-mod").text("Confirmar " + String(cant_cambios) + " cambios");
 }
 
@@ -705,6 +879,38 @@ function habilitaHorario(dia){
         $("#" + String(dia) + "-span-horaHasta").hide();
         $("#" + String(dia) + "-bar-horaHasta").hide();
         validaHorarioPD()
+        
+    }
+}
+
+//Habilita y deshabilita los horarios para un día determinado.
+function habilitaHorarioMod(dia){
+    if ($("#" + String(dia) + "-switch-mod").is(":checked") == true){
+
+        $("#" + String(dia) + "-horaDesde-mod").val("08:00");
+        $("#" + String(dia) + "-horaHasta-mod").val("20:00");
+        $("#" + String(dia) + "-horaDesde-mod").prop( "readonly", false );
+        $("#" + String(dia) + "-horaHasta-mod").prop( "readonly", false );
+        $("#" + String(dia) + "-horaDesde-mod").removeClass("data-show-input");
+        $("#" + String(dia) + "-horaHasta-mod").removeClass("data-show-input");
+        $("#" + String(dia) + "-span-horaDesde-mod").show();
+        $("#" + String(dia) + "-bar-horaDesde-mod").show();
+        $("#" + String(dia) + "-span-horaHasta-mod").show();
+        $("#" + String(dia) + "-bar-horaHasta-mod").show();
+        validaHorarioPDMod();
+    }
+    else{
+        $("#" + String(dia) + "-horaDesde-mod").val("");
+        $("#" + String(dia) + "-horaHasta-mod").val("");
+        $("#" + String(dia) + "-horaDesde-mod").prop('readonly', true);
+        $("#" + String(dia) + "-horaDesde-mod").addClass("data-show-input");
+        $("#" + String(dia) + "-horaHasta-mod").prop('readonly', true);
+        $("#" + String(dia) + "-horaHasta-mod").addClass("data-show-input");
+        $("#" + String(dia) + "-span-horaDesde-mod").hide();
+        $("#" + String(dia) + "-bar-horaDesde-mod").hide();
+        $("#" + String(dia) + "-span-horaHasta-mod").hide();
+        $("#" + String(dia) + "-bar-horaHasta-mod").hide();
+        validaHorarioPDMod();
         
     }
 }
@@ -893,9 +1099,9 @@ function updateMap(modal_type){
         $("#gmap_canvas").attr("src",src_value);
     }
     else if (modal_type == 'mod'){
-        direccion = encodeURI(String($("#callePDmod").val()) + String($("#alturaPDmod").val()) + String($("#ciudadPDmod").val()) + String($("#provinciaPDmod").val()) + String($("#paisPDmod").val()))
+        direccion = encodeURI(String($("#callePDMod").val()) + String($("#alturaPDMod").val()) + String($("#ciudadPDMod").val()) + String($("#provinciaPDMod").val()) + String($("#paisPDMod").val()))
         src_value = "https://maps.google.com/maps?q=" + direccion + "&t=&z=15&ie=UTF8&iwloc=&output=embed";
-        $("#gmap_canvas").attr("src",src_value);
+        $("#gmap_canvas_mod").attr("src",src_value);
     }
     
 }
@@ -911,7 +1117,7 @@ function setEstadoMod(estado){
     }
 }
 
-function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais){
+function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id_punto){
     jQuery.noConflict();
     
     //Define que se debe mostrar y que se oculta.
@@ -919,7 +1125,11 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais){
     $("#dir-error-tab").hide();
     $("#hor-error-tab").hide();
     $("#mat-error-tab").hide();
-    $("#error-provincia-mod").hide(); 
+    $("#error-provincia-mod").hide();
+    $("#error-ciudad-mod").hide();
+    $("#error-calle-mod").hide();
+    $("#error-altura-mod").hide();
+    $("#error-pais-mod").hide(); 
     $("#nombrePDErrorMod").hide();
     $("#pdInactivoMod").hide();
     $("#pdActivoMod").hide();
@@ -931,6 +1141,8 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais){
     $("#callePDMod").val(calle);
     $("#alturaPDMod").val(altura);
     $("#paisPDMod").val(pais);
+    updateMap('mod');
+    setHorariosModValues(id_punto);
 
     $("#primary-btn-mod").text("Confirmar 0 cambios");
     nombre_ant = nombre;
@@ -1018,5 +1230,47 @@ $("#customSwitch2").click(function() {
         calc_cant_cambios();
     }
 });
+
+function setHorariosModValues(id){
+    $.getJSON("/gestion-puntos-deposito/horarios/"+String(id),function (result){
+        var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        horarios_mod = result; 
+        for (i=0; i < dias.length; i++){
+            dia = result[i]["dia"];
+            horaDesde = result[i]["horaDesde"];
+            horaHasta = result[i]["horaHasta"];
+            if (horaDesde == false || horaDesde == false){
+                $("#" + String(dia) + "-horaDesde-mod").val("");
+                $("#" + String(dia) + "-horaHasta-mod").val("");
+                $("#" + String(dia) + "-horaDesde-mod").prop('readonly', true);
+                $("#" + String(dia) + "-horaDesde-mod").addClass("data-show-input");
+                $("#" + String(dia) + "-horaHasta-mod").prop('readonly', true);
+                $("#" + String(dia) + "-horaHasta-mod").addClass("data-show-input");
+                $("#" + String(dia) + "-span-horaDesde-mod").hide();
+                $("#" + String(dia) + "-bar-horaDesde-mod").hide();
+                $("#" + String(dia) + "-span-horaHasta-mod").hide();
+                $("#" + String(dia) + "-bar-horaHasta-mod").hide();
+                $("#" + String(dia) + "-switch-mod").prop("checked", false);
+                
+            }
+            else {
+                $("#" + String(dia) + "-horaDesde-mod").val("08:00");
+                $("#" + String(dia) + "-horaHasta-mod").val("20:00");
+                $("#" + String(dia) + "-horaDesde-mod").prop( "readonly", false );
+                $("#" + String(dia) + "-horaHasta-mod").prop( "readonly", false );
+                $("#" + String(dia) + "-horaDesde-mod").removeClass("data-show-input");
+                $("#" + String(dia) + "-horaHasta-mod").removeClass("data-show-input");
+                $("#" + String(dia) + "-span-horaDesde-mod").show();
+                $("#" + String(dia) + "-bar-horaDesde-mod").show();
+                $("#" + String(dia) + "-span-horaHasta-mod").show();
+                $("#" + String(dia) + "-bar-horaHasta-mod").show();
+                $("#" + String(dia) + "-switch-mod").prop("checked", true);
+                
+            }
+        }
+    });
+}
+
+
 
 labelPosition();

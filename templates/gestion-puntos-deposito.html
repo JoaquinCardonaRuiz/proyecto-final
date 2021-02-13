@@ -79,7 +79,7 @@
                     <td><a class="custom-link" onclick="openLoadingRing();openModalHorarios('{{punto.id}}', '{{punto.nombre}}', '{{punto.estado}}');">Ver horarios</a></td>
                     <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{punto.id}}', '{{punto.nombre}}');">Ver materiales</a></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon"></i></td>
-                    <td class="modify-row" onclick="openModModal('{{punto.nombre}}','{{punto.estado}}', '{{punto.direccion.calle}}', '{{punto.direccion.altura}}', '{{punto.direccion.ciudad}}', '{{punto.direccion.provincia}}', '{{punto.direccion.pais}}' );"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
+                    <td class="modify-row" onclick="openModModal('{{punto.nombre}}','{{punto.estado}}', '{{punto.direccion.calle}}', '{{punto.direccion.altura}}', '{{punto.direccion.ciudad}}', '{{punto.direccion.provincia}}', '{{punto.direccion.pais}}', '{{punto.id}}' );"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
 
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true"></button>
                     <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
@@ -527,7 +527,7 @@
                 <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="callePDMod" onkeyup="updateMap(); validaDireccion('mod','calle');" name="callePD" autocomplete="off" style="width: 215%;"> 
+                            <input type="text" required id="callePDMod" onkeyup="updateMap('mod'); validaDireccion('mod','calle');" name="callePD" autocomplete="off" style="width: 215%;"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 215%;"></span>
                             <span class="bar" style="width: 215%;"></span>
@@ -538,7 +538,7 @@
                     </div>
                     <div class="col" style="margin-left: 33.3%;">
                         <div class="group" style=" margin-top: 2%;">
-                            <input type="text" required id="alturaPDMod" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap(); validaDireccion('mod','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                            <input type="text" required id="alturaPDMod" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('mod'); validaDireccion('mod','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
@@ -550,7 +550,7 @@
                 <div class="row" id="fieldsRow1AltaPD2" style="margin-left: 6.5%; margin-right: 8%;">
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="ciudadPDMod" onkeyup="updateMap(); validaDireccion('mod','ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;"> 
+                            <input type="text" required id="ciudadPDMod" onkeyup="updateMap('mod'); validaDireccion('mod','ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
@@ -560,7 +560,7 @@
                     </div>
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="provinciaPDMod" onkeyup="updateMap(); validaDireccion('mod','provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                            <input type="text" required id="provinciaPDMod" onkeyup="updateMap('mod'); validaDireccion('mod','provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
@@ -571,7 +571,7 @@
                     </div>
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="paisPDMod" onkeyup="updateMap(); validaDireccion('mod','pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                            <input type="text" required id="paisPDMod" onkeyup="updateMap('mod'); validaDireccion('mod','pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
@@ -583,11 +583,12 @@
                 <div class="row" id="fieldsRow1AltaPD2" style="margin-bottom: -30px;">
                     <div class="mapouter" style="margin-left: 10%;">
                         <div class="gmap_canvas">
-                            <iframe width="603" height="280" id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0"></iframe>
+                            <iframe width="603" height="280" id="gmap_canvas_mod" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0"></iframe>
                         </div>
                     </div>
                 </div>
             </div>
+            <!--Pestaña 3 - Horarios-->
             <div id="modal-mod-p3" style="display: none;">
                 {%for dia in dias%}
                 <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
@@ -604,29 +605,29 @@
                             <label>Abierto</label> 
                         </div>
                         <div class="custom-control custom-switch" style="margin-top: -8px !important; margin-left: 40px;">
-                            <input type="checkbox" class="custom-control-input" id="{{dia + '-switch'}}" name="{{dia + '-switch'}}" checked onclick="habilitaHorario('{{dia}}');">
-                            <label class="custom-control-label" for="{{dia + '-switch'}}"></label>
+                            <input type="checkbox" class="custom-control-input" id="{{dia + '-switch-mod'}}" name="{{dia + '-switch-mod'}}" checked onclick="habilitaHorarioMod('{{dia}}');">
+                            <label class="custom-control-label" for="{{dia + '-switch-mod'}}"></label>
                         </div>
                     </div>
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="time" required id="{{dia + '-horaDesde'}}"autocomplete="off" name="{{dia + '-horaDesde'}}" style="width: 100%;" autocomplete="off" onkeyup="validaHorarioPD();" value="08:00"> 
+                            <input type="time" required id="{{dia + '-horaDesde-mod'}}"autocomplete="off" name="{{dia + '-horaDesde-mod'}}" style="width: 100%;" autocomplete="off" onkeyup="validaHorarioPDMod();" value="08:00"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
-                            <span class="highlight" style="width: 100%;" id="{{dia + '-span-horaDesde'}}"></span>
-                            <span class="bar" style="width: 100%;" id="{{dia + '-bar-horaDesde'}}"></span>
+                            <span class="highlight" style="width: 100%;" id="{{dia + '-span-horaDesde-mod'}}"></span>
+                            <span class="bar" style="width: 100%;" id="{{dia + '-bar-horaDesde-mod'}}"></span>
                             <label>Horario apertura</label>
-                            <p id="{{dia + '-error-horaDesde'}}" class="modalErrorMessage" style="display: none;">* Horario inválido.</p>
-                            <p id="{{dia + '-error'}}" class="modalErrorMessage" style="width: 250%; display: none;">* El horario de apertura debe ser menor al de cierre.</p>
+                            <p id="{{dia + '-error-horaDesde-mod'}}" class="modalErrorMessage" style="display: none;">* Horario inválido.</p>
+                            <p id="{{dia + '-error-mod'}}" class="modalErrorMessage" style="width: 250%; display: none;">* El horario de apertura debe ser menor al de cierre.</p>
                         </div>
                     </div>
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="time" required id="{{dia + '-horaHasta'}}" autocomplete="off" name="{{dia + '-horaHasta'}}" style="width: 100%;" autocomplete="off" onkeyup="validaHorarioPD();" value="20:00"> 
+                            <input type="time" required id="{{dia + '-horaHasta-mod'}}" autocomplete="off" name="{{dia + '-horaHasta-mod'}}" style="width: 100%;" autocomplete="off" onkeyup="validaHorarioPDMod();" value="20:00"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
-                            <span class="highlight" style="width: 100%;" id="{{dia + '-span-horaHasta'}}"></span>
-                            <span class="bar" style="width: 100%;" id="{{dia + '-span-horaHasta'}}"></span>
+                            <span class="highlight" style="width: 100%;" id="{{dia + '-span-horaHasta-mod'}}"></span>
+                            <span class="bar" style="width: 100%;" id="{{dia + '-span-horaHasta-mod'}}"></span>
                             <label>Horario cierre</label>
-                            <p id="{{dia + '-error-horaHasta'}}" class="modalErrorMessage" style="display: none;">* Horario inválido.</p>
+                            <p id="{{dia + '-error-horaHasta-mod'}}" class="modalErrorMessage" style="display: none;">* Horario inválido.</p>
                         </div>
                     </div>
                 </div> 
@@ -689,7 +690,7 @@
                     </div>
                     {%endif%}
                     {%endfor%}
-                    <input type="text" id="materiales-altaPD" name = "materiales-altaPD" hidden>
+                    <input type="text" id="materiales-modPD" name = "materiales-modPD" hidden>
                 </div>
             </div>
         </div>
