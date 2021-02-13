@@ -279,6 +279,62 @@
                     </div>
                 </div>
             </div>
+            <div id="row-to-hide-4" style="display: none;">
+                <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                    <h7 class="indicator-label">Seleccione los materiales que se requerirán para producir el insumo:</h7>
+                    <div class="dropdown-box" id="dropdown-altaPD">
+                        <h4 id="heading-option" onclick="dropdownManager();">
+                            Seleccionar Materiales 
+                            <img src="/static/img/chevron.svg" class="chevron"></img>
+                        </h4>
+                        <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
+                            {%for material in materiales%}
+                            <p class="menu-option-box-op" onclick="dropdownOptionSelect('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check" id="{{material.nombre + '-check'}}" style="display: none;"></i>{{material.nombre}}</p>              
+                            {%endfor%}
+                        </div>       
+                    </div>                 
+                </div>
+                <div class="row" id="cards-row-materiales">
+                    <h7 class="indicator-label-2">Se requerirán:</h7>
+                    <p id="warning-label-altaPD"><i class="fa fa-exclamation-triangle" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
+                    {% for material in materiales %}
+                    {%if material.estado == 'disponible'%}
+                    <div class="container modal-large-card-sm card-altaPD" id="{{material.nombre + '-card'}}" style="display: none;">
+                        <div class="row">
+                            <div class="modal-card-col-sm">
+                                <div class="circle materiales-large-card-img" id="{{material.nombre + '-img'}}">{{material.nombre[0]}}</div>
+                            </div>
+                            <div class="modal-card-col-sm" >
+                                <div class="row d-flex justify-content-center card-first-row-sm">
+                                    <p class="material-card-title" id="nombre-material">{{material.nombre}}</p>
+                                </div>
+                                <div class="row d-flex justify-content-center card-second-row">
+                                    <p class="text-box material-card-subtitle">Nombre material</p>
+                                </div>
+                            </div>
+                            <div class="modal-card-col-sm">
+                                <div class="row d-flex justify-content-center card-first-row-sm">
+                                    <p class="material-card-title" id="unidad-medida">{{material.unidadMedida}}</p>
+                                </div>
+                                <div class="row d-flex justify-content-center card-second-row">
+                                    <p class="text-box material-card-subtitle">Unidad de medida</p>
+                                </div>
+                            </div>
+                            <div class="modal-card-col-sm">
+                                <div class="row d-flex justify-content-center card-first-row-sm">
+                                    <p class="material-card-title" id="id-material">{{material.id}}</p>
+                                </div>
+                                <div class="row d-flex justify-content-center card-second-row">
+                                    <p class="text-box material-card-subtitle">ID material</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endif%}
+                    {%endfor%}
+                    <input type="text" id="materiales-altaPD" name = "materiales-altaPD" hidden>
+                </div>
+            </div>
             <div class="row">
                 <p class="bottom-modal-text" id="bottomAltaModalText"></p>
             </div>
@@ -286,7 +342,9 @@
         </form>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="primary-btn btn" onclick="alta_insumo()" id="alta-btn" name ="add-btn" disabled>Crear Insumo</button>
+          <button type="button" class="primary-btn btn" onclick="pasar_pagina(1)" id="alta-btn" name ="add-btn" disabled>Siguiente</button>
+          <button type="button" class="btn" onclick="pasar_pagina(-1)" id="anterior-btn">Anterior</button>
+          <button type="button" class="primary-btn btn" onclick="alta_insumo()" id="ci-btn" name ="ci-btn">Crear Insumo</button>
         </div>
       </div>
     </div>

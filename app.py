@@ -218,7 +218,8 @@ def gestion_articulos():
 def gestion_insumos():
     try:
         insumos = NegocioInsumo.get_all()
-        return render_template('gestion-insumos.html',insumos=insumos)
+        materiales = NegocioMaterial.get_all()
+        return render_template('gestion-insumos.html',insumos=insumos,materiales=materiales)
     except Exception as e:
         return error(e,"insumos")
 

@@ -13,6 +13,38 @@ var colorCompletoMod = false;
 var nombreOriginal = "";
 var del = false;
 var mod = false;
+var pagina = 1;
+var menuShown = false;
+var selectedOptions = [];
+
+function pasar_pagina(n){
+    pagina += n;
+    cargar_pagina(pagina);
+}
+
+function cargar_pagina(n){
+    if(n==1){
+        $("#row-to-hide-1").show().fadeIn(500);
+        $("#row-to-hide-2").show().fadeIn(500);
+        $("#row-to-hide-3").show().fadeIn(500);
+        $("#row-to-hide-4").hide();
+        $('#alta-btn').show();
+        $('#secondary-btn').show();
+        $('#bottomAltaModalText').show();
+        $('#anterior-btn').hide();
+        $('#ci-btn').hide();
+    }else if(n==2){
+        $("#row-to-hide-1").hide();
+        $("#row-to-hide-2").hide();
+        $("#row-to-hide-3").hide();
+        $("#row-to-hide-4").show().fadeIn(500);
+        $('#alta-btn').hide();
+        $('#secondary-btn').hide();
+        $('#bottomAltaModalText').hide();
+        $('#anterior-btn').show();
+        $('#ci-btn').show()
+    }
+}
 
 function openLoadingRing(){
     document.getElementById("open-loading-modal").click();
@@ -36,6 +68,7 @@ function openAltaModal(){
     $('#altaModal').modal('show');
     checkColorAlta();
     calcularCosto("");
+    cargar_pagina(pagina);
 }
 
 function randomColorAlta(){
@@ -481,3 +514,106 @@ function openModalMateriales(nombre, materiales,cantidades){
         }
     })
 }
+
+
+//Funciones específicas que manejan el dropdwon.
+function headingOptionHover(){
+    $(".chevron").css({cursor: 'pointer', transform: 'rotate(180deg)'});
+}
+
+function headingOptionLeave(){
+    $(".chevron").css({transform: 'rotate(0deg)'});
+}
+
+//Manejo del tooltip.
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+
+function openMenu() {
+    $("#menu-option-box-1").fadeIn();
+    $(".dropdown-box").css("border","1px solid #95C22B");
+    $('#cards-row-materiales').css({"transform":"translateY(200px)"});
+    $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(200px)"});
+    $(".margin-row").show();
+    $(".margin-row").css({"transform":"translateY(200px)"});
+    $("#bottomAltaModalTextAltaPD").css({"margin-bottom":"25px"});
+};
+
+
+function closeMenu() {
+    $("#menu-option-box-1").hide();
+    $(".dropdown-box").css("border","1px solid rgb(184, 184, 184)");
+    $('#cards-row-materiales').css({"transform":"translateY(0px)"});
+    $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(0px)"});
+    $("#bottomAltaModalTextAltaPD").css({"margin-bottom":""});
+    $(".margin-row").css({"transform":"translateY(0px)"});
+    $(".margin-row").hide();
+};
+
+function dropdownOptionSelect(idOption, nameOption, color){
+    if (selectedOptions.includes(idOption)){
+        const index = selectedOptions.indexOf(idOption);
+        if (index > -1) {
+            selectedOptions.splice(index, 1);
+        }
+        $("#" + String(nameOption) + "-check").fadeOut();
+        $("#" + String(nameOption) + "-card").fadeOut();
+    }
+    else{
+        selectedOptions.push(idOption);
+        $("#" + String(nameOption) + "-check").fadeIn();
+        setColor(nameOption,color);
+        $("#" + String(nameOption) + "-card").fadeIn();
+    }
+    labelShowHide();
+    $("#materiales-altaPD").val("[" + selectedOptions + "]");  
+     
+}
+
+//Manejo de carteles en la seleccion de materiales del dropdown.
+function labelShowHide(){
+    if (selectedOptions.length == 0){
+        $(".indicator-label-2").hide();
+        $("#warning-label-altaPD").fadeIn(1000);
+    }
+    else{
+        $(".indicator-label-2").show();
+        $("#warning-label-altaPD").hide();
+    }
+}
+
+//Setea el color de las tarjetas de materiales.
+function setColor(nombre,color){
+    $("#"+String(nombre)+"-img").css("background-color", String(color));
+}
+
+//Cierra el dropdown al clickear fuera de el y su
+$(document).on('click', function (e) {
+    if ($(e.target).closest("#dropdown-altaPD").length === 0) {
+        if (menuShown == true){
+            closeMenu();
+            headingOptionLeave();
+            menuShown=false;
+        }
+    }
+});
+
+//Funcion principal de manejo del compartamiento el dropdown.
+function dropdownManager(){
+    if (menuShown == false){
+        openMenu();
+        headingOptionHover();
+        menuShown = true
+    }
+    else{
+        closeMenu();
+        headingOptionLeave();
+        menuShown=false;
+    }
+
+}
+
+$.getJSON("/gestion-puntos-deposito/nombres-pd/",function (result){
+    nombres = result;
+});
