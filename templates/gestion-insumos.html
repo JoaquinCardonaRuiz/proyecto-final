@@ -357,16 +357,29 @@
 <div class="modal fade modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="headingModal">Actualizar un Insumo</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+
+
+        <div class="modal-header" style="border-bottom:none">
+          <ul class="nav nav-tabs ed-tabs" id="myTab" role="tablist">
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link active" id="db-tab" onClick="configureModalTab(1);" data-toggle="tab" href="#datos-basicos" role="tab" aria-controls="datos-basicos" aria-selected="true">Datos Basicos <p hidden id="error-mark-db" style="display:inline" class="error">*</p></a>
+            </li>
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link " id="mats-tab" onClick="configureModalTab(2);" data-toggle="tab" href="#materiales" role="tab" aria-controls="materiales" aria-selected="false">Materiales <p hidden id="error-mark-m" style="display:inline" class="error">*</p></a>
+            </li>
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link " id="costos-tab" onClick="configureModalTab(3);" data-toggle="tab" href="#costos" role="tab" aria-controls="costos" aria-selected="false">Costos <p hidden id="error-mark-c" style="display:inline" class="error">*</p></a>
+            </li>
+          </ul>
         </div>
         <form action="{{url_for('edit_insumo')}}" method="POST" class="modal-body" id="editInsumoForm" autocomplete="off">
           <div class="row" id="loadingRow">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
+
+
+        <!-- TAB 1 -->
+        <div class="tab-pane active modal-body" role="tabpanel" id="datos-basicos">
             <div class="row" id="row-to-hide-1-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
@@ -389,6 +402,14 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- TAB 2 -->
+        <div class="tab-pane active modal-body" role="tabpanel" id="materiales">
+        </div>
+
+        <!-- TAB 3 -->
+        <div class="tab-pane active modal-body" role="tabpanel" id="costos">
             <div class="row" id="row-to-hide-2-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
@@ -434,6 +455,7 @@
                     </div>
                 </div>
             </div>
+        </div>
             <div class="row">
                 <p class="bottom-modal-text" id="bottomAltaModalTextMod"></p>
             </div>

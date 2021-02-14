@@ -237,7 +237,7 @@ def alta_insumo():
         for key in request.form.keys():
             if "id-" in key:
                 id = request.form[key]
-                cant = int(request.form["cantidad-"+id])
+                cant = float(request.form["cantidad-"+id])
                 if cant > 0:
                     cants.append({"idMat":id,"cantidad":cant})
         try:
