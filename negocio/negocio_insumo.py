@@ -1,5 +1,6 @@
 from negocio.negocio import Negocio
 from data.data_insumo import DatosInsumo
+from data.data_cant_material import DatosCantMaterial
 import custom_exceptions
 
 class NegocioInsumo(Negocio):
@@ -20,19 +21,21 @@ class NegocioInsumo(Negocio):
 
 
     @classmethod
-    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color):
+    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants):
         """
         Agrega un insumo a la BD
         """
         try:
             costoTotal = float(costoMateriales)+float(costoProduccion)+float(otrosCostos)
-            DatosInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color)
+            idIns = DatosInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color)
+            for c in cants:
+                DatosCantMaterial.addComponente(c["idMat"],idIns,c["cantidad"])
         except Exception as e:
             raise(e)
 
 
     @classmethod
-    def update(cls,idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color):
+    def update(cls,idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants):
         """
         Actualiza un insumo en la BD
         """

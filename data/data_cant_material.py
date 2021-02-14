@@ -28,3 +28,22 @@ class DatosCantMaterial(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+    @classmethod
+    def addComponente(cls,idMat,idIns,cant):
+        """
+        Registra una cantidad de un material requerido para la produccion de un insumo.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("INSERT INTO mat_ins (idMaterial, idInsumo, cantidad, estado) \
+                    VALUES ({},{},{},\"{}\");".format(idMat,idIns,cant,"disponible"))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_entidad_destino.add()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error dando de alta una entidad destino en la BD.")
+        finally:
+            cls.cerrar_conexion()

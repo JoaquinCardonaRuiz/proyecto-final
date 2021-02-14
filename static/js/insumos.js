@@ -25,22 +25,40 @@ function pasar_pagina(n){
 function cargar_pagina(n){
     if(n==1){
         $("#row-to-hide-1").show().fadeIn(500);
-        $("#row-to-hide-2").show().fadeIn(500);
-        $("#row-to-hide-3").show().fadeIn(500);
-        $("#row-to-hide-4").hide();
+        $("#row-to-hide-2").hide();
+        $("#row-to-hide-3").hide();
+        $("#fieldsRow1Alta1").hide();
+        $("#cards-row-materiales").hide();
         $('#alta-btn').show();
         $('#secondary-btn').show();
         $('#bottomAltaModalText').show();
+        document.getElementById('bottomAltaModalText').innerHTML="Complete los datos y presione \"Siguiente\"";
         $('#anterior-btn').hide();
         $('#ci-btn').hide();
     }else if(n==2){
         $("#row-to-hide-1").hide();
         $("#row-to-hide-2").hide();
         $("#row-to-hide-3").hide();
-        $("#row-to-hide-4").show().fadeIn(500);
+        $("#fieldsRow1Alta1").show().fadeIn(500);
+        $("#cards-row-materiales").show().fadeIn(500);
+        document.getElementById('bottomAltaModalText').innerHTML=" ";
+        $('#alta-btn').show();
+        $('#secondary-btn').hide();
+        $('#bottomAltaModalText').show();
+        $('#anterior-btn').show();
+        $('#ci-btn').hide()
+        verificar_cantidades();
+    }else if(n==3){
+        checkColorAlta();
+        calcularCosto("");
+        $("#row-to-hide-1").hide();
+        $("#row-to-hide-2").show().fadeIn(500);
+        $("#row-to-hide-3").show().fadeIn(500);
+        $("#fieldsRow1Alta1").hide();
+        $("#cards-row-materiales").hide();
         $('#alta-btn').hide();
         $('#secondary-btn').hide();
-        $('#bottomAltaModalText').hide();
+        $('#bottomAltaModalText').show();
         $('#anterior-btn').show();
         $('#ci-btn').show()
     }
@@ -66,8 +84,6 @@ function openAltaModal(){
     $("#colorInput").val("#" + (Math.random().toString(16) + "000000").slice(2, 8))
     $(".lds-ring").hide();
     $('#altaModal').modal('show');
-    checkColorAlta();
-    calcularCosto("");
     cargar_pagina(pagina);
 }
 
@@ -102,7 +118,7 @@ function checkColorAlta(){
         colorCompleto = true;
     }
     console.log(colorCompleto);
-    permiteAlta();
+    permiteAlta2();
 }
 
 function checkColorMod(){
@@ -134,12 +150,21 @@ function submitForm(n){
 
 
 function permiteAlta(){
-    if(costosCompletoProd && costosCompletoMat && costosCompletoOtros && nombreCompleto && unidadCompleto && colorCompleto){
+    if(nombreCompleto && unidadCompleto){
         document.getElementById("alta-btn").disabled = false;
     }else{
         document.getElementById("alta-btn").disabled = true;
     }
 }
+
+function permiteAlta2(){
+    if(costosCompletoProd && costosCompletoOtros && colorCompleto){
+        document.getElementById("ci-btn").disabled = false;
+    }else{
+        document.getElementById("ci-btn").disabled = true;
+    }
+}
+
 
 function validaNuevoNombre(nombres){
     var n = document.getElementById("nombreInput").value;
@@ -209,7 +234,7 @@ function calcularCosto(input){
     }
     var costoTotal = Number(costoProd) + Number(costoMat) + Number(otrosCostos);
     document.getElementById("bottomAltaModalText").innerHTML="Costo Total: ARS $"+(costoTotal);
-    permiteAlta();
+    permiteAlta2();
 }
 
 
@@ -525,11 +550,6 @@ function headingOptionLeave(){
     $(".chevron").css({transform: 'rotate(0deg)'});
 }
 
-//Manejo del tooltip.
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-})
-
 function openMenu() {
     $("#menu-option-box-1").fadeIn();
     $(".dropdown-box").css("border","1px solid #95C22B");
@@ -559,16 +579,18 @@ function dropdownOptionSelect(idOption, nameOption, color){
         }
         $("#" + String(nameOption) + "-check").fadeOut();
         $("#" + String(nameOption) + "-card").fadeOut();
+        document.getElementById("cantidad-"+idOption).value = 0;
     }
     else{
         selectedOptions.push(idOption);
-        $("#" + String(nameOption) + "-check").fadeIn();
+        $("#" + String(nameOption) + "-check").show().fadeIn(500);
         setColor(nameOption,color);
-        $("#" + String(nameOption) + "-card").fadeIn();
+        $("#" + String(nameOption) + "-card").show().fadeIn(500);
+        document.getElementById("cantidad-"+idOption).value = 1;
     }
     labelShowHide();
-    $("#materiales-altaPD").val("[" + selectedOptions + "]");  
-     
+    $("#materiales-altaPD").val("[" + selectedOptions + "]");
+    verificar_cantidades();
 }
 
 //Manejo de carteles en la seleccion de materiales del dropdown.
@@ -614,6 +636,44 @@ function dropdownManager(){
 
 }
 
-$.getJSON("/gestion-puntos-deposito/nombres-pd/",function (result){
-    nombres = result;
-});
+
+function verificar_cantidad(id){
+    var val = document.getElementById("cantidad-"+id).value;
+    if(Number(val) == NaN || Number(val) <= 0){
+        document.getElementById("alta-btn").disabled = true;
+        document.getElementById("error-"+id).innerHTML = "* Error";
+    }else{
+        document.getElementById("error-"+id).innerHTML = "";
+    }
+    verificar_cantidades();
+}
+
+
+function verificar_cantidades(){
+    var inputs = document.getElementsByClassName("cant-input");
+    var costos = document.getElementsByClassName("cost-input");
+    var cards = document.getElementsByClassName("card-altaPD");
+    var sum = 0;
+    var hayerror = false;
+    var val;
+    for(i=0;i<inputs.length;i++){
+        if(cards[i].style.display != "none"){
+            val = inputs[i].value;
+            if(Number(val) == NaN || Number(val) <= 0){
+                document.getElementById("alta-btn").disabled = true;
+                console.log("desactivando-input2 en i = a " + String(i))
+                hayerror = true;
+            }else{
+                console.log(val);
+                console.log(costos[i].value);
+                sum+=Number(val)*Number(costos[i].value);
+            }
+        }
+    }
+    if(!hayerror){
+        console.log(sum);
+        document.getElementById("cmInput").value = String(sum);
+        document.getElementById('bottomAltaModalText').innerHTML="Costo de Materiales: ARS $"+String(sum);
+        document.getElementById("alta-btn").disabled = false;
+    }
+}
