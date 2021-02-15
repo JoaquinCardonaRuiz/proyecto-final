@@ -355,6 +355,7 @@ function openModalMateriales(id, nombre){
         
         card = $("#material-card").clone();
         $("#materiales-modal-body").children("#material-card").remove();
+        
         // Borro contenido anterior
         document.getElementById("modalTableBody"). innerHTML="";
         document.getElementById("headerRow").innerHTML ="";
@@ -365,15 +366,27 @@ function openModalMateriales(id, nombre){
         document.getElementById("open-modal-mat").click();
 
         row = document.getElementById("material-card");
-        for(i=0; i < result.length ; i++){
+        if (result.length > 0){
+            for(i=0; i < result.length ; i++){
+                clone = card.clone();
+                $("#no-mats").hide();
+                if (result[i]["estado"] == "suspendido"){
+                    clone.find("#material-card").css('background-color','#D3D3D3');
+                } 
+                clone.find("#nombre-material").text(result[i]["nombre"]);
+                clone.find("#unidad-medida").text(result[i]["unidadMedida"]);
+                clone.find("#material-img").css('background-color',result[i]["color"]);
+                clone.find("#material-img").text(result[i]["nombre"][0]);
+                clone.find("#id-material").text(result[i]["id"]);
+                clone.show();
+                clone.appendTo("#materiales-modal-body");
+            }
+        }
+        else{
             clone = card.clone();
-            clone.find("#nombre-material").text(result[i]["nombre"]);
-            clone.find("#unidad-medida").text(result[i]["unidadMedida"]);
-            clone.find("#material-img").css('background-color',result[i]["color"]);
-            clone.find("#material-img").text(result[i]["nombre"][0]);
-            clone.find("#id-material").text(result[i]["id"]);
+            clone.hide();
+            $("#no-mats").show();
             clone.appendTo("#materiales-modal-body");
-
         }
     
     })
@@ -475,9 +488,11 @@ function validaNombrePD(tipo){
 function error_datos_basicos(){
     if (error_nombre == true){
         $("#db-error-tab").show();
+        return true;
     }
     else{
         $("#db-error-tab").hide();
+        return false;
     }
 }
 //Valida que ningún campo de horario tenga un valor incorrecto.
@@ -516,7 +531,6 @@ function validaHorarioPD(){
 
         }
         else{
-            pre_desactiva = true;
             $("#" + String(dia) + "-error-horaDesde").hide();
             $("#" + String(dia) + "-error-horaHasta").hide();
             $("#" + String(dia) + "-error").hide();
@@ -549,6 +563,15 @@ function validaHorarioPDMod(){
           dia = dias[i];
           horaHasta = $("#" + String(dia) + "-horaHasta-mod").val();
           horaDesde = $("#" + String(dia) + "-horaDesde-mod").val();
+          horaHasta_ant = String(horarios_mod[i]["horaHasta"]);
+          horaDesde_ant = String(horarios_mod[i]["horaDesde"]);
+          estado = $("#" + String(dia) + "-switch-mod").is(":checked");
+          if (horaHasta_ant.length == 4){
+              horaHasta_ant = "0" + horaHasta_ant;
+          }
+          if (horaDesde_ant. length == 4){
+              horaDesde_ant = "0" + horaDesde_ant;
+          }
           if ( ( horaHasta== "" ||  horaDesde == "") && $("#" + String(dia) + "-switch-mod").is(":checked") == true){
               pre_desactivaMod = true;
               if (horaHasta == ""){
@@ -568,6 +591,12 @@ function validaHorarioPDMod(){
                   $("#" + String(dia) + "-error-horaDesde-mod").hide();
                   error_horarios[i] = false;
               }
+              if (estado_ant[i] == false && horaHasta == "" && horaDesde == ""){
+                  cambio_horarios[i] = false;
+              }
+              else{
+                  cambio_horarios[i] = true;
+              }
               
               $("#" + String(dia) + "-error-mod").hide();
           }
@@ -577,13 +606,29 @@ function validaHorarioPDMod(){
               $("#" + String(dia) + "-error-horaHasta-mod").hide();
               $("#" + String(dia) + "-error-mod").show();
               error_horarios[i] = true;
+              cambio_horarios[i] = true;
           }
           else{
-              pre_desactivaMod = true;
               $("#" + String(dia) + "-error-horaDesde-mod").hide();
               $("#" + String(dia) + "-error-horaHasta-mod").hide();
               $("#" + String(dia) + "-error-mod").hide();
               error_horarios[i] = false;
+              if (estado != estado_horario_ant[i]){
+                  cambio_horarios[i] = true;
+              }
+              else{
+                  if(estado_horario_ant[i] == false){
+                      cambio_horarios[i] = false;
+                  }
+                  else{
+                      if (horaDesde_ant != horaDesde || horaHasta_ant != horaHasta){
+                          cambio_horarios[i] = true;
+                      }
+                      else{
+                        cambio_horarios[i] = false;
+                      }
+                  }
+              }
           }
       }
       if (pre_desactivaMod == true)
@@ -602,14 +647,14 @@ function validaHorarioPDMod(){
     calc_cant_cambios();
 }
 
-
-
 function error_horario(){
     if (error_horarios.includes(true)){
         $("#hor-error-tab").show();
+        return true;
     }
     else{
         $("#hor-error-tab").hide();
+        return false;
     }
 }
 
@@ -769,9 +814,11 @@ function validaDireccion(modal_type, campoValidacion){
 function error_direccion(){
     if (error_provincia == true || error_calle == true || error_altura == true || error_ciudad == true || error_pais == true){
         $("#dir-error-tab").show();
+        return true;
     }
     else{
         $("#dir-error-tab").hide();
+        return false;
     }
 }
 
@@ -805,6 +852,18 @@ function calc_cant_cambios(){
     
     
     $("#primary-btn-mod").text("Confirmar " + String(cant_cambios) + " cambios");
+
+    if (cant_cambios > 0){
+        if (error_datos_basicos() == true || error_direccion() == true || error_horario() == true){
+            $('#primary-btn-mod').prop('disabled', true);
+        }
+        else{
+            $('#primary-btn-mod').prop('disabled', false);
+        }
+    }
+    else{
+        $('#primary-btn-mod').prop('disabled', true);
+    }
 }
 
 //Valida e impide que los input sean caracteres distintos de numeros.
@@ -1134,7 +1193,7 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id
     $("#pdInactivoMod").hide();
     $("#pdActivoMod").hide();
 
-    //Seteo de valores iniciales.
+    //Seteo de valores iniciales en inputs.
     $("#nombrePDMod").val(nombre);
     $("#provinciaPDMod").val(provincia);
     $("#ciudadPDMod").val(ciudad);
@@ -1145,6 +1204,9 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id
     setHorariosModValues(id_punto);
 
     $("#primary-btn-mod").text("Confirmar 0 cambios");
+    $('#primary-btn-mod').prop('disabled', true);
+
+    //Seteo de variables iniciales
     nombre_ant = nombre;
     estado_ant = estado;
     calle_ant = calle;
@@ -1152,6 +1214,12 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id
     ciudad_ant = ciudad;
     provincia_ant = provincia;
     pais_ant = pais;
+    error_nombre = false;
+    error_calle = false;
+    error_provincia = false;
+    error_altura = false;
+    error_provincia = false;
+    error_pais = false;
     setEstadoMod(estado);
 
     //TODO: Ver si los errores suman al conteo de cambios o no.
@@ -1251,6 +1319,7 @@ function setHorariosModValues(id){
                 $("#" + String(dia) + "-span-horaHasta-mod").hide();
                 $("#" + String(dia) + "-bar-horaHasta-mod").hide();
                 $("#" + String(dia) + "-switch-mod").prop("checked", false);
+                estado_horario_ant[i] = false;
                 
             }
             else {
@@ -1265,6 +1334,7 @@ function setHorariosModValues(id){
                 $("#" + String(dia) + "-span-horaHasta-mod").show();
                 $("#" + String(dia) + "-bar-horaHasta-mod").show();
                 $("#" + String(dia) + "-switch-mod").prop("checked", true);
+                estado_horario_ant[i] = true;
                 
             }
         }

@@ -11,13 +11,13 @@ class DatosMaterial(Datos):
         """
         cls.abrir_conexion()
         try:
-            sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' order by materiales.nombre ASC;")
+            sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial, materiales.estado from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' and materiales.estado != 'eliminado' order by materiales.nombre ASC;")
             values = (idPuntoDep,)
             cls.cursor.execute(sql, values)
             materiales = cls.cursor.fetchall()
             materiales_ = []
             for material in materiales:
-                materiales_.append(Material(material[3], material[0], material[1], None, None, material[2])) 
+                materiales_.append(Material(material[3], material[0], material[1], None, None, material[2],material[4])) 
             return materiales_
             
         except Exception as e:

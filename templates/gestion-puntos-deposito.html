@@ -95,7 +95,6 @@
 
 <!-- Loading Modal -->
 <!-- Para mostrar mientras se carga un modal-->
-
 <div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
       <br><br><br><br><br><br><br><br>
@@ -190,6 +189,7 @@
                 </button>
             </div>
             <div class="modal-body modal-body-card" id="materiales-modal-body">
+                <p id="no-mats"><i class="fa fa-exclamation-triangle" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
                 <div class="container modal-large-card-sm" id="material-card">
                     <div class="row">
                         <div class="modal-card-col-sm">
@@ -399,7 +399,7 @@
                             </h4>
                             <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
                                 {%for material in materiales%}
-                                {%if material.estado == 'disponible'%}
+                                {%if material.estado == 'habilitado'%}
                                     <p class="menu-option-box-op" onclick="dropdownOptionSelect('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check" id="{{material.nombre + '-check'}}" style="display: none;"></i>{{material.nombre}}</p>              
                                 {%else%}
                                     <p class="menu-option-box-op-suspended" data-toggle="tooltip" data-placement="right" title="Los depósitos de este material se encuentran suspendidos">{{material.nombre}}</p>              
@@ -412,7 +412,7 @@
                         <h7 class="indicator-label-2">El Punto de Depósito aceptará:</h7>
                         <p id="warning-label-altaPD"><i class="fa fa-exclamation-triangle" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
                         {% for material in materiales %}
-                        {%if material.estado == 'disponible'%}
+                        {%if material.estado == 'habilitado'%}
                         <div class="container modal-large-card-sm card-altaPD" id="{{material.nombre + '-card'}}" style="display: none;">
                             <div class="row">
                                 <div class="modal-card-col-sm">
@@ -643,7 +643,7 @@
                         </h4>
                         <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
                             {%for material in materiales%}
-                            {%if material.estado == 'disponible'%}
+                            {%if material.estado == 'habilitado'%}
                                 <p class="menu-option-box-op" onclick="dropdownOptionSelect('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check" id="{{material.nombre + '-check'}}" style="display: none;"></i>{{material.nombre}}</p>              
                             {%else%}
                                 <p class="menu-option-box-op-suspended" data-toggle="tooltip" data-placement="right" title="Los depósitos de este material se encuentran suspendidos">{{material.nombre}}</p>              
@@ -656,7 +656,7 @@
                     <h7 class="indicator-label-2">El Punto de Depósito aceptará:</h7>
                     <p id="warning-label-altaPD"><i class="fa fa-exclamation-triangle" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
                     {% for material in materiales %}
-                    {%if material.estado == 'disponible'%}
+                    {%if material.estado == 'habilitado'%}
                     <div class="container modal-large-card-sm card-altaPD" id="{{material.nombre + '-card'}}" style="display: none;">
                         <div class="row">
                             <div class="modal-card-col-sm">

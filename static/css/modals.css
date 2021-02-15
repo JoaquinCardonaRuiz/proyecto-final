@@ -279,5 +279,13 @@ div.modal-content{
   display: none;
 }
 
+#no-mats{
+  text-align: center;
+  width: 100%;
+  margin-top:3%;
+  display: none;
+  margin-left: -2%;
+}
+
 .mapouter{position:relative;text-align:right;height:354px;width:600px;}
 .gmap_canvas {overflow:hidden;background:none!important;height:354px;width:600px;}

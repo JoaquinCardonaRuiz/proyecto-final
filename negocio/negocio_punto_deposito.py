@@ -181,7 +181,7 @@ class NegocioPuntoDeposito(Negocio):
             materiales = DatosMaterial.get_all_byIdPuntoDep(idPunto)
             materiales_ = []
             for material in materiales:
-                materiales_.append({"id":material.id, "nombre":material.nombre, "unidadMedida":material.unidadMedida, "color":material.color})
+                materiales_.append({"id":material.id, "nombre":material.nombre, "unidadMedida":material.unidadMedida, "color":material.color, "estado":material.estado})
             return materiales_
         except custom_exceptions.ErrorDeConexion as e:
             raise e
