@@ -299,7 +299,7 @@ class NegocioPuntoDeposito(Negocio):
         for material in materiales_ant_:
             materiales_ant.append(material.id)
         #2-Obtengo listado ID materiales nuevos
-        if materiales_new != "" and materiales_new != "[]":
+        if materiales_new != "":
             materiales_new = ast.literal_eval(materiales_new)
             #3-Materiales a añadir
             toAddMats = np.setdiff1d(materiales_new,materiales_ant)
