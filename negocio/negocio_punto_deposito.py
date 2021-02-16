@@ -299,16 +299,14 @@ class NegocioPuntoDeposito(Negocio):
         for material in materiales_ant_:
             materiales_ant.append(material.id)
         #2-Obtengo listado ID materiales nuevos
-        if materiales_new == "":
-            materiales_new = []
-        else:
+        if materiales_new != "" and materiales_new != "[]":
             materiales_new = ast.literal_eval(materiales_new)
-        #3-Materiales a añadir
-        toAddMats = np.setdiff1d(materiales_new,materiales_ant)
-        #4-Materiales a eliminar
-        toRemoveMats = np.setdiff1d(materiales_ant,materiales_new)
-        #5-Hago alta y eliminación
-        DatosPuntoDeposito.alta_materialPD(toAddMats, id_punto)
-        DatosPuntoDeposito.baja_materialPD(toRemoveMats, id_punto)
+            #3-Materiales a añadir
+            toAddMats = np.setdiff1d(materiales_new,materiales_ant)
+            #4-Materiales a eliminar
+            toRemoveMats = np.setdiff1d(materiales_ant,materiales_new)
+            #5-Hago alta y eliminación
+            DatosPuntoDeposito.alta_materialPD(toAddMats, id_punto)
+            DatosPuntoDeposito.baja_materialPD(toRemoveMats, id_punto)
         
     
