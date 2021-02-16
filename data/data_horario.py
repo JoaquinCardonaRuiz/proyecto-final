@@ -56,4 +56,25 @@ class DatosHorario(Datos):
             if not(noClose):
                 cls.cerrar_conexion()
 
+
+    @classmethod
+    def mod_horario_PD(cls, horario, idPuntoDep, noClose = False):
+        """
+        Modifica un horario de un Punto de Depósito a la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("UPDATE horariosPD SET horaDesde = %s, horaHasta = %s where idPunto = %s and dia = %s")
+            values = (horario.horaDesde, horario.horaHasta,idPuntoDep, horario.dia)
+            cls.cursor.execute(sql,values)
+            cls.db.commit()
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.mod_horario_PD()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error modificando un horario de un Punto de Depósito en la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
+
         

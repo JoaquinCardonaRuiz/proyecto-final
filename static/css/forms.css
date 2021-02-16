@@ -230,6 +230,13 @@
   transition: width 0.4s, height 0.4s, transform 0.4s;
 }
 
+#bottomAltaModalTextModPD{
+  margin-top: 0px; 
+  color: #888;
+  margin-bottom: -20px;
+  transition: width 0.4s, height 0.4s, transform 0.4s;
+}
+
 #pdInactivo{
   display: none;
 }
@@ -337,15 +344,15 @@
 }
 
 
-#cards-row-materiales{
+.cards-row-materiales{
   transition: width 0.4s, height 0.4s, transform 0.4s;
   margin-top: 10%; 
-  margin-left: 2%; 
+  margin-left: 2% !important; 
   width: 96.5%;
   margin-bottom: 7%;
 }
 
-#warning-label-altaPD{
+.warning-label-altaPD{
   text-align: center;
   width: 100%;
   margin-top:-3%;
@@ -353,7 +360,7 @@
   margin-left: -2%;
 }
 
-#warning-icon-altaPD{
+.warning-icon-altaPD{
   font-size: 20px;
 }
 
@@ -362,7 +369,12 @@
   display: none;
 }
 
+.margin-row-mod{
+  height: 20px !important;
+}
+
 .loadingRingAlta{
   margin-top: 30px !important;
 }
+
 

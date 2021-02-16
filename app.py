@@ -248,6 +248,32 @@ def alta_pd():
             return error(e,"gestion-puntos-deposito")
     return redirect(url_for('gestion_pd'))
 
+@app.route('/gestion-puntos-deposito/modificacion', methods = ['GET','POST'])
+def mod_pd():
+    
+    dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    horarios = []
+    
+    if request.method == 'POST':
+        nombre = request.form['nombrePDMod']
+        nombre_ant = request.form['nombrePDModAnt']
+        estado = request.form['switch-value-mod']
+        calle = request.form['callePDMod']
+        altura = request.form['alturaPDMod']
+        ciudad = request.form['ciudadPDMod']
+        provincia = request.form['provinciaPDMod']
+        pais = request.form['paisPDMod']
+        id_direccion = request.form['idDireccionPD']
+        id_punto = request.form['idPDMod']
+        for dia in dias:
+            horaDesde = request.form[dia + '-horaDesde-mod']
+            horaHasta = request.form[dia + '-horaHasta-mod']
+            horarios.append([horaDesde,horaHasta, dia])
+        materiales = request.form['materiales-modPD']
+        NegocioPuntoDeposito.mod_pd(nombre, estado, calle, altura, ciudad, provincia, pais, horarios,materiales,id_direccion, id_punto, nombre_ant)
+        
+    return redirect(url_for('gestion_pd'))
+
 ''' 
     -----------------
     Articulos

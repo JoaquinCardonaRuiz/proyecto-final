@@ -72,3 +72,34 @@ class NegocioHorario(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_direccion.alta_horarios()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio dando de alta los horarios de un Punto de Depósito.")
+
+    @classmethod
+    def mod_horarios(cls, horarios, idPuntoDep, validar=False):
+        """
+        Modifica los horarios de un PD o un PR a la BD.
+        """
+        #Conexión con el motor de BD.
+        try:
+            
+                for horario in horarios:
+                    if validar:
+                        horario = cls.valida_horarios(horario)
+                        DatosHorario.alta_horario_PD(horario, idPuntoDep)
+                    else:
+                
+                        horaDesde = horario[0]
+                        horaHasta = horario[1]
+                        dia = horario[2]
+                        if horaDesde == "" and horaHasta =="":
+                            horario = Horario(None,None,None,dia)
+                        else:
+                            horario = Horario(None,datetime.strptime(horaDesde, '%H:%M').time(),datetime.strptime(horaHasta, '%H:%M').time(),dia)
+
+                    DatosHorario.mod_horario_PD(horario, idPuntoDep)
+
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_direccion.alta_horarios()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio modificando los horarios de un Punto de Depósito.")

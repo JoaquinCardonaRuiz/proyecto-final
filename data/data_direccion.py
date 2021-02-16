@@ -52,3 +52,24 @@ class DatosDireccion(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+    @classmethod
+    def mod_direccion(cls, direccion, noClose = False):
+        """
+        Modifica una direccion de la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            #Obtengo el ID que se le va a asignar para poder guardarlo en el Punto de Depósito.
+            sql = ("UPDATE direcciones SET calle = %s, altura = %s, ciudad = %s, provincia = %s, pais = %s where idDireccion = %s")
+            values = (direccion.calle, direccion.altura, direccion.ciudad, direccion.provincia, direccion.pais, direccion.id)            
+            cls.cursor.execute(sql, values)
+            cls.db.commit()
+                        
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_direccion.mod_direccion()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error modificand una direccion de la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()

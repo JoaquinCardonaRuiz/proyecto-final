@@ -4,3 +4,5 @@ $(function() {
       $('#sidebar, #content').toggleClass('active');
     });
   });
+
+document.body.scrollTop = 0;

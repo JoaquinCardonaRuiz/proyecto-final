@@ -10,6 +10,9 @@ var altura = false;
 var calle = false;
 var menuShown = false;
 var selectedOptions = [];
+var materiales_PD = [];
+var menuShownMod = false;
+var selectedOptionsMod = [];
 
 //Cambios
 var cambios_nombre = false;
@@ -420,6 +423,8 @@ function openAltaModal(){
     $('#primary-btn-alta').prop('disabled', true);
     $(".card-altaPD").hide();
     $(".dropdown-option-check").hide();
+    $(".indicator-label-2").show();
+    $("#warning-label-altaPD").show();
 
     //Seteo de valores iniciales.
     for (var i in dias){
@@ -825,12 +830,15 @@ function error_direccion(){
 //Calcula la cantidad total de cambios en el Modal de Modificar.
 function calc_cant_cambios(){
     cant_cambios = 0;
+    //Datos básicos
     if (cambios_nombre == true){
         cant_cambios +=1;
     }
     if (cambio_estado == true){
         cant_cambios += 1;
     }
+
+    //Direccion
     if (cambio_provincia == true){
         cant_cambios += 1;
     }
@@ -846,10 +854,17 @@ function calc_cant_cambios(){
     if (cambio_pais == true){
         cant_cambios += 1;
     }
+
+    //Horarios
     cant_cambios += cambio_horarios.reduce(function(n, val) {
         return n + (val === true);
     }, 0);
-    
+
+    //Materiales
+    var difference = materiales_PD
+                .filter(x => !selectedOptionsMod.includes(x))
+                .concat(selectedOptionsMod.filter(x => !materiales_PD.includes(x)));
+    cant_cambios += difference.length;
     
     $("#primary-btn-mod").text("Confirmar " + String(cant_cambios) + " cambios");
 
@@ -1002,6 +1017,28 @@ function submitForm(idForm){
 
 }
 
+//Hace el submit de un form de modifiar PD.
+function submitFormMod(){
+
+    //Manejo de elementos de carga y ocultamientos
+    $("#bottomAltaModalTextModPD").hide();      
+    $("#bottomModModalText").show();
+    $("#modal-mod-p1").show();
+    $("#loadingRowMod").show();
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $("#modPdForm").hide();
+    $('#primary-btn-mod').prop('disabled', true);
+    $('#secondary-btn-mod').prop('disabled', true);
+
+    //Manejo de datos
+    $( "#modPdForm" ).submit();
+
+    //Funcion que va cambiando los mensajes de carga.
+    nextMsgMod();
+
+}
+
 //Gestiona el avance de páginas del modal de alta.
 function next_page(){
     if (alta_form_page == 1){
@@ -1062,6 +1099,9 @@ function display_page(){
         $("#secondary-btn").text("Anterior");
         $("#primary-btn-alta").text("Siguiente");
         $("#subheader-alta").text("Dirección");
+        if ($("#callePD").val() == "" || $("#alturaPD").val() == ""){
+            $('#primary-btn-alta').prop('disabled', true);
+        }
         $("#bottomAltaModalTextAltaPD").text('Una vez completada la dirección, presione el botón "Siguiente".');
         goToTopOfPage();
      }
@@ -1096,6 +1136,11 @@ function display_page(){
 //Traslada el scroll al tope de la pagina en el form de alta de un PD.
 function goToTopOfPage(){
     $('#modalAltaPDBody').scrollTop(0);    
+}
+
+//Traslada el scroll al tope de la pagina en el form de alta de un PD.
+function goToTopOfPageMod(){
+    $('#modalModPDBody').scrollTop(0);    
 }
 
 //Funcion para el manejo de los mensajes durante la carga.
@@ -1169,14 +1214,16 @@ function setEstadoMod(estado){
     if (estado == "True"){
         $("#customSwitch2").prop("checked", true);
         $("#pdActivoMod").show();
+        $("#switch-value-mod").val("true");
     }
     else{
         $("#customSwitch2").prop("checked", false);
         $("#pdInactivoMod").show();
+        $("#switch-value-mod").val("false");
     }
 }
 
-function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id_punto){
+function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id_punto, id_direccion){
     jQuery.noConflict();
     
     //Define que se debe mostrar y que se oculta.
@@ -1192,16 +1239,22 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id
     $("#nombrePDErrorMod").hide();
     $("#pdInactivoMod").hide();
     $("#pdActivoMod").hide();
+    $("#loadingRowMod").hide();
+    $(".lds-ring").hide();
 
     //Seteo de valores iniciales en inputs.
     $("#nombrePDMod").val(nombre);
+    $("#nombrePDModAnt").val(nombre);
     $("#provinciaPDMod").val(provincia);
     $("#ciudadPDMod").val(ciudad);
     $("#callePDMod").val(calle);
     $("#alturaPDMod").val(altura);
     $("#paisPDMod").val(pais);
+    $("#idDireccionPD").val(id_direccion)
+    $("#idPDMod").val(id_punto)
     updateMap('mod');
     setHorariosModValues(id_punto);
+    setMaterialesPDvalues(id_punto);
 
     $("#primary-btn-mod").text("Confirmar 0 cambios");
     $('#primary-btn-mod').prop('disabled', true);
@@ -1221,9 +1274,13 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id
     error_provincia = false;
     error_pais = false;
     setEstadoMod(estado);
+    document.getElementById("db-tab").click();
+    selectedOptionsMod = [];
+    
 
     //TODO: Ver si los errores suman al conteo de cambios o no.
     $("#modPDModal").modal("show");
+    
 }
 
 function closeModModal(){
@@ -1236,16 +1293,18 @@ function configureModalTab(mod_form_page){
         $("#modal-mod-p2").hide();
         $("#modal-mod-p4").hide();
         $("#modal-mod-p1").show();
+        $("#bottomAltaModalTextModPD").css({"transform":"translateY(-30px)"});
         $("#subheader-mod").text("Datos Básicos");
-        goToTopOfPage();
+        goToTopOfPageMod();
      }
      else if (mod_form_page == 2){
         $("#modal-mod-p1").hide();
         $("#modal-mod-p3").hide();
         $("#modal-mod-p4").hide();
         $("#modal-mod-p2").show();
+        $("#bottomAltaModalTextModPD").css({"transform":"translateY(-30px)"});
         $("#subheader-mod").text("Dirección");
-        goToTopOfPage();
+        goToTopOfPageMod();
      }
      else if (mod_form_page == 3){
         $("#modal-mod-p1").hide();
@@ -1254,20 +1313,18 @@ function configureModalTab(mod_form_page){
         $("#modal-mod-p3").show();
         $("#subheader-mod").text("Horarios");
         $(".margin-row").hide();
-        $("#bottomAltaModalTextAltaPD").text('Una vez elegidos los horarios, presione el botón "Siguiente".');
-        goToTopOfPage();
+        $("#bottomAltaModalTextModPD").css({"transform":"translateY(-30px)"});
+        goToTopOfPageMod();
      } 
      else{
         closeMenu();
-        labelShowHide();
+        labelShowHideMod();
         $("#modal-mod-p1").hide();
         $("#modal-mod-p2").hide();
         $("#modal-mod-p3").hide();
         $("#modal-mod-p4").show();
-        $("#primary-btn-alta").text("Crear Punto de  Depósito");
-        $("#subheader-alta").text("Materiales");
-        $("#bottomAltaModalTextAltaPD").text('Una vez elegidos los materiales, presione "Crear Punto de  Depósito" para añadir el nuevo Punto.');
-        goToTopOfPage();
+        $("#subheader-mod").text("Materiales");
+        goToTopOfPageMod();
      }
 }
 
@@ -1283,7 +1340,6 @@ $("#customSwitch2").click(function() {
             cambio_estado = true;
         }
         
-        calc_cant_cambios();
     }
     else{
         $("#pdActivoMod").fadeOut(); 
@@ -1295,8 +1351,8 @@ $("#customSwitch2").click(function() {
         else{
             cambio_estado = true;
         }
-        calc_cant_cambios();
     }
+    calc_cant_cambios();
 });
 
 function setHorariosModValues(id){
@@ -1305,6 +1361,12 @@ function setHorariosModValues(id){
         horarios_mod = result; 
         for (i=0; i < dias.length; i++){
             dia = result[i]["dia"];
+            if (horaDesde.length == 4){
+                horaDesde = "0" + String(horaDesde);
+            }
+            if (horaHasta.length == 4){
+                horaHasta = "0" + String(horaHasta);
+            }
             horaDesde = result[i]["horaDesde"];
             horaHasta = result[i]["horaHasta"];
             if (horaDesde == false || horaDesde == false){
@@ -1323,8 +1385,8 @@ function setHorariosModValues(id){
                 
             }
             else {
-                $("#" + String(dia) + "-horaDesde-mod").val("08:00");
-                $("#" + String(dia) + "-horaHasta-mod").val("20:00");
+                $("#" + String(dia) + "-horaDesde-mod").val(horaDesde);
+                $("#" + String(dia) + "-horaHasta-mod").val(horaHasta);
                 $("#" + String(dia) + "-horaDesde-mod").prop( "readonly", false );
                 $("#" + String(dia) + "-horaHasta-mod").prop( "readonly", false );
                 $("#" + String(dia) + "-horaDesde-mod").removeClass("data-show-input");
@@ -1341,6 +1403,149 @@ function setHorariosModValues(id){
     });
 }
 
+
+function openMenuMod() {
+    $("#menu-option-box-1-mod").fadeIn();
+    $(".dropdown-box").css("border","1px solid #95C22B");
+    $('#cards-row-materiales-mod').css({"transform":"translateY(200px)"});
+    $("#bottomAltaModalTextModPD").css({"transform":"translateY(200px)"});
+    $(".margin-row-mod").show();
+    $(".margin-row-mod").css({"transform":"translateY(190px)"});
+    $("#bottomAltaModalTextModPD").css({"margin-bottom":"10px"});
+};
+
+
+function closeMenuMod() {
+    $("#menu-option-box-1-mod").hide();
+    $(".dropdown-box").css("border","1px solid rgb(184, 184, 184)");
+    $('#cards-row-materiales-mod').css({"transform":"translateY(0px)"});
+    $("#bottomAltaModalTextModPD").css({"transform":"translateY(-25px)"});
+    $("#bottomAltaModalTextModPD").css({"margin-bottom":""});
+    $(".margin-row-mod").css({"transform":"translateY(0px)"});
+    $(".margin-row-mod").hide();
+};
+
+function dropdownOptionSelectMod(idOption, nameOption, color){
+    if (selectedOptionsMod.includes(idOption)){
+        const index = selectedOptionsMod.indexOf(idOption);
+        if (index > -1) {
+            selectedOptionsMod.splice(index, 1);
+        }
+        $("#" + String(nameOption) + "-check-mod").fadeOut();
+        $("#" + String(nameOption) + "-card-mod").fadeOut();
+    }
+    else{
+        selectedOptionsMod.push(idOption);
+        $("#" + String(nameOption) + "-check-mod").fadeIn();
+        setColorMod(nameOption,color);
+        $("#" + String(nameOption) + "-card-mod").fadeIn();
+    }
+    labelShowHideMod();
+    calc_cant_cambios();
+
+
+
+    $("#materiales-modPD").val("[" + selectedOptionsMod + "]");  
+     
+}
+
+//Deselecciona un material suspendido sin permitir que se vuelva a seleccionar.
+function dropdownOptionSuspendedSelectMod(idOption, nameOption){
+    if (selectedOptionsMod.includes(idOption)){
+        const index = selectedOptionsMod.indexOf(idOption);
+        if (index > -1) {
+            selectedOptionsMod.splice(index, 1);
+        }
+        $("#" + String(nameOption) + "-check-mod").fadeOut();
+        $("#" + String(nameOption) + "-card-mod").fadeOut();
+    }
+    labelShowHideMod();
+    calc_cant_cambios();
+    $("#materiales-modPD").val("[" + selectedOptionsMod + "]");  
+
+}
+
+//Manejo de carteles en la seleccion de materiales del dropdown.
+function labelShowHideMod(){
+    if (selectedOptionsMod.length == 0){
+        $(".indicator-label-2").hide();
+        $("#warning-label-modPD").fadeIn(1000);
+    }
+    else{
+        $(".indicator-label-2").show();
+        $("#warning-label-modPD").hide();
+    }
+}
+
+//Setea el color de las tarjetas de materiales.
+function setColorMod(nombre,color){
+    $("#"+String(nombre)+"-img-mod").css("background-color", String(color));
+}
+
+//Cierra el dropdown al clickear fuera de el y su
+$(document).on('click', function (e) {
+    if ($(e.target).closest("#dropdown-modPD").length === 0) {
+        if (menuShownMod == true){
+            closeMenuMod();
+            headingOptionLeave();
+            menuShownMod=false;
+        }
+    }
+});
+
+//Funcion principal de manejo del compartamiento el dropdown.
+function dropdownManagerMod(){
+    if (menuShownMod == false){
+        openMenuMod();
+        headingOptionHoverMod();
+        menuShownMod = true
+    }
+    else{
+        closeMenuMod();
+        headingOptionLeaveMod();
+        menuShownMod=false;
+    }
+
+}
+
+//Funciones específicas que manejan el dropdwon.
+function headingOptionHoverMod(){
+    $(".chevron").css({cursor: 'pointer', transform: 'rotate(180deg)'});
+}
+
+function headingOptionLeaveMod(){
+    $(".chevron").css({transform: 'rotate(0deg)'});
+}
+
+function setMaterialesPDvalues(id){
+    $.getJSON("/gestion-puntos-deposito/materiales/"+String(id),function (result){
+        materiales_PD = [];
+        $(".card-modPD").hide();
+        $(".mod-check").hide();
+        for (var i in result){
+            materiales_PD.push(String(result[i]["id"]));
+            $("#" + String(result[i]["nombre"]) + "-check-mod").show();
+            setColorMod(result[i]["nombre"],result[i]["color"]);
+            $("#" + String(result[i]["nombre"]) + "-card-mod").show();
+        }
+
+        if (result.length > 0){
+            $(".indicator-label-2").show();
+            $("#warning-label-modPD").hide();
+            for (var j in materiales_PD){
+                selectedOptionsMod.push(materiales_PD[j]);
+            }
+        }
+        else{
+            $(".card-modPD").hide();
+            $(".indicator-label-2").hide();
+            $("#warning-label-modPD").show();
+            $(".mod-check").hide();
+            selectedOptionsMod = [];
+        }
+    });
+
+}
 
 
 labelPosition();

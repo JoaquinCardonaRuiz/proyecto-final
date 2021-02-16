@@ -14,6 +14,7 @@ from datetime import datetime, timezone, timedelta
 import pytz
 import math
 import ast
+import numpy as np
 
 
 class NegocioPuntoDeposito(Negocio):
@@ -172,17 +173,20 @@ class NegocioPuntoDeposito(Negocio):
                                                     msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
 
     @classmethod
-    def get_materialesPd_by_id(cls, idPunto):
+    def get_materialesPd_by_id(cls, idPunto, json_return=True):
         """
-        Dtermina si un Punto de Depósito abre de lunes a viernes.
+        Determina si un Punto de Depósito abre de lunes a viernes.
         """
         #Conexión con el motor de BD.
         try:
             materiales = DatosMaterial.get_all_byIdPuntoDep(idPunto)
             materiales_ = []
-            for material in materiales:
-                materiales_.append({"id":material.id, "nombre":material.nombre, "unidadMedida":material.unidadMedida, "color":material.color, "estado":material.estado})
-            return materiales_
+            if json_return == False:
+                return materiales
+            else:
+                for material in materiales:
+                    materiales_.append({"id":material.id, "nombre":material.nombre, "unidadMedida":material.unidadMedida, "color":material.color, "estado":material.estado})
+                return materiales_
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
@@ -253,3 +257,58 @@ class NegocioPuntoDeposito(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+        
+
+    @classmethod
+    def mod_pd(cls, nombre, estado, calle, altura, ciudad, provincia, pais, horarios, materiales_new, id_direccion, id_punto, nombre_ant):
+        """
+        Obtiene todos los Puntos de Depósito de la BD.
+        """
+        #Conexión con el motor de BD.
+        #Valida RN23
+        if nombre == "":
+            raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.mod_pd()",
+                                                    msj_adicional = "Error al añadir el Punto de Depósito. El nombre no puede quedar vacío.")
+        #Valida RN25
+        if nombre in cls.get_all_names() and nombre != nombre_ant:
+            raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.mod_pd()",
+                                                    msj_adicional = "Error al añadir el Punto de Depósito. El nombre ya fue utilizado.")
+        #Valida RN24
+        estado = Utils.js_py_bool_converter(estado)
+        if estado != True and estado != False:
+            raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.mod_pd()",
+                                                    msj_adicional = "Error al añadir el Punto de Depósito. El estado no puede ser distinto de True o False.")
+        
+        #Validación de direccion
+        NegocioDireccion.valida_direccion(calle, altura, ciudad, provincia, pais)
+        #Validacion horarios
+        for horario in horarios:
+            NegocioHorario.valida_horarios(horario)
+        
+        #Modificación de la direccion
+        NegocioDireccion.mod_direccion(id_direccion, calle, altura, ciudad, provincia, pais)
+        #Modificación Punto de Depósito
+        DatosPuntoDeposito.mod_pd(PuntoDeposito(id_punto, None, estado, nombre, None, None))
+        #Modificación horarios
+        NegocioHorario.mod_horarios(horarios, id_punto)
+        
+        #Modificacion materiales_PD
+        #1-Obtengo listado ID materiales viejos
+        materiales_ant_ = cls.get_materialesPd_by_id(id_punto, False)
+        materiales_ant = []
+        for material in materiales_ant_:
+            materiales_ant.append(material.id)
+        #2-Obtengo listado ID materiales nuevos
+        if materiales_new == "":
+            materiales_new = []
+        else:
+            materiales_new = ast.literal_eval(materiales_new)
+        #3-Materiales a añadir
+        toAddMats = np.setdiff1d(materiales_new,materiales_ant)
+        #4-Materiales a eliminar
+        toRemoveMats = np.setdiff1d(materiales_ant,materiales_new)
+        #5-Hago alta y eliminación
+        DatosPuntoDeposito.alta_materialPD(toAddMats, id_punto)
+        DatosPuntoDeposito.baja_materialPD(toRemoveMats, id_punto)
+        
+    

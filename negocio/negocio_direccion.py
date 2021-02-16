@@ -65,3 +65,23 @@ class NegocioDireccion(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_direccion.alta_direccion()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio dando de alta una direccion.")
+    
+    @classmethod
+    def mod_direccion(cls, id_direccion, calle, altura, ciudad, provincia, pais, validar=False):
+        """
+        Modifica una dirección de la BD.
+        """
+        #Conexión con el motor de BD.
+        try:
+            if validar:
+                if NegocioDireccion.valida_direccion(calle, altura, ciudad, provincia, pais):
+                    return DatosDireccion.mod_direccion(Direccion(id_direccion,calle, altura, ciudad, provincia, pais))
+            else:
+                return DatosDireccion.mod_direccion(Direccion(id_direccion,calle, altura, ciudad, provincia, pais))
+
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_direccion.mod_direccion()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio modificando una direccion.")
