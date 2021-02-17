@@ -1382,14 +1382,14 @@ function setHorariosModValues(id){
         horarios_mod = result; 
         for (i=0; i < dias.length; i++){
             dia = result[i]["dia"];
+            horaDesde = result[i]["horaDesde"];
+            horaHasta = result[i]["horaHasta"];
             if (horaDesde.length == 4){
                 horaDesde = "0" + String(horaDesde);
             }
             if (horaHasta.length == 4){
                 horaHasta = "0" + String(horaHasta);
             }
-            horaDesde = result[i]["horaDesde"];
-            horaHasta = result[i]["horaHasta"];
             if (horaDesde == false || horaDesde == false){
                 $("#" + String(dia) + "-horaDesde-mod").val("");
                 $("#" + String(dia) + "-horaHasta-mod").val("");

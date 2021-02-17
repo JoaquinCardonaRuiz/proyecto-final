@@ -1,0 +1,108 @@
+@import url("forms.css");             /* Inputs, Botones, Dropdowns */
+
+
+.img-login{
+    height: 100%;
+    position: fixed;
+	top: 0;
+	left: 0;
+}
+
+.login-container{
+    width: calc(100%-16.9rem) !important;
+    margin-left: 16.9rem;
+    height: 100%;
+    top: 0;
+    transition: width 1s, height 1s, transform 1s;
+}
+
+#email-input-group{
+    margin-top: 30px;
+    display: block;
+    margin-left: 35%;
+    margin-right: 27%;
+    position: relative;
+}
+
+#password-input-group{
+    margin-top: -1%;
+    display: block;
+    margin-left: 35%;
+    margin-right: 27%;
+}
+
+.img-container{
+    margin-top: 7%;
+    display: block;
+    margin-left: 35%;
+    margin-right: 27%;
+}
+
+.ingresar-label-container{
+    margin-top: 50px;
+    display: block;
+    margin-left: 35%;
+    margin-right: 27%;
+}
+
+.buttons-container{
+    margin-top: 2%;
+    display: block;
+    margin-left: 35%;
+    margin-right: 27%; 
+}
+
+.ingresar-label{
+    font-family: 'Hind', sans-serif;
+    margin-left: 48%;
+    width: 70%;
+    min-width: 200px;
+}
+
+.login-img{
+    margin-left: 21%;
+    width: 70%;
+    min-width: 200px;
+}
+
+.password-input{
+    margin-left: 8%;
+    width: 100%;
+    min-width: 300px;
+}
+
+.email-input{
+    margin-left: 8%;
+    width: 100%;
+    min-width: 300px;
+
+}
+
+#register-label{
+    margin-top: 2.5%;
+    width: 96%;
+    text-align: right !important;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+
+}
+
+.register-hyperlink{
+    color: #95C22B;
+}
+
+.register-hyperlink:hover{
+    color: #87af28;
+    cursor: pointer;
+}
+
+.olvido-password{
+    color: #95C22B;
+    margin-left: 36.5%;
+}
+
+.olvido-password:hover{
+    color: #87af28;
+    cursor: pointer;
+}
+
+
