@@ -1192,7 +1192,7 @@ var messagesAlta = [
 
 // Lista de mensajes para la carga del Modal de baja nivel.
 var messagesBaja = [
-    "Estamos eliminando el nivel...",
+    "Estamos eliminando el Punto de Depósito...",
     "¡Casi listo! Últimos retoques"
 ].reverse();
 
@@ -1547,5 +1547,34 @@ function setMaterialesPDvalues(id){
 
 }
 
+//Abre el modal de baja.
+function openBajaModal(nombre, id){
+    jQuery.noConflict();
 
+    $(".lds-ring").hide();
+
+    $("#bajaPDModal").modal("show");
+    $("#baja-question").text("¿Está seguro que desea eliminar " + String(nombre) + "?");
+    $("#idPuntoBaja").val(String(id));
+
+}
+
+//Hace el submit del form de baja de un punto de Depósito.
+function baja_PD(){
+
+    //Manejo de interfaz
+    $("#fieldsRowBaja").hide();
+    $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $('#bottomBajaModalText').show();
+    $('#bottomBajaModalText').css({"margin-top":"-2%"});
+    $('#primary-btn-alert').prop('disabled', true);
+    $('#secondary-btn-baja').prop('disabled', true);
+
+    //Manejo de datos
+    $( "#bajaPDform" ).submit();
+
+    //Funcion que va cambiando los mensajes de carga.
+    nextMsgBaja();
+}
 labelPosition();

@@ -274,6 +274,15 @@ def mod_pd():
         
     return redirect(url_for('gestion_pd'))
 
+@app.route('/gestion-puntos-deposito/baja', methods = ['GET','POST'])
+def baja_pd():
+    
+    if request.method == 'POST':
+        id = request.form['idPuntoBaja']
+        NegocioPuntoDeposito.baja_pd(id)
+        
+    return redirect(url_for('gestion_pd'))
+
 ''' 
     -----------------
     Articulos

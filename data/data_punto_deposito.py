@@ -153,3 +153,51 @@ class DatosPuntoDeposito(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+    @classmethod
+    def baja_pd(cls,idPunto, noClose = False):
+        """
+        Realiza el borrado lógico un Punto de Depósito en base al ID que recibe como parámetro.
+        """
+        cls.abrir_conexion()
+        try:
+                #Elimina horarios del Punto
+                sql = ("DELETE from horariosPD where idPunto = %s")
+                values = (idPunto,)
+                cls.cursor.execute(sql,values)
+
+                #Obtengo el ID de la dirección del Punto
+                sql = ("SELECT idDireccion from puntosDeposito where idPunto = %s")
+                values = (idPunto,)
+                cls.cursor.execute(sql,values)
+                idDireccion = cls.cursor.fetchone()[0]
+
+                #Elimino Horarios
+                sql = ("DELETE from horariosPD where idPunto = %s")
+                values = (idPunto,)
+                cls.cursor.execute(sql, values)
+
+                #Elimino logicamente relacion con materiales
+                sql = ("UPDATE puntosDep_mat SET estado = 'eliminado' where idPunto = %s")
+                values = (idPunto,)
+                cls.cursor.execute(sql, values)
+
+                #Elimino logicamente el Punto de Depósito
+                sql = ("UPDATE puntosDeposito SET estadoEliminacion ='eliminado', idDireccion = NULL where idPunto = %s")
+                values = (idPunto,)
+                cls.cursor.execute(sql, values)
+
+                #Elimino la dirección del Punto.
+                sql = ("DELETE from direcciones where idDireccion = %s")
+                values = (idDireccion,)
+                cls.cursor.execute(sql, values)
+
+                cls.db.commit()
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.baja_pd()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error realizando la baja de un Punto de Depósito en la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
