@@ -374,15 +374,36 @@ function openModalMateriales(id, nombre){
                 clone = card.clone();
                 $("#no-mats").hide();
                 if (result[i]["estado"] == "suspendido"){
-                    clone.find("#material-card").css('background-color','#D3D3D3');
-                } 
+                    clone.addClass("grey-card");
+                    clone.find("#nombre-material").removeClass("material-card-title").addClass("material-card-title-grey");
+                    clone.find("#unidad-medida").removeClass("material-card-title").addClass("material-card-title-grey");
+                    clone.find("#id-material").removeClass("material-card-title").addClass("material-card-title-grey");
+                    clone.find("#material-img").css('background-color',"rgb(165, 165, 165)");
+                    clone.attr("data-toggle", "tooltip");
+                    clone.attr("data-placement", "right");
+                    clone.attr("title", "Los depósitos de este material se encuentran suspendidos");
+                }
+                else{
+                    clone.removeClass("grey-card");
+                    clone.find("#material-img").removeClass("gray-mat-img");
+                    clone.find("#material-img").css('background-color',result[i]["color"]);
+                    clone.find("#nombre-material").removeClass("material-card-title-grey").addClass("material-card-title");
+                    clone.find("#unidad-medida").removeClass("material-card-title-grey").addClass("material-card-title");
+                    clone.find("#id-material").removeClass("material-card-title-grey").addClass("material-card-title");
+                    clone.removeAttr("data-toggle");
+                    clone.removeAttr("data-placement");
+                    clone.removeAttr("title");
+                    
+                }
                 clone.find("#nombre-material").text(result[i]["nombre"]);
-                clone.find("#unidad-medida").text(result[i]["unidadMedida"]);
-                clone.find("#material-img").css('background-color',result[i]["color"]);
-                clone.find("#material-img").text(result[i]["nombre"][0]);
+                clone.find("#unidad-medida").text(result[i]["unidadMedida"]); 
                 clone.find("#id-material").text(result[i]["id"]);
+                clone.find("#material-img").text(result[i]["nombre"][0]);
                 clone.show();
                 clone.appendTo("#materiales-modal-body");
+
+
+                
             }
         }
         else{
@@ -1544,7 +1565,6 @@ function setMaterialesPDvalues(id){
             selectedOptionsMod = [];
         }
     });
-
 }
 
 //Abre el modal de baja.

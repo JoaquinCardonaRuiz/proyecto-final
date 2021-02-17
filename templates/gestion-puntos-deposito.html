@@ -76,8 +76,8 @@
                             </div>
                         </td>
                     {%endif%}
-                    <td><a class="custom-link" onclick="openLoadingRing();openModalHorarios('{{punto.id}}', '{{punto.nombre}}', '{{punto.estado}}');">Ver horarios</a></td>
-                    <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{punto.id}}', '{{punto.nombre}}');">Ver materiales</a></td>
+                    <td><a class="custom-link" onclick="openLoadingRing();openModalHorarios('{{punto.id}}', '{{punto.nombre}}', '{{punto.estado}}');"><i class="far fa-clock"></i> Ver horarios</a></td>
+                    <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{punto.id}}', '{{punto.nombre}}');"><i class="fa fa-truck-loading custom-link-fa"></i> Ver materiales</a></td>
                     <td class="delete-row" onclick="openBajaModal('{{punto.nombre}}','{{punto.id}}');"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon"></i></td>
                     <td class="modify-row" onclick="openModModal('{{punto.nombre}}','{{punto.estado}}', '{{punto.direccion.calle}}', '{{punto.direccion.altura}}', '{{punto.direccion.ciudad}}', '{{punto.direccion.provincia}}', '{{punto.direccion.pais}}', '{{punto.id}}', '{{punto.direccion.id}}');"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
 
@@ -189,7 +189,12 @@
                 </button>
             </div>
             <div class="modal-body modal-body-card" id="materiales-modal-body">
-                <p id="no-mats"><i class="fa fa-exclamation-triangle" id="warning-icon-altaPD"></i> Este Punto de Depósito aún no acepta ningún material. <br>Para añadir materiales aceptados, ingrese a la opción "Modificar Punto".</p>
+                <div class="row margin-bottom-row" id="no-mats">
+                    <p id="" class="advert-icon-no-mats"><i class="fa fa-exclamation-triangle advert-icon-no-mats"></i></p>
+                    <p class="bottom-modal-text-baja">Este Punto de Depósito aún no acepta ningún material</p>
+                    <p class="bottom-modal-text less-margin-top">Para añadir materiales aceptados, ingrese a la opción "Modificar Punto".</p>
+                    <input type="text" id="idPuntoBaja" name="idPuntoBaja" hidden>
+                </div>
                 <div class="container modal-large-card-sm" id="material-card">
                     <div class="row">
                         <div class="modal-card-col-sm">
@@ -665,7 +670,7 @@
                         <h7 class="indicator-label-2">El Punto de Depósito aceptará:</h7>
                         <p class="warning-label-altaPD" id="warning-label-modPD"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-modPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
                         {% for material in materiales %}
-                        {%if material.estado != 'eliminado'%}
+                        {%if material.estado == 'habilitado'%}
                         <div class="container modal-large-card-sm card-modPD" id="{{material.nombre + '-card-mod'}}" style="display: none;">
                             <div class="row">
                                 <div class="modal-card-col-sm">
@@ -690,6 +695,38 @@
                                 <div class="modal-card-col-sm">
                                     <div class="row d-flex justify-content-center card-first-row-sm">
                                         <p class="material-card-title" id="id-material">{{material.id}}</p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center card-second-row">
+                                        <p class="text-box material-card-subtitle">ID material</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%elif material.estado == 'suspendido'%}
+                        <div class="container modal-large-card-sm card-modPD grey-card" data-toggle="tooltip" data-placement="right" title="Los depósitos de este material se encuentran suspendidos" id="{{material.nombre + '-card-mod'}}" style="display: none;">
+                            <div class="row">
+                                <div class="modal-card-col-sm">
+                                    <div class="circle materiales-large-card-img gray-mat-img" id="{{material.nombre + '-img-mod'}}">{{material.nombre[0]}}</div>
+                                </div>
+                                <div class="modal-card-col-sm" >
+                                    <div class="row d-flex justify-content-center card-first-row-sm">
+                                        <p class="material-card-title-grey" id="nombre-material">{{material.nombre}}</p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center card-second-row">
+                                        <p class="text-box material-card-subtitle">Nombre material</p>
+                                    </div>
+                                </div>
+                                <div class="modal-card-col-sm">
+                                    <div class="row d-flex justify-content-center card-first-row-sm">
+                                        <p class="material-card-title-grey" id="unidad-medida">{{material.unidadMedida}}</p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center card-second-row">
+                                        <p class="text-box material-card-subtitle">Unidad de medida</p>
+                                    </div>
+                                </div>
+                                <div class="modal-card-col-sm">
+                                    <div class="row d-flex justify-content-center card-first-row-sm">
+                                        <p class="material-card-title-grey" id="id-material">{{material.id}}</p>
                                     </div>
                                     <div class="row d-flex justify-content-center card-second-row">
                                         <p class="text-box material-card-subtitle">ID material</p>

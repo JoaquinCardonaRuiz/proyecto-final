@@ -164,6 +164,11 @@
   text-decoration: none !important;
 }
 
+.custom-link-fa{
+    color: rgb(167, 167, 167) !important;
+    text-decoration: none !important;
+  }
+
 .custom-link:hover{
   color:#95C22B !important;
   cursor: pointer;

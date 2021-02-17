@@ -233,6 +233,11 @@ div.modal-content{
   font-size: 20px;
 }
 
+.material-card-title-grey{
+  font-size: 20px;
+  color: rgb(160, 160, 160);
+}
+
 .material-card-subtitle{
   font-size: 13px;
 }
@@ -242,11 +247,26 @@ div.modal-content{
   margin-left: 10px;
 }
 
+.grey-card{
+  background-color: rgb(243, 243, 243) !important;
+}
+
+.gray-mat-img{
+  background-color: rgb(165, 165, 165) !important;
+}
+
 .modal-card-col-sm{
   position: relative;
   width: 100px;
   margin-left: 20px;
   margin-right: 20px;
+}
+
+.warning-label-mat{
+  text-align: center;
+  width: 100%;
+  margin-top:-3%;
+  margin-left: -2%;
 }
 
 .subheader{
@@ -285,6 +305,11 @@ div.modal-content{
   margin-top:3%;
   display: none;
   margin-left: -2%;
+}
+
+.advert-icon-no-mats{
+  font-size: 70px;
+  margin-bottom: 1%;
 }
 
 .mapouter{position:relative;text-align:right;height:354px;width:600px;}
