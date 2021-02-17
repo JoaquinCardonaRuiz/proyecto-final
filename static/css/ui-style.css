@@ -276,3 +276,16 @@ h2 		 {
     margin-right: auto;
     background-color: rgb(226, 192, 128);
 }
+
+.tab-icon{
+    scale:0.6;
+    margin-left:2% !important;
+}
+
+.warning{
+    color:#999 !important;
+}
+
+.error{
+    color:#dd0000 !important;
+}

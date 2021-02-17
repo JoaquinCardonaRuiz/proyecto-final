@@ -114,6 +114,18 @@ background-color: #ebebeb;
 background-color: #ebebeb;
 }
 
+.anterior-btn:hover{
+  background-color: #ebebeb;
+  }
+  
+.anterior-btn-mod:hover{
+  background-color: #ebebeb;
+  }
+  
+.anterior-btn-baja:hover{
+  background-color: #ebebeb;
+  }
+
 #primary-btn{
   background-color: #95C22B;
   color: #fff;
@@ -358,6 +370,14 @@ input:focus ~ .highlight {
   margin-bottom: 7%;
 }
 
+#cards-row-materiales-mod{
+  transition: width 0.4s, height 0.4s, transform 0.4s;
+  margin-top: 5%; 
+  margin-left: 2%; 
+  width: 96.5%;
+  margin-bottom: 7%;
+}
+
 #warning-label-altaPD{
   text-align: center;
   width: 100%;
@@ -377,4 +397,11 @@ input:focus ~ .highlight {
 
 .loadingRingAlta{
   margin-top: 30px !important;
+}
+
+#bottomAltaModalTextModPD{
+  margin-top: 0px; 
+  color: #888;
+  margin-bottom: -20px;
+  transition: width 0.4s, height 0.4s, transform 0.4s;
 }
