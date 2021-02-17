@@ -15,27 +15,27 @@ class NegocioDireccion(Negocio):
             #Valida RN27
             if altura == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. La altura no puede quedar vacía.")
+                                                        msj_adicional = "Error al validar una dirección. La altura no puede quedar vacía.")
             #Valida RN31
             elif not(isinstance(int(altura), int)):
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. La altura debe ser numérica.")
+                                                        msj_adicional = "Error al validar una dirección. La altura debe ser numérica.")
             #Valida RN26
             elif calle == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. La calle no puede quedar vacía.")
+                                                        msj_adicional = "Error al validar una dirección. La calle no puede quedar vacía.")
             #Valida RN28
             elif ciudad == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. La ciudad no puede quedar vacía.")
+                                                        msj_adicional = "Error al validar una dirección. La ciudad no puede quedar vacía.")
             #Valida RN29
             elif provincia == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. La provincia no puede quedar vacía.")
+                                                        msj_adicional = "Error al validar una dirección. La provincia no puede quedar vacía.")
             #Valida RN30
             elif pais == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_direccion.alta_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. El país no puede quedar vacío.")
+                                                        msj_adicional = "Error al validar una dirección. El país no puede quedar vacío.")
             return True
 
         except custom_exceptions.ErrorDeConexion as e:

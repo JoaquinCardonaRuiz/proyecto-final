@@ -19,7 +19,6 @@ import numpy as np
 
 class NegocioPuntoDeposito(Negocio):
     """Clase que representa la capa de negocio para la entidad Punto de Depósito. Hereda de Negocio."""      
-    #TODO: Actualizar definiciones de métodos y mensajes de las excpeciones.                                     
 
     @classmethod
     def get_all(cls):
@@ -69,9 +68,9 @@ class NegocioPuntoDeposito(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_horarios_id()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo los horarios de un Punto por su ID de la capa de Datos.")
     
 
     
@@ -98,9 +97,9 @@ class NegocioPuntoDeposito(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.esta_abierto()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio determinando si un Punto de Depósito está abierto.")
     
 
     @classmethod
@@ -120,9 +119,9 @@ class NegocioPuntoDeposito(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.tiempo_cierre()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio calculando el tiempo restante para el cierre del PD.")
 
     @classmethod
     def abre_fin_semana(cls, horarios):
@@ -141,9 +140,9 @@ class NegocioPuntoDeposito(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.abre_fin_semana()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio calculando si un Punto de Depósito abre los fines de semana.")
     
     @classmethod
     def abre_toda_semana(cls, horarios):
@@ -168,14 +167,14 @@ class NegocioPuntoDeposito(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.abre_toda_semana()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio calculando si un PD abre de corrido durante la semana.")
 
     @classmethod
     def get_materialesPd_by_id(cls, idPunto, json_return=True):
         """
-        Determina si un Punto de Depósito abre de lunes a viernes.
+        Obtiene los materiales que acepta un punto de depósito en base al ID que recibe como parámetro.
         """
         #Conexión con el motor de BD.
         try:
@@ -190,15 +189,15 @@ class NegocioPuntoDeposito(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_materialesPd_by_id()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo los materiales que acepta un PD de la capa de Datos.")
 
     
     @classmethod
     def get_all_names(cls):
         """
-        Obtiene todos los Puntos de Depósito de la BD.
+        Obtiene todos los nombres de los Puntos de Depósito de la BD.
         """
         #Conexión con el motor de BD.
         try:
@@ -207,15 +206,15 @@ class NegocioPuntoDeposito(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all_names()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo los nombres de los puntos de depósito de la capa de Datos.")
 
     
     @classmethod
     def alta_pd(cls, nombre, estado, calle, altura, ciudad, provincia, pais, horarios, materiales):
         """
-        Obtiene todos los Puntos de Depósito de la BD.
+        Gestiona el alta de un Punto de Depósito en la BD.
         """
         #Conexión con el motor de BD.
         try:
@@ -247,38 +246,41 @@ class NegocioPuntoDeposito(Negocio):
             #Alta horarios
             NegocioHorario.alta_horarios(horarios, idPuntoDep)
             #alta materiales_PD
-            DatosPuntoDeposito.alta_materialPD(ast.literal_eval(materiales), idPuntoDep)
+            if materiales == "" or materiales =="[]":
+                DatosPuntoDeposito.alta_materialPD([], idPuntoDep)
+            else:
+                DatosPuntoDeposito.alta_materialPD(ast.literal_eval(materiales), idPuntoDep)
 
             
 
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.alta_pd()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio dando de alta un Punto de Depósito.")
         
 
     @classmethod
     def mod_pd(cls, nombre, estado, calle, altura, ciudad, provincia, pais, horarios, materiales_new, id_direccion, id_punto, nombre_ant):
         """
-        Obtiene todos los Puntos de Depósito de la BD.
+        Gestiona la modificación de un PD.
         """
         try:
             #Conexión con el motor de BD.
             #Valida RN23
             if nombre == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.mod_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. El nombre no puede quedar vacío.")
+                                                        msj_adicional = "Error al modificar el Punto de Depósito. El nombre no puede quedar vacío.")
             #Valida RN25
             if nombre in cls.get_all_names() and nombre != nombre_ant:
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.mod_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. El nombre ya fue utilizado.")
+                                                        msj_adicional = "Error al modificar el Punto de Depósito. El nombre ya fue utilizado.")
             #Valida RN24
             estado = Utils.js_py_bool_converter(estado)
             if estado != True and estado != False:
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.mod_pd()",
-                                                        msj_adicional = "Error al añadir el Punto de Depósito. El estado no puede ser distinto de True o False.")
+                                                        msj_adicional = "Error al modificar el Punto de Depósito. El estado no puede ser distinto de True o False.")
             
             #Validación de direccion
             NegocioDireccion.valida_direccion(calle, altura, ciudad, provincia, pais)
@@ -314,9 +316,9 @@ class NegocioPuntoDeposito(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.mod_pd()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio modificando un Punto de Depósito.")
 
 
     @classmethod

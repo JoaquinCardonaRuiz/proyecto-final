@@ -40,7 +40,7 @@ class NegocioHorario(Negocio):
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="neogocio_horarios.valida_horarios()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo los niveles de la capa de Datos.")
+                                                    msj_adicional="Error en la capa de Negocio validando las RN de un horario.")
 
     @classmethod
     def alta_horarios(cls, horarios, idPuntoDep, validar=False):
@@ -100,6 +100,6 @@ class NegocioHorario(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio_direccion.alta_horarios()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_direccion.mod_horarios()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio modificando los horarios de un Punto de Depósito.")

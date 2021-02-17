@@ -69,7 +69,7 @@ class DatosDireccion(Datos):
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_direccion.mod_direccion()",
                                                     msj=str(e),
-                                                    msj_adicional="Error modificand una direccion de la BD.")
+                                                    msj_adicional="Error modificando una direccion de la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()

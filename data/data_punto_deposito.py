@@ -26,9 +26,9 @@ class DatosPuntoDeposito(Datos):
             return puntosDeposito_
             
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.get_niveles()",
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_all()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obtieniendo los niveles desde la BD.")
+                                                    msj_adicional="Error otodos los Puntos de Depósito desde la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
@@ -37,7 +37,7 @@ class DatosPuntoDeposito(Datos):
     @classmethod
     def get_all_names(cls, noClose = False):
         """
-        Obtiene todos los Puntos de Depósito de la BD.
+        Obtiene todos los nombres de los Puntos de Depósito de la BD.
         """
         cls.abrir_conexion()
         try:
@@ -51,9 +51,9 @@ class DatosPuntoDeposito(Datos):
             return puntosDeposito_
             
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.get_niveles()",
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_all_names()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obtieniendo los niveles desde la BD.")
+                                                    msj_adicional="Error obtieniendo todos los nombres de los Puntos de Depósito de la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
@@ -80,9 +80,9 @@ class DatosPuntoDeposito(Datos):
             return id_asignado
             
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.get_niveles()",
+            raise custom_exceptions.ErrorDeConexion(origen="data.alta_pd()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obtieniendo los niveles desde la BD.")
+                                                    msj_adicional="Error añadiendo un Punto de Depósito a la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()

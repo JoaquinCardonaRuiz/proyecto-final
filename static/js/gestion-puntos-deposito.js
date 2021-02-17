@@ -1570,12 +1570,12 @@ function setMaterialesPDvalues(id){
 //Abre el modal de baja.
 function openBajaModal(nombre, id){
     jQuery.noConflict();
-
     $(".lds-ring").hide();
 
     $("#bajaPDModal").modal("show");
     $("#baja-question").text("¿Está seguro que desea eliminar " + String(nombre) + "?");
     $("#idPuntoBaja").val(String(id));
+    
 
 }
 
