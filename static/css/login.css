@@ -1,0 +1,117 @@
+@import url("forms.css");             /* Inputs, Botones, Dropdowns */
+
+
+.img-login{
+    height: 100%;
+    position: fixed;
+	top: 0;
+	left: 0;
+}
+
+.login-container{
+    width: calc(100%-16.9rem) !important;
+    margin-left: 16.9rem;
+    height: 100%;
+    top: 0;
+    transition: width 1s, height 1s, transform 1s;
+}
+
+/*Containers*/
+.content-container{
+    display: table;
+    margin: 0 auto;
+    transition: width 1s, height 1s, transform 1s;
+    margin-top: 7%;
+}
+
+#email-input-group{
+    transition: width 1s, height 1s, transform 1s;
+    margin-top: 30px;
+
+}
+
+#password-input-group{
+    transition: width 1s, height 1s, transform 1s;
+    margin-top: -30px;
+
+}
+
+
+.ingresar-label{
+    font-family: 'Hind', sans-serif;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+    margin-top: 30px;
+}
+
+.login-img{
+  height: 60px;
+  transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.password-input{
+    width: 400px;
+}
+
+.email-input{
+    width: 400px;
+}
+
+#register-label{
+    margin-top: 25px;
+    width: 96%;
+    text-align: right;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.register-hyperlink{
+    color: #95C22B;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.bottom-row{
+    margin-top: -30px;
+}
+
+.register-hyperlink:hover{
+    color: #87af28;
+    cursor: pointer;
+}
+
+.olvido-password{
+    color: #95C22B;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+
+}
+
+.olvido-password:hover{
+    color: #87af28;
+    cursor: pointer;
+}
+
+.row{
+    width: 400px;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+
+}
+
+#start-button{
+    font-size: 17px;
+    font-weight: 450;
+    margin-top: 20px;
+    white-space: nowrap;
+    border-radius: 25px;
+    border: 1px solid #95C22B;
+    padding: 12px;
+    text-align: center;
+    width: 100%;
+    height: 48px;
+    background: #95C22B;
+    color: whitesmoke;
+  }
+  
+  #start-button:hover{
+      background-color: #aedd42;
+      border: 1px solid #aedd42;
+      cursor: pointer;
+  }
+

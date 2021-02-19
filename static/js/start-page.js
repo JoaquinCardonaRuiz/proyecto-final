@@ -206,7 +206,7 @@ function fillCircles(numero){
     circleFilled = numero;
 }
 
-//Animaciones de las preguntaas sección top 5 preguntas
+//Animaciones de las preguntas sección top 5 preguntas
 slidedAns = false; 
 function slideAnswer(numero){
     if (slidedAns == numero){

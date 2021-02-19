@@ -15,9 +15,6 @@
   box-shadow:rgb(100, 100, 100) !important;
 }
 
-.data-show-input-with-border{
-}
-
 .btn {
     text-transform: none !important;
   }
@@ -77,45 +74,29 @@
   width: 230px;
 }
 
-#primary-btn{
-    background-color: #95C22B;
-    color: #fff;
+.primary-btn{
+    background-color: #95C22B !important;
+    color: #fff !important;
 }
 
-#primary-btn:hover{
-  background-color: #87af28;
+.primary-btn:hover{
+  background-color: #87af28 !important;
 }
 
-#primary-btn-mod{
-  background-color: #95C22B;
-  color: #fff;
+.primary-btn-alert{
+  background-color: #f14e4e !important;
+  color: #fff !important;
 }
 
-#primary-btn-mod:hover{
-  background-color: #87af28;
+.primary-btn-alert:hover{
+  background-color: #cf4545 !important;
+  color: #fff !important;
 }
 
-#primary-btn-alert{
-  background-color: #f14e4e;
-  color: #fff;
+.secondary-btn:hover{
+    background-color: #ebebeb !important;
 }
 
-#primary-btn-alert:hover{
-  background-color: #cf4545;
-  color: #fff;
-}
-
-#secondary-btn:hover{
-    background-color: #ebebeb;
-}
-
-#secondary-btn-mod:hover{
-  background-color: #ebebeb;
-}
-
-#secondary-btn-baja:hover{
-  background-color: #ebebeb;
-}
 
 /* form starting stylings ------------------------------- */
 .group 			  { 
@@ -212,3 +193,188 @@
   }
   
   * { box-sizing:border-box; }
+
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.form-control-underlined {
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-radius: 0;
+  padding-left: 0;
+}
+
+.custom-control-input{
+  background-color: #95C22B !important;
+  border-color: #95C22B !important;
+  color: #95C22B !important;
+}
+
+#fieldsRow1AltaPD2{
+  margin-top: 2%;
+}
+
+#bottomAltaModalTextAltaPD{
+  margin-top: -20px; 
+  color: #888;
+  margin-bottom: -20px;
+  transition: width 0.4s, height 0.4s, transform 0.4s;
+}
+
+#bottomAltaModalTextModPD{
+  margin-top: 0px; 
+  color: #888;
+  margin-bottom: -20px;
+  transition: width 0.4s, height 0.4s, transform 0.4s;
+}
+
+#pdInactivo{
+  display: none;
+}
+
+.time-input{
+  width: 60px i !important;
+}
+
+
+/*Multiple Select Dropdown*/
+
+.menu-option-box{
+  border-radius: 10px;
+  position: absolute; 
+  background-color:white; 
+  width: 600px;
+  height: 200px;
+  display: none;
+  margin-top: -8px;
+  box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
+  overflow: scroll;
+  overflow-x: hidden;
+  z-index: 9;
+}
+
+.menu-option-box-op{
+  margin-left: 5%;
+  margin-top: 10px;
+  margin-right: 20px;
+  height: 30px;
+  color: rgb(92, 92, 92);
+  transition: transform .2s; /* Animation */
+}
+
+.menu-option-box-op-suspended{
+  margin-left: 5%;
+  margin-top: 10px;
+  margin-right: 20px;
+  height: 30px;
+  color: darkgray; 
+  text-decoration:line-through;
+}
+
+.menu-option-box-op:hover{
+  color: #95C22B;
+  cursor: pointer;
+  transform: scale(1.015); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+#menu-option-box-op-1{
+  margin-top: 10px !important;
+}
+
+#heading-option{
+  position: relative;
+  font-size: 16px;
+  font-weight: 400;
+  height: 50px;
+  line-height: 38px;
+  white-space: nowrap;
+  margin-left: 5%;
+}
+
+.chevron {
+  margin-top: -1px;
+  width: 13px;
+  height: 13px;
+  transition: width 0.3s, height 0.3s, transform 0.3s;
+  margin-left:65%;
+}
+
+.dropdown-box{
+  width: 600px;
+  height: 40px;
+  border: 1px solid rgb(184, 184, 184);
+  border-radius: 5px;
+  margin-left: 3% !important;
+
+}
+
+.dropdown-box:hover{
+  cursor: pointer;
+}
+
+.dropdown-option-check{
+  margin-right: 10px;
+  margin-left: 5px;
+}
+
+.dropdown-option-check-info{
+  color: rgb(189, 189, 189);
+  margin-left: 10px;
+}
+
+.indicator-label{
+  margin-left: 3%;
+  margin-bottom: 3%;
+  margin-top: -2%;
+}
+
+.indicator-label-2{
+  margin-left: 8%;
+  margin-bottom: 1%;
+  margin-top: -3%;
+}
+
+
+.cards-row-materiales{
+  transition: width 0.4s, height 0.4s, transform 0.4s;
+  margin-top: 10%; 
+  margin-left: 2% !important; 
+  width: 96.5%;
+  margin-bottom: 7%;
+}
+
+.warning-label-altaPD{
+  text-align: center;
+  width: 100%;
+  margin-top:-3%;
+  display: none;
+  margin-left: -2%;
+}
+
+.warning-icon-altaPD{
+  font-size: 20px;
+}
+
+.margin-row{
+  height: 30px;
+  display: none;
+}
+
+.margin-row-mod{
+  height: 20px !important;
+}
+
+.loadingRingAlta{
+  margin-top: 30px !important;
+}
+
+

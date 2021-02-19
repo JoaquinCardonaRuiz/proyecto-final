@@ -45,6 +45,7 @@ class Usuario:
         ecopuntos (EcoPuntos[]): Arreglo de los ecopuntos que el usuario posee.
         IDTipoUsuario (string): Identificador de la instancia de TipoUsuario que corresponde
             a la entidad.
+        direccion (Direccion): Dirección física del domicilio del usuario
         despositosActivos (Deposito[]): Arreglo de depositos que siguen vigentes.
         depositosVencidos (Deposito[]): Arreglo de depositos que se encuentran vencidos.
         mediosPago (MedioPago[]): Arreglo de medios de pago con los que cuenta el usuario.
@@ -67,6 +68,7 @@ class Usuario:
                 apellido, 
                 password, 
                 idTipoUsuario,
+                direccion,
                 ecoPuntos=[],
                 depositosActivos=[],
                 depositosVencidos=[],
@@ -84,6 +86,7 @@ class Usuario:
         self.apellido = apellido
         self.password = password
         self.idTipoUsuario = idTipoUsuario
+        self.direccion = direccion
         self.ecoPuntos = ecoPuntos
         self.depositosActivos = depositosActivos
         self.depositosVencidos = depositosVencidos
@@ -313,13 +316,17 @@ class Material:
         unidadMedida (string): Unidad en la que se mide la cantidad del material.
         costoRecoleccion (float): Costo asociado a la recoleccion del material.
         stock (float): Cantidad del material presente en inventario.
+        color(string): Código hexadecimal del color con que se muestra un material.
+        estado(string): Estado en el que se encuentra un material.
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock):
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color, estado="disponible"):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
         self.costoRecoleccion = costoRecoleccion
         self.stock = stock
+        self.color = color
+        self.estado = estado
 
 class CantMaterial:
     """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.
@@ -637,17 +644,14 @@ class PuntoDeposito:
             punto de deposito acepta.
         horarios (Horario[7]): Arreglo con los horarios en los que el punto de depósito está
             habilitado.
-        fechaComienzoActividad (Date): Fecha en el que el punto de depósito fue puesto en
-            funcionamiento por primera vez.
     """
-    def __init__(self,id,direccion,estado,nombre,iDsMaterial=[],horarios=[],fechaComienzoActividad=None):
+    def __init__(self,id,direccion,estado,nombre,iDsMaterial=[],horarios=[]):
         self.id = id
         self.direccion = direccion
         self.estado = estado
         self.nombre = nombre
         self.iDsMaterial = iDsMaterial
         self.horarios = horarios
-        self.fechaComienzoActividad = fechaComienzoActividad
 
 class PuntoRetiro:
     """ Representa una de las ubicaciones físicas donde los usuarios podrán retirar sus 
@@ -748,12 +752,14 @@ class EntidadDestino:
     Atributos:
         id (string): Identificador de la entidad.
         nombre (string): Nombre para identificación por parte del usuario.
+        direccion (Direccion): dirección física donde se ubica la entidad destino
         salidas (SalidaStock[]): Arreglo de las salidas de stock destinadas a la entidad.
     """
-    def __init__(self,id,nombre,estado,salidas=[]):
+    def __init__(self,id,nombre,estado,direccion,salidas=[]):
         self.id = id
         self.nombre = nombre
         self.estado = estado
+        self.direccion = direccion
         self.salidas = salidas
 
 class SalidaStock:
@@ -782,13 +788,26 @@ class Horario:
         id (string): Identificador de la entidad.
         horaDesde (Time): Tiempo inicial de apertura.
         horaHasta (Time): Tiempo final de cierre.
-        abierto (bool): ?
+        dia (string): Día al que corresponde el horario.
     """
-    def __init__(self,id,horaDesde,horaHasta,abierto):
+    def __init__(self,id,horaDesde,horaHasta,dia):
         self.id = id
         self.horaDesde = horaDesde
         self.horaHasta = horaHasta
-        self.abierto = abierto
+        self.dia = dia
+    
+    def formato_horaDesde(self):
+        if self.horaDesde == False:
+            return False
+        else:
+            return self.horaDesde[:-3]
+
+    def formato_horaHasta(self):
+        if self.horaHasta == False:
+            return False
+        else:
+            return self.horaHasta[:-3]
+
 
 class Valor:
     """ Representa un valor monetario de una entidad en un momento en particular. El objetivo
@@ -806,7 +825,25 @@ class Valor:
         self.fecha = fecha
 
 
+class Direccion:
+    """
+    Representa una dirección geográfica para localizar un punto de deposito, retiro, o una entidad de destino
 
+    Atributos:
+        id (string): Identificador de la entidad
+        calle (string): Nombre de la calle
+        altura (string): Numero de la dirección
+        ciudad (string): Ciudad donde se encuentra la dirección
+        provincia (string): Provincia '' ''        '' ''
+        pais (string): Pais           '' ''        '' ''
+    """
+    def __init__(self,id,calle,altura,ciudad,provincia,pais):
+        self.id = id
+        self.calle = calle
+        self.altura = altura
+        self.ciudad = ciudad
+        self.provincia = provincia
+        self.pais = pais
 
 
 
