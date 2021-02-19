@@ -1,12 +1,18 @@
 from flask import json
 from flask.json import JSONEncoder
 from classes import Horario
-from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
+from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
+from flask_session import Session 
+
+#app
 app = Flask(__name__)
+app.secret_key = 'SecretKeyForSigningCookies'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 #Session
 app.secret_key = 'myscretkey'
+Session(app)
 
 @app.route('/', methods = ['GET','POST'])
 def start():
@@ -14,7 +20,7 @@ def start():
 
 @app.route('/main', methods = ['GET','POST'])
 def main():
-    return render_template('main.html')
+    return render_template('main.html',usuario=session["usuario"])
 
 ''' 
     -----------------
@@ -24,6 +30,16 @@ def main():
 
 @app.route('/login', methods = ['GET','POST'])
 def login():
+    return render_template('login.html')
+
+@app.route('/login/auth/<email>/<password>', methods = ['GET','POST'])
+def authentication(email, password):
+    try:
+        session["usuario"] = NegocioUsuario.login(email, password)
+        return jsonify({"login-state":True})
+    except Exception as e:
+        return jsonify({"login-state":False})
+
     return render_template('login.html')
 
 ''' 

@@ -5,6 +5,10 @@ from datetime import datetime, timedelta
 import pytz
 import math
 import random
+import re
 
-r = lambda: random.randint(0,255)
-print('#%02X%02X%02X' % (r(),r(),r()))
+regex = '(<)?(\w+@\w+(?:\.\w+)+)(?(1)>|$)'
+if(re.search(regex,'jajaja@gmail.')):  
+    print('yes')
+else:  
+    print('no')

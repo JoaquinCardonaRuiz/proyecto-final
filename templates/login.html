@@ -33,11 +33,11 @@
                 <img src="/static/img/logo-gris.png" class="login-img">
             </div>
             <div class="row d-flex justify-content-center">
-                <h4 class="ingresar-label">Ingresar</h4>
+                <h5 class="ingresar-label">Ingresar</h5>
             </div>
             <div class="row d-flex justify-content-center">
                 <div class="group" id="email-input-group">  
-                    <input type="text" required autocomplete="off" class="email-input">
+                    <input type="text" required autocomplete="off" id="email-input" class="email-input" name="email">
                     <span class="highlight email-input"></span>
                     <span class="bar email-input"></span>
                     <label class="email-input">Email</label>
@@ -46,7 +46,7 @@
             </div>
             <div class="row d-flex justify-content-center">
                 <div class="group" id="password-input-group">  
-                    <input type="text" required autocomplete="off" class="password-input">
+                    <input type="text" required autocomplete="off" id="password-input" class="password-input" name="password">
                     <span class="highlight password-input"></span>
                     <span class="bar password-input"s></span>
                     <label class="password-input">Contraseña</label>
@@ -55,7 +55,7 @@
             </div>
             <div class="row d-flex justify-content-center bottom-row">
                 <a class="olvido-password" href="/registro">¿Olvidaste tu contraseña?</a>
-                <h3 id="start-button" onclick="redirect('/register')">Iniciar sesión</h3>
+                <h3 id="start-button" onclick="submitLogin()">Iniciar sesión</h3>
             </div>
             
         </div>
