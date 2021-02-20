@@ -40,6 +40,7 @@ class DatosArticulo(Datos):
         finally:
             cls.cerrar_conexion()
 
+
     @classmethod
     def get_by_id(cls, id, noClose = False):
         cls.abrir_conexion()

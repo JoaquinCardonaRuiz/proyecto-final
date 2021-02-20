@@ -42,13 +42,11 @@ class Usuario:
         nombre (string): Nombre de pila del usuario.
         apellido (string): Apellido o nombre de familia del usuario.
         password (string): Contrasena del usuario.
-        ecopuntos (EcoPuntos[]): Arreglo de los ecopuntos que el usuario posee.
         IDTipoUsuario (string): Identificador de la instancia de TipoUsuario que corresponde
             a la entidad.
         direccion (Direccion): Dirección física del domicilio del usuario
-        despositosActivos (Deposito[]): Arreglo de depositos que siguen vigentes.
-        depositosVencidos (Deposito[]): Arreglo de depositos que se encuentran vencidos.
-        mediosPago (MedioPago[]): Arreglo de medios de pago con los que cuenta el usuario.
+        despositosActivos (Deposito[]): Arreglo de depositos cuyos ecopuntos siguen vigentes.
+        depositosVencidos (Deposito[]): Arreglo de depositos cuyos ecopuntos se encuentran vencidos.
         pedidos (Pedidos[]): Arreglo de los pedidos realizados por el usuario.
         totalEcopuntos (int): Sumatoria de la cantidad de ecopuntos que el usuario posee.
         idNivel (string): Identificador del nivel que le corresponde al usuario.
@@ -69,10 +67,8 @@ class Usuario:
                 password, 
                 idTipoUsuario,
                 direccion,
-                ecoPuntos=[],
                 depositosActivos=[],
                 depositosVencidos=[],
-                mediosPago=None,
                 pedidos=None,
                 totalEcopuntos=0,
                 idNivel=None,
@@ -87,10 +83,8 @@ class Usuario:
         self.password = password
         self.idTipoUsuario = idTipoUsuario
         self.direccion = direccion
-        self.ecoPuntos = ecoPuntos
         self.depositosActivos = depositosActivos
         self.depositosVencidos = depositosVencidos
-        self.mediosPago = mediosPago
         self.pedidos = pedidos
         self.totalEcopuntos = totalEcopuntos
         self.idNivel = idNivel
@@ -105,9 +99,6 @@ class Usuario:
         """ """
 
     def comprobarVencimientoDepositos(self,):
-        """ """
-
-    def cargarMedioPago(self,):
         """ """
     
     def crearPedido(self,):
@@ -539,6 +530,10 @@ class Deposito:
         self.ecoPuntos = ecoPuntos
         self.fechaRegistro = fechaRegistro
 
+    def isActivo(self):
+        #TODO: Desarrollar este metodo
+        return True
+
     def comprobarCodigo(self, codigo):
         return False
 
@@ -681,7 +676,7 @@ class Pedido:
         id (string): Identificador de la entidad.
         fechaEncargo (Date): Fecha en la que el pedido fue realizado.
         fechaRetiro (Date): Fecha en la que el pedido puede ser retirado.
-        articulos (CantArticulo): Conjunto de Articulos que posee el pedido.
+        articulos (CantArticulo []): Conjunto de Articulos que posee el pedido.
         valorTotal (Float): Valor total del pedido, en pesos.
         valorPagoEcoPuntos (Float): Valor del pedido que fue abonado en forma de EcoPuntos.
         idPuntoRetiro (string): Identificador del punto de retiro donde podrá ser retirado el 

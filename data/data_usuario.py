@@ -1,4 +1,7 @@
 from data.data import Datos
+from data.data_direccion import DatosDireccion
+from data.data_deposito import DatosDeposito
+from data.data_pedido import DatosPedido
 from classes import Usuario
 import custom_exceptions
 
@@ -30,21 +33,21 @@ class DatosUsuario(Datos):
             print(usuarios)
             if len(usuarios) > 0:
                 usu = usuarios[0]
-                ep = None
-                da = None
-                dv = None
-                mp = None
+                direc = DatosDireccion.get_one_id(usu[9],noClose=True)
+                depositos = DatosDeposito.get_by_user_id(usu[0],noClose=True)
+                da = [d for d in depositos if d.isActivo()]
+                dv = [d for d in depositos if not(d.isActivo())]
                 ped = None
-                usuario = Usuario(usu[0],usu[1],usu[8],usu[2],usu[3],usu[6],usu[7],dir,ep,da,dv,mp,ped,usu[4],usu[10],None,None,None)
+                usuario = Usuario(usu[0],usu[1],usu[8],usu[2],usu[3],usu[6],usu[7],direc,da,dv,ped,usu[4],usu[10])
                 return usuario
             else:
-                raise custom_exceptions.ErrorDeConexion(origen="datos_usuario.login()",
+                raise custom_exceptions.ErrorDeConexion(origen="data_usuario.login()",
                                                         msj_adicional = "Usuario inexistente")
 
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data.login()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.login()",
                                                     msj=str(e),
                                                     msj_adicional="Error buscando usuario en la BD para realizar el login.")
         finally:
