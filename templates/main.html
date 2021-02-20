@@ -16,13 +16,16 @@
 
 {% extends 'layout.html' %}
 {% block body %}
-<div class="page-content" style="text-align: right;" id="content">
-    <div class="container bg-light" id="top-container">
-        <br> 
-        <p>{{usuario.nombre}}</p>      
-        <br>
-        <br>
-        <br>
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="top-container">
+        <div class="row">
+            <div class="container" id="user-container">
+                <div class="option-text">
+                    <h1 class="heading">{{'Hola, ' + usuario.nombre + ' ' + usuario.apellido}}</h1>
+                    <p class="text-muted">Bienvenido a EcoAsistente, el lugar donde ganás reciclando.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

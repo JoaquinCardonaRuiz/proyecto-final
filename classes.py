@@ -361,7 +361,6 @@ ARTICULOS
 class TipoArticulo:
     """ Representa un tipo de artículo comprendido por el sistema. Los artículos son objetos
     generados a partir de materiales, con un costo de producción. 
-
     Atributos:
         id (string): Identificador de la entidad.
         nombre (string): Nombre del tipo artículo para identificación por parte del usuario.
@@ -380,6 +379,9 @@ class TipoArticulo:
         stock (float): Cantidad del artículo presente en inventario.
         costoObtencionAlternativa (float): Costo estimado de obtención del artículo por medios
             alternativos a la producción a partir de depósitos de ciudadanos.
+        otrosCostos (float): costos miscelaneos adicionales
+        imagen (string): url de imagen del articulo
+        ventaUsuario (bool): verdadero si el articulo se vende a usuarios, falso si no
     """
     def __init__(self,
                 id,
@@ -392,7 +394,10 @@ class TipoArticulo:
                 margenGanancia,
                 unidadMedida,
                 costoObtencionAlternativa,
-                stock):
+                stock,
+                otrosCostos,
+                imagen,
+                ventaUsuario):
         self.id = id
         self.nombre = nombre
         self.insumos = insumos
@@ -404,6 +409,9 @@ class TipoArticulo:
         self.unidadMedida = unidadMedida
         self.costoObtencionAlternativa = costoObtencionAlternativa
         self.stock = stock
+        self.otrosCostos = otrosCostos
+        self.imagen = imagen
+        self.ventaUsuario = ventaUsuario
 
 class CantArticulo:
     """ Representa un conjunto de artículos del mismo tipo. Almacena el tipo y la cantidad.
@@ -422,7 +430,6 @@ class CantArticulo:
 class ProduccionArticulo:
     """
     Representa la produccion de un lote de articulos
-
     Atributos:
         id (string): identificador de la entidad
         articulos (CantArticulos): articulos involucrados
@@ -436,7 +443,6 @@ class ProduccionArticulo:
 class SalidaStockMunicipalidad:
     """
     Representa una salida de stock de articulos para uso de la municipalidad
-
     Atributos:
         id (string): Identificador de la entidad
         articulos (CantArticulo): Articulos involucrados
@@ -454,7 +460,6 @@ INSUMOS
 class Insumo:
     """
     Representa un Insumo utilizado en la producción de articulos
-
     Atributos:
         id (String): identificador de la entidad
         nombre (String): nombre del insumo
@@ -464,6 +469,7 @@ class Insumo:
         costoTotal (float): costo total del insumo
         materiales (CantMaterial []): materiales necesarios para su produccion
         stock (float): existencias del insumo
+        otrosCostos (float): costos miscelaneos adicionales
     """
     def __init__(self,
                  id,
@@ -473,7 +479,8 @@ class Insumo:
                  costoProduccion,
                  costoTotal,
                  materiales,
-                 stock):
+                 stock,
+                 otrosCostos):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -482,11 +489,11 @@ class Insumo:
         self.costoTotal = costoTotal
         self.materiales = materiales
         self.stock = stock
+        self.otrosCostos = otrosCostos,
 
 class CantInsumo:
     """
     Representa una cantidad de insumos
-
     Atributos:
         cantidad(float): cantidad del insumo asociado
         idInsumo (string): identificador del insumo asociado
@@ -498,7 +505,6 @@ class CantInsumo:
 class ProduccionInsumo:
     """
     Representa la produccion de un lote de insumos
-
     Atributos:
         id (string): identificador de la entidad
         insumos (CantInsumo): insumos involucrados
@@ -517,7 +523,6 @@ DEPOSITOS Y VENTA
 class Deposito:
     """ Representa un deposito de materiales realizado por un usuario en uno de los puntos de
     depósito.
-
     Atributos:
         id (string): Identificador de la entidad.
         codigo (string): Código ingresado por el usuario para registrar el depósito a su nombre.
@@ -545,7 +550,6 @@ class Deposito:
 class DepositosSinRegistrar:
     """ Clase SINGLETON que guarda las instancias de depositos que fueron realizadas pero no 
     se registraron a ningún usuario.
-
     Atributos:
         id (string): Identificador de la entidad.
         depositos (Deposito[], opcional): Arreglo donde se guardan los depositos no 
@@ -559,14 +563,12 @@ class DepositosSinRegistrar:
 class EcoPuntos:
     """ Representa un conjunto de ecopuntos, correspondiente a un depósito, los mismos 
     comparten una fecha de vencimiento.
-
     Atributos:
         id (string): Identificador de la entidad.
         fechaVencimiento (Date): fecha en la cual los ecopuntos vencen.
         cantidad (float): cantidad de ecopuntos que este conjunto representa.
         cantidadRestante (float): cantidad de ecopuntos de este conjunto que no han sido
             utilizados.
-
     Atributos de Clase:
         valorMonetario (ValorEcopuntos): Valor monetario de cada ecopunto.
         tiempoVencimiento (Time): Tiempo de vida de cada ecopunto, antes de vencerse.
@@ -579,7 +581,6 @@ class EcoPuntos:
     def getEPData(cls):
         """ Recupera los datos del valor monetario y tiempo de vencimiento de los ecopuntos
         de la base de datos.
-
         Esta función debe llamarse al inicializarse el sistema (en el init de la clase
         EcoAsistente). Por precaución, también sería prudente llamarla cada vez que se
         instancia un nuevo EcoPunto.
@@ -601,7 +602,6 @@ class EcoPuntos:
     def setEPData(cls):
         """ Actualiza los datos del valor monetario y tiempo de vencimiento de los ecopuntos
         en la base de datos.
-
         Esta función debe llamarse cada vez que el usuario desee modificar dichos datos.
         """
         pass
@@ -623,6 +623,7 @@ class EcoPuntos:
         # return fecha_actual + EcoPuntos.tiempoVencimiento
         return 0
         # Devuelvo 0 porque devolver None hace que el linter piense que hay un error
+
 
 
 '''

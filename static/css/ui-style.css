@@ -95,6 +95,17 @@
     margin-top: 15px;
 }
 
+
+/*
+@font-face {font-family: "Cordia New"; src: url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.eot"); 
+    src: url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.eot?#iefix") format("embedded-opentype"), 
+    url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.woff2") format("woff2"), 
+    url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.woff") format("woff"), 
+    url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.ttf") format("truetype"), 
+    url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.svg#Cordia New") format("svg"); }
+
+*/
+
 .heading{
     font-size: 35px;
 }
