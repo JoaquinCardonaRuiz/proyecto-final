@@ -42,12 +42,28 @@ def authentication(email, password):
 
     return render_template('login.html')
 
+
+''' 
+    -------
+    EcoTienda
+    -------
+'''
+
+@app.route('/eco-tienda')
+def eco_tienda():
+    try:
+        articulos = NegocioArticulo.get_all()
+    except Exception as e:
+        return error(e, "eco_tienda")
+    return render_template('eco-tienda.html', articulos = articulos)
+
+
+
 ''' 
     -------
     Niveles
     -------
 '''
-
 
 @app.route('/gestion-niveles')
 def gestion_niveles():
@@ -58,11 +74,7 @@ def gestion_niveles():
         maxDescuento = NegocioNivel.get_max_descuento()
     except Exception as e:
         return error(e, "gestion_niveles")
-    return render_template('gestion-niveles.html', 
-                            niveles = niveles, 
-                            min_nivel = min_max_nivel[0],
-
-    max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
+    return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0],max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
 
 @app.route('/gestion-niveles/alta', methods = ['GET','POST'])
 def alta_nivel():

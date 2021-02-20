@@ -1,6 +1,8 @@
 from negocio.negocio import Negocio
 import custom_exceptions
 from data.data_articulo import DatosArticulo
+from data.data_valor import DatosValor
+from datetime import datetime
 
 class NegocioArticulo(Negocio):
     """Clase que representa la capa de negocio para la entidad Articulo. Hereda de Negocio.""" 
@@ -61,3 +63,44 @@ class NegocioArticulo(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.get_by_not_in_id_array()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obtieniendo tipos de articulo de la capa de Datos.")
+
+    @classmethod
+    def add(cls,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor):
+        """
+        Agrega un articulo a la BD
+        """
+        try:
+            costoTotal = float(costoInsumos)+float(costoProduccion)+float(otrosCostos)
+            margen=float(margen)/100
+            idArt = DatosArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal)
+            DatosValor.add(idArt,datetime.now().strftime('%Y-%m-%d %H:%M:%S'),valor)
+        except Exception as e:
+            raise(e)
+
+    @classmethod
+    def update(cls,idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor):
+        """
+        Actualiza un articulo en la BD
+        """
+        try:
+            costoTotal = float(costoInsumos)+float(costoProduccion)+float(otrosCostos)
+            margen=float(margen)/100
+            DatosArticulo.update(idArt, nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal)
+            valor_anterior = DatosValor.get_from_TAid(idArt)
+            if valor_anterior[2] != float(valor):
+                DatosValor.add(idArt,datetime.now().strftime('%Y-%m-%d %H:%M:%S'),valor)
+        except Exception as e:
+            raise(e)
+
+    
+    @classmethod
+    def delete(cls,id):
+        """
+        Elimina un artículo de la BD a partir de su id
+        """
+        try:
+            DatosArticulo.delete(id)
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.delete()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error en la capa de Negocio eliminando un artículo de la base de Datos")
