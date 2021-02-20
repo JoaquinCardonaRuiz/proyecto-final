@@ -27,23 +27,25 @@
         <div class="container">
             <div class="row">
                 {%for articulo in articulos%}
-                <div class="col-md-4">
-                    <figure class="card card-product" style="margin-left: -5%;">
+                <div class="col-md-3">
+                    <figure class="card card-product">
                         <div class="img-wrap">
-                            <img src="https://assets.stickpng.com/images/580b585b2edbce24c47b285a.png">
+                            <img src="{{articulo.imagen}}" onerror="if (this.src != '/static/img/default-img.png') this.src = '/static/img/default-img.png';">
                         </div>
                         <figcaption class="info-wrap">
-                                <h4 class="title">Another name of item</h4>
-                                <p class="desc">Some small description goes here</p>
+                                <h4 class="title" style="font-size:17px">{{articulo.nombre}}</h4>
                                 <div class="rating-wrap">
-                                    <div class="label-rating">132 reviews</div>
-                                    <div class="label-rating">154 orders </div>
+                                    <div class="label-rating" style="font-size:14px">132 reviews</div>
+                                    <div class="label-rating" style="font-size:14px">154 orders </div>
                                 </div> <!-- rating-wrap.// -->
                         </figcaption>
                         <div class="bottom-wrap">
-                            <a href="" class="btn btn-sm btn-primary float-right">Order Now</a>	
+                            <a href="" class="btn primary-btn-card float-right">
+                                <i class="fa fa-shopping-cart product-card-cart"></i>
+                                Añadir
+                            </a>	
                             <div class="price-wrap h5">
-                                <span class="price-new">$1280</span> <del class="price-old">$1980</del>
+                                <span class="price-new">${{articulo.valor}}</span> <del class="price-old">$1980</del>
                             </div> <!-- price-wrap.// -->
                         </div> <!-- bottom-wrap.// -->
                     </figure>

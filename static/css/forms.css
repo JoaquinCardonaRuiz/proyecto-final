@@ -382,10 +382,15 @@
   border-radius: 3px 3px 0 0;
   overflow: hidden;
   position: relative;
-  height: 220px;
+  height: 190px;
   text-align: center;
 }
-.card-product .img-wrap img {
+.card-product{
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+} 
+.img-wrap img {
   max-height: 100%;
   max-width: 100%;
   object-fit: cover;
@@ -414,4 +419,25 @@
   display: inline-block;
   height: 100%;
   vertical-align: middle;
+}
+
+.card-product{
+  margin-left: -5% !important;  
+  margin-right: 5% !important;
+  margin-top: 4% !important;
+  box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1) !important; 
+  border: none !important;
+}
+
+.product-card-cart{
+  color: white !important;
+}
+
+.price-wrap{
+  margin-top: 3%;
+}
+
+.primary-btn-card{
+  background-color: white;
+  border-color: 1px solid #95C22B !important;
 }
