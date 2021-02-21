@@ -332,7 +332,7 @@ function modifyEntidad(){
 }
 
 
-function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otrosCostos,color){
+function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otrosCostos,color,ids,cantidades){
     jQuery.noConflict();
     $(".lds-ring").hide();
     document.getElementById('nombreInsErrorMod').innerHTML="";
@@ -361,7 +361,33 @@ function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otro
     calcularCostoMod("");
     checkColorMod();
     permiteEdit();
-    dropdownOptionSelectMod(idOption, nameOption, color)
+    //como la funcion dropdownOptionSelect lo que hace es mostrar una carta si NO está en selectedOptions y
+    //ocultarla si SI está, entonces creo un arreglo que es el arreglo de materiales que tengo que mostrar, concatenado con
+    //selectedOptions, y mando todos a dropdownOptionSelect. Va a ocultar los que están mostrados, y mostrar los nuevos.
+    var arr = [...selectedOptionsMod,...ids];
+    for(var i = 0; i < arr.length; i++){
+        var cant = 0;
+        if(i<cantidades.length){
+            cant = cantidades[i];
+        }
+        dropdownOptionSelectMod(arr[i],cant);
+    }
+}
+
+function hideAllCards(){
+    selectedOptionsMod = [];
+    var checks = document.getElementsByClassName("fa fa-check dropdown-option-check");
+    var cards = document.getElementsByClassName("container modal-large-card-sm card-mod");
+    var cantidades = document.getElementsByClassName("cant-input-mod");
+    console.log(cards);
+    for(i = 0; i < checks.length; i++){
+        checks[i].hidden = true;
+        cards[i].hidden = true;
+        cantidades[i].value = 0;
+    }
+    //$("#" + String(idOption) + "-check-mod").hide();
+    //$("#" + String(idOption) + "-card-mod").hide();
+    //document.getElementById("cantidad-mod-"+idOption).value = 0;
 }
 
 
@@ -548,8 +574,6 @@ function baja_entidad(){
 
 
 function openModalMateriales(nombre, materiales,cantidades){
-    cantidades = cantidades.substring(1, cantidades.length-1).split(',');
-    console.log(cantidades);
     $.getJSON("/insumos/materiales/"+materiales,function (result){
         if(result.length > 0){
             console.log(result);
@@ -619,15 +643,15 @@ function dropdownOptionSelect(idOption, nameOption, color){
         if (index > -1) {
             selectedOptions.splice(index, 1);
         }
-        $("#" + String(nameOption) + "-check").hide();
-        $("#" + String(nameOption) + "-card").hide();
+        $("#" + String(idOption) + "-check").hide();
+        $("#" + String(idOption) + "-card").hide();
         document.getElementById("cantidad-"+idOption).value = 0;
     }
     else{
         selectedOptions.push(idOption);
-        $("#" + String(nameOption) + "-check").show();
-        setColor(nameOption,color);
-        $("#" + String(nameOption) + "-card").show();
+        $("#" + String(idOption) + "-check").show();
+        setColor(idOption,color);
+        $("#" + String(idOption) + "-card").show();
         document.getElementById("cantidad-"+idOption).value = 1;
     }
     labelShowHide();
@@ -648,8 +672,8 @@ function labelShowHide(){
 }
 
 //Setea el color de las tarjetas de materiales.
-function setColor(nombre,color){
-    $("#"+String(nombre)+"-img").css("background-color", String(color));
+function setColor(idOption,color){
+    $("#"+String(idOption)+"-img").css("background-color", String(color));
 }
 
 //Cierra el dropdown al clickear fuera de el y su
@@ -759,22 +783,22 @@ function closeMenuMod() {
     $(".margin-row").hide();
 };
 
-function dropdownOptionSelectMod(idOption, nameOption, color){
+function dropdownOptionSelectMod(idOption, cantidad){
+    console.log("#" + String(idOption) + "-card-mod");
     if (selectedOptionsMod.includes(idOption)){
         const index = selectedOptionsMod.indexOf(idOption);
         if (index > -1) {
             selectedOptionsMod.splice(index, 1);
         }
-        $("#" + String(nameOption) + "-check-mod").hide();
-        $("#" + String(nameOption) + "-card-mod").hide();
+        $("#" + String(idOption) + "-check-mod").hide();
+        $("#" + String(idOption) + "-card-mod").hide();
         document.getElementById("cantidad-mod-"+idOption).value = 0;
     }
     else{
         selectedOptionsMod.push(idOption);
-        $("#" + String(nameOption) + "-check-mod").show();
-        setColorMod(nameOption,color);
-        $("#" + String(nameOption) + "-card-mod").show();
-        document.getElementById("cantidad-mod-"+idOption).value = 1;
+        $("#" + String(idOption) + "-check-mod").show();
+        $("#" + String(idOption) + "-card-mod").show();
+        document.getElementById("cantidad-mod-"+idOption).value = cantidad;
     }
     labelShowHideMod();
     $("#materiales-mod").val("[" + selectedOptionsMod + "]");
@@ -791,11 +815,6 @@ function labelShowHideMod(){
         $(".indicator-label-2").show();
         $("#warning-label-mod").hide();
     }
-}
-
-//Setea el color de las tarjetas de materiales.
-function setColorMod(nombre,color){
-    $("#"+String(nombre)+"-img-mod").css("background-color", String(color));
 }
 
 //Cierra el dropdown al clickear fuera de el y su

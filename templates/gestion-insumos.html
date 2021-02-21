@@ -99,7 +99,7 @@
                     <td scope="row">{{ins.stock}}</td>
                     <td scope="row">{{ins.unidadMedida}}</td>
                     <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{ins.nombre}}','{{ids_materiales}}','{{cantidades}}');">Ver materiales</a></td>
-                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}','{{ins.color}}')"></i></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}','{{ins.color}}',{{ids_materiales}},{{cantidades}})"></i></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{ins.id}}','{{ins.nombre}}')"></i></td>
                 </tr>
                 {%endfor%}
@@ -286,7 +286,7 @@
                     </h4>
                     <div class="menu-option-box" id="menu-option-box-1">
                         {%for material in materiales%}
-                        <p class="menu-option-box-op" onclick="dropdownOptionSelect('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check" id="{{material.nombre + '-check'}}" style="display: none;"></i>{{material.nombre}}</p>
+                        <p class="menu-option-box-op" onclick="dropdownOptionSelect('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check" id="{{material.id|string + '-check'}}" style="display: none;"></i>{{material.nombre}}</p>
                         {%endfor%}
                     </div>       
                 </div>                 
@@ -295,10 +295,10 @@
                 <h7 class="indicator-label-2">Se requerirán:</h7>
                 <p id="warning-label-altaPD"><i class="fa fa-exclamation-triangle" id="warning-icon-altaPD"></i></p>
                 {% for material in materiales %}
-                <div class="container modal-large-card-sm card-altaPD" id="{{material.nombre + '-card'}}" style="display: none;">
+                <div class="container modal-large-card-sm card-altaPD" id="{{material.id|string + '-card'}}" style="display: none;">
                     <div class="row">
                         <div class="modal-card-col-sm">
-                            <div class="circle materiales-large-card-img" id="{{material.nombre + '-img'}}">{{material.nombre[0]}}</div>
+                            <div class="circle materiales-large-card-img" id="{{material.id|string + '-img'}}">{{material.nombre[0]}}</div>
                         </div>
                         <div class="modal-card-col-sm" >
                             <div class="row d-flex justify-content-center card-first-row-sm">
@@ -318,14 +318,14 @@
                         </div>
                         <div class="modal-card-col-sm">
                             <div class="row d-flex justify-content-center card-first-row-sm">
-                                <input hidden name="id-{{material.id}}" value="{{material.id}}">
+                                <input hidden name="id-{{material.id|string}}" value="{{material.id}}">
                                 <input hidden class="cost-input" value={{material.costoRecoleccion}}>
-                                <input class="cant-input" style="width: 60%;top: -10px;position: relative;border-bottom: none;background: transparent;left: 20px;box-shadow:none;" type="number" value=0 id="cantidad-{{material.id}}" name="cantidad-{{material.id}}" required min=1 max=999999999 onkeypress='return (event.charCode > 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_cantidad({{material.id}})' onkeyup='verificar_cantidad({{material.id}})'>
+                                <input class="cant-input" style="width: 60%;top: -10px;position: relative;border-bottom: none;background: transparent;left: 20px;box-shadow:none;" type="number" value=0 id="cantidad-{{material.id|string}}" name="cantidad-{{material.id|string}}" required min=1 max=999999999 onkeypress='return (event.charCode > 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_cantidad({{material.id}})' onkeyup='verificar_cantidad({{material.id}})'>
                             </div>
                             <div class="row d-flex justify-content-center card-second-row">
                                 <p class="text-box material-card-subtitle">Cantidad</p>
                             </div>
-                            <p id="error-{{material.id}}" class="modalErrorMessage"></p>
+                            <p id="error-{{material.id|string}}" class="modalErrorMessage"></p>
                         </div>
                     </div>
                 </div>
@@ -415,7 +415,7 @@
                     </h4>
                     <div class="menu-option-box" id="menu-option-box-2">
                         {%for material in materiales%}
-                        <p class="menu-option-box-op" onclick="dropdownOptionSelectMod('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check" id="{{material.nombre + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>
+                        <p class="menu-option-box-op" onclick="dropdownOptionSelectMod('{{material.id}}','{{material.color}}',1);"><i class="fa fa-check dropdown-option-check" id="{{material.id|string + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>
                         {%endfor%}
                     </div>       
                 </div>                 
@@ -424,10 +424,10 @@
                 <h7 class="indicator-label-2">Se requerirán:</h7>
                 <p id="warning-label-mod"><i class="fa fa-exclamation-triangle" id="warning-icon-mod"></i></p>
                 {% for material in materiales %}
-                <div class="container modal-large-card-sm card-mod" id="{{material.nombre + '-card-mod'}}" style="display: none;">
+                <div class="container modal-large-card-sm card-mod" id="{{material.id|string + '-card-mod'}}" style="display: none;">
                     <div class="row">
                         <div class="modal-card-col-sm">
-                            <div class="circle materiales-large-card-img" id="{{material.nombre + '-img-mod'}}">{{material.nombre[0]}}</div>
+                            <div class="circle materiales-large-card-img" id="{{material.id|string + '-img-mod'}}" style="background-color:{{material.color}}">{{material.nombre[0]}}</div>
                         </div>
                         <div class="modal-card-col-sm" >
                             <div class="row d-flex justify-content-center card-first-row-sm">
@@ -447,14 +447,14 @@
                         </div>
                         <div class="modal-card-col-sm">
                             <div class="row d-flex justify-content-center card-first-row-sm">
-                                <input hidden name="id-{{material.id}}" value="{{material.id}}">
+                                <input hidden name="id-{{material.id|string}}" value="{{material.id}}">
                                 <input hidden class="cost-input-mod" value={{material.costoRecoleccion}}>
-                                <input class="cant-input-mod" style="width: 60%;top: -10px;position: relative;border-bottom: none;background: transparent;left: 20px;box-shadow:none;" type="number" value=0 id="cantidad-mod-{{material.id}}" name="cantidad-{{material.id}}" required min=1 max=999999999 onkeypress='return (event.charCode > 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_cantidad({{material.id}})' onkeyup='verificar_cantidad({{material.id}})'>
+                                <input class="cant-input-mod" style="width: 60%;top: -10px;position: relative;border-bottom: none;background: transparent;left: 20px;box-shadow:none;" type="number" value=0 id="cantidad-mod-{{material.id}}" name="cantidad-{{material.id|string}}" required min=1 max=999999999 onkeypress='return (event.charCode > 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_cantidad({{material.id}})' onkeyup='verificar_cantidad({{material.id}})'>
                             </div>
                             <div class="row d-flex justify-content-center card-second-row">
                                 <p class="text-box material-card-subtitle">Cantidad</p>
                             </div>
-                            <p id="error-mod-{{material.id}}" class="modalErrorMessage"></p>
+                            <p id="error-mod-{{material.id|string}}" class="modalErrorMessage"></p>
                         </div>
                     </div>
                 </div>

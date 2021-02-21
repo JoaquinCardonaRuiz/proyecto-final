@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
 from negocio.capa_negocio import *
+import traceback
 app = Flask(__name__)
 
 #Session
@@ -168,7 +169,9 @@ def baja_entidad_destino(id):
 def error(err="", url_redirect="/main"):
     if err=="":
         err = "Ha habido un error inesperado. Por favor vuelva a intentarlo. \nSi el problema persiste, contacte a un administrador."
-    return render_template('error.html', err = err, url_redirect=url_redirect)
+    else:
+        ad = traceback.format_tb(err.__traceback__)
+    return render_template('error.html', err = err, aditional = ad,url_redirect=url_redirect)
 
 
 ''' 
