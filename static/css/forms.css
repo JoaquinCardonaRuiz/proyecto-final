@@ -382,18 +382,32 @@
   border-radius: 3px 3px 0 0;
   overflow: hidden;
   position: relative;
-  height: 190px;
+  height: 210px;
   text-align: center;
+
 }
 .card-product{
   max-height: 100%;
   max-width: 100%;
   object-fit: cover;
+  transition: width 0.2s, height 0.2s, transform 0.2s;
+  margin-left: -5% !important;  
+  margin-right: -5% !important;
+  margin-top: 4% !important;
+  box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1) !important; 
+  border: none !important;
 } 
+
+.card-product:hover{
+  transform: scale(1.01); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  cursor: pointer;
+}
+
 .img-wrap img {
   max-height: 100%;
   max-width: 100%;
   object-fit: cover;
+
 }
 .card-product .info-wrap {
   overflow: hidden;
@@ -419,25 +433,45 @@
   display: inline-block;
   height: 100%;
   vertical-align: middle;
-}
-
-.card-product{
-  margin-left: -5% !important;  
-  margin-right: 5% !important;
-  margin-top: 4% !important;
-  box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1) !important; 
-  border: none !important;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  border-bottom: 1px solid  rgb(231, 231, 231);
 }
 
 .product-card-cart{
-  color: white !important;
+  color: #95C22B !important;
 }
 
 .price-wrap{
-  margin-top: 3%;
+  text-align: center;
+  margin-top: 20px;
 }
 
-.primary-btn-card{
-  background-color: white;
-  border-color: 1px solid #95C22B !important;
+.bottom-wrap{
+  border-top: none !important;
+}
+
+.price-new{
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 23px;
+}
+
+.price-old{
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 18px;
+}
+
+.title-wrap{
+  text-align: center !important;
+}
+
+.title{
+  font-family: 'Work Sans', sans-serif;
+  font-size: 20px !important;
+}
+
+.desc{
+  color: #95C22B !important;
+  font-size: 17px;
+  margin-left: 8px;
 }

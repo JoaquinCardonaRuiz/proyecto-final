@@ -16,7 +16,7 @@ class DatosDeposito(Datos):
                     codigo, \
                     idMaterial, \
                     cant, \
-                    idPuntoDeposito, \
+                    idPunto, \
                     fechaDep, \
                     idEcoPuntos, \
                     fechaReg \

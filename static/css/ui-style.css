@@ -123,6 +123,14 @@
     height: fit-content;
 }
 
+#product-container{
+    width: 97%; 
+    margin-top: 2%; 
+    margin-left: 3%;
+    border-radius: 5px;;
+    height: fit-content;
+}
+
 .option-imgs {
     text-align: center;
     margin: 0;

@@ -29,15 +29,13 @@ class DatosUsuario(Datos):
             values = (email, password)
             cls.cursor.execute(sql,values)
             usuarios = cls.cursor.fetchall()
-            print(values)
-            print(usuarios)
             if len(usuarios) > 0:
                 usu = usuarios[0]
                 direc = DatosDireccion.get_one_id(usu[9],noClose=True)
                 depositos = DatosDeposito.get_by_user_id(usu[0],noClose=True)
                 da = [d for d in depositos if d.isActivo()]
                 dv = [d for d in depositos if not(d.isActivo())]
-                ped = None
+                ped = DatosPedido.get_by_user_id(usu[0])
                 usuario = Usuario(usu[0],usu[1],usu[8],usu[2],usu[3],usu[6],usu[7],direc,da,dv,ped,usu[4],usu[10])
                 return usuario
             else:

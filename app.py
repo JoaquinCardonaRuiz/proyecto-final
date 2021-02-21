@@ -38,7 +38,8 @@ def authentication(email, password):
         session["usuario"] = NegocioUsuario.login(email, password)
         return jsonify({"login-state":True})
     except Exception as e:
-        return jsonify({"login-state":False})
+        raise e
+        #return jsonify({"login-state":False})
 
     return render_template('login.html')
 
@@ -53,9 +54,10 @@ def authentication(email, password):
 def eco_tienda():
     try:
         articulos = NegocioArticulo.get_all()
+        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
     except Exception as e:
         return error(e, "eco_tienda")
-    return render_template('eco-tienda.html', articulos = articulos)
+    return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel)
 
 
 

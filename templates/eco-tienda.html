@@ -14,6 +14,9 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
 </head>
 
 {% extends 'layout.html' %}
@@ -23,30 +26,23 @@
         <h1 class="heading">EcoTienda</h1>
         <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Cree, elimine, modifique y configure los Puntos de Depósito de EcoAsistente.</span></h6>
     </div>
-    <div class="container" id="heading-container" style="margin-top: 5%;">
+    <div class="container" id="product-container" style="margin-top: 5%;">
         <div class="container">
             <div class="row">
                 {%for articulo in articulos%}
-                <div class="col-md-3">
+                <div class="col-md-3" style="min-width: 250px; transition: width 1s, height 1s, transform 1s;">
                     <figure class="card card-product">
                         <div class="img-wrap">
                             <img src="{{articulo.imagen}}" onerror="if (this.src != '/static/img/default-img.png') this.src = '/static/img/default-img.png';">
                         </div>
-                        <figcaption class="info-wrap">
-                                <h4 class="title" style="font-size:17px">{{articulo.nombre}}</h4>
-                                <div class="rating-wrap">
-                                    <div class="label-rating" style="font-size:14px">132 reviews</div>
-                                    <div class="label-rating" style="font-size:14px">154 orders </div>
-                                </div> <!-- rating-wrap.// -->
-                        </figcaption>
                         <div class="bottom-wrap">
-                            <a href="" class="btn primary-btn-card float-right">
-                                <i class="fa fa-shopping-cart product-card-cart"></i>
-                                Añadir
-                            </a>	
+                            <div class="title-wrap">
+                                <h4 class="title" style="font-size:17px;">{{articulo.nombre}}</h4>
+                            </div>	
                             <div class="price-wrap h5">
-                                <span class="price-new">${{articulo.valor}}</span> <del class="price-old">$1980</del>
-                            </div> <!-- price-wrap.// -->
+                                <span class="price-new">${{articulo.valor * (1-nivel.descuento/100)}}</span><br>
+                                <del class="price-old">{{articulo.valor}}</del><span class="price-old desc">{{nivel.descuento|string}}% OFF</span>
+                            </div>                            
                         </div> <!-- bottom-wrap.// -->
                     </figure>
                 </div> <!-- col // -->
