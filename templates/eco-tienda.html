@@ -30,7 +30,7 @@
         <div class="container">
             <div class="row">
                 {%for articulo in articulos%}
-                <div class="col-md-4" style="min-width: 250px; transition: width 1s, height 1s, transform 1s;">
+                <div class="col-md-4 card-column" style="min-width: 250px; transition: width 1s, height 1s, transform 1s;">
                     <figure class="card card-product">
                         <div class="img-wrap">
                             <img src="{{articulo.imagen}}" onerror="if (this.src != '/static/img/default-img.png') this.src = '/static/img/default-img.png';">
@@ -40,8 +40,8 @@
                                 <h4 class="title" style="font-size:17px;">{{articulo.nombre}}</h4>
                             </div>	
                             <div class="price-wrap h5">
-                                <span class="price-new">${{articulo.valor * (1-nivel.descuento/100)}}</span><br>
-                                <del class="price-old">{{articulo.valor}}</del><span class="price-old desc">{{nivel.descuento|string}}% OFF</span>
+                                <p class="price-new">${{articulo.valor * (1-nivel.descuento/100)}}</p>
+                                <p class="price-old"><del class="price-old">{{articulo.valor}}</del><span class="desc">{{nivel.descuento|string}}% OFF</span></p>
                             </div>                            
                         </div> <!-- bottom-wrap.// -->
                     </figure>

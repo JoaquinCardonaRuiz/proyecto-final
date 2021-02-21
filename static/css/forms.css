@@ -454,20 +454,23 @@
 .price-new{
   font-family: 'Montserrat', sans-serif !important;
   font-size: 23px;
+  margin-top: 2px !important;
 }
 
 .price-old{
   font-family: 'Montserrat', sans-serif !important;
   font-size: 18px;
+  margin-top: -7px;
 }
 
 .title-wrap{
   text-align: center !important;
+  margin-top: -10px;
 }
 
 .title{
   font-family: 'Work Sans', sans-serif;
-  font-size: 20px !important;
+  font-size: 22px !important;
 }
 
 .desc{
