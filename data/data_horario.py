@@ -8,7 +8,7 @@ class DatosHorario(Datos):
     @classmethod
     def get_horariosPD_id(cls, idPunto, noClose = False):
         """
-        Obtiene todos los Puntos de Depósito de la BD.
+        Obtiene todos los horarios de un Punto de Depósito de la BD.
         """
         cls.abrir_conexion()
         try:
@@ -30,6 +30,38 @@ class DatosHorario(Datos):
             
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.get_horariosPD_id()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los horarios en base a un ID desde la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_horariosPR_id(cls, idPunto, noClose = False):
+        """
+        Obtiene todos los horarios de un Punto de Retiro de la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("select * from horariosPR where idPunto = %s")
+            values = (idPunto,)
+            cls.cursor.execute(sql, values)
+            horarios = cls.cursor.fetchall()
+            horarios_ = []
+            for horario in horarios:
+                if horario[2] != None and horario[3] != None:
+                    horarios_.append(Horario(horario[0], str(horario[2]), str(horario[3]),horario[4]))
+                elif horario[2] == None and horario[3] == None:
+                    horarios_.append(Horario(horario[0], False, False, horario[4]))
+                elif horario[2] == None:
+                    horarios_.append(Horario(horario[0], False, str(horario[3]),horario[4]))
+                elif horario[3] == None:
+                    horarios_.append(Horario(horario[0], str(horario[2]), False,horario[4]))
+            return horarios_
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_horariosPR_id()",
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo los horarios en base a un ID desde la BD.")
         finally:
