@@ -75,9 +75,17 @@ def eco_tienda():
         return error(e, "eco_tienda")
     return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel)
 
-@app.route('/eco-tienda/product')
+
+@app.route('/eco-tienda/product/<id>')
 def product_page():
-    return render_template('product-page.html')
+    producto = NegocioArticulo.get_by_id(id)
+    try:
+        carrito = session["carrito"]
+    except:
+        carrito = []
+    recomendaciones = NegocioArticulo.get_recommendations(id,carrito)
+    return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones)
+
 
 ''' 
     -------
