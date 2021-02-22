@@ -405,3 +405,7 @@ input:focus ~ .highlight {
   margin-bottom: -20px;
   transition: width 0.4s, height 0.4s, transform 0.4s;
 }
+
+.costo-total-label{
+  color: black !important;
+}

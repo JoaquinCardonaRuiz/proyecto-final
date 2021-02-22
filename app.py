@@ -293,6 +293,8 @@ def get_materiales(ids):
     # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
     #TODO: CAMBIAR ESTA LINEA:
     ids = eval(ids)
+    if ids == -1:
+        return jsonify(False)
     try:
         materiales = NegocioMaterial.get_by_id_array(ids)
         materiales_dic =  [{"nombre":          m.nombre,

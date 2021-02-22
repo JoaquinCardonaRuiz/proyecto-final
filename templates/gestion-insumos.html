@@ -89,6 +89,16 @@
                     <!--{{ids_materiales.append(mat.idMaterial)}} -->
                     <!--{{cantidades.append(mat.cantidad)}} -->
                 {%endfor%}
+                {%set cantidades_totales = []%}
+                {%for mat in materiales%}
+                    <!--{{cantidades_totales.append(0)}} -->
+                    {%for mat_ins in ins.materiales%}
+                        {%if mat.id == mat_ins.idMaterial%}
+                            {%set temp = cantidades_totales.pop()%}
+                            <!--{{cantidades_totales.append(mat_ins.cantidad)}} -->
+                        {%endif%}
+                    {%endfor%}
+                {%endfor%}
                 <tr>
                     <th><div><i class="fas fa-circle" style="color:{{ins.color}}"></i></div></th>
                     <th scope="row">{{ins.nombre}}</th>
@@ -98,8 +108,8 @@
                     <td scope="row">{{ins.costoTotal}}</td>
                     <td scope="row">{{ins.stock}}</td>
                     <td scope="row">{{ins.unidadMedida}}</td>
-                    <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{ins.nombre}}','{{ids_materiales}}','{{cantidades}}');">Ver materiales</a></td>
-                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}','{{ins.color}}',{{ids_materiales}},{{cantidades}})"></i></td>
+                    <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{ins.nombre}}',{{ids_materiales}},{{cantidades}});">Ver materiales</a></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}','{{ins.color}}',{{ids_materiales}},{{cantidades}},{{cantidades_totales}})"></i></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{ins.id}}','{{ins.nombre}}')"></i></td>
                 </tr>
                 {%endfor%}
@@ -136,6 +146,11 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+        </div>
+        <div class="row margin-bottom-row" id="no-mats">
+            <p id="" class="advert-icon-no-mats"><i class="fa fa-exclamation-triangle advert-icon-no-mats"></i></p>
+            <p class="bottom-modal-text-baja">Este Punto de Depósito aún no acepta ningún material</p>
+            <p class="bottom-modal-text less-margin-top">Para añadir materiales aceptados, ingrese a la opción "Modificar Punto".</p>
         </div>
         <p class="bottom-modal-text" id="bottomBajaModalText">Este insumo no posee materiales en su receta de producción.</p>
         <div class="modal-footer">
@@ -370,10 +385,10 @@
             </li>
           </ul>
         </div>
-        <form action="{{url_for('edit_insumo')}}" method="POST" id="editInsumoForm" autocomplete="off" class="tab-content">
+        <form action="{{url_for('edit_insumo')}}" method="POST" id="editInsumoForm" autocomplete="off" class="tab-content modal-body">
 
         <!-- TAB 1 -->
-        <div class="tab-pane active modal-body" role="tabpanel" id="datos-basicos">
+        <div class="tab-pane active" role="tabpanel" id="datos-basicos">
             <div class="row" id="loadingRow">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
@@ -405,7 +420,7 @@
         </div>
 
         <!-- TAB 2 -->
-        <div class="tab-pane modal-body" role="tabpanel" id="materiales">
+        <div class="tab-pane" role="tabpanel" id="materiales">
             <div class="row" id="fieldsRow1Mod" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
                 <h7 class="indicator-label">Seleccione los materiales que se requerirán para producir el insumo:</h7>
                 <div class="dropdown-box" id="dropdown-mod">
@@ -415,7 +430,7 @@
                     </h4>
                     <div class="menu-option-box" id="menu-option-box-2">
                         {%for material in materiales%}
-                        <p class="menu-option-box-op" onclick="dropdownOptionSelectMod('{{material.id}}','{{material.color}}',1);"><i class="fa fa-check dropdown-option-check" id="{{material.id|string + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>
+                        <p class="menu-option-box-op" onclick="dropdownOptionSelectMod({{material.id}},'{{material.color}}',1);"><i class="fa fa-check dropdown-option-check" id="{{material.id|string + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>
                         {%endfor%}
                     </div>       
                 </div>                 
@@ -462,15 +477,16 @@
                 <input type="text" id="materiales-mod" name = "materiales-altaPD" hidden>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalTextModPD">Una vez finalizadas las modificaciones, presione "Guardar Cambios".</p>
-                <p class="bottom-modal-text" id="bottomMatText"></p>
+                <p class="bottom-modal-text" id="bottomAltaModalTextModPD">Una vez finalizadas las modificaciones, presione "Guardar Cambios".<br>
+                <span class="bottom-modal-text costo-total-label" id="bottomMatText"></span>
+                </p>
+                
             </div>
-            <div class="row margin-row-mod" style="display: none;"></div>
-
+            <div class="row margin-row-mod" style="height:20px !important;"></div>
         </div>
 
         <!-- TAB 3 -->
-        <div class="tab-pane modal-body" role="tabpanel" id="costos">
+        <div class="tab-pane" role="tabpanel" id="costos">
             <div class="row" id="row-to-hide-2-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">

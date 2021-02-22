@@ -18,6 +18,8 @@ var menuShown = false;
 var menuShownMod = false;
 var selectedOptions = [];
 var selectedOptionsMod = [];
+var cantidades_originales = [];
+var cantidades_mod = [];
 vars_or = [0,0,0,0,0];
 var mod_vars = [0,0,0,0,0];
 
@@ -122,7 +124,6 @@ function checkColorAlta(){
         document.getElementById("color-marker").style.color = c;
         colorCompleto = true;
     }
-    console.log(colorCompleto);
     permiteAlta2();
 }
 
@@ -332,7 +333,7 @@ function modifyEntidad(){
 }
 
 
-function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otrosCostos,color,ids,cantidades){
+function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otrosCostos,color,ids,cantidades,cantidades_totales){
     jQuery.noConflict();
     $(".lds-ring").hide();
     document.getElementById('nombreInsErrorMod').innerHTML="";
@@ -343,7 +344,7 @@ function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otro
     document.getElementById('colorErrorMod').innerHTML="";
     mod_vars = [0,0,0,0,0];
     vars_or = [String(nombre),String(unidadMedida),String(costoProduccion),String(otrosCostos),String(color)];
-    $('#idInputMod').val(String(id))
+    $('#idInputMod').val(String(id));
     $('#nombreInputMod').val(String(nombre));
     $('#cpInputMod').val(String(costoProduccion))
     $('#cmInputMod').val(String(costoMaterial));
@@ -358,13 +359,13 @@ function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otro
     colorCompletoMod = true;
     nombreCompletoMod = true;
     unidadCompletoMod = true;
-    calcularCostoMod("");
+    cantidades_originales = cantidades_totales;
+    cantidades_mod = cantidades_totales;
     checkColorMod();
-    permiteEdit();
     //como la funcion dropdownOptionSelect lo que hace es mostrar una carta si NO está en selectedOptions y
     //ocultarla si SI está, entonces creo un arreglo que es el arreglo de materiales que tengo que mostrar, concatenado con
     //selectedOptions, y mando todos a dropdownOptionSelect. Va a ocultar los que están mostrados, y mostrar los nuevos.
-    var arr = [...selectedOptionsMod,...ids];
+    var arr = [...ids,...selectedOptionsMod];
     for(var i = 0; i < arr.length; i++){
         var cant = 0;
         if(i<cantidades.length){
@@ -372,6 +373,8 @@ function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otro
         }
         dropdownOptionSelectMod(arr[i],cant);
     }
+    calcularCostoMod("");
+    permiteEdit();
 }
 
 function hideAllCards(){
@@ -379,7 +382,6 @@ function hideAllCards(){
     var checks = document.getElementsByClassName("fa fa-check dropdown-option-check");
     var cards = document.getElementsByClassName("container modal-large-card-sm card-mod");
     var cantidades = document.getElementsByClassName("cant-input-mod");
-    console.log(cards);
     for(i = 0; i < checks.length; i++){
         checks[i].hidden = true;
         cards[i].hidden = true;
@@ -434,6 +436,13 @@ function calcularCostoMod(input){
 
 function permiteEdit(){
     sum = mod_vars.reduce((a, b) => a + b, 0);
+    for(var i in cantidades_originales){
+        if(cantidades_originales[i] != cantidades_mod[i]){
+            sum += 1;
+        }
+    }
+    console.log(cantidades_mod);
+    console.log(sum);
     if(isNaN(sum)){
         document.getElementById("edit-btn").innerHTML = "Se han encontrado errores"
         document.getElementById("edit-btn").disabled = true;
@@ -574,35 +583,42 @@ function baja_entidad(){
 
 
 function openModalMateriales(nombre, materiales,cantidades){
+    if(materiales.length == 0){
+        materiales = [-1];
+    }
     $.getJSON("/insumos/materiales/"+materiales,function (result){
-        if(result.length > 0){
-            console.log(result);
-            card = $("#material-card").clone();
-            $("#materiales-modal-body").children("#material-card").remove();
-            // Borro contenido anterior
-            //document.getElementById("modalTableBody"). innerHTML="";
-            //document.getElementById("headerRow").innerHTML ="";
+            if(result){
+                $("#no-mats").hide();
+                card = $("#material-card").clone();
+                $("#materiales-modal-body").children("#material-card").remove();
+                // Borro contenido anterior
+                //document.getElementById("modalTableBody"). innerHTML="";
+                //document.getElementById("headerRow").innerHTML ="";
 
-            // Establezco título
-            document.getElementById("headingModalMat").innerHTML = "Materiales aceptados por " + nombre;
-            document.getElementById("open-loading-modal").click();
-            document.getElementById("open-modal-mat").click();
+                // Establezco título
+                document.getElementById("headingModalMat").innerHTML = "Materiales que componen a " + nombre;
+                document.getElementById("open-loading-modal").click();
+                document.getElementById("open-modal-mat").click();
 
-            row = document.getElementById("material-card");
-            for(i=0; i < result.length ; i++){
-                clone = card.clone();
-                clone.find("#nombre-material").text(result[i]["nombre"]);
-                clone.find("#unidad-medida").text(result[i]["unidadmedida"]);
-                clone.find("#material-img").css('background-color',result[i]["color"]);
-                clone.find("#material-img").text(result[i]["nombre"][0]);
-                clone.find("#cantidad").text(cantidades[i]);
-                clone.appendTo("#materiales-modal-body");
-        
+                row = document.getElementById("material-card");
+                for(i=0; i < result.length ; i++){
+                    clone = card.clone();
+                    clone.find("#nombre-material").text(result[i]["nombre"]);
+                    clone.find("#unidad-medida").text(result[i]["unidadmedida"]);
+                    clone.find("#material-img").css('background-color',result[i]["color"]);
+                    clone.find("#material-img").text(result[i]["nombre"][0]);
+                    clone.find("#cantidad").text(cantidades[i]);
+                    clone.show();
+                    clone.appendTo("#materiales-modal-body");
+            
+                }
             }
-        }else{
-            document.getElementById("open-loading-modal").click();
-            document.getElementById("open-mat-vacio").click();
-        }
+            else{
+                document.getElementById("headingModalMat").innerHTML = "Materiales que componen a " + nombre;
+                document.getElementById("open-loading-modal").click();
+                document.getElementById("open-modal-mat").click();
+                $("#no-mats").show();
+            }
     })
 }
 
@@ -727,17 +743,13 @@ function verificar_cantidades(){
             val = inputs[i].value;
             if(Number(val) == NaN || Number(val) <= 0){
                 document.getElementById("alta-btn").disabled = true;
-                console.log("desactivando-input2 en i = a " + String(i))
                 hayerror = true;
             }else{
-                console.log(val);
-                console.log(costos[i].value);
                 sum+=Number(val)*Number(costos[i].value);
             }
         }
     }
     if(!hayerror){
-        console.log(sum);
         document.getElementById("cmInput").value = String(sum);
         document.getElementById('bottomAltaModalText').innerHTML="Costo de Materiales: ARS $"+String(sum);
         document.getElementById("alta-btn").disabled = false;
@@ -784,7 +796,6 @@ function closeMenuMod() {
 };
 
 function dropdownOptionSelectMod(idOption, cantidad){
-    console.log("#" + String(idOption) + "-card-mod");
     if (selectedOptionsMod.includes(idOption)){
         const index = selectedOptionsMod.indexOf(idOption);
         if (index > -1) {
@@ -801,7 +812,6 @@ function dropdownOptionSelectMod(idOption, cantidad){
         document.getElementById("cantidad-mod-"+idOption).value = cantidad;
     }
     labelShowHideMod();
-    $("#materiales-mod").val("[" + selectedOptionsMod + "]");
     verificar_cantidades_mod();
 }
 
@@ -871,19 +881,16 @@ function verificar_cantidades_mod(){
             val = inputs[i].value;
             if(Number(val) == NaN || Number(val) <= 0){
                 document.getElementById("edit-btn").disabled = true;
-                //console.log("desactivando-input2 en i = a " + String(i))
                 hayerror = true;
             }else{
-                //console.log(val);
-                //console.log(costos[i].value);
                 sum+=Number(val)*Number(costos[i].value);
             }
         }
     }
     if(!hayerror){
-        //console.log(sum);
         document.getElementById("cmInputMod").value = String(sum);
         document.getElementById('bottomMatText').innerHTML="Costo de Materiales: ARS $"+String(sum);
         document.getElementById("edit-btn").disabled = false;
     }
+    permiteEdit();
 }
