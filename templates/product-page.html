@@ -17,6 +17,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    
+
+
 </head>
 
 {% extends 'layout.html' %}
@@ -54,49 +57,77 @@
             <div class="col-md-5">
         
                 <h5>Fantasy T-shirt</h5>
-                <p class="mb-2 text-muted text-uppercase small">Shirts</p>
-                <p><span class="mr-1"><strong>$12.99</strong></span></p>
-                <p class="pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit
-                error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio,
-                officia quis dolore quos sapiente tempore alias.</p>
+                <p class="mb-2 text-muted text-uppercase small">Precio</p>
+                <p><span class="mr-1"><strong>3000</strong></span></p>
+                <hr/>
+
                 <div class="table-responsive">
                 <table class="table table-sm table-borderless mb-0">
                     <tbody>
-                    <tr>
-                        <th class="pl-0 w-25" scope="row"><strong>Model</strong></th>
-                        <td>Shirt 5407X</td>
-                    </tr>
-                    <tr>
-                        <th class="pl-0 w-25" scope="row"><strong>Color</strong></th>
-                        <td>Black</td>
-                    </tr>
-                    <tr>
-                        <th class="pl-0 w-25" scope="row"><strong>Delivery</strong></th>
-                        <td>USA, Europe</td>
-                    </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Stock</strong></th>
+                            <td>Hay 3 en stock</td>
+                        </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Unidad</strong></th>
+                            <td>Se vende en metros</td>
+                        </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Descuento</strong></th>
+                            <td>5% de Descuento (Nivel 2)</td>
+                        </tr>
                     </tbody>
                 </table>
                 </div>
                 <hr>
+                <td class="pl-0 pb-0 w-25">Cantidad de EcoPuntos a utilizar</td>
+                    <div class="row" style="width: 100%;">
+                      <div class="col" style="width: 100%;">
+                        <div class="range" style="height: 2px !important; font-size: 12px; width: 100%;">
+                          <input type="range" id="slideInput" name="range" min="0" max="100" value="50" oninput="setPvalues(value);" style="border: none!important;">
+                          <div class="row">
+                            <div class="col">
+                              <p id="cantEP"></p>
+                            </div>
+                            <div class="col" style="text-align: right; width: 150%; margin-right:-10%;">
+                              <p id="cantMoney"></p>
+                            </div>
+                          </div>
+                          
+
+                        </div>
+                      </div>    
+                    </div>
+                <hr/>
+
                 <div class="table-responsive mb-2">
                     <table class="table table-sm table-borderless">
                       <tbody>
                         <tr>
-                          <td class="pl-0 pb-0 w-25">Quantity</td>
+                          <td class="pl-0 pb-0 w-25">Cantidad</td>
                         </tr>
                         <tr>
                           <td class="pl-0">
-                            <div class="def-number-input number-input safari_only mb-0">
-                              <input class="quantity" min="0" name="quantity" value="1" type="number">
+                            <div class="def-number-input number-input safari_only mb-0" style="display: flex;">
+                                <div class="group" style="width: 30%; margin-top: 2%;">
+                                    <input type="number" required id="nombrePDMod" onkeyup="validaNombrePD('mod');" name="nombrePDMod" autocomplete="off" style="width: 90%;"> 
+                                    <span class="highlight" style="width: 90%;"></span>
+                                    <span class="bar" style="width: 90%;"></span>
+                                </div>
+                                <p style="float: right; margin-top: 30px !important;">Unidad</p>
                             </div>
                           </td>
                         </tr>
                       </tbody>
                     </table>
                 </div>
-                <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
-                <button type="button" class="btn btn-light btn-md mr-1 mb-2"><i
-                    class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+                
+                <button type="button" class="btn primary-btn btn-md mr-1 mb-2" style="border: none !important;"><spanf>Buy now</span> </button>
+                <button type="button" class="btn secondary-btn btn-md mr-1 mb-2" style="border: none !important;">
+                    <i class="fas fa-shopping-cart pr-2"></i>
+                    <spa>Buy now</span> 
+                </button>
+                </button>
             </div>
             </div>
         
@@ -104,7 +135,7 @@
          <!--Section: Block Content-->
       <section>
 
-        <h3 class="text-center mt-4 pt-5">Recommended products</h3>
+        <h3 class="text-center mt-4 pt-5">Productos Recomendados</h3>
 
         <!-- Grid row -->
         <div class="row mt-5 mb-4">
@@ -238,7 +269,6 @@
 </div>
 
 </div>
-<script src="static/js/product-page.js"></script>
   <!-- SCRIPTS -->
   <!-- JQuery -->
   <script src="./Material Design Bootstrap_files/jquery-3.4.1.min.js.descarga"></script>
@@ -250,7 +280,6 @@
   <script type="text/javascript" src="./Material Design Bootstrap_files/mdb.min.js.descarga"></script>
   <!-- MDB Ecommerce JavaScript -->
   <script type="text/javascript" src="./Material Design Bootstrap_files/mdb.ecommerce.min.js.descarga"></script>
-  <script>
+  <script src="/static/js/product-page.js"></script>
 
-  </script>
 {% endblock %}

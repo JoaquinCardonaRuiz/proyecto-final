@@ -305,3 +305,7 @@ h2 		 {
     margin-right: auto;
     background-color: rgb(226, 192, 128);
 }
+
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
