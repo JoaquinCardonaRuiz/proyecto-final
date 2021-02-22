@@ -20,6 +20,7 @@ def start():
 
 @app.route('/main', methods = ['GET','POST'])
 def main():
+    if valida_session(): return redirect(url_for('login'))
     return render_template('main.html',usuario=session["usuario"])
 
 ''' 
@@ -30,7 +31,11 @@ def main():
 
 @app.route('/login', methods = ['GET','POST'])
 def login():
-    return render_template('login.html')
+    try: 
+        session["usuario"]
+        return redirect(url_for('main'))
+    except:
+        return render_template('login.html')
 
 @app.route('/login/auth/<email>/<password>', methods = ['GET','POST'])
 def authentication(email, password):
@@ -38,10 +43,20 @@ def authentication(email, password):
         session["usuario"] = NegocioUsuario.login(email, password)
         return jsonify({"login-state":True})
     except Exception as e:
-        raise e
-        #return jsonify({"login-state":False})
+        return jsonify({"login-state":False})
 
     return render_template('login.html')
+
+@app.route('/logout/<val>', methods = ['GET','POST'])
+def logout(val):
+    if valida_session(): return redirect(url_for('login'))
+    if val == "true":
+        del session["usuario"]
+        return redirect(url_for('login'))
+    return render_template('login.html')
+
+
+
 
 
 ''' 
@@ -53,13 +68,16 @@ def authentication(email, password):
 @app.route('/eco-tienda')
 def eco_tienda():
     try:
+        if valida_session(): return redirect(url_for('login'))
         articulos = NegocioArticulo.get_all()
         nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
     except Exception as e:
         return error(e, "eco_tienda")
     return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel)
 
-
+@app.route('/eco-tienda/product')
+def product_page():
+    return render_template('product-page.html')
 
 ''' 
     -------
@@ -70,6 +88,7 @@ def eco_tienda():
 @app.route('/gestion-niveles')
 def gestion_niveles():
     try:
+        if valida_session(): return redirect(url_for('login'))
         niveles = NegocioNivel.get_niveles()
         min_max_nivel = NegocioNivel.get_min_max_niveles()
         maxEP = NegocioNivel.get_max_ecoPuntos()
@@ -133,6 +152,7 @@ def mod_nivel_request(id):
 @app.route('/gestion-ed', methods = ['GET','POST'])
 def gestion_ed():
     try:
+        if valida_session(): return redirect(url_for('login'))
         entidades = NegocioEntidadDestino.get_all()
     except Exception as e:
         return error(e,"gestion_ed")
@@ -209,6 +229,7 @@ def baja_entidad_destino(id):
 
 @app.route('/error', methods = ['GET','POST'])
 def error(err="", url_redirect="/main"):
+    if valida_session(): return redirect(url_for('login'))
     if err=="":
         err = "Ha habido un error inesperado. Por favor vuelva a intentarlo. \nSi el problema persiste, contacte a un administrador."
     return render_template('error.html', err = err, url_redirect=url_redirect)
@@ -222,12 +243,14 @@ def error(err="", url_redirect="/main"):
 
 @app.route('/elegir-tipo-punto', methods = ['GET','POST'])
 def selection():
+    if valida_session(): return redirect(url_for('login'))
     return render_template('elegir-tipo-punto.html')
 
 
 @app.route('/gestion-puntos-deposito', methods = ['GET','POST'])
 def gestion_pd():
     try:
+        if valida_session(): return redirect(url_for('login'))
         materiales = NegocioMaterial.get_all()
         puntos_deposito = NegocioPuntoDeposito.get_all()
         dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
@@ -333,11 +356,14 @@ def baja_pd():
 @app.route('/articulos', methods = ['GET','POST'])
 def gestion_articulos():
     try:
+        if valida_session(): return redirect(url_for('login'))
         articulos = NegocioArticulo.get_all()
         return render_template('gestion-articulos.html',articulos=articulos)
     except Exception as e:
         return error(e,"articulos")
 
+def valida_session():
+    return "usuario" not in session.keys()
 
 if __name__ == '__main__':
     app.debug = True

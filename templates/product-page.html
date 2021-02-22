@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="heading-container">
+        <h1 class="heading">Detalles del Producto</h1>
+    </div>
+    <div class="container" id="heading-container">
+        <section class="mb-5">
+
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+            
+                    <div id="mdb-lightbox-ui"></div>
+            
+                    <div class="mdb-lightbox">
+            
+                    <div class="row product-gallery mx-1">
+            
+                        <div class="col-12 mb-0">
+                        <figure class="view overlay rounded z-depth-1 main-img">
+                            <a href="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
+                            data-size="710x823">
+                            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
+                                class="img-fluid z-depth-1">
+                            </a>
+                        </figure>
+                        </div>
+                    </div>
+        
+                </div>
+        
+            </div>
+            <div class="col-md-5">
+        
+                <h5>Fantasy T-shirt</h5>
+                <p class="mb-2 text-muted text-uppercase small">Shirts</p>
+                <p><span class="mr-1"><strong>$12.99</strong></span></p>
+                <p class="pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit
+                error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio,
+                officia quis dolore quos sapiente tempore alias.</p>
+                <div class="table-responsive">
+                <table class="table table-sm table-borderless mb-0">
+                    <tbody>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Model</strong></th>
+                        <td>Shirt 5407X</td>
+                    </tr>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Color</strong></th>
+                        <td>Black</td>
+                    </tr>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Delivery</strong></th>
+                        <td>USA, Europe</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+                <hr>
+                <div class="table-responsive mb-2">
+                    <table class="table table-sm table-borderless">
+                      <tbody>
+                        <tr>
+                          <td class="pl-0 pb-0 w-25">Quantity</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-0">
+                            <div class="def-number-input number-input safari_only mb-0">
+                              <input class="quantity" min="0" name="quantity" value="1" type="number">
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+                <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
+                <button type="button" class="btn btn-light btn-md mr-1 mb-2"><i
+                    class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+            </div>
+            </div>
+        
+        </section>
+         <!--Section: Block Content-->
+      <section>
+
+        <h3 class="text-center mt-4 pt-5">Recommended products</h3>
+
+        <!-- Grid row -->
+        <div class="row mt-5 mb-4">
+
+          <!-- Grid column -->
+          <div class="col-md-6 col-lg-3 mb-4">
+
+            <!-- Card -->
+            <div class="">
+
+              <div class="view zoom z-depth-2 rounded">
+                <img class="img-fluid w-100" src="./Material Design Bootstrap_files/img(83).jpg" alt="Sample">
+                <a href="https://mdbootstrap.com/previews/ecommerce-demo/examples/pages/organic/product.html#!">
+                  <div class="mask waves-effect waves-light"></div>
+                </a>
+              </div>
+
+              <div class="text-center pt-4">
+
+                <h5 class="mb-0">Organic raspberries</h5>
+                <h5>(500g)</h5>
+                <h6 class="mb-3">$ 8.99</h6>
+                <button type="button" class="btn btn-primary btn-sm mr-1 waves-effect waves-light"><i class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+                <button type="button" class="btn btn-light btn-sm waves-effect waves-light"><i class="fas fa-info-circle pr-2"></i>Details</button>
+
+              </div>
+
+            </div>
+            <!-- Card -->
+
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-6 col-lg-3 mb-4">
+
+            <!-- Card -->
+            <div class="">
+
+              <div class="view zoom z-depth-2 rounded">
+                <img class="img-fluid w-100" src="./Material Design Bootstrap_files/img(92).jpg" alt="Sample">
+                <a href="https://mdbootstrap.com/previews/ecommerce-demo/examples/pages/organic/product.html#!">
+                  <div class="mask waves-effect waves-light"></div>
+                </a>
+              </div>
+
+              <div class="text-center pt-4">
+
+                <h5 class="mb-0">Organic nectarines</h5>
+                <h5>(1kg)</h5>
+                <h6 class="mb-3">$ 9.99</h6>
+                <button type="button" class="btn btn-primary btn-sm mr-1 waves-effect waves-light"><i class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+                <button type="button" class="btn btn-light btn-sm waves-effect waves-light"><i class="fas fa-info-circle pr-2"></i>Details</button>
+
+              </div>
+
+            </div>
+            <!-- Card -->
+
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-6 col-lg-3 mb-4">
+
+            <!-- Card -->
+            <div class="">
+
+              <div class="view zoom z-depth-2 rounded">
+                <img class="img-fluid w-100" src="./Material Design Bootstrap_files/img(93).jpg" alt="Sample">
+                <a href="https://mdbootstrap.com/previews/ecommerce-demo/examples/pages/organic/product.html#!">
+                  <div class="mask waves-effect waves-light"></div>
+                </a>
+              </div>
+
+              <div class="text-center pt-4">
+
+                <h5 class="mb-0">Organic strawberries</h5>
+                <h5>(500g)</h5>
+                <h6 class="mb-3">$ 7.99</h6>
+                <button type="button" class="btn btn-primary btn-sm mr-1 waves-effect waves-light"><i class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+                <button type="button" class="btn btn-light btn-sm waves-effect waves-light"><i class="fas fa-info-circle pr-2"></i>Details</button>
+
+              </div>
+
+            </div>
+            <!-- Card -->
+
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-6 col-lg-3 mb-4">
+
+            <!-- Card -->
+            <div class="">
+
+              <div class="view zoom z-depth-2 rounded">
+                <img class="img-fluid w-100" src="./Material Design Bootstrap_files/img(39).jpg" alt="Sample">
+                <a href="https://mdbootstrap.com/previews/ecommerce-demo/examples/pages/organic/product.html#!">
+                  <div class="mask waves-effect waves-light"></div>
+                </a>
+              </div>
+
+              <div class="text-center pt-4">
+
+                <h5 class="mb-0">Organic pomegranate</h5>
+                <h5>(1kg)</h5>
+                <h6 class="mb-3">$ 11.99</h6>
+                <button type="button" class="btn btn-primary btn-sm mr-1 waves-effect waves-light"><i class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+                <button type="button" class="btn btn-light btn-sm waves-effect waves-light"><i class="fas fa-info-circle pr-2"></i>Details</button>
+
+              </div>
+
+            </div>
+            <!-- Card -->
+
+          </div>
+          <!-- Grid column -->
+
+        </div>
+        <!-- Grid row -->
+
+      </section>
+      <!--Section: Block Content-->
+
+    </div>
+
+  </main>
+  <!-- Main layout -->
+</div>
+
+</div>
+<script src="static/js/product-page.js"></script>
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script src="./Material Design Bootstrap_files/jquery-3.4.1.min.js.descarga"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="./Material Design Bootstrap_files/popper.min.js.descarga"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="./Material Design Bootstrap_files/bootstrap.js.descarga"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="./Material Design Bootstrap_files/mdb.min.js.descarga"></script>
+  <!-- MDB Ecommerce JavaScript -->
+  <script type="text/javascript" src="./Material Design Bootstrap_files/mdb.ecommerce.min.js.descarga"></script>
+  <script>
+
+  </script>
+{% endblock %}
