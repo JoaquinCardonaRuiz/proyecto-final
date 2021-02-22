@@ -79,12 +79,31 @@ def eco_tienda():
 @app.route('/eco-tienda/product/<id>')
 def product_page():
     producto = NegocioArticulo.get_by_id(id)
-    try:
+
+    if "carrito" in session.keys():
         carrito = session["carrito"]
-    except:
+    else:
         carrito = []
+        session["carrito"] = carrito
+
     recomendaciones = NegocioArticulo.get_recommendations(id,carrito)
     return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones)
+
+
+@app.route('eco-tienda/product/<id>/agregar')
+def agregar_carrito():
+    if "carrito" in session.keys():
+        session["carrito"].append(id)
+    else:
+        carrito = [id]
+        session["carrito"] = carrito
+    return redirect(url_for("carrito"))
+
+@app.route('eco-tienda/carrito')
+def carrito():
+    if "carrito" not in session.keys():
+        session["carrito"] = []
+    return render_template('carrito.html',carrito=carrito)
 
 
 ''' 
