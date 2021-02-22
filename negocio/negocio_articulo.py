@@ -104,3 +104,9 @@ class NegocioArticulo(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.delete()",
                                                    msj=str(e),
                                                    msj_adicional="Error en la capa de Negocio eliminando un artículo de la base de Datos")
+
+
+    @classmethod
+    def get_recommendations(cls,id_articulo,carrito):
+        filtro = id_articulo + [i.idTipoArticulo for i in carrito]
+        return DatosArticulo.get_by_not_in_id_array_user(filtro,4)

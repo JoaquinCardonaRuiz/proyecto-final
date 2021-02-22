@@ -1,6 +1,6 @@
 from flask import json
 from flask.json import JSONEncoder
-from classes import Horario
+from classes import Horario, CantArticulo
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
 from flask_session import Session 
@@ -75,9 +75,46 @@ def eco_tienda():
         return error(e, "eco_tienda")
     return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel)
 
-@app.route('/eco-tienda/product')
-def product_page():
-    return render_template('product-page.html')
+
+@app.route('/eco-tienda/product/<id>')
+def product_page(id):
+    producto = NegocioArticulo.get_by_id(id)
+
+    if "carrito" in session.keys():
+        carrito = session["carrito"]
+    else:
+        carrito = []
+        session["carrito"] = carrito
+
+    recomendaciones = NegocioArticulo.get_recommendations(id,carrito)
+    return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones)
+
+
+@app.route('eco-tienda/product/<id>/<cantidad>/agregar')
+def agregar_carrito(id,cantidad):
+    if "carrito" not in session.keys():
+        session["carrito"] = []
+    session["carrito"].append(CantArticulo(cantidad,id))
+    return redirect(url_for("carrito"))
+
+@app.route('eco-tienda/carrito')
+def carrito():
+    if "carrito" not in session.keys():
+        session["carrito"] = []
+    return render_template('carrito.html',carrito=carrito)
+
+
+@app.route('eco-tienda/checkout')
+def checkout():
+    if "carrito" not in session.keys():
+        session["carrito"] = []
+    return render_template('checkout.html',carrito=carrito)
+
+@app.route('eco-tienda/checkout/confirmar/<idPR>')
+def confirmar_checkout(idPR):
+    if "carrito" in session.keys() and session["carrito"] != []:
+        NegocioPedido.add(carrito=session["carrito"], usuario = session["usuario"],puntoRetiro=idPR)
+
 
 ''' 
     -------

@@ -31,3 +31,33 @@ class DatosCantArticulo(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_PR_stock(cls, id, noClose=False):
+        """
+        Obtiene los articulos del stock de un punto de retiro la BD
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT \
+                    cantidad, \
+                    idTipoArticulo \
+                    FROM stockPuntosRetiro \
+                    WHERE idPunto = {};").format(id)
+            cls.cursor.execute(sql)
+            cantarts_ = cls.cursor.fetchall()
+            cantarts = []
+            for a in cantarts_:
+                #TODO: agregar precio venta
+                cantart =  CantArticulo(a[0],a[1])
+                cantarts.append(cantart)
+            return cantarts
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_cant_articulo.get_PR_Stock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los articulos de un Punto Retiro desde la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()

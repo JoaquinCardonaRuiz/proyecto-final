@@ -126,6 +126,58 @@ class DatosArticulo(Datos):
         finally:
             cls.cerrar_conexion()
 
+    
+
+
+    @classmethod
+    def get_by_not_in_id_array_user(cls,ids,limit=0):
+        """
+        Obtiene todos los articulos de la BD que no están en la lista de ids.
+        """
+        
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT idTipoArticulo, \
+                           nombre, \
+                           cProduccion, \
+                           cInsumos, \
+                           cTotal, \
+                           margenGanancia, \
+                           unidadMedida, \
+                           cObtencionAlt, \
+                           stock, \
+                           otrosCostos, \
+                           img, \
+                           vUsuario \
+                           FROM tiposArticulo WHERE estado!=\"eliminado\" AND vUsuario=1")
+            if ids != []:
+                sql += " AND idTipoArticulo!={}"
+                for _ in ids[1:]:
+                    sql += " AND idTipoArticulo!={}"
+            if limit > 0:
+                sql += " LIMIT {}".format(limit)
+            sql += " ORDER BY RAND();"
+            sql = sql.format(*ids)
+            cls.cursor.execute(sql)
+            articulos_ = cls.cursor.fetchall()
+            articulos = []
+            for a in articulos_:
+                insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
+                valor = DatosValor.get_from_TAid(a[0],noClose=True)[2]
+                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
+                articulos.append(articulo_)
+            return articulos
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_by_not_in_id_array()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo articulos desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+
     @classmethod
     def add(cls,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal):
         """
