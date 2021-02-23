@@ -15,4 +15,8 @@ function cambia_ancho_tarjetas(){
     }
 }
 
+function redirect(url){
+    window.location.href = url;
+}
+
 cambia_ancho_tarjetas();

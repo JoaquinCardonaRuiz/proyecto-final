@@ -63,7 +63,7 @@ class DatosArticulo(Datos):
                            otrosCostos, \
                            img, \
                            vUsuario \
-                           FROM tiposArticulo WHERE idTipoArticulo = {} WHERE estado!=\"eliminado\";").format(id)
+                           FROM tiposArticulo WHERE idTipoArticulo = {} and estado!=\"eliminado\";").format(id)
             cls.cursor.execute(sql)
             a = cls.cursor.fetchone()
             if a == None:
@@ -154,10 +154,12 @@ class DatosArticulo(Datos):
                 sql += " AND idTipoArticulo!={}"
                 for _ in ids[1:]:
                     sql += " AND idTipoArticulo!={}"
+            sql += " ORDER BY RAND()"
             if limit > 0:
                 sql += " LIMIT {}".format(limit)
-            sql += " ORDER BY RAND();"
+            sql += ";"
             sql = sql.format(*ids)
+            print(sql)
             cls.cursor.execute(sql)
             articulos_ = cls.cursor.fetchall()
             articulos = []

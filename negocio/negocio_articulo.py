@@ -108,5 +108,5 @@ class NegocioArticulo(Negocio):
 
     @classmethod
     def get_recommendations(cls,id_articulo,carrito):
-        filtro = id_articulo + [i.idTipoArticulo for i in carrito]
+        filtro = [id_articulo] + [i.idTipoArticulo for i in carrito]
         return DatosArticulo.get_by_not_in_id_array_user(filtro,4)

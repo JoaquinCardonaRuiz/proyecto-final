@@ -25,20 +25,20 @@
 {% extends 'layout.html' %}
 {% block body %}
 <div class="page-content" style="text-align: left;" id="content">
-    <div class="container" id="heading-container">
+    <div class="container product-info" id="heading-container">
         <h1 class="heading">Detalles del Producto</h1>
     </div>
-    <div class="container" id="heading-container">
+    <div class="container product-info" id="table-container">
         <section class="mb-5">
 
-            <div class="row">
+            <div class="row" style="padding-top: 4% !important;">
                 <div class="col-md-6 mb-4 mb-md-0">
             
                     <div id="mdb-lightbox-ui"></div>
             
                     <div class="mdb-lightbox">
             
-                    <div class="row product-gallery mx-1">
+                    <div class="row product-gallery mx-1"> 
             
                         <div class="col-12 mb-0">
                         <figure class="view overlay rounded z-depth-1 main-img">
@@ -56,51 +56,49 @@
             </div>
             <div class="col-md-5">
         
-                <h5>Fantasy T-shirt</h5>
-                <p class="mb-2 text-muted text-uppercase small">Precio</p>
-                <p><span class="mr-1"><strong>3000</strong></span></p>
-                <hr/>
+                <h5 class="product-page-prod-title">{{producto.nombre}}</h5>
+                <div class="row">
+                  <div class="col">
+                    <p class="mb-1 text-muted text-uppercase small">Precio ARS</p>
+                    <p class="price-product-page"><span class="mr">${{producto.valor}}</span></p>
+                  </div>
+        
+                  <div class="col" style="margin-left: -45%;">
+                    <p class="mb-1 text-muted text-uppercase small">Precio EcoPuntos</p>
+                    <p class="price-product-page"><img src="/static/img/econpuntos-logo.png" class="product-page-img"><span class="mr">3000</span></p>
+                  </div>
+                  
+                </div>
+                <hr style="margin-top: -0.5%;">
 
                 <div class="table-responsive">
                 <table class="table table-sm table-borderless mb-0">
                     <tbody>
                         <tr>
                             <th class="pl-0 w-25" scope="row"><strong>Stock</strong></th>
-                            <td>Hay 3 en stock</td>
-                        </tr>
+                            {%if producto.stock > 1%}
+                              {%if producto.unidadMedida|last != 'a' and producto.unidadMedida|last != 'e' and producto.unidadMedida|last !='i' and producto.unidadMedida|last !='o' and producto.unidadMedida|last !='u' and producto.unidadMedida|length > 2 %}
+                                <td>Hay <span id="product-stock">{{producto.stock}}</span> {{producto.unidadMedida|lower + 'es'}} en stock</td>
+                              {%else%}
+                                <td>Hay <span id="product-stock">{{producto.stock}}</span> {{producto.unidadMedida|lower + 's'}} en stock</td>
+                              {%endif%}
+                            {%else%}
+                              <td>Hay <span id="product-stock">{{producto.stock}}</span> {{producto.unidadMedida|lower}} en stock</td>
+                            {%endif%}
+                          </tr>
                         <tr>
                             <th class="pl-0 w-25" scope="row"><strong>Unidad</strong></th>
-                            <td>Se vende en metros</td>
+                            <td>Se vende por {{producto.unidadMedida}}</td>
                         </tr>
                         <tr>
                             <th class="pl-0 w-25" scope="row"><strong>Descuento</strong></th>
-                            <td>5% de Descuento (Nivel 2)</td>
+                            <td>{{nivel.descuento}}% con sus EcoPuntos (Nivel {{nivel.nombre}})</td>
                         </tr>
                     </tbody>
                 </table>
                 </div>
                 <hr>
-                <td class="pl-0 pb-0 w-25">Cantidad de EcoPuntos a utilizar</td>
-                    <div class="row" style="width: 100%;">
-                      <div class="col" style="width: 100%;">
-                        <div class="range" style="height: 2px !important; font-size: 12px; width: 100%;">
-                          <input type="range" id="slideInput" name="range" min="0" max="100" value="50" oninput="setPvalues(value);" style="border: none!important;">
-                          <div class="row">
-                            <div class="col">
-                              <p id="cantEP"></p>
-                            </div>
-                            <div class="col" style="text-align: right; width: 150%; margin-right:-10%;">
-                              <p id="cantMoney"></p>
-                            </div>
-                          </div>
-                          
-
-                        </div>
-                      </div>    
-                    </div>
-                <hr/>
-
-                <div class="table-responsive mb-2">
+                <div class="table-responsive" style="margin-bottom: -15%;">
                     <table class="table table-sm table-borderless">
                       <tbody>
                         <tr>
@@ -110,22 +108,27 @@
                           <td class="pl-0">
                             <div class="def-number-input number-input safari_only mb-0" style="display: flex;">
                                 <div class="group" style="width: 30%; margin-top: 2%;">
-                                    <input type="number" required id="nombrePDMod" onkeyup="validaNombrePD('mod');" name="nombrePDMod" autocomplete="off" style="width: 90%;"> 
+                                    <input type="number" required id="cantProd" min="0" value="1" max="{{producto.stock}}" autocomplete="off" style="width: 90%; background-color: transparent; text-align: center; height: 35px;" oninput="setTotalVal(3000, value, {{nivel.descuento}}); setMinCantVal(3000,value, {{nivel.descuento}});"> 
                                     <span class="highlight" style="width: 90%;"></span>
                                     <span class="bar" style="width: 90%;"></span>
                                 </div>
-                                <p style="float: right; margin-top: 30px !important;">Unidad</p>
+                                <p style="float: right; margin-top: 18px !important;">{{producto.unidadMedida}}</p>
                             </div>
                           </td>
                         </tr>
                       </tbody>
                     </table>
                 </div>
-                
-                <button type="button" class="btn primary-btn btn-md mr-1 mb-2" style="border: none !important;"><spanf>Buy now</span> </button>
+                <hr>
+                <div class="table-responsive" style="margin-bottom: 20px;">
+                    <p class="product-page-total-price-label" style="float: left;">Total</p>
+                    <p class="product-page-total-price"><img src="/static/img/econpuntos-logo.png" class="product-page-img-total"><span class="mr" id="total-value">{{3000 * (1 - nivel.descuento/100)}}</span></p>
+
+                </div>
+                <button type="button" class="btn primary-btn btn-md mr-1 mb-2" style="border: none !important;"><spanf>Comprar ahora</span> </button>
                 <button type="button" class="btn secondary-btn btn-md mr-1 mb-2" style="border: none !important;">
                     <i class="fas fa-shopping-cart pr-2"></i>
-                    <spa>Buy now</span> 
+                    <spa>Añadir al carrito</span> 
                 </button>
                 </button>
             </div>
@@ -263,7 +266,6 @@
       <!--Section: Block Content-->
 
     </div>
-
   </main>
   <!-- Main layout -->
 </div>

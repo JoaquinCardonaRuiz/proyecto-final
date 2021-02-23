@@ -76,8 +76,9 @@ def eco_tienda():
     return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel)
 
 
-@app.route('/eco-tienda/product/<id>')
+@app.route('/eco-tienda/producto/<id>')
 def product_page(id):
+    id = int(id)
     producto = NegocioArticulo.get_by_id(id)
 
     if "carrito" in session.keys():
@@ -85,32 +86,32 @@ def product_page(id):
     else:
         carrito = []
         session["carrito"] = carrito
-
+    nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
     recomendaciones = NegocioArticulo.get_recommendations(id,carrito)
-    return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones)
+    return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones, nivel = nivel, usuario = session["usuario"])
 
 
-@app.route('eco-tienda/product/<id>/<cantidad>/agregar')
+@app.route('/eco-tienda/producto/<id>/<cantidad>/agregar')
 def agregar_carrito(id,cantidad):
     if "carrito" not in session.keys():
         session["carrito"] = []
     session["carrito"].append(CantArticulo(cantidad,id))
     return redirect(url_for("carrito"))
 
-@app.route('eco-tienda/carrito')
+@app.route('/eco-tienda/carrito')
 def carrito():
     if "carrito" not in session.keys():
         session["carrito"] = []
     return render_template('carrito.html',carrito=carrito)
 
 
-@app.route('eco-tienda/checkout')
+@app.route('/eco-tienda/checkout')
 def checkout():
     if "carrito" not in session.keys():
         session["carrito"] = []
     return render_template('checkout.html',carrito=carrito)
 
-@app.route('eco-tienda/checkout/confirmar/<idPR>')
+@app.route('/eco-tienda/checkout/confirmar/<idPR>')
 def confirmar_checkout(idPR):
     if "carrito" in session.keys() and session["carrito"] != []:
         NegocioPedido.add(carrito=session["carrito"], usuario = session["usuario"],puntoRetiro=idPR)

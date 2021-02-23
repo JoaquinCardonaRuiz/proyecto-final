@@ -31,7 +31,7 @@
             <div class="row">
                 {%for articulo in articulos%}
                 <div class="col-md-4 card-column" style="min-width: 250px; transition: width 1s, height 1s, transform 1s;">
-                    <figure class="card card-product">
+                    <figure class="card card-product" onclick="redirect('/eco-tienda/producto/{{articulo.id}}');">
                         <div class="img-wrap">
                             <img src="{{articulo.imagen}}" onerror="if (this.src != '/static/img/default-img.png') this.src = '/static/img/default-img.png';">
                         </div>
