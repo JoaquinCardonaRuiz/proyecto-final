@@ -114,7 +114,8 @@ def checkout():
 @app.route('/eco-tienda/checkout/confirmar/<idPR>')
 def confirmar_checkout(idPR):
     if "carrito" in session.keys() and session["carrito"] != []:
-        NegocioPedido.add(carrito=session["carrito"], usuario = session["usuario"],puntoRetiro=idPR)
+        pass
+        #NegocioPedido.add(carrito=session["carrito"], usuario = session["usuario"],puntoRetiro=idPR)
 
 
 ''' 

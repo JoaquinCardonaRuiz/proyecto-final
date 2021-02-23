@@ -32,3 +32,22 @@ class DatosPuntoRetiro(Datos):
                                                     msj_adicional="Error obtieniendo un punto de retiro desde la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_demora_promedio(cls):
+        """
+        Obtiene el promedio de espera de los punto retiros.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = "SELECT CEIL(AVG(demoraFija)) FROM puntosRetiro WHERE estado != \"eliminado\";"
+            cls.cursor.execute(sql)
+            demora = cls.cursor.fetchone()
+            return demora[0]
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_punto_retiro.get_demora_promedio()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo la demora promedio de la BD.")
+        finally:
+            cls.cerrar_conexion()
