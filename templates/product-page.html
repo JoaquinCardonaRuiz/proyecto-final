@@ -65,7 +65,7 @@
         
                   <div class="col" style="margin-left: -45%;">
                     <p class="mb-1 text-muted text-uppercase small">Precio EcoPuntos</p>
-                    <p class="price-product-page"><img src="/static/img/econpuntos-logo.png" class="product-page-img"><span class="mr">3000</span></p>
+                    <p class="price-product-page"><span class="mr">3000</span><img src="/static/img/econpuntos-logo.png" class="product-page-img"></p>
                   </div>
                   
                 </div>
@@ -76,16 +76,8 @@
                     <tbody>
                         <tr>
                             <th class="pl-0 w-25" scope="row"><strong>Stock</strong></th>
-                            {%if producto.stock > 1%}
-                              {%if producto.unidadMedida|last != 'a' and producto.unidadMedida|last != 'e' and producto.unidadMedida|last !='i' and producto.unidadMedida|last !='o' and producto.unidadMedida|last !='u' and producto.unidadMedida|length > 2 %}
-                                <td>Hay <span id="product-stock">{{producto.stock}}</span> {{producto.unidadMedida|lower + 'es'}} en stock</td>
-                              {%else%}
-                                <td>Hay <span id="product-stock">{{producto.stock}}</span> {{producto.unidadMedida|lower + 's'}} en stock</td>
-                              {%endif%}
-                            {%else%}
-                              <td>Hay <span id="product-stock">{{producto.stock}}</span> {{producto.unidadMedida|lower}} en stock</td>
-                            {%endif%}
-                          </tr>
+                            <td>Hay <span id="product-stock">{{producto.stock}}</span> {{producto.unidadMedida|lower}} en stock</td>
+                        </tr>
                         <tr>
                             <th class="pl-0 w-25" scope="row"><strong>Unidad</strong></th>
                             <td>Se vende por {{producto.unidadMedida}}</td>
@@ -122,9 +114,14 @@
                 <hr>
                 <div class="table-responsive" style="margin-bottom: 20px;">
                     <p class="product-page-total-price-label" style="float: left;">Total</p>
-                    <p class="product-page-total-price"><img src="/static/img/econpuntos-logo.png" class="product-page-img-total"><span class="mr" id="total-value">{{3000 * (1 - nivel.descuento/100)}}</span></p>
-
+                    <p class="product-page-total-price">
+                      <del class="price-old-product-page">3000</del>
+                      <span class="mr" id="total-value">{{3000 * (1 - nivel.descuento/100)}}</span>
+                      <img src="/static/img/econpuntos-logo.png" class="product-page-img-total">
+                      <span>Te estás ahorrando {{3000 - (3000 * (1 - nivel.descuento/100))}} EcoPuntos</span>
+                    </p>
                 </div>
+
                 <button type="button" class="btn primary-btn btn-md mr-1 mb-2" style="border: none !important;"><spanf>Comprar ahora</span> </button>
                 <button type="button" class="btn secondary-btn btn-md mr-1 mb-2" style="border: none !important;">
                     <i class="fas fa-shopping-cart pr-2"></i>
