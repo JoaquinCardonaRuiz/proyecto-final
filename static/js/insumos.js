@@ -359,8 +359,8 @@ function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otro
     colorCompletoMod = true;
     nombreCompletoMod = true;
     unidadCompletoMod = true;
-    cantidades_originales = cantidades_totales;
-    cantidades_mod = cantidades_totales;
+    cantidades_originales = [...cantidades_totales];
+    cantidades_mod = [...cantidades_totales];
     checkColorMod();
     //como la funcion dropdownOptionSelect lo que hace es mostrar una carta si NO está en selectedOptions y
     //ocultarla si SI está, entonces creo un arreglo que es el arreglo de materiales que tengo que mostrar, concatenado con
@@ -442,7 +442,9 @@ function permiteEdit(){
         }
     }
     console.log(cantidades_mod);
+    console.log(cantidades_originales);
     console.log(sum);
+    console.log("---")
     if(isNaN(sum)){
         document.getElementById("edit-btn").innerHTML = "Se han encontrado errores"
         document.getElementById("edit-btn").disabled = true;
@@ -877,6 +879,7 @@ function verificar_cantidades_mod(){
     var hayerror = false;
     var val;
     for(i=0;i<inputs.length;i++){
+        cantidades_mod[i] = Number(inputs[i].value);
         if(cards[i].style.display != "none"){
             val = inputs[i].value;
             if(Number(val) == NaN || Number(val) <= 0){
