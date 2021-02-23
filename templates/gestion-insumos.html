@@ -430,7 +430,7 @@
                     </h4>
                     <div class="menu-option-box" id="menu-option-box-2">
                         {%for material in materiales%}
-                        <p class="menu-option-box-op" onclick="dropdownOptionSelectMod({{material.id}},'{{material.color}}',1);"><i class="fa fa-check dropdown-option-check" id="{{material.id|string + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>
+                        <p class="menu-option-box-op" onclick="dropdownOptionSelectMod({{material.id}},1);"><i class="fa fa-check dropdown-option-check" id="{{material.id|string + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>
                         {%endfor%}
                     </div>       
                 </div>                 
@@ -464,7 +464,7 @@
                             <div class="row d-flex justify-content-center card-first-row-sm">
                                 <input hidden name="id-{{material.id|string}}" value="{{material.id}}">
                                 <input hidden class="cost-input-mod" value={{material.costoRecoleccion}}>
-                                <input class="cant-input-mod" style="width: 60%;top: -10px;position: relative;border-bottom: none;background: transparent;left: 20px;box-shadow:none;" type="number" value=0 id="cantidad-mod-{{material.id}}" name="cantidad-{{material.id|string}}" required min=1 max=999999999 onkeypress='return (event.charCode > 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_cantidad_mod({{material.id}})' onkeyup='verificar_cantidad_mod({{material.id}})'>
+                                <input class="cant-input-mod" style="width: 60%;top: -10px;position: relative;border-bottom: none;background: transparent;left: 20px;box-shadow:none;" type="number" value=0 id="cantidad-mod-{{material.id}}" name="cantidad-{{material.id|string}}" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_cantidad_mod({{material.id}})' onkeyup='verificar_cantidad_mod({{material.id}})'>
                             </div>
                             <div class="row d-flex justify-content-center card-second-row">
                                 <p class="text-box material-card-subtitle">Cantidad</p>

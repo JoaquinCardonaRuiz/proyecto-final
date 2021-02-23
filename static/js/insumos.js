@@ -371,25 +371,11 @@ function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otro
         if(i<cantidades.length){
             cant = cantidades[i];
         }
+        console.log(cant);
         dropdownOptionSelectMod(arr[i],cant);
     }
     calcularCostoMod("");
     permiteEdit();
-}
-
-function hideAllCards(){
-    selectedOptionsMod = [];
-    var checks = document.getElementsByClassName("fa fa-check dropdown-option-check");
-    var cards = document.getElementsByClassName("container modal-large-card-sm card-mod");
-    var cantidades = document.getElementsByClassName("cant-input-mod");
-    for(i = 0; i < checks.length; i++){
-        checks[i].hidden = true;
-        cards[i].hidden = true;
-        cantidades[i].value = 0;
-    }
-    //$("#" + String(idOption) + "-check-mod").hide();
-    //$("#" + String(idOption) + "-card-mod").hide();
-    //document.getElementById("cantidad-mod-"+idOption).value = 0;
 }
 
 
@@ -441,10 +427,6 @@ function permiteEdit(){
             sum += 1;
         }
     }
-    console.log(cantidades_mod);
-    console.log(cantidades_originales);
-    console.log(sum);
-    console.log("---")
     if(isNaN(sum)){
         document.getElementById("edit-btn").innerHTML = "Se han encontrado errores"
         document.getElementById("edit-btn").disabled = true;
@@ -797,7 +779,7 @@ function closeMenuMod() {
     $(".margin-row").hide();
 };
 
-function dropdownOptionSelectMod(idOption, cantidad){
+function  dropdownOptionSelectMod(idOption, cantidad){
     if (selectedOptionsMod.includes(idOption)){
         const index = selectedOptionsMod.indexOf(idOption);
         if (index > -1) {

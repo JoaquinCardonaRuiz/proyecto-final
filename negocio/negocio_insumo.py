@@ -40,6 +40,8 @@ class NegocioInsumo(Negocio):
         Actualiza un insumo en la BD
         """
         try:
+            for cant in cants:
+                pass
             costoTotal = float(costoMateriales)+float(costoProduccion)+float(otrosCostos)
             DatosInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color)
         except Exception as e:

@@ -264,12 +264,11 @@ def edit_insumo():
         for key in request.form.keys():
             if "id-" in key:
                 id = request.form[key]
-                cant = request.form["cantidad-"+id]
-                cants.append([id,cant])
+                cant = float(request.form["cantidad-"+id])
+                cants.append({"idMat":id,"cantidad":cant})
 
         try:
-            print(cants)
-            #NegocioInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants)
+            NegocioInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants)
         except Exception as e:
             return error(e,"insumos")
         return redirect(url_for('gestion_insumos'))
