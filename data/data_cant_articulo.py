@@ -61,3 +61,23 @@ class DatosCantArticulo(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+
+    @classmethod
+    def addArticuloPedido(cls,idArt,idPed,cant):
+        """
+        Registra una cantidad de un articulo de un pedido en la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("INSERT INTO mat_ins (idTipoArticulo, idPedido, cantidad) \
+                    VALUES ({},{},{});".format(idArt,idPed,cant))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_cant_articulo.addArticuloPedido()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error dando de alta un articulo de un pedido en la BD.")
+        finally:
+            cls.cerrar_conexion()
