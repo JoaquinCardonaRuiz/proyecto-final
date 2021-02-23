@@ -1,4 +1,5 @@
 import custom_exceptions
+from classes import CantArticulo
 import datetime
 
 class Utils():
@@ -150,3 +151,13 @@ class Utils():
                                                    msj=str(e),
                                                    msj_adicional="Error convirtiendo booleanos entre front-end y back-end.")
     
+
+    @classmethod
+    def carrito_to_list(cls, carrito):
+        """
+        Convierte el carrito, que es un dic, a un arreglo de CantArticulos
+        """
+        nuevo_carrito = []
+        for art in carrito.keys():
+            nuevo_carrito.append(CantArticulo(carrito[art],art))
+        return nuevo_carrito
