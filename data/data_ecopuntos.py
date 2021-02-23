@@ -17,7 +17,7 @@ class DatosEcoPuntos(Datos):
             for v in valores:
                 if v[1] > max_date[1]:
                     max_date = v
-            return max_date
+            return max_date[2]
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_valor_EP()",
                                                     msj=str(e),

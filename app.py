@@ -88,15 +88,21 @@ def product_page(id):
         session["carrito"] = carrito
     nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
     recomendaciones = NegocioArticulo.get_recommendations(id,carrito)
-    return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones, nivel = nivel, usuario = session["usuario"])
+    demora_prom = NegocioPuntoRetiro.get_demora_promedio()
+    valor_ep = NegocioEcoPuntos.get_valor_EP()
+    return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones, nivel = nivel, usuario = session["usuario"], valor_ep = valor_ep, demora_prom  = demora_prom)
 
 
-@app.route('/eco-tienda/producto/<id>/<cantidad>/agregar')
-def agregar_carrito(id,cantidad):
-    if "carrito" not in session.keys():
-        session["carrito"] = []
-    session["carrito"].append(CantArticulo(cantidad,id))
-    return redirect(url_for("carrito"))
+@app.route('/eco-tienda/producto/agregar', methods = ['GET','POST'])
+def agregar_carrito():
+    if request.method == "POST":
+        cantidad = request.form['cantProd']
+        id = request.form['idProd']
+        if "carrito" not in session.keys():
+            session["carrito"] = []
+        session["carrito"].append(CantArticulo(cantidad,id))
+        print(session["carrito"][0].idTipoArticulo, session["carrito"][0].cantidad)
+        return redirect(url_for("main"))
 
 @app.route('/eco-tienda/carrito')
 def carrito():
