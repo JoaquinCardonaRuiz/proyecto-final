@@ -537,7 +537,7 @@ function openBajaModal(idInsumo,nombreInsumo){
     $('#bottomBajaModalText').hide();
     $('#primary-btn-alert').prop('disabled', false);
     $('#secondary-btn-baja').prop('disabled', false);
-    document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea eliminar el insumo " + nombreInsumo + "? Una vez eliminado, este no se podrá recuperar.";
+    document.getElementById("baja-question").innerHTML = "¿Está seguro que desea eliminar el insumo " + nombreInsumo + "? Una vez eliminado, este no se podrá recuperar.";
 
     //Manejo de carteles
     jQuery.noConflict();
@@ -551,6 +551,7 @@ function baja_entidad(){
 
     //Manejo de elementos para la carga
     $(".b-modal-text-baja").hide();
+    $("#fieldsRowBaja").hide();
     $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
     $(".lds-ring").show().fadeIn(500);
     $('#bottomBajaModalText').show();

@@ -468,3 +468,15 @@ display: none;
 
 .mapouter{position:relative;text-align:right;height:354px;width:600px;}
 .gmap_canvas {overflow:hidden;background:none!important;height:354px;width:600px;}
+
+.delete-exlamation-mark{
+  width: 75px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1%;
+}
+
+.less-margin-top{
+  margin-top: -1%;
+}

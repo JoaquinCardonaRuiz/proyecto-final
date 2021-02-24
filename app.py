@@ -266,7 +266,7 @@ def edit_insumo():
             if "id-" in key:
                 id = request.form[key]
                 cant = float(request.form["cantidad-"+id])
-                cants.append(CantMaterial(cant,id))
+                cants.append(CantMaterial(cant,int(id)))
 
         try:
             NegocioInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants)

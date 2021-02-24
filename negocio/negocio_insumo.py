@@ -51,18 +51,23 @@ class NegocioInsumo(Negocio):
         Actualiza un insumo en la BD
         """
         try:
-            materiales = cls.get_by_id(idIns).materiales
+            materiales = cls.get_by_id(int(idIns)).materiales
+            print("Materiales originales:", str([m.idMaterial for m in materiales]))
+            print("Materiales nuevos:", str([m.idMaterial for m in mats]))
             for m in mats:
                 if m.idMaterial in [i.idMaterial for i in materiales]:
                     if m.cantidad == 0:
                         # delete
                         DatosCantMaterial.deleteComponente(m.idMaterial,idIns)
+                        print("Delete mat: " + str(m.idMaterial))
                     elif m.cantidad != [i.cantidad for i in materiales if i.idMaterial == m.idMaterial ][0]:
                             # update
                             DatosCantMaterial.updateComponente(m.idMaterial,idIns,m.cantidad)
+                            print("Update mat: " + str(m.idMaterial))
                 elif m.cantidad > 0:
                         # add
                         DatosCantMaterial.addComponente(m.idMaterial,idIns,m.cantidad)
+                        print("Add mat: " + str(m.idMaterial))
 
 
 

@@ -152,7 +152,7 @@
             <p class="bottom-modal-text-baja">Este Punto de Depósito aún no acepta ningún material</p>
             <p class="bottom-modal-text less-margin-top">Para añadir materiales aceptados, ingrese a la opción "Modificar Punto".</p>
         </div>
-        <p class="bottom-modal-text" id="bottomBajaModalText">Este insumo no posee materiales en su receta de producción.</p>
+        <p class="bottom-modal-text" id="bottomVerModalText">Este insumo no posee materiales en su receta de producción.</p>
         <div class="modal-footer">
           <button type="button" class="btn primary-btn" data-dismiss="modal" id="secondary-btn-baja">Listo</button>
         </div>
@@ -562,6 +562,11 @@
         <div class="modal-body-baja" >
             <div class="row" id="loadingRow">
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row margin-bottom-row" id="fieldsRowBaja">
+                <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark">
+                <p class="bottom-modal-text-baja" id="baja-question">¿Está seguro que desea eliminar el Insumo? </p>
+                <p class="bottom-modal-text less-margin-top"> Una vez eliminado, el Insumo no se podrá recuperar.</p>
             </div>
             <p class="b-modal-text-baja" id="baja-custom-text">
             </p>
