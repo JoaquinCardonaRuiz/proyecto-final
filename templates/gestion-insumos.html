@@ -227,7 +227,7 @@
           <div class="row" id="loadingRow">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
-            <div class="row" id="row-to-hide-1">
+            <div class="row" id="row-to-hide-1" style="margin-top:5%">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
                         <input hidden>
@@ -293,11 +293,11 @@
                 </div>
             </div>
             <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
-                <h7 class="indicator-label">Seleccione los materiales que se requerirán para producir el insumo:</h7>
+                <h6 class="indicator-label">Seleccione los materiales que se requerirán para producir el insumo:</h6>
                 <div class="dropdown-box" id="dropdown-altaPD">
                     <h4 id="heading-option" onclick="dropdownManager();">
                         Seleccionar Materiales 
-                        <img src="/static/img/chevron.svg" class="chevron"></img>
+                        <img src="/static/img/chevron.svg" class="chevron">
                     </h4>
                     <div class="menu-option-box" id="menu-option-box-1">
                         {%for material in materiales%}
@@ -307,8 +307,8 @@
                 </div>                 
             </div>
             <div class="row" id="cards-row-materiales">
-                <h7 class="indicator-label-2">Se requerirán:</h7>
-                <p id="warning-label-altaPD"><i class="fa fa-exclamation-triangle" id="warning-icon-altaPD"></i></p>
+                <h6 class="indicator-label-2" id="se-req-msj">Se requerirán:</h6>
+                <p class="warning-label-altaPD" id="warning-label-altaPD"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
                 {% for material in materiales %}
                 <div class="container modal-large-card-sm card-altaPD" id="{{material.id|string + '-card'}}" style="display: none;">
                     <div class="row">
@@ -415,7 +415,7 @@
                 </div>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalText">Complete los datos y presione "Actualizar Insumo"</p>
+                <p class="bottom-modal-text" id="bottomAltaModalText1">Complete los datos y presione "Actualizar Insumo"</p>
             </div>
         </div>
 

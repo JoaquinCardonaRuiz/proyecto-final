@@ -50,6 +50,7 @@ function cargar_pagina(n){
         $("#cards-row-materiales").show().fadeIn(500);
         document.getElementById('bottomAltaModalText').innerHTML=" ";
         $('#alta-btn').show();
+        document.getElementById("alta-btn").disabled = true;
         $('#secondary-btn').hide();
         $('#bottomAltaModalText').show();
         $('#anterior-btn').show();
@@ -621,10 +622,10 @@ function openMenu() {
     $("#menu-option-box-1").fadeIn();
     $(".dropdown-box").css("border","1px solid #95C22B");
     $('#cards-row-materiales').css({"transform":"translateY(200px)"});
-    $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(200px)"});
+    $("#bottomAltaModalText").css({"transform":"translateY(200px)"});
+    $("#bottomAltaModalText").css({"margin-bottom":"25px"});
     $(".margin-row").show();
     $(".margin-row").css({"transform":"translateY(200px)"});
-    $("#bottomAltaModalTextAltaPD").css({"margin-bottom":"25px"});
 };
 
 
@@ -632,8 +633,8 @@ function closeMenu() {
     $("#menu-option-box-1").hide();
     $(".dropdown-box").css("border","1px solid rgb(184, 184, 184)");
     $('#cards-row-materiales').css({"transform":"translateY(0px)"});
-    $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(0px)"});
-    $("#bottomAltaModalTextAltaPD").css({"margin-bottom":""});
+    $("#bottomAltaModalText").css({"transform":"translateY(0px)"});
+    $("#bottomAltaModalText").css({"margin-bottom":""});
     $(".margin-row").css({"transform":"translateY(0px)"});
     $(".margin-row").hide();
 };
@@ -721,6 +722,7 @@ function verificar_cantidades(){
     var costos = document.getElementsByClassName("cost-input");
     var cards = document.getElementsByClassName("card-altaPD");
     var sum = 0;
+    var sum_cantidades = 0;
     var hayerror = false;
     var val;
     for(i=0;i<inputs.length;i++){
@@ -731,6 +733,7 @@ function verificar_cantidades(){
                 hayerror = true;
             }else{
                 sum+=Number(val)*Number(costos[i].value);
+                sum_cantidades += Number(val);
             }
         }
     }
@@ -738,6 +741,15 @@ function verificar_cantidades(){
         document.getElementById("cmInput").value = String(sum);
         document.getElementById('bottomAltaModalText').innerHTML="Costo de Materiales: ARS $"+String(sum);
         document.getElementById("alta-btn").disabled = false;
+        if(sum_cantidades <= 0){
+            $("#warning-label-altaPD").show()
+            document.getElementById("se-req-msj").hidden = true;
+            document.getElementById('bottomAltaModalText').hidden = true;
+        }else{
+            $("#warning-label-altaPD").hide()
+            document.getElementById("se-req-msj").hidden = false;
+            document.getElementById('bottomAltaModalText').hidden = false;
+        }
     }
 }
 

@@ -409,3 +409,20 @@ input:focus ~ .highlight {
 .costo-total-label{
   color: black !important;
 }
+
+.warning-label-altaPD{
+  text-align: center;
+  width: 100%;
+  margin-top:-3%;
+  display: none;
+  margin-left: -2%;
+}
+
+.warning-icon-altaPD{
+  font-size: 20px;
+}
+
+#bottomAltaModalText{
+  color: #888;
+  transition: width 0.4s, height 0.4s, transform 0.4s;
+}
