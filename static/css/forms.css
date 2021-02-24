@@ -670,3 +670,34 @@
 .product-card{
 
 }
+
+.carrito-price-img{
+  width: 26px;
+  padding-left: 3px;
+  padding-top: -6px;
+  margin-top: -3%;
+  margin-right: 5px;
+}
+
+.carrito-price{
+  font-family: 'Montserrat', sans-serif !important;
+  margin-top: 0.2%;
+}
+
+.carrito-content{
+  width: 95%;
+  margin-left: 2.5%;
+}
+
+.card-link-secondary{
+  color: #6c757d !important;
+  animation-duration: 4s;
+}
+
+.card-link-secondary:hover{
+  color: #3d3f41 !important;
+}
+
+.info-label-carrito{
+  color: #6c757d !important;
+}

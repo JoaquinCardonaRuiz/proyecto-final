@@ -3,6 +3,7 @@ from flask.json import JSONEncoder
 from classes import Horario, CantArticulo
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
+import traceback
 from flask_session import Session 
 from utils import Utils
 
@@ -113,17 +114,18 @@ def agregar_carrito():
             else:
                 session["carrito"][str(id)] += cantidad
 
-            return redirect(url_for("main"))
+            return redirect(url_for("carrito"))
     except Exception as e:
         return error(e, "eco-tienda")
 
 @app.route('/eco-tienda/carrito')
 def carrito():
     try:
-        articulos = NegocioArticulo.get_by_id_array(session["carrito"].keys())
         if "carrito" not in session.keys():
             session["carrito"] = {}
-        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos)
+        articulos = NegocioArticulo.get_by_id_array(session["carrito"].keys())
+        valor_ep = NegocioEcoPuntos.get_valor_EP()
+        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, valor_ep = valor_ep)
     except Exception as e:
         return error(e, "eco-tienda")
 
@@ -297,10 +299,11 @@ def baja_entidad_destino(id):
 
 @app.route('/error', methods = ['GET','POST'])
 def error(err="", url_redirect="/main"):
-    if valida_session(): return redirect(url_for('login'))
     if err=="":
         err = "Ha habido un error inesperado. Por favor vuelva a intentarlo. \nSi el problema persiste, contacte a un administrador."
-    return render_template('error.html', err = err, url_redirect=url_redirect)
+    else:
+        ad = traceback.format_tb(err.__traceback__)
+    return render_template('error.html', err = err, aditional = ad,url_redirect=url_redirect)
 
 
 ''' 
