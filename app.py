@@ -309,6 +309,20 @@ def gestion_articulos():
         return error(e,"articulos")
 
 
+
+'''
+    -----------------
+    Gestion de Pedidos
+    -----------------
+'''
+
+@app.route('/elegir-PR')
+def elegirPR():
+    try:
+        puntosRetiro = NegocioPuntoRetiro.g
+
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
