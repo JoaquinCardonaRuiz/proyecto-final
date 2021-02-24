@@ -292,7 +292,8 @@ def get_materiales(ids):
     # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
     # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
     #TODO: CAMBIAR ESTA LINEA:
-    ids = eval(ids)
+    ids = eval("["+ids+"]")
+    print(ids)
     if ids == -1:
         return jsonify(False)
     try:
