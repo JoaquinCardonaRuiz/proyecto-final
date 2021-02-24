@@ -58,9 +58,6 @@ def logout(val):
     return render_template('login.html')
 
 
-
-
-
 ''' 
     -------
     EcoTienda
@@ -144,7 +141,8 @@ def carrito():
             session["carrito"] = {}
         articulos = NegocioArticulo.get_by_id_array(session["carrito"].keys())
         valor_ep = NegocioEcoPuntos.get_valor_EP()
-        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, valor_ep = valor_ep)
+        demora_prom = NegocioPuntoRetiro.get_demora_promedio()
+        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, valor_ep = valor_ep, demora_prom = demora_prom)
     except Exception as e:
         return error(e, "eco-tienda")
 

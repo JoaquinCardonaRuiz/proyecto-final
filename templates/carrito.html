@@ -70,10 +70,10 @@
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                <a type="button" class="card-link-secondary small text-uppercase mr-3" onmouseover="changeColors();" onmouseleave="returnColors();">
-                                    <i class="fas fa-trash-alt mr-1" id="trash-item-carrito"></i>Eliminar del carrito </a>
-                                <a type="button" class="card-link-secondary small text-uppercase" onmouseover="changeColorsInfo();" onmouseleave="returnColorsInfo();">
-                                    <i class="fas fa-info-circle mr-1" id="info-item-carrito"></i>Ver detalles </a>
+                                <a type="button" class="card-link-secondary small text-uppercase mr-3" onmouseover="changeColors({{articulo.id}});" onmouseleave="returnColors({{articulo.id}});" onclick="removeFromCart({{articulo.id}});">
+                                    <i class="fas fa-trash-alt mr-1" id="trash-item-carrito-{{articulo.id}}"></i>Eliminar del carrito </a>
+                                <a type="button" class="card-link-secondary small text-uppercase" onmouseover="changeColorsInfo({{articulo.id}});" onmouseleave="returnColorsInfo({{articulo.id}});">
+                                    <i class="fas fa-info-circle mr-1" id="info-item-carrito-{{articulo.id}}"></i>Ver detalles </a>
                                 </div>
                                 <p class="mb-0 carrito-price"><span><strong id="{{articulo.id}}-articulo">{{articulo.valor * valor_ep}}</strong></span><img src="/static/img/econpuntos-logo.png" class="carrito-price-img"></p class="mb-0">
                                 <script>
@@ -95,9 +95,12 @@
                 <div class="mb-3">
                 <div class="pt-4">
         
-                    <h5 class="mb-4">Expected shipping delivery</h5>
-        
-                    <p class="mb-0"> Thu., 12.03. - Mon., 16.03.</p>
+                    <h5 class="mb-4">Demora estimada</h5>
+                    {%if demora_prom > 1%}
+                    <p class="mb-0">Tu pedido estará listo en aproximadamente {{demora_prom}} días hábiles.</p>
+                    {%else%}
+                    <p class="mb-0">Tu pedido estará listo en aproximadamente {{demora_prom}} día hábil.</p>
+                    {%endif%}
                 </div>
                 </div>
                 <!-- Card -->
@@ -106,20 +109,25 @@
                 <div class="mb-3">
                 <div class="pt-4">
         
-                    <h5 class="mb-4">We accept</h5>
+                    <h5 class="mb-4">Aceptamos</h5>
         
-                    <img class="mr-2" width="45px"
-                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                    alt="Visa">
-                    <img class="mr-2" width="45px"
-                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
-                    alt="American Express">
-                    <img class="mr-2" width="45px"
-                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
-                    alt="Mastercard">
-                    <img class="mr-2" width="45px"
-                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
-                    alt="PayPal acceptance mark">
+                    <div class="row ml-1">
+                        <img class="mr-2" width="45px"
+                        src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                        alt="Visa">
+                        <img class="mr-2" width="45px"
+                        src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                        alt="American Express">
+                        <img class="mr-2" width="45px"
+                        src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                        alt="Mastercard">
+                        <div class="row ml-2 mr-2">
+                            <span style="font-size: 12px; padding-top: 11px; top: 8%;" class="text-muted">En sociedad con</span> 
+                        </div>
+                        <img class="" height="23px" src="/static/img/mercado-pago.png" alt="Mercadopago">
+
+                    </div>
+                    
                 </div>
                 </div>
                 <!-- Card -->
@@ -180,6 +188,10 @@
             <!-- Grid row -->
         
         </section>
+        <form action="{{url_for('eliminar_carrito')}}" method="POST" id="remove_from_cart">
+            <input type="text" hidden name="idEliminacion" id="idEliminacion">
+        </form>
+        
         <!--Section: Block Content-->
     </div>
 </div>
