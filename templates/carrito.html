@@ -1,1 +1,199 @@
-<h1> Carrito </h1>
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+
+
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="table-container">
+        <!--Section: Block Content-->
+        <section class="carrito-content">
+
+            <!--Grid row-->
+            <div class="row">
+        
+            <!--Grid column-->
+            <div class="col-lg-8">
+        
+                <!-- Card -->
+                <div class="mb-3" style="width: 97.5%; margin-right: 2.5%;">
+                <div class="pt-4 wish-list">
+                    
+                    <h5 class="mb-4">Carrito (<span>{{carrito|length}}</span> productos)</h5>
+                    
+                    {%for articulo in articulos%}
+                    <div class="row mb-4">
+                    <div class="col-md-5 col-lg-3 col-xl-3">
+                        <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                        <img class="img-fluid w-100"
+                            src="{{articulo.imagen}}" alt="Sample">
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-lg-9 col-xl-9">
+                        <div>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5>{{articulo.nombre}}</h5>
+                                    <p class="mb-3 mt-3 text-muted text-uppercase small"><span id="{{articulo.id}}-stock">{{articulo.stock}}</span> {{articulo.unidadMedida}} en stock</p>
+                                    <script>
+                                        $("#" +'{{articulo.id}}' + "-stock").text(Math.round(parseFloat($("#" + '{{articulo.id}}' + "-stock").text())));
+                                    </script>
+                                    <p class="mb-3 text-muted text-uppercase small">Color: blue</p>
+                                </div>
+                                <div>
+                                    <div>
+                                        <input class="quantity" min="0" name="quantity" value="1" type="number" style="width: 100%; margin-right: -120px; text-align: right;">
+                                    </div>
+                                    <small id="passwordHelpBlock" class="form-text text-muted text-center">
+                                        {{articulo.unidadMedida}}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                <a type="button" class="card-link-secondary small text-uppercase mr-3" onmouseover="changeColors();" onmouseleave="returnColors();">
+                                    <i class="fas fa-trash-alt mr-1" id="trash-item-carrito"></i>Eliminar del carrito </a>
+                                <a type="button" class="card-link-secondary small text-uppercase" onmouseover="changeColorsInfo();" onmouseleave="returnColorsInfo();">
+                                    <i class="fas fa-info-circle mr-1" id="info-item-carrito"></i>Ver detalles </a>
+                                </div>
+                                <p class="mb-0 carrito-price"><span><strong id="{{articulo.id}}-articulo">{{articulo.valor * valor_ep}}</strong></span><img src="/static/img/econpuntos-logo.png" class="carrito-price-img"></p class="mb-0">
+                                <script>
+                                    $("#" +'{{articulo.id}}' + "-articulo").text(Math.round(parseFloat($("#" + '{{articulo.id}}' + "-articulo").text())));
+                                </script>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mb-4"> 
+                    {%endfor%}                   
+                    <p class="mb-0 info-label-carrito"><i class="fas fa-info-circle mr-1"></i> Recuerde que tener los items en el carrito no asegura su disponibilidad. ¡Haga su compra!</p>
+        
+                </div>
+                </div>
+                <!-- Card -->
+        
+                <!-- Card -->
+                <div class="mb-3">
+                <div class="pt-4">
+        
+                    <h5 class="mb-4">Expected shipping delivery</h5>
+        
+                    <p class="mb-0"> Thu., 12.03. - Mon., 16.03.</p>
+                </div>
+                </div>
+                <!-- Card -->
+        
+                <!-- Card -->
+                <div class="mb-3">
+                <div class="pt-4">
+        
+                    <h5 class="mb-4">We accept</h5>
+        
+                    <img class="mr-2" width="45px"
+                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                    alt="Visa">
+                    <img class="mr-2" width="45px"
+                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                    alt="American Express">
+                    <img class="mr-2" width="45px"
+                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                    alt="Mastercard">
+                    <img class="mr-2" width="45px"
+                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
+                    alt="PayPal acceptance mark">
+                </div>
+                </div>
+                <!-- Card -->
+        
+            </div>
+            <!--Grid column-->
+        
+            <!--Grid column-->
+            <div class="col-lg-4">
+        
+                <!-- Card -->
+                <div class="mb-3">
+                <div class="pt-4">
+        
+                    <h5 class="mb-4">Detalle del importe</h5>
+                    <div class="mt-4">
+                        {% for articulo in articulos %}
+                        <p class="">
+                            {{articulo.nombre}}
+                            <span style="float: right;">
+                                <span id="{{articulo.id}}-valor-detalle" class="carrito-price">{{articulo.valor * valor_ep}}</span>
+                                <img src="/static/img/econpuntos-logo.png" class="carrito-price-img">
+                                <script>
+                                    $("#" +'{{articulo.id}}' + "-valor-detalle").text(Math.round(parseFloat($("#" + '{{articulo.id}}' + "-valor-detalle").text())));
+                                </script>
+                            </span>
+                        </p>
+                        {%endfor%}
+                        <p class="">
+                            Descuento 2,5%
+                            <span style="float: right;">
+                                <span id="descuento-detalle" class="carrito-price" style="color: #95C22B">-200</span>
+                                <img src="/static/img/econpuntos-logo.png" class="carrito-price-img">
+                            </span>
+                        </p>
+                        <p class="">
+                            Adicional en pesos
+                            <span style="float: right;">$253</span>
+                        </p>
+                        <hr style="color: lightgray;">
+                        <p class="">
+                            <strong>
+                                Precio Total
+                                <span style="float: right;">$253 ARS + 300 </span>
+                            </strong>
+                            
+                        </p>
+                    </div>
+        
+                    <button type="button" class="btn primary-btn btn-block">Checkout</button>
+        
+                </div>
+                </div>
+            </div>
+            <!--Grid column-->
+        
+            </div>
+            <!-- Grid row -->
+        
+        </section>
+        <!--Section: Block Content-->
+    </div>
+</div>
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script src="./Material Design Bootstrap_files/jquery-3.4.1.min.js.descarga"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="./Material Design Bootstrap_files/popper.min.js.descarga"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="./Material Design Bootstrap_files/bootstrap.js.descarga"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="./Material Design Bootstrap_files/mdb.min.js.descarga"></script>
+<!-- MDB Ecommerce JavaScript -->
+<script type="text/javascript" src="./Material Design Bootstrap_files/mdb.ecommerce.min.js.descarga"></script>
+  <script src="/static/js/carrito.js"></script>
+
+  {% endblock %}
