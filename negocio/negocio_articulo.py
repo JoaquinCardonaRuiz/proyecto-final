@@ -46,7 +46,7 @@ class NegocioArticulo(Negocio):
         try:
             articulos = []
             for id in ids:
-                articulos.append(cls.get_by_id(id))
+                articulos.append(cls.get_by_id(int(id)))
             return articulos
         except Exception as e:
             raise e

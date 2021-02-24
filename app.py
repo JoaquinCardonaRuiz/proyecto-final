@@ -4,6 +4,7 @@ from classes import Horario, CantArticulo
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
 from flask_session import Session 
+from utils import Utils
 
 #app
 app = Flask(__name__)
@@ -72,56 +73,78 @@ def eco_tienda():
         articulos = NegocioArticulo.get_all()
         nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
     except Exception as e:
-        return error(e, "eco_tienda")
+        return error(e, "eco-tienda")
     return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel)
 
 
 @app.route('/eco-tienda/producto/<id>')
 def product_page(id):
-    id = int(id)
-    producto = NegocioArticulo.get_by_id(id)
+    try:
+        id = int(id)
+        producto = NegocioArticulo.get_by_id(id)
 
-    if "carrito" in session.keys():
-        carrito = session["carrito"]
-    else:
-        carrito = []
-        session["carrito"] = carrito
-    nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
-    recomendaciones = NegocioArticulo.get_recommendations(id,carrito)
-    demora_prom = NegocioPuntoRetiro.get_demora_promedio()
-    valor_ep = NegocioEcoPuntos.get_valor_EP()
-    return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones, nivel = nivel, usuario = session["usuario"], valor_ep = valor_ep, demora_prom  = demora_prom)
+        if "carrito" in session.keys():
+            carrito = session["carrito"]
+        else:
+            carrito = {}
+            session["carrito"] = carrito
+        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+        recomendaciones = NegocioArticulo.get_recommendations(id,Utils.carrito_to_list(session["carrito"]))
+        demora_prom = NegocioPuntoRetiro.get_demora_promedio()
+        valor_ep = NegocioEcoPuntos.get_valor_EP()
+        return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones, nivel = nivel, usuario = session["usuario"], valor_ep = valor_ep, demora_prom  = demora_prom)
+    except Exception as e:
+        return error(e, "eco-tienda")
 
 
 @app.route('/eco-tienda/producto/agregar', methods = ['GET','POST'])
 def agregar_carrito():
-    if request.method == "POST":
-        cantidad = request.form['cantProd']
-        id = request.form['idProd']
-        if "carrito" not in session.keys():
-            session["carrito"] = []
-        session["carrito"].append(CantArticulo(cantidad,id))
-        print(session["carrito"][0].idTipoArticulo, session["carrito"][0].cantidad)
-        return redirect(url_for("main"))
+    try:
+        if request.method == "POST":
+            cantidad = request.form['cantProd']
+            id = str(request.form['idProd'])
+
+            if "carrito" not in session.keys():
+                session["carrito"] = {}
+
+            if id not in session["carrito"].keys():
+                session["carrito"][str(id)] = cantidad
+            
+            else:
+                session["carrito"][str(id)] += cantidad
+
+            return redirect(url_for("main"))
+    except Exception as e:
+        return error(e, "eco-tienda")
 
 @app.route('/eco-tienda/carrito')
 def carrito():
-    if "carrito" not in session.keys():
-        session["carrito"] = []
-    return render_template('carrito.html',carrito=carrito)
+    try:
+        articulos = NegocioArticulo.get_by_id_array(session["carrito"].keys())
+        if "carrito" not in session.keys():
+            session["carrito"] = {}
+        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos)
+    except Exception as e:
+        return error(e, "eco-tienda")
 
 
 @app.route('/eco-tienda/checkout')
 def checkout():
-    if "carrito" not in session.keys():
-        session["carrito"] = []
-    return render_template('checkout.html',carrito=carrito)
+    try:
+        if "carrito" not in session.keys():
+            session["carrito"] = {}
+        return render_template('checkout.html',carrito=Utils.carrito_to_list(session["carrito"]))
+    except Exception as e:
+        return error(e, "eco-tienda")
 
 @app.route('/eco-tienda/checkout/confirmar/<idPR>')
 def confirmar_checkout(idPR):
-    if "carrito" in session.keys() and session["carrito"] != []:
-        pass
-        #NegocioPedido.add(carrito=session["carrito"], usuario = session["usuario"],puntoRetiro=idPR)
+    try:
+        if "carrito" in session.keys() and session["carrito"] != {}:
+            pass
+            #NegocioPedido.add(carrito=session["carrito"], usuario = session["usuario"],puntoRetiro=idPR)
+    except Exception as e:
+        return error(e, "eco-tienda")
 
 
 ''' 
