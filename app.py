@@ -117,6 +117,25 @@ def agregar_carrito():
     except Exception as e:
         return error(e, "eco-tienda")
 
+@app.route('/eco-tienda/producto/eliminar', methods = ['GET','POST'])
+def eliminar_carrito():
+    try:
+        if request.method == "POST":
+            id = str(request.form['idEliminacion'])
+
+            if "carrito" not in session.keys():
+                raise Exception("La variable de sesión carrito no existe")
+
+            if id not in session["carrito"].keys():
+                raise Exception("Se eliminó un articulo que no estaba en el carrito")
+            
+            else:
+                del session["carrito"][str(id)]
+
+            return redirect(url_for("carrito"))
+    except Exception as e:
+        return error(e, "eco-tienda")
+
 @app.route('/eco-tienda/carrito')
 def carrito():
     try:
