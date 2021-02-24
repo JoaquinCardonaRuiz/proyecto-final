@@ -6,6 +6,41 @@ import custom_exceptions
 class DatosInsumo(Datos):
     
     @classmethod
+    def get_by_id(cls,id):
+        """
+        Obtiene un insumo de la BD en base a su id.
+        """
+        
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT idInsumo, \
+                           nombre, \
+                           unidadMedida, \
+                           cMateriales, \
+                           cProduccion, \
+                           cTotal, \
+                           stock, \
+                           otrosCostos, \
+                           color \
+                           FROM insumos WHERE estado!=\"eliminado\" and idInsumo={};").format(id)
+            cls.cursor.execute(sql)
+            i = cls.cursor.fetchone()
+            materiales = DatosCantMaterial.get_from_Insid(i[0],noClose=True)
+            insumo = Insumo(i[0],i[1],i[2],i[3],i[4],i[5],materiales,i[6],i[7],i[8])
+            return insumo
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.get_by_id()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo un insumo desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+
+
+    @classmethod
     def get_all(cls):
         """
         Obtiene todos los insumos de la BD.

@@ -6,6 +6,19 @@ import custom_exceptions
 class NegocioInsumo(Negocio):
 
     @classmethod
+    def get_by_id(cls,id):
+        """
+        Obtiene todos un insumos de la BD a partir de su id.
+        """
+        try:
+            insumo = DatosInsumo.get_by_id(id)
+            return insumo
+
+        except Exception as e:
+            raise e
+    
+    
+    @classmethod
     def get_all(cls):
         """
         Obtiene todos los insumos de la BD.
@@ -15,9 +28,7 @@ class NegocioInsumo(Negocio):
             return insumos
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio_insumos.get_all()",
-                                                    msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obteniendo los insumos de la capa de Datos.")
+            raise e
 
 
     @classmethod
@@ -35,13 +46,27 @@ class NegocioInsumo(Negocio):
 
 
     @classmethod
-    def update(cls,idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants):
+    def update(cls,idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,mats):
         """
         Actualiza un insumo en la BD
         """
         try:
-            for cant in cants:
-                pass
+            materiales = cls.get_by_id(idIns).materiales
+            for m in mats:
+                if m.idMaterial in [i.idMaterial for i in materiales]:
+                    if m.cantidad == 0:
+                        # delete
+                        DatosCantMaterial.deleteComponente(m.idMaterial,idIns)
+                    elif m.cantidad != [i.cantidad for i in materiales if i.idMaterial == m.idMaterial ][0]:
+                            # update
+                            DatosCantMaterial.updateComponente(m.idMaterial,idIns,m.cantidad)
+                elif m.cantidad > 0:
+                        # add
+                        DatosCantMaterial.addComponente(m.idMaterial,idIns,m.cantidad)
+
+
+
+
             costoTotal = float(costoMateriales)+float(costoProduccion)+float(otrosCostos)
             DatosInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color)
         except Exception as e:
@@ -56,6 +81,4 @@ class NegocioInsumo(Negocio):
         try:
             DatosInsumo.delete(id)
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio_insumo.delete()",
-                                                   msj=str(e),
-                                                   msj_adicional="Error en la capa de Negocio eliminando un insumo de la base de Datos")
+            raise e

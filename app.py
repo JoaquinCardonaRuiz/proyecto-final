@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
 from negocio.capa_negocio import *
+from classes import CantMaterial
 import traceback
 app = Flask(__name__)
 
@@ -265,7 +266,7 @@ def edit_insumo():
             if "id-" in key:
                 id = request.form[key]
                 cant = float(request.form["cantidad-"+id])
-                cants.append({"idMat":id,"cantidad":cant})
+                cants.append(CantMaterial(cant,id))
 
         try:
             NegocioInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants)
