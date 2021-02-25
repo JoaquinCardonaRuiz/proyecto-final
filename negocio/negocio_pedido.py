@@ -4,6 +4,7 @@ from data.data_usuario import DatosUsuario
 from data.data_punto_retiro import DatosPuntoRetiro
 from data.data_cant_articulo import DatosCantArticulo
 from negocio.negocio_articulo import NegocioArticulo
+from negocio.negocio_usuario import NegocioUsuario
 from datetime import datetime, timedelta
 import custom_exceptions
 
@@ -16,12 +17,12 @@ class NegocioPedido(Negocio):
         fechaRet = fechaEnc + timedelta(days=puntoRetiro.demoraFija)
         idPedido = DatosPedido.add(fechaEnc,fechaRet,totalEP,totalARS,idPR,usuario.id)
         
+        #Pago
+        #TODO: Procesar pago
+        #TODO: Levantar excepcion del nuevo tipo (ErrorDePago) si hay un error
+
         #EcoPuntos
-        user = DatosUsuario.get_by_id(usuario.id)
-        nueva_cant_ep = user.totalEcopuntos - totalEP
-        if nueva_cant_ep < 0:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio_pedido.add()",msj="EP insuficientes para realizar pedido")
-        #DatosUsuario.updateStock(user.id,nueva_cant_ep)
+        NegocioUsuario.useEP(usuario.id,totalEP)
         
         #Articulos y Stock
         for art in carrito:

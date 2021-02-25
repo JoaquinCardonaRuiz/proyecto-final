@@ -51,3 +51,22 @@ class DatosEcoPuntos(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+
+    @classmethod
+    def updateEps(cls,idEP,cant):
+        """
+        Actualiza la cantidad de ecopuntos restantes de un lote en la BD
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("UPDATE ecoPuntos SET cantidadRestante = {} WHERE idEcoPuntos={}").format(cant,idEP)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.updateEps()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando un ecopunto en la BD.")
+        finally:
+            cls.cerrar_conexion()
