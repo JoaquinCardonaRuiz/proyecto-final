@@ -300,7 +300,6 @@ MATERIALES
 class Material:
     """ Representa una material que puede ingresar a través de un depósito de usuarios, y ser
     tornado en artículos para su salida.
-
     Atributos:
         id (string): Identificador de la entidad.
         nombre (string): Nombre del material para identificación por parte del usuario.
@@ -308,9 +307,9 @@ class Material:
         costoRecoleccion (float): Costo asociado a la recoleccion del material.
         stock (float): Cantidad del material presente en inventario.
         color(string): Código hexadecimal del color con que se muestra un material.
-        estado(string): Estado en el que se encuentra un material.
+        estado(string): Indica si los depositos del material estan habilitados
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color, estado="disponible"):
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color,estado="habilitado"):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -460,6 +459,7 @@ class Insumo:
         costoTotal (float): costo total del insumo
         materiales (CantMaterial []): materiales necesarios para su produccion
         stock (float): existencias del insumo
+        color (string): color que representa al insumo
         otrosCostos (float): costos miscelaneos adicionales
     """
     def __init__(self,
@@ -471,7 +471,8 @@ class Insumo:
                  costoTotal,
                  materiales,
                  stock,
-                 otrosCostos):
+                 otrosCostos,
+                 color):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -480,7 +481,8 @@ class Insumo:
         self.costoTotal = costoTotal
         self.materiales = materiales
         self.stock = stock
-        self.otrosCostos = otrosCostos,
+        self.otrosCostos = otrosCostos
+        self.color = color
 
 class CantInsumo:
     """

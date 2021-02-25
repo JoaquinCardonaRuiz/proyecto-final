@@ -3,6 +3,7 @@ from flask.json import JSONEncoder
 from classes import Horario, CantArticulo
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
+from classes import CantMaterial
 import traceback
 from flask_session import Session 
 from utils import Utils
@@ -454,7 +455,103 @@ def gestion_articulos():
         return error(e,"articulos")
 
 
-      
+
+''' 
+    -----------------
+    Insumos
+    -----------------
+'''
+
+@app.route('/insumos', methods = ['GET','POST'])
+def gestion_insumos():
+    try:
+        insumos = NegocioInsumo.get_all()
+        materiales = NegocioMaterial.get_all()
+        return render_template('gestion-insumos.html',insumos=insumos,materiales=materiales)
+    except Exception as e:
+        return error(e,"insumos")
+
+
+@app.route('/insumos/alta', methods = ['GET','POST'])
+def alta_insumo():
+    if request.method == 'POST':
+        nombre =                request.form['nombre']
+        unidad =                request.form['unidad']
+        costoMateriales =       request.form['costoMateriales']
+        costoProduccion =       request.form['costoProduccion']
+        otrosCostos =           request.form['otrosCostos']
+        color =                 request.form['color']
+        cants = []
+        for key in request.form.keys():
+            if "id-" in key:
+                id = request.form[key]
+                cant = float(request.form["cantidad-"+id])
+                if cant > 0:
+                    cants.append({"idMat":id,"cantidad":cant})
+        try:
+            NegocioInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants)
+        except Exception as e:
+            return error(e,"insumos")
+        return redirect(url_for('gestion_insumos'))
+
+
+@app.route('/insumos/edit', methods = ['GET','POST'])
+def edit_insumo():
+    if request.method == 'POST':
+        idIns =                 request.form["id"]
+        nombre =                request.form['nombre']
+        unidad =                request.form['unidad']
+        costoMateriales =       request.form['costoMateriales']
+        costoProduccion =       request.form['costoProduccion']
+        otrosCostos =           request.form['otrosCostos']
+        color =                 request.form['color']
+        cants = []
+        for key in request.form.keys():
+            if "id-" in key:
+                id = request.form[key]
+                cant = float(request.form["cantidad-"+id])
+                cants.append(CantMaterial(cant,int(id)))
+
+        try:
+            NegocioInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants)
+        except Exception as e:
+            return error(e,"insumos")
+        return redirect(url_for('gestion_insumos'))
+
+
+@app.route('/insumos/baja/<id>')
+def baja_insumo(id):
+    id = int(id)
+    try:
+        NegocioInsumo.delete(id)
+    except Exception as e:
+        return error(e,"insumos")
+    return redirect(url_for('gestion_insumos'))
+
+
+
+@app.route('/insumos/materiales/<ids>')
+def get_materiales(ids):
+    # esto es probablemente lo mas inseguro que se puede hacer en un sistema web
+    # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
+    # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
+    #TODO: CAMBIAR ESTA LINEA:
+    ids = eval("["+ids+"]")
+    print(ids)
+    if ids == -1:
+        return jsonify(False)
+    try:
+        materiales = NegocioMaterial.get_by_id_array(ids)
+        materiales_dic =  [{"nombre":          m.nombre,
+                            "unidadmedida":    m.unidadMedida,
+                            "color":           m.color}
+                            for m in materiales]
+        return jsonify(materiales_dic)
+    except Exception as e:
+        return error(e,"materiales")
+    return redirect(url_for('gestion_materiales'))
+
+  
 ''' 
     -----------------
     Materiales
@@ -509,7 +606,9 @@ def baja_material(id):
     except Exception as e:
         return error(e,"materiales")
     return redirect(url_for('gestion_materiales'))
-=======
+
+  
+  
 def valida_session():
     return "usuario" not in session.keys()
 

@@ -95,6 +95,7 @@
     margin-top: 15px;
 }
 
+
 /*
 @font-face {font-family: "Cordia New"; src: url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.eot"); 
     src: url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.eot?#iefix") format("embedded-opentype"), 
@@ -121,6 +122,7 @@
     border-radius: 5px;;
     height: fit-content;
 }
+
 
 
 #product-container{
@@ -269,6 +271,7 @@ h2 		 {
 }
 
 
+
 .color-activo{
     color: #7cc22b !important;
 }
@@ -279,14 +282,49 @@ h2 		 {
 
 #estado-activo{
     font-size: 11px;
+   color: #7cc22b;
 }
 
 #estado-inactivo{
+    color: #f52926;
     font-size: 11px;
 }
 
 .icon-column{
     text-align: center;
+  
+}
+
+.text-box{
+    font-size: 14px; 
+    color: #70706f;
+}
+
+
+.circle {
+    width: 58px;
+    height: 58px;
+    line-height: 58px;
+    border-radius: 58px;
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(226, 192, 128);
+}
+
+.tab-icon{
+    scale:0.6;
+    margin-left:2% !important;
+}
+
+.warning{
+    color:#999 !important;
+}
+
+.error{
+    color:#dd0000 !important;
 }
 
 .text-box{

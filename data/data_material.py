@@ -3,14 +3,44 @@ from data.data import Datos
 from classes import Material
 import custom_exceptions
 
-class DatosMaterial(Datos):    
+class DatosMaterial(Datos):
+    @classmethod
+    def get_by_id(cls, id, noClose = False):
+        """Obtiene un material de la BD en base a un ID.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT idMaterial, \
+                           nombre, \
+                           unidadMedida, \
+                           costoRecoleccion, \
+                           stock, \
+                           color, \
+                           estado \
+                           FROM materiales WHERE idMaterial = {};").format(id)
+            cls.cursor.execute(sql)
+            m = cls.cursor.fetchone()
+            if m == None:
+                return False
+            else:
+                material = Material(m[0],m[1],m[2],m[3],m[4],m[5],m[6])
+                return material
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.get_by_id()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo un material en base al id recibido como parámetro.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
+
+
     @classmethod
     def get_all_byIdPuntoDep(cls, idPuntoDep, noClose = False):
         """
         Obtiene todos los Puntos de Depósito de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial, materiales.estado from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' and materiales.estado != 'eliminado' order by materiales.nombre ASC;")
             values = (idPuntoDep,)
             cls.cursor.execute(sql, values)
@@ -34,9 +64,8 @@ class DatosMaterial(Datos):
         """
         Obtiene todos los materiales de la BD.
         """
-        
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idMaterial, \
                            nombre, \
                            unidadMedida, \
@@ -66,8 +95,8 @@ class DatosMaterial(Datos):
         """
         Agrega un material a la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql= ("INSERT INTO materiales (nombre,unidadMedida,costoRecoleccion,color,stock,estado) \
                    VALUES (\"{}\",\"{}\",{},\"{}\",0,\"{}\");".format(nombre,unidad,costoRecoleccion,color,estado))
             cls.cursor.execute(sql)
@@ -87,8 +116,8 @@ class DatosMaterial(Datos):
         """
         Actualiza un material en la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql= ("UPDATE materiales SET nombre=\"{}\",unidadMedida=\"{}\",costoRecoleccion={},color=\"{}\",estado=\"{}\" WHERE idMaterial={};").format(nombre,unidad,costoRecoleccion,color,estado,idMat)
             cls.cursor.execute(sql)
             cls.db.commit()
@@ -106,8 +135,8 @@ class DatosMaterial(Datos):
         """
         Elimina un material de la BD a partir de su id.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("UPDATE materiales SET estado = \"eliminado\" WHERE idMaterial={}".format(id))
             cls.cursor.execute(sql)
             cls.db.commit()

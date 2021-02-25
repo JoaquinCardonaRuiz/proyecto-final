@@ -48,39 +48,6 @@ box-shadow:rgb(100, 100, 100) !important;
 
 }
 
-.btn {
-    text-transform: none !important;
-  }
-  
-  .btn-aceptar{
-    background-color: #95C22B !important;
-      color: #fff !important;
-  }
-  
-  .btn-custom{
-    cursor: default !important;
-    background-color: #FFF !important;
-    border-radius: 4px !important;
-    border-color: transparent !important;
-    border-width: 0px !important;
-    border: none !important;
-    margin-top:8px !important;
-    text-align: left !important;
-    vertical-align: center;
-    box-shadow:rgb(100, 100, 100) !important;
-  }
-  
-  .dropdown-li{
-    list-style-position:inside;
-    border-bottom: 1px solid lightgray;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 5px;
-    height:30px;
-    margin-bottom:10px;
-  
-  }
-  
 .dropdown-link{
   color: #888;
   margin-left: 12px;
@@ -146,6 +113,26 @@ background-color: #ebebeb;
 .secondary-btn-baja:hover{
 background-color: #ebebeb;
 }
+
+.secondary-btn-mod:hover{
+background-color: #ebebeb;
+}
+
+.secondary-btn-baja:hover{
+background-color: #ebebeb;
+}
+
+.anterior-btn:hover{
+  background-color: #ebebeb;
+  }
+  
+.anterior-btn-mod:hover{
+  background-color: #ebebeb;
+  }
+  
+.anterior-btn-baja:hover{
+  background-color: #ebebeb;
+  }
 
 #primary-btn{
   background-color: #95C22B;
@@ -297,7 +284,8 @@ input:focus ~ .highlight {
 
 .primary-btn:hover{
   background-color: #87af28 !important;
-}
+
+  }
 
 .primary-btn-alert{
   background-color: #f14e4e !important;
@@ -560,6 +548,13 @@ input:focus ~ .highlight {
 }
 
 
+
+#cards-row-materiales-mod{
+  transition: width 0.4s, height 0.4s, transform 0.4s;
+  margin-top: 5%; 
+  margin-left: 2%; 
+
+  
 .cards-row-materiales{
   transition: width 0.4s, height 0.4s, transform 0.4s;
   margin-top: 10%; 
@@ -567,6 +562,7 @@ input:focus ~ .highlight {
   width: 96.5%;
   margin-bottom: 7%;
 }
+
 
 .warning-label-altaPD{
   text-align: center;
@@ -585,6 +581,7 @@ input:focus ~ .highlight {
   display: none;
 }
 
+
 .margin-row-mod{
   height: 20px !important;
 }
@@ -593,6 +590,32 @@ input:focus ~ .highlight {
   margin-top: 30px !important;
 }
 
+#bottomAltaModalTextModPD{
+  margin-top: 0px; 
+  color: #888;
+  margin-bottom: -20px;
+  transition: width 0.4s, height 0.4s, transform 0.4s;
+}
+
+.costo-total-label{
+  color: black !important;
+}
+
+.warning-label-altaPD{
+  text-align: center;
+  width: 100%;
+  margin-top:-3%;
+  display: none;
+  margin-left: -2%;
+}
+
+.warning-icon-altaPD{
+  font-size: 20px;
+}
+
+#bottomAltaModalText{
+  color: #888;
+  transition: width 0.4s, height 0.4s, transform 0.4s;
 
 .card-product .img-wrap {
   border-radius: 3px 3px 0 0;

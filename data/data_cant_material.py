@@ -29,7 +29,65 @@ class DatosCantMaterial(Datos):
             if not(noClose):
                 cls.cerrar_conexion()
 
-    
+
+    @classmethod
+    def addComponente(cls,idMat,idIns,cant):
+        """
+        Registra una cantidad de un material requerido para la produccion de un insumo.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("INSERT INTO mat_ins (idMaterial, idInsumo, cantidad, estado) \
+                    VALUES ({},{},{},\"{}\");".format(idMat,idIns,cant,"disponible"))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_cant_material.addComponente()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error agregando un material componente de un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def updateComponente(cls,idMat,idIns,cant):
+        """
+        Actualiza una cantidad de un material requerido para la produccion de un insumo.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("UPDATE mat_ins SET cantidad={} WHERE idMaterial={} AND idInsumo={};".format(cant,idMat,idIns))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_cant_material.updateComponente()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando un material componente de un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def deleteComponente(cls,idMat,idIns):
+        """
+        Actualiza una cantidad de un material requerido para la produccion de un insumo.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("DELETE FROM mat_ins WHERE idMaterial={} AND idInsumo={};".format(idMat,idIns))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_cant_material.deleteComponente()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error eliminando un material componente de un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+            
     @classmethod
     def deshabilitar(cls,idMat,noClose=False):
         """

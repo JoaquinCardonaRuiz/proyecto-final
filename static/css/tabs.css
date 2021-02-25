@@ -1,22 +1,23 @@
 .ed-tabs-item{
-    width: 250px;
-    text-align: center;
-  }
-  
-  .ed-tabs .ed-link.active, .ed-tabs .ed-link.active:focus {
-    box-shadow: inset 0 -2px 0 #95C22B !important;
-    color: #95C22B !important;
-  }
-  
-  
-  .ed-tabs .ed-link:hover, .ed-tabs .ed-link:hover{
-    box-shadow: inset 0 -2px 0 #95C22B !important;
-    background: #fff !important;
-  }
-  
-  .ed-tabs .ed-link, .ed-tabs .ed-link{
-    color: #888 !important;
-  }
+  width: 250px;
+  text-align: center;
+}
+
+.ed-tabs .ed-link.active, .ed-tabs .ed-link.active:focus {
+  box-shadow: inset 0 -2px 0 #95C22B !important;
+  color: #95C22B !important;
+}
+
+
+.ed-tabs .ed-link:hover, .ed-tabs .ed-link:hover{
+  box-shadow: inset 0 -2px 0 #95C22B !important;
+  background: #fff !important;
+}
+
+.ed-tabs .ed-link, .ed-tabs .ed-link{
+  color: #888 !important;
+}
+
 
 
  
