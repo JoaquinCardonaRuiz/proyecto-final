@@ -47,7 +47,7 @@ def authentication(email, password):
         session["usuario"] = NegocioUsuario.login(email, password)
         return jsonify({"login-state":True})
     except Exception as e:
-        return jsonify({"login-state":False})
+        return error(e, "login")
 
     return render_template('login.html')
 
