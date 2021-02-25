@@ -148,8 +148,9 @@ def carrito():
         nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
         usuario = session["usuario"]
         val_tot_ep = round(valor * valor_ep * (1-nivel.descuento/100))
-        if val_tot_ep > 0: step = 100/val_tot_ep
-        else:  step = 1
+        if val_tot_ep == 0: 
+            val_tot_ep = 1
+        step = 100/val_tot_ep
         puntos_retiro = NegocioPuntoRetiro.get_all()
         carrito = Utils.carrito_to_list(session["carrito"])
         
