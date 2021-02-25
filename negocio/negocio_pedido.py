@@ -13,8 +13,10 @@ class NegocioPedido(Negocio):
     def add(cls,carrito,usuario,idPR,totalEP,totalARS):
         #Pedido
         puntoRetiro = DatosPuntoRetiro.get_by_id(idPR)
-        fechaEnc = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        fechaEnc = datetime.now()
         fechaRet = fechaEnc + timedelta(days=puntoRetiro.demoraFija)
+        fechaEnc = fechaEnc.strftime('%Y-%m-%d %H:%M:%S')
+        fechaRet = fechaRet.strftime('%Y-%m-%d %H:%M:%S')
         idPedido = DatosPedido.add(fechaEnc,fechaRet,totalEP,totalARS,idPR,usuario.id)
         
         #Pago

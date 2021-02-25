@@ -73,11 +73,21 @@
     cursor: pointer;
   }
   
+  .multisteps-form__progress:hover{
+    cursor: auto !important;
+
+  }
+
+  .multisteps-form__progress-btn:hover{
+    cursor: auto !important;
+  }
+
   @media (min-width: 500px) {
     .multisteps-form__progress-btn {
       text-indent: 0;
     }
   }
+  
   
   .multisteps-form__progress-btn:before {
     position: absolute;
