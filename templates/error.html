@@ -27,10 +27,28 @@
     <div class="container" id="heading-container">
         <h1 class="heading">Ha ocurrido un error</h1>
     </div>
-    <br>
     <hr>
     <div class="container" id="top-container">
-        <p style="font-size:large;">{{err}}</p>
+        <p style="font-size:large;"><b>Detalles del error:</b> {{err}}</p>
+        <hr>
+        <br>
+        <h4> Información para desarrolladores: </h4>
+        <table class="table" id="content-table" style="margin-left:0% !important;margin-right:0% !important;">
+            <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">#</th>
+                    <th scope="col" class="table-heading">Stacktrace</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in range(aditional|length)%}
+                    <tr>
+                        <td>{{i}}</td>
+                        <td>{{aditional[aditional|length - i - 1]}}</td>
+                    </tr>
+                {%endfor%}
+            </tbody>
+        </table>
     </div>
 
 

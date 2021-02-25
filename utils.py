@@ -1,4 +1,5 @@
 import custom_exceptions
+from classes import CantArticulo
 import datetime
 
 class Utils():
@@ -96,25 +97,6 @@ class Utils():
                                                    msj=str(e),
                                                    msj_adicional="Error formateando la fecha")
     
-
-    @classmethod
-    def boolean_tinyInt_converter(cls, value):
-        """
-        Convierte TinyInts a bools y viceversa.
-        """
-        try:
-            if value == 0:
-                return False
-            elif value == 1:
-                return True
-            elif value == False:
-                return 0
-            else: 
-                return 1
-        except Exception as e:
-           raise custom_exceptions.ErrorDeNegocio(origen="utils.boolean_tinyInt_converter()",
-                                                   msj=str(e),
-                                                   msj_adicional="Error convirtiendo TinyInts a booleanos o viceversa.")
     
     @classmethod
     def adress_format(cls, value):
@@ -128,3 +110,54 @@ class Utils():
                                                    msj=str(e),
                                                    msj_adicional="Error convirtiendo el formato de la dirección.")
     
+    @classmethod
+    def traductor_nombre_dias(cls, dia):
+        """
+        Traduce el nombre de un día recibido como parámetro de ingles a español.
+        """
+        try:
+            if dia == "Monday":
+                return "Lunes"
+            elif dia == "Tuesday":
+                return "Martes"
+            elif dia == "Wednesday":
+                return "Miércoles"
+            elif dia == "Thursday":
+                return "Jueves"
+            elif dia == "Friday":
+                return "Viernes"
+            elif dia == "Saturday":
+                return "Sábado"
+            elif dia == "Sunday":
+                return "Domingo"
+        except Exception as e:
+           raise custom_exceptions.ErrorDeNegocio(origen="utils.raductor_nombre_dias()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error traduciendo el nombre de un día.")
+    
+
+    @classmethod
+    def js_py_bool_converter(cls, bool):
+        """
+        Convierte el String que devuelve Javascript como booleano al tipo Bool de Python.
+        """
+        try:
+            if bool == "true":
+                return True
+            else:
+                return False
+        except Exception as e:
+           raise custom_exceptions.ErrorDeNegocio(origen="utils.js_py_bool_converter()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error convirtiendo booleanos entre front-end y back-end.")
+    
+
+    @classmethod
+    def carrito_to_list(cls, carrito):
+        """
+        Convierte el carrito, que es un dic, a un arreglo de CantArticulos
+        """
+        nuevo_carrito = []
+        for art in carrito.keys():
+            nuevo_carrito.append(CantArticulo(carrito[art],art))
+        return nuevo_carrito

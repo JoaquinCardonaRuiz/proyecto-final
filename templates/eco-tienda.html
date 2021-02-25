@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="heading-container">
+        <h1 class="heading">EcoTienda</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Cree, elimine, modifique y configure los Puntos de Depósito de EcoAsistente.</span></h6>
+    </div>
+    <div class="container" id="heading-container" style="margin-top: 5%;">
+        <div class="container">
+            <div class="row">
+                {%for articulo in articulos%}
+                <div class="col-md-4 card-column" style="min-width: 250px; transition: width 1s, height 1s, transform 1s;">
+                    <figure class="card card-product" onclick="redirect('/eco-tienda/producto/{{articulo.id}}');">
+                        <div class="img-wrap">
+                            <img src="{{articulo.imagen}}" onerror="if (this.src != '/static/img/default-img.png') this.src = '/static/img/default-img.png';">
+                        </div>
+                        <div class="bottom-wrap">
+                            <div class="title-wrap">
+                                <h4 class="title" style="font-size:17px;">{{articulo.nombre}}</h4>
+                            </div>	
+                            <div class="price-wrap h5">
+                                <p class="price-new">${{articulo.valor * (1-nivel.descuento/100)}}</p>
+                                <p class="price-old"><del class="price-old">{{articulo.valor}}</del><span class="desc">{{nivel.descuento|string}}% OFF</span></p>
+                            </div>                            
+                        </div> <!-- bottom-wrap.// -->
+                    </figure>
+                </div> <!-- col // -->
+                {%endfor%}
+            </div> <!-- row.// -->
+        </div> 
+    </div>
+</div>
+
+<script src="static/js/eco-tienda.js"></script>
+{% endblock %}

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    <script src="/static/js/carrito.js"></script>
+
+
+
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="table-container">
+        <!--Section: Block Content-->
+        <section class="carrito-content" id="carrito-content">
+
+            <!--Grid row-->
+            <div class="row">
+        
+            <!--Grid column-->
+            <div class="col-lg-8">
+        
+                <!-- Card -->
+                <div class="mb-3" style="width: 97.5%; margin-right: 2.5%;">
+                <div class="pt-4 wish-list">
+                    <h5 class="mb-4">Carrito (<span>{{carrito|length}}</span> productos)</h5>
+                    
+                    {%for articulo in articulos%}
+                    <div class="row mb-4">
+                    <div class="col-md-5 col-lg-3 col-xl-3">
+                        <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                        <img class="img-fluid w-100"
+                            src="{{articulo.imagen}}" alt="Sample">
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-lg-9 col-xl-9">
+                        <div>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5>{{articulo.nombre}}</h5>
+                                    <p class="mb-3 mt-3 text-muted text-uppercase small"><span id="{{articulo.id}}-stock">{{articulo.stock}}</span> {{articulo.unidadMedida}} en stock</p>
+                                    <script>
+                                        $("#" +'{{articulo.id}}' + "-stock").text(Math.round(parseFloat($("#" + '{{articulo.id}}' + "-stock").text())));
+                                    </script>
+                                    <p class="mb-3 text-muted text-uppercase small">X vendidos de este artículo este mes</p>
+                                </div>
+                                <div>
+                                    {%for item in carrito%}
+                                        {%if item.idTipoArticulo|int == articulo.id|int %}
+                                        <div>
+                                            <p style="width: 100%; text-align: right;">{{item.cantidad}} {{articulo.unidadMedida}}</p>
+                                        </div>
+                                        {%endif%}
+                                    {%endfor%}
+                                    <small id="passwordHelpBlock" class="form-text text-muted text-center" style="margin-top:-15%">
+                                        Cantidad
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                <a type="button" class="card-link-secondary small text-uppercase mr-3" onmouseover="changeColors({{articulo.id}});" onmouseleave="returnColors({{articulo.id}});" onclick="removeFromCart({{articulo.id}});">
+                                    <i class="fas fa-trash-alt mr-1" id="trash-item-carrito-{{articulo.id}}"></i>Eliminar del carrito </a>
+                                <a type="button" class="card-link-secondary small text-uppercase" href="/eco-tienda/producto/{{articulo.id}}" onmouseover="changeColorsInfo({{articulo.id}});" onmouseleave="returnColorsInfo({{articulo.id}});">
+                                    <i class="fas fa-info-circle mr-1" id="info-item-carrito-{{articulo.id}}"></i>Ver detalles </a>
+                                </div>
+                                <p class="mb-0 carrito-price"><span><strong id="{{articulo.id}}-articulo">{{articulo.valor * valor_ep}}</strong></span><img src="/static/img/econpuntos-logo.png" class="carrito-price-img"></p class="mb-0">
+                                <script>
+                                    $("#" +'{{articulo.id}}' + "-articulo").text(Math.round(parseFloat($("#" + '{{articulo.id}}' + "-articulo").text())));
+                                </script>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mb-4"> 
+                    {%endfor%}                   
+                    <p class="mb-0 info-label-carrito"><i class="fas fa-info-circle mr-1"></i> Recuerde que tener los items en el carrito no asegura su disponibilidad. ¡Haga su compra!</p>
+        
+                </div>
+                </div>
+                <!-- Card -->
+        
+                <!-- Card -->
+                <div class="mb-3">
+                <div class="pt-4">
+        
+                    <h5 class="mb-4">Demora estimada</h5>
+                    {%if demora_prom > 1%}
+                    <p class="mb-0">Tu pedido estará listo en aproximadamente {{demora_prom}} días hábiles.</p>
+                    {%else%}
+                    <p class="mb-0">Tu pedido estará listo en aproximadamente {{demora_prom}} día hábil.</p>
+                    {%endif%}
+                </div>
+                </div>
+                <!-- Card -->
+        
+                <!-- Card -->
+                <div class="mb-3">
+                <div class="pt-4">
+        
+                    <h5 class="mb-4">Aceptamos</h5>
+        
+                    <div class="row ml-1">
+                        <img class="mr-2" width="45px"
+                        src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                        alt="Visa">
+                        <img class="mr-2" width="45px"
+                        src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                        alt="American Express">
+                        <img class="mr-2" width="45px"
+                        src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                        alt="Mastercard">
+                        <div class="row ml-2 mr-2">
+                            <span style="font-size: 12px; padding-top: 11px; top: 8%;" class="text-muted">En sociedad con</span> 
+                        </div>
+                        <img class="" height="23px" src="/static/img/mercado-pago.png" alt="Mercadopago">
+
+                    </div>
+                    
+                </div>
+                </div>
+                <!-- Card -->
+        
+            </div>
+            <!--Grid column-->
+        
+            <!--Grid column-->
+            <div class="col-lg-4">
+        
+                <!-- Card -->
+                <div class="mb-3">
+                <div class="pt-4">
+        
+                    <h5 class="mb-4">Detalle del importe</h5>
+                    <div class="mt-4">
+                        {% for articulo in articulos %}
+                        <p class="">
+                            {{articulo.nombre}}
+                            <span style="float: right;">
+                                <span id="{{articulo.id}}-valor-detalle" class="carrito-price">{{articulo.valor * valor_ep}}</span>
+                                <img src="/static/img/econpuntos-logo.png" class="carrito-price-img">
+                                <script>
+                                    $("#" +'{{articulo.id}}' + "-valor-detalle").text(Math.round(parseFloat($("#" + '{{articulo.id}}' + "-valor-detalle").text())));
+                                </script>
+                            </span>
+                        </p>
+                        {%endfor%}
+                        <p class="">
+                            Descuento 2,5%
+                            <span style="float: right;">
+                                <span id="descuento-detalle" class="carrito-price" style="color: #95C22B">-<span id="descuento-total">{{valor * valor_ep * (nivel.descuento/100)}}</span></span>
+                                <img src="/static/img/econpuntos-logo.png" class="carrito-price-img">
+                            </span>
+                        </p>
+                        <p class="">
+                            Adicional en pesos
+                            <span style="float: right;" id="adicional-pesos">$253</span>
+                        </p>
+                        <hr style="color: lightgray;">
+                        <p class="">
+                            <strong>
+                                Precio Total
+                                <span style="float: right;">
+                                    <span class="carrito-price" id="precioTotal">{{valor * valor_ep * (1-nivel.descuento/100)}}</span>
+                                    <img src="/static/img/econpuntos-logo.png" class="carrito-price-img-total">
+                                    <span class="carrito-price" id="precioTotalARS">{{valor * valor_ep * (1-nivel.descuento/100)}}</span>
+                                </span>
+                                
+                            </strong>
+                        </p>
+                    </div>
+                    <hr>
+                    <h6 class="mb-1" style="margin-bottom:20%">Proporción de pago</h6>
+                    <td class="pl-0 pb-0 w-25" >
+                        <div class="row" style="width: 100%;">
+                            <div class="col" style="width: 100%;">
+                            <div class="range" style="height: 2px !important; font-size: 12px; width: 100%;">
+                                <input type="range" id="slideInput" name="range" min="0" max="100" value="{{usuario.totalEcopuntos * 100 / val_tot_ep}}" step="{{step}}" oninput="setPvalues(value, {{val_tot_ep}}, {{valor}}, {{nivel.descuento}}); validaInput({{usuario.totalEcopuntos}},{{val_tot_ep}});" ondblclick="value = '{{usuario.totalEcopuntos * 100 / val_tot_ep}}'; setPvalues(value, {{val_tot_ep}}, {{valor}}, {{nivel.descuento}}); validaInput({{usuario.totalEcopuntos}},{{val_tot_ep}});" style="border: none!important;">
+                                <div class="row">
+                                    <div class="col">
+                                        <p id="cantMoney" unselectable="on"></p>
+                                    </div>
+                                    <div class="col" style="text-align: right; width: 150%; margin-right:-10%;">
+                                        <p id="cantEP" unselectable="on"></p>
+                                    </div>
+                                    <p id="priceError" class="modalErrorMessage">* No posee suficientes EcoPuntos</p>
+                                </div>
+                                <script>
+                                    setPvalues({{usuario.totalEcopuntos * 100 / val_tot_ep}}, {{val_tot_ep}}, {{valor}}, {{nivel.descuento}}); validaInput({{usuario.totalEcopuntos}},{{val_tot_ep}});
+                                </script>                        
+                            </div>
+                            </div>    
+                        </div>
+                    </td>
+        
+                    <button type="button" id="checkout-button" class="btn primary-btn btn-block" onclick="changeForm();">Checkout</button>
+        
+                </div>
+                </div>
+            </div>
+            <!--Grid column-->
+        
+            </div>
+            <!-- Grid row -->
+        
+        </section>
+        <section class="carrito-content">
+
+        <!--Grid row-->
+        <div class="row">
+        </section>
+
+        <!--Grid column-->
+            <div id="punto-retiro-content">
+        
+                <!-- Card -->
+                <div class="mb-3" style="width: 95%; margin-right: 2.5%; margin-left: 2.5%;">
+                    <h5 class="mb-4">Seleccionar Punto de Retiro</h5>
+                    <div class="row">
+                        <div class="col cards-pr-col" style="width:100% !important; min-width: 400px;">
+                            {%set pr_id = []%}
+                            {%for pr in puntos_retiro%}
+                                <!-- {{pr_id.append(pr.id)}} -->
+                            {%endfor%}
+                            {%for pr in puntos_retiro%}
+                            <div class="container pr-card" id="{{pr.id}}-pr-card" onclick="disableEnableButton({{pr.id}},{{pr_id}})">
+                                <i class="fa fa-map-marker-alt fa-3x option-img-pr" style="float: left;" id=""></i>
+                                <p class="option-title-cards-pr">{{pr.nombre}}</p>
+                                <p class="option-description-pr">{{pr.direccion.calle + ' '}}{{pr.direccion.altura}}</p>
+                                <p class="option-description-pr text-muted"  style="margin-top: 0.2%;">Disponible en aprox. {{pr.demoraFija}} días</p>
+                            </div>
+                        {%endfor%}
+                        </div>
+                        
+                        <div class="col" style="float: right; min-width: 300px;">
+                            <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" class="map-pr"></iframe>
+                            <button type="button" id="back-button" class="btn secondary-btn" style="width: 30%;" onclick="changeForm();">
+                                <i class="fas fa-shopping-cart" aria-hidden="true" style="color: black; margin-right: 7px;"></i>
+                                Carrito
+                            </button>
+                            <button type="button" id="payment-button" class="btn primary-btn" onclick="hacerPedido();" style="width: 67%;">
+                                <i class="fa fa-credit-card" aria-hidden="true" style="color: white; margin-right: 7px;"></i>
+                                Pagar
+                            </button>
+                        </div>
+                        <input type="text" hidden name="idPuntoRetiro" id="idPuntoRetiro">
+                    </div>
+                        
+                </div>
+            </div>
+        <!--Grid column-->
+    
+        </div>
+        <!-- Grid row -->
+    
+        <form action="{{url_for('eliminar_carrito')}}" method="POST" id="remove_from_cart">
+            <input type="text" hidden name="idEliminacion" id="idEliminacion">
+        </form>
+        
+        <!--Section: Block Content-->
+    </div>
+    <script>
+        initialRoundValues();
+    </script>
+</div>
+
+
+  {% endblock %}

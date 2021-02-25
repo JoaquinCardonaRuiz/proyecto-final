@@ -12,6 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="//db.onlinewebfonts.com/c/1059ad38e2a3bd334504686a2901eedb?family=Cordia+New" rel="stylesheet" type="text/css"/>
 </head>
 
 {% extends 'layout.html' %}
@@ -19,25 +20,35 @@
 <div class="page-content" style="text-align: left;" id="content">
     <div class="container" id="heading-container">
         <h1 class="heading">Gestión de niveles</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Cree, elimine, modifique y configure los niveles de usuario de EcoAsistente.</span></h6>
     </div>
     <div class="container" id="top-container">
         <div class="row">
             <div class="container" id="option-left" data-toggle="modal" data-target="#altaNivelModal" onclick="setModalValues('{{max_level}}', '{{maxEP}}', '{{maxDescuento}}')">
-                <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Añadir nivel</p>
+                <div class="option-text">
+                    <p class="option-title">Añadir Nivel</p>
+                    <p class="text-box">Añadir un nuevo nivel de usuario al sistema</p>
+                </div>
+                <i class="fa fa-plus option-img" id="option-img-1"></i>
             </div>
             <div class="container" id="option-middle" onclick="modifyLevel()">
-                <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Modificar nivel</p>
+                <div class="option-text">
+                    <p class="option-title">Modificar Nivel</p>
+                    <p class="text-box">Modificar la configuración de un nivel de usuario</p>
+                </div>
+                <i class="fa fa-edit option-img" id="option-img-2"></i>
             </div>
             <div class="container" id="option-right" onclick="removeLevel()">
-                <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Eliminar nivel</p>
+                <div class="option-text">
+                    <p class="option-title">Eliminar Nivel</p>
+                    <p class="text-box">Eliminar un nivel de usuario ya registrado en el sistema</p>
+                </div>
+                <i class="fa fa-trash option-img"  id="option-img-3"></i>
             </div>
         </div>
     </div>
     <div class="container" id="table-container">
-        <div class="row">
+        <div class="row d-flex justify-content-center">
             <table class="table" id="content-table">
                 <thead style="border-top:none">
                 <tr>
@@ -88,8 +99,9 @@
             <div class="row" id="fieldsRow1Alta1">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
-                        <input type="text" hidden>
-                        <input class="data-show-input" type="text" id="numeroNivel" readonly> 
+                        <input type="text" required id="numeroNivel" onkeyup="validaNumero('{{max_level}}', 'alta')" name="numeroNivel" autocomplete="off"> 
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
                         <label>Número de Nivel</label>
                         <p id="numeroNivelError" class="modalErrorMessage">* No se puede modificar el nivel.</p>
                     </div>
@@ -108,7 +120,7 @@
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">  
                         <input type="text" hidden>    
-                        <input type="text" class="data-show-input-with-border" id="minEcoPuntos" name="minEcoPuntos" autocomplete="off" readonly>
+                        <input type="text" required id="minEcoPuntos" onkeypress="return isNumberKey(this, event);" onkeyup="validaMinEP('{{maxEP}}', 'alta')" name="minEcoPuntos" autocomplete="off">
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Mínimo EcoPuntos</label>
@@ -134,8 +146,8 @@
             </div>
         </form>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="btn" onclick="submitForm('altaNivelForm')" id="primary-btn">Crear nivel</button>
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn">Crear nivel</button>
         </div>
       </div>
     </div>
@@ -166,8 +178,8 @@
         </div>
         <input type="text" name="" id="numNivel" hidden>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
-          <button type="button" class="btn" onclick="baja_nivel();" id="primary-btn-alert">Eliminar nivel</button>
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
+          <button type="button" class="btn primary-btn-alert" onclick="baja_nivel();" id="primary-btn-alert">Eliminar nivel</button>
         </div>
       </div>
     </div>
@@ -226,15 +238,15 @@
                         <p id="maxEPNivelErrorMod" class="modalErrorMessage">* El máx. de EcoPuntos debe mayor {{maxEP + 1}}.</p>
                     </div>
                 </div>
-                <p id="warning-icon-mod"><i class="fa fa-exclamation-triangle"></i> La modifiación los EcoPuntos de un nivel puede generar cambios en otros niveles.</p>
+                <p id="warning-icon-mod"><i class="fa fa-exclamation-triangle"></i> La modificación los EcoPuntos de un nivel puede generar cambios en otros niveles.</p>
             </div>
             <div class="row">
                 <p class="bottom-modal-text" id="bottomModModalText">Una vez completados todos los datos, presione el botón "Modificar nivel" para modificar el nivel.</p>
             </div>
         </form>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-mod">Cancelar</button>
-          <button type="button" class="btn" onclick="mod_nivel()" id="primary-btn-mod">Modificar nivel</button>
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn-mod">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="mod_nivel()" id="primary-btn-mod">Modificar nivel</button>
         </div>
       </div>
     </div>

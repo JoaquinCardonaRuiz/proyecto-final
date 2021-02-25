@@ -2,6 +2,8 @@ from negocio.negocio import Negocio
 from data.data_material import DatosMaterial
 from data.data_cant_material import DatosCantMaterial
 import custom_exceptions
+from data.data_material import DatosMaterial
+
 
 class NegocioMaterial(Negocio):
     @classmethod
