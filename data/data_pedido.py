@@ -15,8 +15,8 @@ class DatosPedido(Datos):
                     idPedido, \
                     fechaEnc, \
                     fechaRet, \
-                    valTotal, \
-                    valPagoEP, \
+                    totalARS, \
+                    totalEP, \
                     idPunto, \
                     estado \
                     FROM pedidos WHERE idUsuario = {};").format(uid)
@@ -50,8 +50,8 @@ class DatosPedido(Datos):
                     idPedido, \
                     fechaEnc, \
                     fechaRet, \
-                    valTotal, \
-                    valPagoEP, \
+                    totalARS, \
+                    totalEP, \
                     idPunto, \
                     estado \
                     FROM pedidos WHERE estado != \"eliminado\";")
@@ -84,8 +84,8 @@ class DatosPedido(Datos):
                     idPedido, \
                     fechaEnc, \
                     fechaRet, \
-                    valTotal, \
-                    valPagoEP, \
+                    totalARS, \
+                    totalEP, \
                     idPunto, \
                     estado \
                     FROM pedidos WHERE estado != \"eliminado\" AND idPunto={};").format(idPR)
@@ -108,14 +108,14 @@ class DatosPedido(Datos):
 
 
     @classmethod
-    def add(cls,fechaEnc,fechaRet,valPagoEP,valTotal,idPR,uid):
+    def add(cls,fechaEnc,fechaRet,totalEP,totalARS,idPR,uid):
         """
         Agrega un pedido a la BD
         """
         cls.abrir_conexion()
         try:
-            sql= ("INSERT INTO pedidos (fechaEnc,fechaRet,valPagoEP,valTotal,idPunto,idUsuario,estado) \
-                   VALUES ({},{},{},{},{},{},\"disponible\");".format(fechaEnc,fechaRet,valPagoEP,valTotal,idPR,uid))
+            sql= ("INSERT INTO pedidos (fechaEnc,fechaRet,totalEP,totalARS,idPunto,idUsuario,estado) \
+                   VALUES ({},{},{},{},{},{},\"disponible\");".format(fechaEnc,fechaRet,totalEP,totalARS,idPR,uid))
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid

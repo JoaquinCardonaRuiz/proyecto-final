@@ -44,7 +44,8 @@
                 <thead style=" border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">ID</th>
-                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">P. de Retiro</th>
                     <th scope="col" class="table-heading">Articulos</th>
@@ -56,7 +57,8 @@
                     {%if p.estado == 'pendiente'%}                        
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">${{p.valorTotal}}</td>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             {%for pr in puntosRetiro%}
                                 {%if pr.id == p.idPuntoRetiro%}
@@ -83,7 +85,8 @@
                 <thead style=" border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">ID</th>
-                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">P. de Retiro</th>
                     <th scope="col" class="table-heading">Articulos</th>
@@ -96,7 +99,8 @@
                     {%if p.estado == 'preparado'%}
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.valorTotal}}</td>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             {%for pr in puntosRetiro%}
                                 {%if pr.id == p.idPuntoRetiro%}
@@ -124,7 +128,8 @@
                 <thead style=" border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">ID</th>
-                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">P. de Retiro</th>
                     <th scope="col" class="table-heading">Articulos</th>
@@ -137,7 +142,8 @@
                     {%if p.estado == 'listo'%}
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.valorTotal}}</td>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             {%for pr in puntosRetiro%}
                                 {%if pr.id == p.idPuntoRetiro%}

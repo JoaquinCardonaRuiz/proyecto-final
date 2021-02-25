@@ -25,8 +25,8 @@
     <!-- Heading -->
 
     <div class="container" id="heading-container">
-        <h1 class="heading">Gestión de Pedidos - Deposito</h1>
-        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Visualice y gestione los pedidos.</span></h6>
+        <h1 class="heading">Gestión de Pedidos - Depósito Central</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Visualice y gestione todos los pedidos.</span></h6>
     </div>
     
 
@@ -44,7 +44,8 @@
                 <thead style=" border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">ID</th>
-                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">P. de Retiro</th>
                     <th scope="col" class="table-heading">Articulos</th>
@@ -57,7 +58,8 @@
                     {%if p.estado == 'pendiente'%}                        
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">${{p.valorTotal}}</td>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             {%for pr in puntosRetiro%}
                                 {%if pr.id == p.idPuntoRetiro%}
@@ -65,8 +67,8 @@
                                 {%endif%}
                             {%endfor%}
                             <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
-                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'preparado')">Marcar Preparado</button></td>
-                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
+                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'preparado')">Preparado</button></td>
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Cancelar</button></td>
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -85,7 +87,8 @@
                 <thead style=" border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">ID</th>
-                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">P. de Retiro</th>
                     <th scope="col" class="table-heading">Articulos</th>
@@ -97,7 +100,8 @@
                     {%if p.estado == 'preparado'%}
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.valorTotal}}</td>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             {%for pr in puntosRetiro%}
                                 {%if pr.id == p.idPuntoRetiro%}
@@ -105,7 +109,7 @@
                                 {%endif%}
                             {%endfor%}
                             <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
-                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Cancelar</button></td>
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -124,7 +128,8 @@
                 <thead style=" border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">ID</th>
-                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">P. de Retiro</th>
                     <th scope="col" class="table-heading">Articulos</th>
@@ -136,7 +141,8 @@
                     {%if p.estado == 'listo'%}
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.valorTotal}}</td>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             {%for pr in puntosRetiro%}
                                 {%if pr.id == p.idPuntoRetiro%}
@@ -144,7 +150,7 @@
                                 {%endif%}
                             {%endfor%}
                             <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
-                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Cancelar</button></td>
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -164,7 +170,8 @@
                 <thead style=" border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">ID</th>
-                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">P. de Retiro</th>
                     <th scope="col" class="table-heading">Articulos</th>
@@ -175,7 +182,8 @@
                     {%if p.estado == 'cancelado'%}
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.valorTotal}}</td>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             {%for pr in puntosRetiro%}
                                 {%if pr.id == p.idPuntoRetiro%}

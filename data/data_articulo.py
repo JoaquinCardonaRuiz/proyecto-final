@@ -220,7 +220,7 @@ class DatosArticulo(Datos):
     @classmethod
     def update(cls,idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal):
         """
-        Agrega un articulo a la BD
+        Actualiza un articulo en la BD
         """
         cls.abrir_conexion()
         try:
@@ -232,5 +232,24 @@ class DatosArticulo(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_articulo.update()",
                                                     msj=str(e),
                                                     msj_adicional="Error actualizando un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def updateStock(cls,idTA,cant):
+        """
+        Actualiza el stock de un tipo articulo a la cantidad especificada
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE tiposArticulo stock={} WHERE idTipoArticulo={};").format(cant,idTA)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.updateStock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un articulo en la BD.")
         finally:
             cls.cerrar_conexion()

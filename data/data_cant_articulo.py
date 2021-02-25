@@ -68,8 +68,8 @@ class DatosCantArticulo(Datos):
         """
         Registra una cantidad de un articulo de un pedido en la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("INSERT INTO mat_ins (idTipoArticulo, idPedido, cantidad) \
                     VALUES ({},{},{});".format(idArt,idPed,cant))
             cls.cursor.execute(sql)
