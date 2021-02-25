@@ -272,7 +272,7 @@ h2 		 {
 #estado-activo{
     color: #7cc22b;
     font-size: 11px;
-
+}
 
 .color-activo{
     color: #7cc22b !important;
@@ -346,6 +346,7 @@ h2 		 {
 
 #ex1Slider .slider-selection {
 	background: #BABABA;
+}
 
 .scrollable-table {
     overflow: auto !important;

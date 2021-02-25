@@ -327,6 +327,7 @@ input:focus ~ .highlight {
   background-color: #95C22B !important;
   border-color: #95C22B !important;
   color: #95C22B !important;
+}
 
 .primary-btn{
     background-color: #95C22B !important;
@@ -604,7 +605,7 @@ input:focus ~ .highlight {
   transition: width 0.4s, height 0.4s, transform 0.4s;
   margin-top: 5%; 
   margin-left: 2%; 
-
+}
   
 .cards-row-materiales{
   transition: width 0.4s, height 0.4s, transform 0.4s;
@@ -667,14 +668,13 @@ input:focus ~ .highlight {
 #bottomAltaModalText{
   color: #888;
   transition: width 0.4s, height 0.4s, transform 0.4s;
-
+}
 .card-product .img-wrap {
   border-radius: 3px 3px 0 0;
   overflow: hidden;
   position: relative;
   height: 210px;
   text-align: center;
-
 }
 .card-product{
   max-height: 100%;
