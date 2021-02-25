@@ -92,32 +92,20 @@ class Usuario:
         self.estimacionesCO2 = estimacionesCO2
         self.estimacionesEnergia = estimacionesEnergia
 
-    def cargarEcopunto(self,):
-        """ """
-
-    def cargarDeposito(self,):
-        """ """
-
     def comprobarVencimientoDepositos(self,):
         """ """
     
-    def crearPedido(self,):
-        """ """
+    def calcularTotalEcopuntos(self):
+        """ 
+        Calcula los EcoPuntos del Usuario en base a sus depositos
+        """
+        for dep in self.depositosActivos:
+            ep = dep.ecoPuntos
 
-    def calcularTotalEcopuntos(self,):
-        """ """
 
     def calcularNivel(self,):
         """ """
 
-    def crearRecomendacionPlanta(self,):
-        """ """
-
-    def crearEstimacionCO2(self,):
-        """ """
-
-    def crearEstimacionEnergia(self,):
-        """ """
 
 class TipoUsuario:
     """ Representa los distintos tipos de usuario con los que cuenta el sistema, y guarda los

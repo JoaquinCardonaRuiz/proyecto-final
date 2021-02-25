@@ -110,3 +110,12 @@ class NegocioArticulo(Negocio):
     def get_recommendations(cls,id_articulo,carrito):
         filtro = [id_articulo] + [i.idTipoArticulo for i in carrito]
         return DatosArticulo.get_by_not_in_id_array_user(filtro,4)
+
+
+    @classmethod
+    def disminuirStock(cls,idTA,cant):
+        articulo = DatosArticulo.get_by_id(idTA)
+        nueva_cant = articulo.stock - cant
+        if nueva_cant < 0:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.disminuirStock()",msj="Stock insuficiente para realizar pedido")
+        DatosArticulo.updateStock(idTA,nueva_cant)
