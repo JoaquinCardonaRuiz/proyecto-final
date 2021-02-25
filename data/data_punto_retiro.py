@@ -45,7 +45,7 @@ class DatosPuntoRetiro(Datos):
                            demoraFija, \
                            nombre, \
                            idDireccion \
-                        FROM puntosRetiro WHERE estado != \"eliminado\";")
+                        FROM puntosRetiro WHERE estado != \"eliminado\" order by nombre ASC;")
             cls.cursor.execute(sql)
             puntos = cls.cursor.fetchall()
             puntosRetiro = []
@@ -61,3 +61,20 @@ class DatosPuntoRetiro(Datos):
                                                     msj_adicional="Error obtieniendo los puntos de retiro desde la BD.")
         finally:
             cls.cerrar_conexion()
+            
+            
+    @classmethod
+    def get_demora_promedio(cls):
+        """
+        Obtiene el promedio de espera de los punto retiros.
+        """        
+        try:
+            cls.abrir_conexion()
+            sql = "SELECT CEIL(AVG(demoraFija)) FROM puntosRetiro WHERE estado != \"eliminado\";"
+            cls.cursor.execute(sql)
+            demora = cls.cursor.fetchone()
+            return demora[0]
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_punto_retiro.get_demora_promedio()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo la demora promedio de la BD.")

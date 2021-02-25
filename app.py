@@ -1,12 +1,20 @@
 from flask import json
 from flask.json import JSONEncoder
-from classes import Horario
-from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect
+from classes import Horario, CantArticulo
+from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
+import traceback
+from flask_session import Session 
+from utils import Utils
+
+#app
 app = Flask(__name__)
+app.secret_key = 'SecretKeyForSigningCookies'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 #Session
 app.secret_key = 'myscretkey'
+Session(app)
 
 @app.route('/', methods = ['GET','POST'])
 def start():
@@ -14,7 +22,8 @@ def start():
 
 @app.route('/main', methods = ['GET','POST'])
 def main():
-    return render_template('main.html')
+    if valida_session(): return redirect(url_for('login'))
+    return render_template('main.html',usuario=session["usuario"])
 
 ''' 
     -----------------
@@ -24,7 +33,141 @@ def main():
 
 @app.route('/login', methods = ['GET','POST'])
 def login():
+    try: 
+        session["usuario"]
+        return redirect(url_for('main'))
+    except:
+        return render_template('login.html')
+
+@app.route('/login/auth/<email>/<password>', methods = ['GET','POST'])
+def authentication(email, password):
+    try:
+        session["usuario"] = NegocioUsuario.login(email, password)
+        return jsonify({"login-state":True})
+    except Exception as e:
+        return jsonify({"login-state":False})
+
     return render_template('login.html')
+
+@app.route('/logout/<val>', methods = ['GET','POST'])
+def logout(val):
+    if valida_session(): return redirect(url_for('login'))
+    if val == "true":
+        del session["usuario"]
+        return redirect(url_for('login'))
+    return render_template('login.html')
+
+''' 
+    -------
+    EcoTienda
+    -------
+'''
+
+@app.route('/eco-tienda')
+def eco_tienda():
+    try:
+        if valida_session(): return redirect(url_for('login'))
+        articulos = NegocioArticulo.get_all()
+        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+    except Exception as e:
+        return error(e, "eco-tienda")
+    return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel)
+
+
+@app.route('/eco-tienda/producto/<id>')
+def product_page(id):
+    try:
+        id = int(id)
+        producto = NegocioArticulo.get_by_id(id)
+
+        if "carrito" in session.keys():
+            carrito = session["carrito"]
+        else:
+            carrito = {}
+            session["carrito"] = carrito
+        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+        recomendaciones = NegocioArticulo.get_recommendations(id,Utils.carrito_to_list(session["carrito"]))
+        demora_prom = NegocioPuntoRetiro.get_demora_promedio()
+        valor_ep = NegocioEcoPuntos.get_valor_EP()
+        return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones, nivel = nivel, usuario = session["usuario"], valor_ep = valor_ep, demora_prom  = demora_prom)
+    except Exception as e:
+        return error(e, "eco-tienda")
+
+
+@app.route('/eco-tienda/producto/agregar', methods = ['GET','POST'])
+def agregar_carrito():
+    try:
+        if request.method == "POST":
+            cantidad = float(request.form['cantProd'])
+            id = str(request.form['idProd'])
+
+            if "carrito" not in session.keys():
+                session["carrito"] = {}
+
+            if id not in session["carrito"].keys():
+                session["carrito"][str(id)] = cantidad
+            
+            else:
+                session["carrito"][str(id)] += cantidad
+
+            return redirect(url_for("carrito"))
+    except Exception as e:
+        return error(e, "eco-tienda")
+
+@app.route('/eco-tienda/producto/eliminar', methods = ['GET','POST'])
+def eliminar_carrito():
+    try:
+        if request.method == "POST":
+            id = str(request.form['idEliminacion'])
+
+            if "carrito" not in session.keys():
+                raise Exception("La variable de sesión carrito no existe")
+
+            if id not in session["carrito"].keys():
+                raise Exception("Se eliminó un articulo que no estaba en el carrito")
+            
+            else:
+                del session["carrito"][str(id)]
+
+            return redirect(url_for("carrito"))
+    except Exception as e:
+        return error(e, "eco-tienda")
+
+@app.route('/eco-tienda/carrito')
+def carrito():
+    try:
+        if "carrito" not in session.keys():
+            session["carrito"] = {}
+        articulos = NegocioArticulo.get_by_id_array(session["carrito"].keys())
+        valor = 0
+        for articulo in articulos:
+              valor += int(session["carrito"][str(articulo.id)]) * articulo.valor
+        valor_ep = NegocioEcoPuntos.get_valor_EP()
+        demora_prom = NegocioPuntoRetiro.get_demora_promedio()
+        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+        usuario = session["usuario"]
+        val_tot_ep = round(valor * valor_ep * (1-nivel.descuento/100))
+        if val_tot_ep > 0: step = 100/val_tot_ep
+        else:  step = 1
+        puntos_retiro = NegocioPuntoRetiro.get_all()
+        carrito = Utils.carrito_to_list(session["carrito"])
+        
+        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, 
+                                valor_ep = valor_ep, demora_prom = demora_prom, valor = valor, nivel=nivel, 
+                                usuario = usuario, val_tot_ep = val_tot_ep, step = step, puntos_retiro = puntos_retiro)
+    except Exception as e:
+        return error(e, "eco-tienda")
+
+
+@app.route('/eco-tienda/checkout/confirmar/<idPR>/<totalEP>/<totalARS>')
+def confirmar_checkout(idPR, totalEP, totalARS):
+    try:
+        if "carrito" in session.keys() and session["carrito"] != {}:
+            return jsonify([idPR, totalARS, totalEP])
+            #NegocioPedido.add(carrito=session["carrito"], usuario = session["usuario"],puntoRetiro=idPR,valTotal=valTotal,proporcion=proporcion)
+    except Exception as e:
+        return error(e, "eco-tienda")
+
 
 ''' 
     -------
@@ -32,21 +175,17 @@ def login():
     -------
 '''
 
-
 @app.route('/gestion-niveles')
 def gestion_niveles():
     try:
+        if valida_session(): return redirect(url_for('login'))
         niveles = NegocioNivel.get_niveles()
         min_max_nivel = NegocioNivel.get_min_max_niveles()
         maxEP = NegocioNivel.get_max_ecoPuntos()
         maxDescuento = NegocioNivel.get_max_descuento()
     except Exception as e:
         return error(e, "gestion_niveles")
-    return render_template('gestion-niveles.html', 
-                            niveles = niveles, 
-                            min_nivel = min_max_nivel[0],
-
-    max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
+    return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0],max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
 
 @app.route('/gestion-niveles/alta', methods = ['GET','POST'])
 def alta_nivel():
@@ -103,6 +242,7 @@ def mod_nivel_request(id):
 @app.route('/gestion-ed', methods = ['GET','POST'])
 def gestion_ed():
     try:
+        if valida_session(): return redirect(url_for('login'))
         entidades = NegocioEntidadDestino.get_all()
     except Exception as e:
         return error(e,"gestion_ed")
@@ -181,7 +321,9 @@ def baja_entidad_destino(id):
 def error(err="", url_redirect="/main"):
     if err=="":
         err = "Ha habido un error inesperado. Por favor vuelva a intentarlo. \nSi el problema persiste, contacte a un administrador."
-    return render_template('error.html', err = err, url_redirect=url_redirect)
+    else:
+        ad = traceback.format_tb(err.__traceback__)
+    return render_template('error.html', err = err, aditional = ad,url_redirect=url_redirect)
 
 
 ''' 
@@ -192,12 +334,14 @@ def error(err="", url_redirect="/main"):
 
 @app.route('/elegir-tipo-punto', methods = ['GET','POST'])
 def selection():
+    if valida_session(): return redirect(url_for('login'))
     return render_template('elegir-tipo-punto.html')
 
 
 @app.route('/gestion-puntos-deposito', methods = ['GET','POST'])
 def gestion_pd():
     try:
+        if valida_session(): return redirect(url_for('login'))
         materiales = NegocioMaterial.get_all()
         puntos_deposito = NegocioPuntoDeposito.get_all()
         dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
@@ -303,11 +447,14 @@ def baja_pd():
 @app.route('/articulos', methods = ['GET','POST'])
 def gestion_articulos():
     try:
+        if valida_session(): return redirect(url_for('login'))
         articulos = NegocioArticulo.get_all()
         return render_template('gestion-articulos.html',articulos=articulos)
     except Exception as e:
         return error(e,"articulos")
 
+def valida_session():
+    return "usuario" not in session.keys()
 
 
 '''

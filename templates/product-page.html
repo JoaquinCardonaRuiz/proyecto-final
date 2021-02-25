@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    
+
+
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container product-info" id="heading-container">
+        <h1 class="heading">Detalles del Producto</h1>
+    </div>
+    <form action="{{url_for('agregar_carrito')}}" method="POST" id="add_to_cart">
+      <div class="container product-info" id="table-container">
+          <section class="mb-5">
+
+              <div class="row" style="padding-top: 4% !important;">
+                  <div class="col-md-6 mb-4 mb-md-0">
+              
+                      <div id="mdb-lightbox-ui"></div>
+              
+                      <div class="mdb-lightbox">
+              
+                      <div class="row product-gallery mx-1"> 
+              
+                          <div class="col-12 mb-0">
+                          <figure class="view overlay rounded z-depth-1 main-img">
+                              <a href="{{producto.imagen}}"
+                              data-size="710x823">
+                              <img src="{{producto.imagen}}" onerror="if (this.src != '/static/img/default-img.png') this.src = '/static/img/default-img.png';" class="img-fluid z-depth-1">
+                              </a>
+                          </figure>
+                          </div>
+                      </div>
+          
+                  </div>
+          
+              </div>
+              <div class="col-md-5">
+          
+                  <h5 class="product-page-prod-title">{{producto.nombre}}</h5>
+                  <div class="row">
+                    <div class="col">
+                      <p class="mb-1 text-muted text-uppercase small">Precio ARS</p>
+                      <p class="price-product-page"><span class="mr" id="precio-ars">{{producto.valor}}</span></p>
+                    </div>
+          
+                    <div class="col" style="margin-left: -45%;">
+                      <p class="mb-1 text-muted text-uppercase small">Precio EcoPuntos</p>
+                      <p class="price-product-page"><span class="mr" id="precio-ep">{{producto.valor * valor_ep}}</span><img src="/static/img/econpuntos-logo.png" class="product-page-img"></p>
+                    </div>
+                    
+                  </div>
+                  <hr style="margin-top: -0.5%;">
+
+                  <div class="table-responsive">
+                  <table class="table table-sm table-borderless mb-0">
+                      <tbody>
+                          <tr>
+                              <th class="pl-0 w-25" scope="row"><strong>Stock</strong></th>
+                              <td>Hay <span id="product-stock">{{producto.stock}}</span> {{producto.unidadMedida|lower}} en stock</td>
+                          </tr>
+                          <tr>
+                              <th class="pl-0 w-25" scope="row"><strong>Retiro</strong></th>
+                              {%if demora_prom > 1%}
+                              <td>Puede retirarlo en aprox {{demora_prom}} días</td>
+                              {%else%}
+                              <td>Puede retirarlo en aprox {{demora_prom}} día</td>
+                              {%endif%}
+                          </tr>
+                          <tr>
+                              <th class="pl-0 w-25" scope="row"><strong>Descuento</strong></th>
+                              <td>{{nivel.descuento}}% con sus EcoPuntos (Nivel {{nivel.nombre}})</td>
+                          </tr>
+                      </tbody>
+                  </table>
+                  </div>
+                  <hr>
+                  <div class="table-responsive" style="margin-bottom: -15%;">
+                      <table class="table table-sm table-borderless">
+                        <tbody>
+                          <tr>
+                            <td class="pl-0 pb-0 w-25">Cantidad</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-0">
+                              <div class="def-number-input number-input safari_only mb-0" style="display: flex;">
+                                  <div class="group" style="width: 30%; margin-top: 2%;">
+                                      <input type="number" required id="cantProd" name="cantProd" onkeydown="if(event.key==='.' || event.key===','){event.preventDefault();}" min="0" value="1" max="{{producto.stock}}" autocomplete="off" style="width: 90%; background-color: transparent; text-align: center; height: 35px;" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');setMinCantVal({{producto.valor * valor_ep}},value, {{nivel.descuento}},{{producto.stock}}), setTotalVal({{producto.valor * valor_ep}}, value, {{nivel.descuento}});"> 
+                                      <span class="highlight" style="width: 90%;"></span>
+                                      <span class="bar" style="width: 90%;"></span>
+                                  </div>
+                                  <p style="float: right; margin-top: 18px !important;">{{producto.unidadMedida}}</p>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                  </div>
+                  <hr>
+                  <div class="table-responsive" style="margin-bottom: -15px;">
+                      <p class="product-page-total-price-label" style="float: left;">Total</p>
+                      <p class="product-page-total-price">
+                        <del class="price-old-product-page" id="old-value">{{producto.valor * valor_ep}}</del>
+                        <span class="mr" id="total-value">{{producto.valor * valor_ep * (1 - nivel.descuento/100)}}</span>
+                        <img src="/static/img/econpuntos-logo.png" class="product-page-img-total">
+                        <br>
+                        <span class="product-save">Ahorrás <span id="ep-savings">{{producto.valor * valor_ep - (producto.valor * valor_ep * (1 - nivel.descuento/100))}}</span> EcoPuntos</span>
+                      </p>
+                  </div>
+
+                  <button type="button" class="btn primary-btn btn-md mr-1 mb-2" style="border: none !important;" onclick="addToCart();"><spanf>Comprar ahora</span> </button>
+                  <button type="button" class="btn secondary-btn btn-md mr-1 mb-2" style="border: none !important;">
+                      <i class="fas fa-shopping-cart pr-2"></i>
+                      <spa>Añadir al carrito</span> 
+                  </button>
+                  </button>
+              </div>
+              </div>
+          
+          </section>
+          <input type="text" name="idProd" hidden value="{{producto.id}}">
+          <!--Section: Block Content-->
+        <section>
+
+          <h3 class="text-center mt-4 pt-5">Otros productos</h3>
+
+          <!-- Grid row -->
+          <div class="row mt-5 mb-4">
+
+            {%for articulo in recomendaciones%}
+            <!-- Grid column -->
+            <div class="col-md-6 col-lg-3 mb-4">
+
+              <!-- Card -->
+              <div class="product-card">
+                <div class="other-product-card">
+                  <div class="view zoom z-depth-2 rounded">
+                    <div class="container other-product-img-container d-flex justify-content-center" onclick="redirect('/eco-tienda/producto/{{articulo.id}}')">
+                      <img src="{{articulo.imagen}}" class="other-product-img" onerror="if (this.src != '/static/img/default-img.png') this.src = '/static/img/default-img.png';">
+                    </div>
+                  </div>
+    
+                  <div class="text-center pt-4">
+    
+                    <h5 class="mb-0">{{articulo.nombre}}</h5>
+                    <h6 class="mb-3">${{articulo.valor}}</h6>
+                  </div>
+                </div>
+                <button type="button" class="btn secondary-btn btn-sm waves-effect waves-light" style="width: 100%;"><i class="fas fa-info-circle pr-2"></i>Ver detalles</button>
+                
+
+              </div>
+              <!-- Card -->
+
+            </div>
+            <!-- Grid column -->
+            {%endfor%}
+
+          </div>
+          <!-- Grid row -->
+
+        </section>
+        <!--Section: Block Content-->
+
+      </div>
+    </form>
+  <!-- Main layout -->
+</div>
+
+</div>
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script src="./Material Design Bootstrap_files/jquery-3.4.1.min.js.descarga"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="./Material Design Bootstrap_files/popper.min.js.descarga"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="./Material Design Bootstrap_files/bootstrap.js.descarga"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="./Material Design Bootstrap_files/mdb.min.js.descarga"></script>
+  <!-- MDB Ecommerce JavaScript -->
+  <script type="text/javascript" src="./Material Design Bootstrap_files/mdb.ecommerce.min.js.descarga"></script>
+  <script src="/static/js/product-page.js"></script>
+
+{% endblock %}

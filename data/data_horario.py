@@ -8,7 +8,7 @@ class DatosHorario(Datos):
     @classmethod
     def get_horariosPD_id(cls, idPunto, noClose = False):
         """
-        Obtiene todos los Puntos de Depósito de la BD.
+        Obtiene todos los horarios de un Punto de Depósito de la BD.
         """
         cls.abrir_conexion()
         try:
@@ -77,7 +77,6 @@ class DatosHorario(Datos):
             if not(noClose):
                 cls.cerrar_conexion()
 
-        
 
     @classmethod
     def get_horariosPR_id(cls, idPunto, noClose = False):
@@ -109,3 +108,4 @@ class DatosHorario(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+

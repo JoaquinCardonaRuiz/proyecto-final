@@ -41,6 +41,7 @@
     font-family: 'Hind', sans-serif;
     transition: width 0.5s, height 0.5s, transform 0.5s;
     margin-top: 30px;
+    color: rgb(90, 90, 90);
 }
 
 .login-img{
