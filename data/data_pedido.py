@@ -5,7 +5,7 @@ import custom_exceptions
 
 class DatosPedido(Datos):
     @classmethod
-    def get_by_user_id(cls,uid):
+    def get_by_user_id(cls,uid,noClose=False):
         """
         Obtiene todos los pedidos de un usuario de la BD.
         """
@@ -34,7 +34,8 @@ class DatosPedido(Datos):
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo los pedidos de un usuario desde la BD.")
         finally:
-            cls.cerrar_conexion()
+            if not(noClose):
+                cls.cerrar_conexion()
 
 
     @classmethod
