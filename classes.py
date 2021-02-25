@@ -662,7 +662,7 @@ class PuntoRetiro:
         stock (CantArticulo[]): Arreglo de articulos que se poseen en stock.
         demoraFija (Time): Cantidad de tiempo que tarda en prepararse un pedido.
     """
-    def __init__(self,direccion,nombre,estado,horarios,demoraFija,stock=[]):
+    def __init__(self,id,direccion,nombre,estado,horarios,demoraFija,stock=[]):
         self.id = id
         self.direccion = direccion
         self.nombre = nombre 

@@ -231,7 +231,7 @@
                         {%for pr in puntos_retiro%}
                             <div class="container pr-card" id="" onclick="redirect('retiro')">
                                 <i class="fa fa-map-marker-alt fa-3x" style="float: left;" id="option-img-puntos"></i>
-                                <p class="option-title-cards-pr">Puntos de Retiro</p>
+                                <p class="option-title-cards-pr">{{pr.nombre}}</p>
                                 <p class="option-description">Direccion.</p>
                             </div>
                         {%endfor%}
