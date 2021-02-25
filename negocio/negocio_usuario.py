@@ -1,5 +1,6 @@
 from negocio.negocio import Negocio
 import custom_exceptions
+from negocio.negocio_ecopuntos import NegocioEcoPuntos
 from data.data_usuario import DatosUsuario
 
 import re
@@ -56,3 +57,36 @@ class NegocioUsuario(Negocio):
                 raise custom_exceptions.ErrorDeNegocio(origen="negocio.actualiza_nivel_all()",
                                                         msj=str(e),
                                                         msj_adicional="Error en la capa de negocio actualizando el nivel de todos los usuarios.")
+
+
+
+    @classmethod
+    def useEP(cls,id, totalEP):
+        user = DatosUsuario.get_by_id(id)
+        nueva_cant_ep = user.totalEcopuntos - totalEP
+        if nueva_cant_ep < 0:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.useEP()",msj="EP insuficientes para realizar pedido")
+        ep_restantes = totalEP
+        deps_ordenados = sorted(user.depositosActivos, key=lambda x: x.fechaDeposito)
+        
+        #para cada deposito
+        for dep in deps_ordenados:
+
+            #agarro los EP que le corresponden y su cantidad restante
+            ep = dep.ecoPuntos
+            cant_rest = ep.cantidadRestante
+
+            #si la cantidad restante es 0, entonces sigo de largo
+            if cant_rest == 0:
+                continue
+
+            #si la cantidad restante alcanza para cubrir los EP que gasto el usuario, termino el loop y actualizo ese deposito
+            elif cant_rest >= ep_restantes:
+                NegocioEcoPuntos.updateEps(ep.id, cant = cant_rest-ep_restantes)
+                break
+
+            #sino alcanza, actualizo ese deposito y sigo con el siguiente
+            else:
+                NegocioEcoPuntos.updateEps(ep.id, cant = 0)
+                ep_restantes -= cant_rest
+            

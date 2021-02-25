@@ -74,3 +74,17 @@ class ErrorDeNegocio(CustomBaseException):
 
         super().__init__(origen,msj,msj_adicional)
         self.nombre = "Error de negocio."
+
+
+
+
+class ErrorDePago(CustomBaseException):
+    """ Excepción correspondiente a un error durante el procesamiento de un pago"""
+
+    def __init__(self, 
+                origen, 
+                msj="Esta excepción fue elevada manualmente", 
+                msj_adicional="No hay mensajes adicionales"):
+
+        super().__init__(origen,msj,msj_adicional)
+        self.nombre = "Error de pago."

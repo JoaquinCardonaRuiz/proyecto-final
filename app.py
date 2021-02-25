@@ -3,6 +3,7 @@ from flask.json import JSONEncoder
 from classes import Horario, CantArticulo
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
+from custom_exceptions import ErrorDePago
 from classes import CantMaterial
 import traceback
 from flask_session import Session 
@@ -166,8 +167,11 @@ def confirmar_checkout(idPR, totalEP, totalARS):
     try:
         if "carrito" in session.keys() and session["carrito"] != {}:
             NegocioPedido.add(session["carrito"],session["usuario"],idPR,float(totalEP),float(totalARS))
+            return jsonify("exito")
         else:
             raise Exception("Carrito vacio")
+    except ErrorDePago:
+        return jsonify("error_pago")
     except Exception as e:
         return error(e, "eco-tienda")
 
@@ -262,7 +266,7 @@ def get_articulos():
                       "stock":          a.stock,
                       "valor":          a.valor.valor}
                       for a in articulos]
-        return arts_json
+        return jsonify(arts_json)
     except Exception as e:
         return error(e,"gestion_ed")
 

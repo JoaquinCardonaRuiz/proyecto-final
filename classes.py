@@ -70,7 +70,6 @@ class Usuario:
                 depositosActivos=[],
                 depositosVencidos=[],
                 pedidos=None,
-                totalEcopuntos=0,
                 idNivel=None,
                 recomendacionesPlantas=[],
                 estimacionesCO2=[],
@@ -86,7 +85,7 @@ class Usuario:
         self.depositosActivos = depositosActivos
         self.depositosVencidos = depositosVencidos
         self.pedidos = pedidos
-        self.totalEcopuntos = totalEcopuntos
+        self.totalEcopuntos = 0
         self.idNivel = idNivel
         self.recomendacionesPlantas = recomendacionesPlantas
         self.estimacionesCO2 = estimacionesCO2
@@ -99,8 +98,10 @@ class Usuario:
         """ 
         Calcula los EcoPuntos del Usuario en base a sus depositos
         """
+        self.totalEcopuntos = 0
         for dep in self.depositosActivos:
             ep = dep.ecoPuntos
+            self.totalEcopuntos += ep.cantidadRestante
 
 
     def calcularNivel(self,):

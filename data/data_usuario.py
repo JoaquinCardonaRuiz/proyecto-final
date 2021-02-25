@@ -18,7 +18,6 @@ class DatosUsuario(Datos):
                 usuarios.nroDoc, \
                 usuarios.nombre, \
                 usuarios.apellido, \
-                usuarios.totalEP, \
                 usuarios.email, \
                 usuarios.password, \
                 usuarios.idTipoUsuario, \
@@ -31,12 +30,13 @@ class DatosUsuario(Datos):
             usuarios = cls.cursor.fetchall()
             if len(usuarios) > 0:
                 usu = usuarios[0]
-                direc = DatosDireccion.get_one_id(usu[9])
+                direc = DatosDireccion.get_one_id(usu[8])
                 depositos = DatosDeposito.get_by_user_id(usu[0])
                 da = [d for d in depositos if d.isActivo()]
                 dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[8],usu[2],usu[3],usu[6],usu[7],direc,da,dv,ped,usu[4],usu[10])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9])
+                usuario.calcularTotalEcopuntos()
                 return usuario
             else:
                 raise custom_exceptions.ErrorDeConexion(origen="data_usuario.login()",
@@ -64,7 +64,6 @@ class DatosUsuario(Datos):
                 usuarios.nroDoc, \
                 usuarios.nombre, \
                 usuarios.apellido, \
-                usuarios.totalEP, \
                 usuarios.email, \
                 usuarios.password, \
                 usuarios.idTipoUsuario, \
@@ -76,13 +75,13 @@ class DatosUsuario(Datos):
             usuarios = cls.cursor.fetchall()
             if len(usuarios) > 0:
                 usu = usuarios[0]
-                direc = DatosDireccion.get_one_id(usu[9])
+                direc = DatosDireccion.get_one_id(usu[8])
                 depositos = DatosDeposito.get_by_user_id(usu[0])
-                #TODO: programar isActivo()
                 da = [d for d in depositos if d.isActivo()]
                 dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[8],usu[2],usu[3],usu[6],usu[7],direc,da,dv,ped,usu[4],usu[10])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9])
+                usuario.calcularTotalEcopuntos()
                 return usuario
             else:
                 raise custom_exceptions.ErrorDeConexion(origen="data_usuario.get_by_id()",
