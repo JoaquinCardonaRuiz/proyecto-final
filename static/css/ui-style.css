@@ -95,7 +95,6 @@
     margin-top: 15px;
 }
 
-
 /*
 @font-face {font-family: "Cordia New"; src: url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.eot"); 
     src: url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.eot?#iefix") format("embedded-opentype"), 
@@ -122,6 +121,7 @@
     border-radius: 5px;;
     height: fit-content;
 }
+
 
 #product-container{
     width: 97%; 
@@ -267,6 +267,7 @@ h2 		 {
     border:2px solid #95C22B;
     cursor: pointer;
 }
+
 
 .color-activo{
     color: #7cc22b !important;

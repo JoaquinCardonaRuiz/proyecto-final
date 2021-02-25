@@ -453,6 +453,63 @@ def gestion_articulos():
     except Exception as e:
         return error(e,"articulos")
 
+
+      
+''' 
+    -----------------
+    Materiales
+    -----------------
+'''
+
+@app.route('/materiales', methods = ['GET','POST'])
+def gestion_materiales():
+    try:
+        materiales = NegocioMaterial.get_all()
+        return render_template('gestion-materiales.html',materiales=materiales)
+    except Exception as e:
+        return error(e,"materiales")
+
+
+@app.route('/materiales/alta', methods = ['GET','POST'])
+def alta_material():
+    if request.method == 'POST':
+        nombre =                request.form['nombre']
+        unidad =                request.form['unidad']
+        costoRecoleccion =      request.form['costoRecoleccion']
+        color =                 request.form['color']
+        estado =                request.form['estado']
+        try:
+            NegocioMaterial.add(nombre,unidad,costoRecoleccion,color,estado)
+        except Exception as e:
+            return error(e,"materiales")
+        return redirect(url_for('gestion_materiales'))
+
+
+@app.route('/materiales/edit', methods = ['GET','POST'])
+def edit_material():
+    if request.method == 'POST':
+        idMat =                 request.form["id"]
+        nombre =                request.form['nombre']
+        unidad =                request.form['unidad']
+        costoRecoleccion =      request.form['costoRecoleccion']
+        color =                 request.form['color']
+        estado =                request.form['estado']
+        try:
+            NegocioMaterial.update(idMat,nombre,unidad,costoRecoleccion,color,estado)
+        except Exception as e:
+            return error(e,"materiales")
+        return redirect(url_for('gestion_materiales'))
+
+
+@app.route('/materiales/baja/<id>')
+def baja_material(id):
+    id = int(id)
+    try:
+        NegocioMaterial.delete(id)
+    except Exception as e:
+        return error(e,"materiales")
+    return redirect(url_for('gestion_materiales'))
+=======
 def valida_session():
     return "usuario" not in session.keys()
 

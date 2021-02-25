@@ -840,9 +840,3 @@ class Direccion:
         self.ciudad = ciudad
         self.provincia = provincia
         self.pais = pais
-
-
-
-
-
-

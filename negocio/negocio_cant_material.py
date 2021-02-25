@@ -1,5 +1,6 @@
-from negocio.negocio import Negocio
+from data.data import Datos
+from classes import CantMaterial
 import custom_exceptions
 
-class NegocioCantMaterial(Negocio):
+class NegocioCantMaterial(Datos):
     pass

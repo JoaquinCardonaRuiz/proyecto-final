@@ -1,18 +1,51 @@
 .center-label{
-    margin-left: 125px;
-    margin-bottom: 10px;
-  }
+  margin-left: 125px;
+  margin-bottom: 10px;
+}
 
 .inline-label{
-  display:inline;
-  justify-self: right !important;
-  align-self: right !important;
-  margin-left: 250px;
+display:inline;
+justify-self: right !important;
+align-self: right !important;
+margin-left: 250px;
 }
 
 .data-show-input{
-  border-bottom: none !important;
+border-bottom: none !important;
+box-shadow:rgb(100, 100, 100) !important;
+}
+
+.btn {
+  text-transform: none !important;
+}
+
+.btn-aceptar{
+  background-color: #95C22B !important;
+    color: #fff !important;
+}
+
+.btn-custom{
+  cursor: default !important;
+  background-color: #FFF !important;
+  border-radius: 4px !important;
+  border-color: transparent !important;
+  border-width: 0px !important;
+  border: none !important;
+  margin-top:8px !important;
+  text-align: left !important;
+  vertical-align: center;
   box-shadow:rgb(100, 100, 100) !important;
+}
+
+.dropdown-li{
+  list-style-position:inside;
+  border-bottom: 1px solid lightgray;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+  height:30px;
+  margin-bottom:10px;
+
 }
 
 .btn {
@@ -49,30 +82,213 @@
   }
   
 .dropdown-link{
-    color: #888;
-    margin-left: 12px;
+  color: #888;
+  margin-left: 12px;
 }
-  
+
 .custom-center-col{
-    display: grid !important;
-    justify-content: center !important;
+  display: grid !important;
+  justify-content: center !important;
 }
-  
+
 .wide-input{
-    width:400px !important;
+  width:400px !important;
 }
-  
+
 .wide-bar{
-    width: 400px !important;
+  width: 400px !important;
 }
 
 #dd-art-btn-1{
-  width:230px;
+width:230px;
 }
 
 #dd-fill-1{
-  width: 230px;
+width: 230px;
 }
+
+.primary-btn{
+background-color: #95C22B !important;
+color: #fff !important;
+}
+
+.primary-btn:hover{
+background-color: #87af28 !important;
+}
+
+.primary-btn-mod{
+background-color: #95C22B;
+color: #fff;
+}
+
+.primary-btn-mod:hover{
+background-color: #87af28;
+}
+
+.primary-btn-alert{
+background-color: #f14e4e;
+color: #fff;
+}
+
+.primary-btn-alert:hover{
+background-color: #cf4545;
+color: #fff;
+}
+
+.secondary-btn:hover{
+background-color: #ebebeb;
+}
+
+.secondary-btn-mod:hover{
+background-color: #ebebeb;
+}
+
+.secondary-btn-baja:hover{
+background-color: #ebebeb;
+}
+
+#primary-btn{
+  background-color: #95C22B;
+  color: #fff;
+}
+
+#primary-btn:hover{
+background-color: #87af28;
+}
+
+#primary-btn-mod{
+background-color: #95C22B;
+color: #fff;
+}
+
+#primary-btn-mod:hover{
+background-color: #87af28;
+}
+
+#primary-btn-alert{
+background-color: #f14e4e;
+color: #fff;
+}
+
+#primary-btn-alert:hover{
+background-color: #cf4545;
+color: #fff;
+}
+
+#secondary-btn:hover{
+  background-color: #ebebeb;
+}
+
+#secondary-btn-mod:hover{
+background-color: #ebebeb;
+}
+
+#secondary-btn-baja:hover{
+background-color: #ebebeb;
+}
+
+/* form starting stylings ------------------------------- */
+.group 			  { 
+  position:relative; 
+  margin-bottom:45px; 
+}
+input 				{
+  font-size:18px;
+  padding:10px 10px 10px 5px;
+  display:block;
+  width:300px;
+  border:none;
+  border-bottom:1px solid #c3f550;;
+}
+input:focus 		{ outline:none;   border-bottom:1px solid #95C22B;}
+
+/* LABEL ======================================= */
+label 				 {
+  color:#999; 
+  font-size:18px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:10px;
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+
+}
+
+/* active state */
+input:focus ~ label, input:valid ~ label 		{
+  top:-20px;
+  font-size:14px;
+  color:#95C22B;
+}
+
+/* BOTTOM BARS ================================= */
+.bar 	{ position:relative; display:block; width:300px; }
+.bar:before, .bar:after 	{
+  content:'';
+  height:2px; 
+  width:0;
+  bottom:1px; 
+  position:absolute;
+  background:#95C22B; 
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%; 
+}
+
+/* active state */
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+  width:50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+  position:absolute;
+  height:60%; 
+  width:100px; 
+  top:25%; 
+  left:0;
+  pointer-events:none;
+  opacity:0.5;
+}
+
+/* active state */
+input:focus ~ .highlight {
+  -webkit-animation:inputHighlighter 0.3s ease;
+  -moz-animation:inputHighlighter 0.3s ease;
+  animation:inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+    from { background:#95C22B; }
+  to 	{ width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+    from { background:#95C22B; }
+  to 	{ width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+    from { background:#95C22B; }
+  to 	{ width:0; background:transparent; }
+}
+
+* { box-sizing:border-box; }
+
+
+
+.custom-control-input{
+  background-color: #95C22B !important;
+  border-color: #95C22B !important;
+  color: #95C22B !important;
 
 .primary-btn{
     background-color: #95C22B !important;
