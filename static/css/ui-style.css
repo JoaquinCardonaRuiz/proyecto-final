@@ -286,3 +286,9 @@ h2 		 {
     margin-right: auto;
     background-color: rgb(226, 192, 128);
 }
+
+.scrollable-table {
+    overflow: auto !important;
+    overflow-x: hidden !important;
+    max-height: 500px !important;
+}

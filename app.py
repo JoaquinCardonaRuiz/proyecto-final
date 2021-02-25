@@ -309,6 +309,56 @@ def gestion_articulos():
         return error(e,"articulos")
 
 
+
+'''
+    -----------------
+    Gestion de Pedidos
+    -----------------
+'''
+
+@app.route('/elegir-PR')
+def elegirPR():
+    try:
+        puntosRetiro = NegocioPuntoRetiro.get_all()
+        return render_template('elegir-PR.html',puntosRetiro = puntosRetiro)
+    except Exception as e:
+        return error(e,"pedidos")
+
+@app.route('/gestion-pedidos/deposito')
+def deposito():
+    try:
+        pedidos = NegocioPedido.get_all()
+        puntosRetiro = NegocioPuntoRetiro.get_all()
+        return render_template('deposito.html',pedidos = pedidos,puntosRetiro=puntosRetiro)
+    except Exception as e:
+        return error(e,"pedidos")
+
+@app.route('/gestion-pedidos/pr/<id>')
+def pedidosPR(id):
+    try:
+        pedidos = NegocioPedido.get_by_idPR(int(id))
+        puntoRetiro = NegocioPuntoRetiro.get_by_id(int(id))
+        return render_template('pedidosPR.html',pedidos = pedidos,puntoRetiro=puntoRetiro)
+    except Exception as e:
+        return error(e,"pedidos")
+
+
+@app.route('/gestion-pedidos/actualizar', methods = ['GET','POST'])
+def update_estado_pedido():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idInput"])
+            estado = request.form["estadoInput"]
+            pr = int(request.form["idPRInput"])
+            NegocioPedido.update_estado(id,estado)
+            if pr == 0:
+                return redirect(url_for("deposito"))
+            else:
+                return redirect("/gestion-pedidos/pr/"+str(pr))
+    except Exception as e:
+        return error(e,"pedidos")
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
