@@ -727,3 +727,28 @@
   text-decoration: none;
 }
 
+.pr-card{
+  width: 70%;
+  margin-left: 0%; 
+  border-radius: 5px;
+  height: 80px;
+  border:2px solid transparent;
+  background-color: #fff;
+  box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3%;
+}
+
+.option-title-cards-pr {
+  margin: 0;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: 17px !important;
+  font-family: 'Work Sans', sans-serif !important;
+  margin-right: 14%;
+  text-align: left;
+  margin-left: 15%;
+  top: 39%;
+  font-size: 23px;
+}

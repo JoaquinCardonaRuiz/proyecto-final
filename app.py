@@ -148,7 +148,10 @@ def carrito():
         usuario = session["usuario"]
         val_tot_ep = round(valor * valor_ep * (1-nivel.descuento/100))
         step = 100/val_tot_ep
-        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, valor_ep = valor_ep, demora_prom = demora_prom, valor = valor, nivel=nivel, usuario = usuario, val_tot_ep = val_tot_ep, step = step)
+        puntos_retiro = NegocioPuntoRetiro.get_all()
+        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, 
+                                valor_ep = valor_ep, demora_prom = demora_prom, valor = valor, nivel=nivel, 
+                                usuario = usuario, val_tot_ep = val_tot_ep, step = step, puntos_retiro = puntos_retiro)
     except Exception as e:
         return error(e, "eco-tienda")
 
