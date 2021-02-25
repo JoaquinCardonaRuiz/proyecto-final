@@ -77,13 +77,14 @@ class DatosHorario(Datos):
             if not(noClose):
                 cls.cerrar_conexion()
 
+
     @classmethod
     def get_horariosPR_id(cls, idPunto, noClose = False):
         """
         Obtiene los horarios de un Punto de Retiro de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("select * from horariosPR  where idPunto = %s")
             values = (idPunto,)
             cls.cursor.execute(sql, values)
@@ -107,4 +108,4 @@ class DatosHorario(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
-        
+

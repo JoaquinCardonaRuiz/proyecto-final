@@ -10,9 +10,17 @@ class NegocioPuntoRetiro(Negocio):
         except Exception as e:
             raise e
 
+
     @classmethod
     def get_demora_promedio(cls):
         try:
             return DatosPuntoRetiro.get_demora_promedio()
+        except Exception as e:
+            raise e
+
+    @classmethod
+    def get_by_id(cls,id):
+        try:
+            return DatosPuntoRetiro.get_by_id(id)
         except Exception as e:
             raise e

@@ -8,8 +8,8 @@ class DatosCantArticulo(Datos):
         """
         Obtiene los articulos de un pedido de la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT \
                     cantidad, \
                     idTipoArticulo \

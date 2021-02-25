@@ -659,10 +659,10 @@ class PuntoRetiro:
         nombre (string): Nombre de la ubicación para identificación por parte del usuario.
         estado (bool): Verdadero si el punto esta habilitado, falso sino.
         horarios (Horario[7]): Arreglo de horarios en los que permanece abierto el punto.
-        stock (CantArticulo[]): Arreglo de articulos que se poseen en stock.
         demoraFija (Time): Cantidad de tiempo que tarda en prepararse un pedido.
     """
-    def __init__(self,id,direccion,nombre,estado,horarios,demoraFija,stock=[]):
+
+    def __init__(self,id,direccion,nombre,estado,horarios,demoraFija):
         self.id = id
         self.direccion = direccion
         self.nombre = nombre 

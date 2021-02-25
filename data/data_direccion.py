@@ -9,8 +9,8 @@ class DatosDireccion(Datos):
         """
         Obtiene una dirección por su ID de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("select * from direcciones where idDireccion = %s")
             values = (idDireccion,)
             cls.cursor.execute(sql, values)

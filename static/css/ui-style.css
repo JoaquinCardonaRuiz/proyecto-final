@@ -306,6 +306,12 @@ h2 		 {
     background-color: rgb(226, 192, 128);
 }
 
+
 #ex1Slider .slider-selection {
 	background: #BABABA;
+
+.scrollable-table {
+    overflow: auto !important;
+    overflow-x: hidden !important;
+    max-height: 500px !important;
 }
