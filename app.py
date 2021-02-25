@@ -165,8 +165,9 @@ def carrito():
 def confirmar_checkout(idPR, totalEP, totalARS):
     try:
         if "carrito" in session.keys() and session["carrito"] != {}:
-            return jsonify([idPR, totalARS, totalEP])
-            #NegocioPedido.add(carrito=session["carrito"], usuario = session["usuario"],puntoRetiro=idPR,valTotal=valTotal,proporcion=proporcion)
+            NegocioPedido.add(session["carrito"],session["usuario"],idPR,float(totalEP),float(totalARS))
+        else:
+            raise Exception("Carrito vacio")
     except Exception as e:
         return error(e, "eco-tienda")
 

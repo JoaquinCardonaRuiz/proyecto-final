@@ -92,32 +92,20 @@ class Usuario:
         self.estimacionesCO2 = estimacionesCO2
         self.estimacionesEnergia = estimacionesEnergia
 
-    def cargarEcopunto(self,):
-        """ """
-
-    def cargarDeposito(self,):
-        """ """
-
     def comprobarVencimientoDepositos(self,):
         """ """
     
-    def crearPedido(self,):
-        """ """
+    def calcularTotalEcopuntos(self):
+        """ 
+        Calcula los EcoPuntos del Usuario en base a sus depositos
+        """
+        for dep in self.depositosActivos:
+            ep = dep.ecoPuntos
 
-    def calcularTotalEcopuntos(self,):
-        """ """
 
     def calcularNivel(self,):
         """ """
 
-    def crearRecomendacionPlanta(self,):
-        """ """
-
-    def crearEstimacionCO2(self,):
-        """ """
-
-    def crearEstimacionEnergia(self,):
-        """ """
 
 class TipoUsuario:
     """ Representa los distintos tipos de usuario con los que cuenta el sistema, y guarda los
@@ -680,8 +668,8 @@ class Pedido:
         fechaEncargo (Date): Fecha en la que el pedido fue realizado.
         fechaRetiro (Date): Fecha en la que el pedido puede ser retirado.
         articulos (CantArticulo []): Conjunto de Articulos que posee el pedido.
-        valorTotal (Float): Valor total del pedido, en pesos.
-        valorPagoEcoPuntos (Float): Valor del pedido que fue abonado en forma de EcoPuntos.
+        totalARS (Float): Valor del pedido que fue pagado en pesos.
+        totalEP (Float): Valor del pedido que fue abonado en forma de EcoPuntos.
         idPuntoRetiro (string): Identificador del punto de retiro donde podrá ser retirado el 
             pedido.
         estado (int): numero que identifica el estado en el que se encuentra el pedido.
@@ -691,16 +679,16 @@ class Pedido:
                 fechaEncargo,
                 fechaRetiro,
                 articulos,
-                valorTotal,
-                valorPagoEcoPuntos,
+                totalARS,
+                totalEP,
                 idPuntoRetiro,
                 estado):
         self.id = id
         self.fechaEncargo = fechaEncargo
         self.fechaRetiro = fechaRetiro
         self.articulos = articulos
-        self.valorTotal = valorTotal
-        self.valorPagoEcoPuntos = valorPagoEcoPuntos
+        self.totalARS = totalARS
+        self.totalEP = totalEP
         self.idPuntoRetiro = idPuntoRetiro
         self.estado = estado
 
