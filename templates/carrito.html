@@ -243,7 +243,7 @@
                                 <!-- {{pr_id.append(pr.id)}} -->
                             {%endfor%}
                             {%for pr in puntos_retiro%}
-                            <div class="container pr-card" id="{{pr.id}}-pr-card" onclick="disableEnableButton({{pr.id}},{{pr_id}})">
+                            <div class="container pr-card" id="{{pr.id}}-pr-card" onclick="disableEnableButton({{pr.id}},{{pr_id}}, '{{pr.direccion.calle}}', '{{pr.direccion.altura}}','{{pr.direccion.ciudad}}','{{pr.direccion.provincia}}','{{pr.direccion.pais}}');">
                                 <i class="fa fa-map-marker-alt fa-3x option-img-pr" style="float: left;" id=""></i>
                                 <p class="option-title-cards-pr">{{pr.nombre}}</p>
                                 <p class="option-description-pr">{{pr.direccion.calle + ' '}}{{pr.direccion.altura}}</p>
@@ -254,13 +254,13 @@
                         
                         <div class="col" style="float: right; min-width: 300px;">
                             <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" class="map-pr"></iframe>
-                            <button type="button" id="back-button" class="btn secondary-btn" style="width: 30%;" onclick="changeForm();">
-                                <i class="fas fa-shopping-cart" aria-hidden="true" style="color: black; margin-right: 7px;"></i>
-                                Carrito
-                            </button>
                             <button type="button" id="payment-button" class="btn primary-btn" onclick="hacerPedido();" style="width: 67%;">
                                 <i class="fa fa-credit-card" aria-hidden="true" style="color: white; margin-right: 7px;"></i>
                                 Pagar
+                            </button>
+                            <button type="button" id="back-button" class="btn secondary-btn" style="width: 30%;" onclick="changeForm();">
+                                <i class="fas fa-shopping-cart" aria-hidden="true" style="color: black; margin-right: 7px;"></i>
+                                Carrito
                             </button>
                         </div>
                         <input type="text" hidden name="idPuntoRetiro" id="idPuntoRetiro">

@@ -46,8 +46,8 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
   }
 
   .vertical-nav {
-	min-width: 17rem;
-	width: 17rem;
+	min-width: 15rem;
+	width: 15rem;
 	height: 100vh;
 	position: fixed;
 	top: 0;
@@ -57,15 +57,15 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
   }
   
   .page-content {
-	width: calc(100% - 17rem);
-	margin-left: 17rem;
+	width: calc(100% - 15rem);
+	margin-left: 15rem;
 	transition: all 0.4s;
   }
   
   /* for toggle behavior */
   
   #sidebar.active {
-	margin-left: -17rem;
+	margin-left: -15rem;
   }
   
   #content.active {
@@ -79,7 +79,7 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
   }
   @media (max-width: 768px) {
 	#sidebar {
-	  margin-left: -17rem;
+	  margin-left: -15rem;
 	}
 	#sidebar.active {
 	  margin-left: 0;
@@ -89,8 +89,8 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 	  margin: 0;
 	}
 	#content.active {
-	  margin-left: 17rem;
-	  width: calc(100% - 17rem);
+	  margin-left: 15rem;
+	  width: calc(100% - 15rem);
 	}
   }
 
@@ -142,3 +142,7 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 html {
 	scroll-behavior: smooth;
   }
+
+.fa-sign-out-alt{
+	color: #95C22B !important;
+}
