@@ -26,6 +26,7 @@
 
     <div class="container" id="heading-container">
         <h1 class="heading">Gestión de Entidades de Destino</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Cree, elimine, modifique y visualice salidas de las Entidades de Destino.</span></h6>
     </div>
     
 
@@ -36,16 +37,25 @@
     <div class="container" id="top-container">
         <div class="row">
             <div class="container" id="option-left" onclick="openAltaModal();">
-                <i class="fa fa-plus fa-3x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Añadir entidad</p>
+              <div class="option-text">
+                <p class="option-title">Añadir Entidad</p>
+                <p class="text-box">Añadir una nueva Entidad de Destino al sistema</p>
+            </div>
+            <i class="fa fa-plus option-img" id="option-img-1"></i>
             </div>
             <div class="container" id="option-middle" onclick="modifyEntidad()">
-                <i class="fa fa-edit fa-2x" style="float: left;" id="option-img"></i>
-                <p class="option-title" id="custom-title-modificar">Modificar entidad</p>
+              <div class="option-text">
+                <p class="option-title">Modificar Entidad</p>
+                <p class="text-box">Modificar la configuración de una Entidad de Destino</p>
+              </div>
+              <i class="fa fa-edit option-img" id="option-img-2"></i>
             </div>
             <div class="container" id="option-right" onclick="removeEntidad()">
-                <i class="fa fa-trash fa-2x" style="float: left;" id="option-img"></i>
-                <p class="option-title">Eliminar entidad</p>
+              <div class="option-text">
+                <p class="option-title">Eliminar Entidad</p>
+                <p class="text-box">Eliminar una Entidad de Destino ya registrada en el sistema</p>
+              </div>
+              <i class="fa fa-trash option-img"  id="option-img-3"></i>
             </div>
         </div>
     </div>
@@ -57,7 +67,7 @@
     <!-- Tabla Entidades-->
 
     <div class="container" id="table-container">
-        <div class="row">
+        <div class="row d-flex justify-content-center">
             <table class="table" id="content-table">
                 <thead style=" border-top:none">
                 <tr>
@@ -118,22 +128,24 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <div class="row d-flex justify-content-center">
           <div id="msj-empty" hidden=true>
-          <br><br>
-              <center><p id="empty-content" style="font-size:20px; color:#888888"></p></center>
-          </div>
-        <table class="table" id="content-table">
-            <thead style=" border-top:none">
-            <tr id=headerRow>
-
-            </tr>
-            </thead>
-            <tbody id="modalTableBody">
-            </tbody>
-
-        </table>
+            <br><br>
+                <center><p id="empty-content" style="font-size:20px; color:#888888"></p></center>
+            </div>
+          <table class="table" id="content-table-modal">
+              <thead style=" border-top:none">
+              <tr id=headerRow>
+  
+              </tr>
+              </thead>
+              <tbody id="modalTableBody">
+              </tbody>
+  
+          </table>
+        </div>
         <div class="modal-footer">
-          <div type="button" class="btn" id="primary-btn" data-dismiss="modal">Listo</div>
+          <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
         </div>
       </div>
     </div>
@@ -175,8 +187,8 @@
             
         </form>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="btn" onclick="alta_entidad()" id="primary-btn" name = "add-btn" disabled>Crear Entidad</button>
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="alta_entidad()" id="primary-btn" name = "add-btn" disabled>Crear Entidad</button>
         </div>
       </div>
     </div>
@@ -208,8 +220,8 @@
         <p class="bottom-modal-text" id="bottomBajaModalText"></p>
         <input type="text" name="" id="idEntidad" hidden>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
-          <button type="button" class="btn" onclick="baja_entidad();" id="primary-btn-alert">Eliminar</button>
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
+          <button type="button" class="btn primary-btn-alert" onclick="baja_entidad();" id="primary-btn-alert">Eliminar</button>
         </div>
       </div>
     </div>
@@ -258,8 +270,8 @@
         <input type="text" name="" id="idEntidad" hidden>
         <input type="text" name="" id="nombreEntidad" hidden>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cerrar</button>
-          <button type="button" class="btn btn-aceptar" onclick="mod_entidad();" id="mod-name-btn" name = "acc-btn" disabled>Aceptar</button>        </div>
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn-baja">Cerrar</button>
+          <button type="button" class="btn primary-btn" onclick="mod_entidad();" id="mod-name-btn" name = "acc-btn" disabled>Aceptar</button>        </div>
       </div>
     </div>
 </div>

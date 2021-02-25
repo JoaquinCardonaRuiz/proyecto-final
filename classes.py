@@ -42,12 +42,11 @@ class Usuario:
         nombre (string): Nombre de pila del usuario.
         apellido (string): Apellido o nombre de familia del usuario.
         password (string): Contrasena del usuario.
-        ecopuntos (EcoPuntos[]): Arreglo de los ecopuntos que el usuario posee.
         IDTipoUsuario (string): Identificador de la instancia de TipoUsuario que corresponde
             a la entidad.
-        despositosActivos (Deposito[]): Arreglo de depositos que siguen vigentes.
-        depositosVencidos (Deposito[]): Arreglo de depositos que se encuentran vencidos.
-        mediosPago (MedioPago[]): Arreglo de medios de pago con los que cuenta el usuario.
+        direccion (Direccion): Dirección física del domicilio del usuario
+        despositosActivos (Deposito[]): Arreglo de depositos cuyos ecopuntos siguen vigentes.
+        depositosVencidos (Deposito[]): Arreglo de depositos cuyos ecopuntos se encuentran vencidos.
         pedidos (Pedidos[]): Arreglo de los pedidos realizados por el usuario.
         totalEcopuntos (int): Sumatoria de la cantidad de ecopuntos que el usuario posee.
         idNivel (string): Identificador del nivel que le corresponde al usuario.
@@ -67,10 +66,9 @@ class Usuario:
                 apellido, 
                 password, 
                 idTipoUsuario,
-                ecoPuntos=[],
+                direccion,
                 depositosActivos=[],
                 depositosVencidos=[],
-                mediosPago=None,
                 pedidos=None,
                 totalEcopuntos=0,
                 idNivel=None,
@@ -84,10 +82,9 @@ class Usuario:
         self.apellido = apellido
         self.password = password
         self.idTipoUsuario = idTipoUsuario
-        self.ecoPuntos = ecoPuntos
+        self.direccion = direccion
         self.depositosActivos = depositosActivos
         self.depositosVencidos = depositosVencidos
-        self.mediosPago = mediosPago
         self.pedidos = pedidos
         self.totalEcopuntos = totalEcopuntos
         self.idNivel = idNivel
@@ -102,9 +99,6 @@ class Usuario:
         """ """
 
     def comprobarVencimientoDepositos(self,):
-        """ """
-
-    def cargarMedioPago(self,):
         """ """
     
     def crearPedido(self,):
@@ -306,20 +300,23 @@ MATERIALES
 class Material:
     """ Representa una material que puede ingresar a través de un depósito de usuarios, y ser
     tornado en artículos para su salida.
-
     Atributos:
         id (string): Identificador de la entidad.
         nombre (string): Nombre del material para identificación por parte del usuario.
         unidadMedida (string): Unidad en la que se mide la cantidad del material.
         costoRecoleccion (float): Costo asociado a la recoleccion del material.
         stock (float): Cantidad del material presente en inventario.
+        color(string): Código hexadecimal del color con que se muestra un material.
+        estado(string): Indica si los depositos del material estan habilitados
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock):
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color,estado="habilitado"):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
         self.costoRecoleccion = costoRecoleccion
         self.stock = stock
+        self.color = color
+        self.estado = estado
 
 class CantMaterial:
     """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.
@@ -354,7 +351,6 @@ ARTICULOS
 class TipoArticulo:
     """ Representa un tipo de artículo comprendido por el sistema. Los artículos son objetos
     generados a partir de materiales, con un costo de producción. 
-
     Atributos:
         id (string): Identificador de la entidad.
         nombre (string): Nombre del tipo artículo para identificación por parte del usuario.
@@ -424,7 +420,6 @@ class CantArticulo:
 class ProduccionArticulo:
     """
     Representa la produccion de un lote de articulos
-
     Atributos:
         id (string): identificador de la entidad
         articulos (CantArticulos): articulos involucrados
@@ -438,7 +433,6 @@ class ProduccionArticulo:
 class SalidaStockMunicipalidad:
     """
     Representa una salida de stock de articulos para uso de la municipalidad
-
     Atributos:
         id (string): Identificador de la entidad
         articulos (CantArticulo): Articulos involucrados
@@ -456,7 +450,6 @@ INSUMOS
 class Insumo:
     """
     Representa un Insumo utilizado en la producción de articulos
-
     Atributos:
         id (String): identificador de la entidad
         nombre (String): nombre del insumo
@@ -466,6 +459,7 @@ class Insumo:
         costoTotal (float): costo total del insumo
         materiales (CantMaterial []): materiales necesarios para su produccion
         stock (float): existencias del insumo
+        color (string): color que representa al insumo
         otrosCostos (float): costos miscelaneos adicionales
     """
     def __init__(self,
@@ -477,7 +471,8 @@ class Insumo:
                  costoTotal,
                  materiales,
                  stock,
-                 otrosCostos):
+                 otrosCostos,
+                 color):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -486,12 +481,12 @@ class Insumo:
         self.costoTotal = costoTotal
         self.materiales = materiales
         self.stock = stock
-        self.otrosCostos = otrosCostos,
+        self.otrosCostos = otrosCostos
+        self.color = color
 
 class CantInsumo:
     """
     Representa una cantidad de insumos
-
     Atributos:
         cantidad(float): cantidad del insumo asociado
         idInsumo (string): identificador del insumo asociado
@@ -503,7 +498,6 @@ class CantInsumo:
 class ProduccionInsumo:
     """
     Representa la produccion de un lote de insumos
-
     Atributos:
         id (string): identificador de la entidad
         insumos (CantInsumo): insumos involucrados
@@ -522,7 +516,6 @@ DEPOSITOS Y VENTA
 class Deposito:
     """ Representa un deposito de materiales realizado por un usuario en uno de los puntos de
     depósito.
-
     Atributos:
         id (string): Identificador de la entidad.
         codigo (string): Código ingresado por el usuario para registrar el depósito a su nombre.
@@ -544,13 +537,16 @@ class Deposito:
         self.ecoPuntos = ecoPuntos
         self.fechaRegistro = fechaRegistro
 
+    def isActivo(self):
+        #TODO: Desarrollar este metodo
+        return True
+
     def comprobarCodigo(self, codigo):
         return False
 
 class DepositosSinRegistrar:
     """ Clase SINGLETON que guarda las instancias de depositos que fueron realizadas pero no 
     se registraron a ningún usuario.
-
     Atributos:
         id (string): Identificador de la entidad.
         depositos (Deposito[], opcional): Arreglo donde se guardan los depositos no 
@@ -564,14 +560,12 @@ class DepositosSinRegistrar:
 class EcoPuntos:
     """ Representa un conjunto de ecopuntos, correspondiente a un depósito, los mismos 
     comparten una fecha de vencimiento.
-
     Atributos:
         id (string): Identificador de la entidad.
         fechaVencimiento (Date): fecha en la cual los ecopuntos vencen.
         cantidad (float): cantidad de ecopuntos que este conjunto representa.
         cantidadRestante (float): cantidad de ecopuntos de este conjunto que no han sido
             utilizados.
-
     Atributos de Clase:
         valorMonetario (ValorEcopuntos): Valor monetario de cada ecopunto.
         tiempoVencimiento (Time): Tiempo de vida de cada ecopunto, antes de vencerse.
@@ -584,7 +578,6 @@ class EcoPuntos:
     def getEPData(cls):
         """ Recupera los datos del valor monetario y tiempo de vencimiento de los ecopuntos
         de la base de datos.
-
         Esta función debe llamarse al inicializarse el sistema (en el init de la clase
         EcoAsistente). Por precaución, también sería prudente llamarla cada vez que se
         instancia un nuevo EcoPunto.
@@ -606,7 +599,6 @@ class EcoPuntos:
     def setEPData(cls):
         """ Actualiza los datos del valor monetario y tiempo de vencimiento de los ecopuntos
         en la base de datos.
-
         Esta función debe llamarse cada vez que el usuario desee modificar dichos datos.
         """
         pass
@@ -630,6 +622,7 @@ class EcoPuntos:
         # Devuelvo 0 porque devolver None hace que el linter piense que hay un error
 
 
+
 '''
 PUNTOS DEPOSITO Y RETIRO
 '''
@@ -649,17 +642,14 @@ class PuntoDeposito:
             punto de deposito acepta.
         horarios (Horario[7]): Arreglo con los horarios en los que el punto de depósito está
             habilitado.
-        fechaComienzoActividad (Date): Fecha en el que el punto de depósito fue puesto en
-            funcionamiento por primera vez.
     """
-    def __init__(self,id,direccion,estado,nombre,iDsMaterial=[],horarios=[],fechaComienzoActividad=None):
+    def __init__(self,id,direccion,estado,nombre,iDsMaterial=[],horarios=[]):
         self.id = id
         self.direccion = direccion
         self.estado = estado
         self.nombre = nombre
         self.iDsMaterial = iDsMaterial
         self.horarios = horarios
-        self.fechaComienzoActividad = fechaComienzoActividad
 
 class PuntoRetiro:
     """ Representa una de las ubicaciones físicas donde los usuarios podrán retirar sus 
@@ -671,10 +661,10 @@ class PuntoRetiro:
         nombre (string): Nombre de la ubicación para identificación por parte del usuario.
         estado (bool): Verdadero si el punto esta habilitado, falso sino.
         horarios (Horario[7]): Arreglo de horarios en los que permanece abierto el punto.
-        stock (CantArticulo[]): Arreglo de articulos que se poseen en stock.
         demoraFija (Time): Cantidad de tiempo que tarda en prepararse un pedido.
     """
-    def __init__(self,direccion,nombre,estado,horarios,demoraFija,stock=[]):
+
+    def __init__(self,id,direccion,nombre,estado,horarios,demoraFija):
         self.id = id
         self.direccion = direccion
         self.nombre = nombre 
@@ -689,7 +679,7 @@ class Pedido:
         id (string): Identificador de la entidad.
         fechaEncargo (Date): Fecha en la que el pedido fue realizado.
         fechaRetiro (Date): Fecha en la que el pedido puede ser retirado.
-        articulos (CantArticulo): Conjunto de Articulos que posee el pedido.
+        articulos (CantArticulo []): Conjunto de Articulos que posee el pedido.
         valorTotal (Float): Valor total del pedido, en pesos.
         valorPagoEcoPuntos (Float): Valor del pedido que fue abonado en forma de EcoPuntos.
         idPuntoRetiro (string): Identificador del punto de retiro donde podrá ser retirado el 
@@ -760,12 +750,14 @@ class EntidadDestino:
     Atributos:
         id (string): Identificador de la entidad.
         nombre (string): Nombre para identificación por parte del usuario.
+        direccion (Direccion): dirección física donde se ubica la entidad destino
         salidas (SalidaStock[]): Arreglo de las salidas de stock destinadas a la entidad.
     """
-    def __init__(self,id,nombre,estado,salidas=[]):
+    def __init__(self,id,nombre,estado,direccion,salidas=[]):
         self.id = id
         self.nombre = nombre
         self.estado = estado
+        self.direccion = direccion
         self.salidas = salidas
 
 class SalidaStock:
@@ -794,13 +786,26 @@ class Horario:
         id (string): Identificador de la entidad.
         horaDesde (Time): Tiempo inicial de apertura.
         horaHasta (Time): Tiempo final de cierre.
-        abierto (bool): ?
+        dia (string): Día al que corresponde el horario.
     """
-    def __init__(self,id,horaDesde,horaHasta,abierto):
+    def __init__(self,id,horaDesde,horaHasta,dia):
         self.id = id
         self.horaDesde = horaDesde
         self.horaHasta = horaHasta
-        self.abierto = abierto
+        self.dia = dia
+    
+    def formato_horaDesde(self):
+        if self.horaDesde == False:
+            return False
+        else:
+            return self.horaDesde[:-3]
+
+    def formato_horaHasta(self):
+        if self.horaHasta == False:
+            return False
+        else:
+            return self.horaHasta[:-3]
+
 
 class Valor:
     """ Representa un valor monetario de una entidad en un momento en particular. El objetivo
@@ -818,10 +823,22 @@ class Valor:
         self.fecha = fecha
 
 
+class Direccion:
+    """
+    Representa una dirección geográfica para localizar un punto de deposito, retiro, o una entidad de destino
 
-
-
-
-
-
-
+    Atributos:
+        id (string): Identificador de la entidad
+        calle (string): Nombre de la calle
+        altura (string): Numero de la dirección
+        ciudad (string): Ciudad donde se encuentra la dirección
+        provincia (string): Provincia '' ''        '' ''
+        pais (string): Pais           '' ''        '' ''
+    """
+    def __init__(self,id,calle,altura,ciudad,provincia,pais):
+        self.id = id
+        self.calle = calle
+        self.altura = altura
+        self.ciudad = ciudad
+        self.provincia = provincia
+        self.pais = pais

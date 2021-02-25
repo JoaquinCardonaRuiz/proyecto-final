@@ -1,10 +1,17 @@
 #content-table{
     position: relative;
-    margin-left: 5%;
     width: 90%;
-    margin-top: 3%;
+    margin-top: 2%;
     margin-bottom: 3%;
     border-top:2px solid white !important
+}
+
+#content-table-modal{
+  position: relative;
+  width: 95%;
+  margin-top: 5%;
+  margin-bottom: 3%;
+  border-top:2px solid white !important
 }
 
 .table-heading{
@@ -36,4 +43,4 @@
 #modify-table-icon:hover{
   color: #d1f089e1;
   cursor: pointer;
-}   
+}

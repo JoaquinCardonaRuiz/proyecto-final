@@ -95,6 +95,16 @@
     margin-top: 15px;
 }
 
+/*
+@font-face {font-family: "Cordia New"; src: url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.eot"); 
+    src: url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.eot?#iefix") format("embedded-opentype"), 
+    url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.woff2") format("woff2"), 
+    url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.woff") format("woff"), 
+    url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.ttf") format("truetype"), 
+    url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.svg#Cordia New") format("svg"); }
+
+*/
+
 .heading{
     font-size: 35px;
 }
@@ -108,6 +118,16 @@
 #heading-container{
     width: 92%; 
     margin-top: 2%; 
+    border-radius: 5px;;
+    height: fit-content;
+}
+
+
+
+#product-container{
+    width: 97%; 
+    margin-top: 2%; 
+    margin-left: 3%;
     border-radius: 5px;;
     height: fit-content;
 }
@@ -163,6 +183,11 @@
   color: #777 !important;
   text-decoration: none !important;
 }
+
+.custom-link-fa{
+    color: rgb(167, 167, 167) !important;
+    text-decoration: none !important;
+  }
 
 .custom-link:hover{
   color:#95C22B !important;
@@ -247,7 +272,16 @@ h2 		 {
 #estado-activo{
     color: #7cc22b;
     font-size: 11px;
+
+
+.color-activo{
+    color: #7cc22b !important;
 }
+
+.color-inactivo{
+    color: rgb(170, 170, 170) !important;
+}
+
 
 #estado-inactivo{
     color: #f52926;
@@ -263,6 +297,20 @@ h2 		 {
     color: #70706f;
 }
 
+
+.circle {
+    width: 58px;
+    height: 58px;
+    line-height: 58px;
+    border-radius: 58px;
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(226, 192, 128);
+}
+
 .tab-icon{
     scale:0.6;
     margin-left:2% !important;
@@ -274,4 +322,33 @@ h2 		 {
 
 .error{
     color:#dd0000 !important;
+
+}
+
+.text-box{
+    font-size: 14px; 
+    color: #70706f;
+}
+
+.circle {
+    width: 58px;
+    height: 58px;
+    line-height: 58px;
+    border-radius: 58px;
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(226, 192, 128);
+}
+
+
+#ex1Slider .slider-selection {
+	background: #BABABA;
+
+.scrollable-table {
+    overflow: auto !important;
+    overflow-x: hidden !important;
+    max-height: 500px !important;
 }

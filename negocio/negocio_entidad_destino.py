@@ -13,16 +13,16 @@ class NegocioEntidadDestino(Negocio):
         try:
             if not DatosEntidadDestino.check_name_repeats(nombre):
                 #Valida regla RN11
-                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.alta_entidad_destino()",
+                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio_entidad_destino.add()",
                                                               msj_adicional="Error en la capa de negocio al validar regla RN11: Todas las entidades de destino deben tener nombres distintos.") 
             elif nombre == "":
                 #Valida regla RN12
-                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.alta_entidad_destino()",
+                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio_entidad_destino.add()",
                                                               msj_adicional="Error en la capa de negocio al validar regla RN12: Una entidad no puede tener nombre vacio.") 
             else:
                 DatosEntidadDestino.add(nombre)
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.alta_entidad_destino()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_entidad_destino.add()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio dando de alta una nueva entidad de destino.")
         
@@ -36,7 +36,7 @@ class NegocioEntidadDestino(Negocio):
             return entidades
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_entidades_destino()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_entidad_destino.get_all()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obtieniendo las entidades destino de la capa de Datos.")
     
@@ -52,7 +52,7 @@ class NegocioEntidadDestino(Negocio):
             return entidad
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_one_entidad_destino()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_entidad_destino.get_one()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obtieniendo una entidad destino de la base de Datos.")
 
@@ -76,11 +76,11 @@ class NegocioEntidadDestino(Negocio):
         try:
             if not DatosEntidadDestino.check_name_repeats(nombre):
                 #Valida regla RN11
-                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.update()",
+                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio_entidad_destino.update()",
                                                               msj_adicional="Error en la capa de negocio al validar regla RN11: Todas las entidades de destino deben tener nombres distintos.") 
             elif nombre == "":
                 #Valida regla RN12
-                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio.update()",
+                raise custom_exceptions.ErrorReglaDeNegocio(origen = "negocio_entidad_destino.update()",
                                                               msj_adicional="Error en la capa de negocio al validar regla RN12: Una entidad no puede tener nombre vacio.") 
             else:
                 DatosEntidadDestino.update(idEnt,nombre)

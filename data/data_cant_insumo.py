@@ -2,6 +2,10 @@ from data.data import Datos
 from classes import CantInsumo
 import custom_exceptions
 
+from data.data import Datos
+from classes import CantInsumo
+import custom_exceptions
+
 class DatosCantInsumo(Datos):
     @classmethod
     def get_from_TAid(cls, id, noClose=False):

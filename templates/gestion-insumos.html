@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<!-- Sidebar import -->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+
+
+
+
+    <!-- Heading -->
+
+    <div class="container" id="heading-container">
+        <h1 class="heading">Gestión de Insumos</h1>
+    </div>
+    
+
+
+
+    <!-- Botones Opciones-->
+
+    <div class="container" id="top-container">
+        <div class="row">
+            <div class="container" id="option-left" onclick="openAltaModal();">
+                    <div class="option-text">
+                        <p class="option-title">Añadir Insumo</p>
+                        <p class="text-box">Añadir un nuevo Insumo al sistema</p>
+                    </div>
+                    <i class="fa fa-plus option-img" id="option-img-1"></i>
+            </div>
+            <div class="container" id="option-middle" onclick="modifyEntidad()">
+                <div class="option-text">
+                    <p class="option-title">Modificar Insumo</p>
+                    <p class="text-box">Modificar los datos de un Insumo</p>
+                </div>
+                <i class="fa fa-edit option-img" id="option-img-2"></i>
+            </div>
+            <div class="container" id="option-right" onclick="removeEntidad()">
+                <div class="option-text">
+                    <p class="option-title">Eliminar Insumo</p>
+                    <p class="text-box">Eliminar un Insumo ya registrado en el sistema</p>
+                </div>
+                <i class="fa fa-trash option-img"  id="option-img-3"></i>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Tabla Insumos-->
+
+    <div class="container" id="table-container">
+        <div class="row">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading"></th>
+                    <th scope="col" class="table-heading">Nombre</th>
+                    <th scope="col" class="table-heading">Costo</th>
+                    <th scope="col" class="table-heading">Stock</th>
+                    <th scope="col" class="table-heading">Unidad</th>
+                    <th scope="col" class="table-heading">Materiales</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%set nombres = []%}
+                {%for ins in insumos%}
+                <!-- Jinja funciona en comentarios... sin esto imprime None en pantalla.-->
+                <!--{{nombres.append(ins.nombre)}} -->
+                {%set ids_materiales = []%}
+                {%set cantidades = []%}
+                {%for mat in ins.materiales%}
+                    <!--{{ids_materiales.append(mat.idMaterial)}} -->
+                    <!--{{cantidades.append(mat.cantidad)}} -->
+                {%endfor%}
+                {%set cantidades_totales = []%}
+                {%for mat in materiales%}
+                    <!--{{cantidades_totales.append(0)}} -->
+                    {%for mat_ins in ins.materiales%}
+                        {%if mat.id == mat_ins.idMaterial%}
+                            {%set temp = cantidades_totales.pop()%}
+                            <!--{{cantidades_totales.append(mat_ins.cantidad)}} -->
+                        {%endif%}
+                    {%endfor%}
+                {%endfor%}
+                <tr>
+                    <th><div><i class="fas fa-circle" style="color:{{ins.color}}"></i></div></th>
+                    <th scope="row">{{ins.nombre}}</th>
+                    <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                    <button id="open-mat-vacio" href='#'data-toggle="modal" data-target="#materialesVacioModal"hidden="true"></button>
+                    <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
+                    <td scope="row">{{ins.costoTotal}}</td>
+                    <td scope="row">{{ins.stock}}</td>
+                    <td scope="row">{{ins.unidadMedida}}</td>
+                    <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{ins.nombre}}',{{ids_materiales}},{{cantidades}});">Ver materiales</a></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}','{{ins.color}}',{{ids_materiales}},{{cantidades}},{{cantidades_totales}})"></i></td>
+                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{ins.id}}','{{ins.nombre}}')"></i></td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+<!-- Loading Modal -->
+<!-- Para mostrar mientras se carga un modal-->
+
+  <div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <br><br><br><br><br><br><br><br>
+        <div class="row" id="loadingRow">
+              <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+              </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+<!-- Materiales Vacio Modal -->
+<div class="modal fade modal-lg" id="materialesVacioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">No hay materiales</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="row margin-bottom-row" id="no-mats">
+            <p id="" class="advert-icon-no-mats"><i class="fa fa-exclamation-triangle advert-icon-no-mats"></i></p>
+            <p class="bottom-modal-text-baja">Este Punto de Depósito aún no acepta ningún material</p>
+            <p class="bottom-modal-text less-margin-top">Para añadir materiales aceptados, ingrese a la opción "Modificar Punto".</p>
+        </div>
+        <p class="bottom-modal-text" id="bottomVerModalText">Este insumo no posee materiales en su receta de producción.</p>
+        <div class="modal-footer">
+          <button type="button" class="btn primary-btn" data-dismiss="modal" id="secondary-btn-baja">Listo</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Materiales Modal -->
+<div class="modal fade modal-lg" id="materialesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalMat"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-card" id="materiales-modal-body">
+                <div class="container modal-large-card-sm" id="material-card">
+                    <div class="row">
+                        <div class="modal-card-col-sm">
+                            <div class="circle materiales-large-card-img" id="material-img">M</div>
+                        </div>
+                        <div class="modal-card-col-sm" >
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="nombre-material">Nombre</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Nombre material</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="unidad-medida">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Unidad de medida</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="cantidad">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Cantidad</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        <div class="modal-footer">
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+
+<!--Alta Modal -->
+
+<div class="modal fade modal-lg" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Añadir un nuevo Insumo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{url_for('alta_insumo')}}" method="POST" class="modal-body" id="altaInsumoForm" autocomplete="off">
+          <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+          </div>
+            <div class="row" id="row-to-hide-1" style="margin-top:5%">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input type="text" id="nombreInput" required onkeyup = "validaNuevoNombre({{nombres|safe}})" name="nombre" >
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Nombre del Insumo</label>
+                        <p id="nombreInsError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input type="text" id="unidadInput" required name="unidad" onkeyup = "validaUnidad();">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Unidad Medida</label>
+                        <p id="unidadInsError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="row-to-hide-2">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input class="data-show-input" type="text" id="cmInput" name="costoMateriales" readonly required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("mat")' onkeyup='document.getElementById("costoMInsError").innerHTML="";calcularCosto("mat");'>
+                        <label>Costo de Materiales</label>
+                        <p id="costoMInsError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input type="text" id="cpInput" name="costoProduccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("prod")' onkeyup='document.getElementById("costoPInsError").innerHTML="";calcularCosto("prod");'>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Costo de Producción</label>
+                        <p id="costoPInsError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="row-to-hide-3">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input type="text" id="ocInput" name="otrosCostos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("otros")' onkeyup='document.getElementById("costoOInsError").innerHTML="";calcularCosto("otros");'>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Otros Costos</label>
+                        <p id="costoOInsError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input type="text" id="colorInput" required name="color" onkeyup = "checkColorAlta()" style="display: inline;" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 70) || (event.charCode >= 97 && event.charCode <= 102) || (event.charCode == 35)'>
+                        <i id="color-marker" style="margin-left:-8%; color:red;display: inline;" class="fas fa-circle" onclick='randomColorAlta();'></i>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Color</label>
+                        <p id="colorError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                <h6 class="indicator-label">Seleccione los materiales que se requerirán para producir el insumo:</h6>
+                <div class="dropdown-box" id="dropdown-altaPD">
+                    <h4 id="heading-option" onclick="dropdownManager();">
+                        Seleccionar Materiales 
+                        <img src="/static/img/chevron.svg" class="chevron">
+                    </h4>
+                    <div class="menu-option-box" id="menu-option-box-1">
+                        {%for material in materiales%}
+                        <p class="menu-option-box-op" onclick="dropdownOptionSelect('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check" id="{{material.id|string + '-check'}}" style="display: none;"></i>{{material.nombre}}</p>
+                        {%endfor%}
+                    </div>       
+                </div>                 
+            </div>
+            <div class="row" id="cards-row-materiales">
+                <h6 class="indicator-label-2" id="se-req-msj">Se requerirán:</h6>
+                <p class="warning-label-altaPD" id="warning-label-altaPD"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
+                {% for material in materiales %}
+                <div class="container modal-large-card-sm card-altaPD" id="{{material.id|string + '-card'}}" style="display: none;">
+                    <div class="row">
+                        <div class="modal-card-col-sm">
+                            <div class="circle materiales-large-card-img" id="{{material.id|string + '-img'}}">{{material.nombre[0]}}</div>
+                        </div>
+                        <div class="modal-card-col-sm" >
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="nombre-material">{{material.nombre}}</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Nombre material</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="unidad-medida">{{material.unidadMedida}}</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Unidad de medida</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <input hidden name="id-{{material.id|string}}" value="{{material.id}}">
+                                <input hidden class="cost-input" value={{material.costoRecoleccion}}>
+                                <input class="cant-input" style="width: 60%;top: -10px;position: relative;border-bottom: none;background: transparent;left: 20px;box-shadow:none;" type="number" value=0 id="cantidad-{{material.id|string}}" name="cantidad-{{material.id|string}}" required min=1 max=999999999 onkeypress='return (event.charCode > 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_cantidad({{material.id}})' onkeyup='verificar_cantidad({{material.id}})'>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Cantidad</p>
+                            </div>
+                            <p id="error-{{material.id|string}}" class="modalErrorMessage"></p>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+                <input type="text" id="materiales-altaPD" name = "materiales-altaPD" hidden>
+            </div>
+            <div class="row">
+                <p class="bottom-modal-text" id="bottomAltaModalText"></p>
+            </div>
+            
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn anterior-btn" onclick="pasar_pagina(-1)" id="anterior-btn">Anterior</button>
+          <button type="button" class="primary-btn btn" onclick="pasar_pagina(1)" id="alta-btn" name ="add-btn" disabled>Siguiente</button>
+          <button type="button" class="primary-btn btn" onclick="alta_insumo()" id="ci-btn" name ="ci-btn">Crear Insumo</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!--Edit Modal -->
+
+<div class="modal fade modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="border-bottom:none">
+          <ul class="nav nav-tabs ed-tabs" id="myTab" role="tablist">
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link active" id="db-tab" data-toggle="tab" href="#datos-basicos" role="tab" aria-controls="datos-basicos" aria-selected="true">Datos Basicos <p hidden id="error-mark-db" style="display:inline" class="error">*</p></a>
+            </li>
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link " id="mats-tab" data-toggle="tab" href="#materiales" role="tab" aria-controls="materiales" aria-selected="false">Materiales <p hidden id="error-mark-m" style="display:inline" class="error">*</p></a>
+            </li>
+            <li class="nav-item ed-tabs-item">
+              <a class="nav-link ed-link " id="costos-tab" data-toggle="tab" href="#costos" role="tab" aria-controls="costos" aria-selected="false">Costos <p hidden id="error-mark-c" style="display:inline" class="error">*</p></a>
+            </li>
+          </ul>
+        </div>
+        <form action="{{url_for('edit_insumo')}}" method="POST" id="editInsumoForm" autocomplete="off" class="tab-content modal-body">
+
+        <!-- TAB 1 -->
+        <div class="tab-pane active" role="tabpanel" id="datos-basicos">
+            <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+          </div>
+            <div class="row" id="row-to-hide-1-mod">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input type="text" id="idInputMod" required hidden name="id" >
+                        <input type="text" id="nombreInputMod" required onkeyup = "validaNuevoNombreMod({{nombres|safe}})" name="nombre" >
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Nombre del Insumo</label>
+                        <p id="nombreInsErrorMod" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input type="text" id="unidadInputMod" required name="unidad" onkeyup = "validaUnidadMod();">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Unidad Medida</label>
+                        <p id="unidadInsErrorMod" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <p class="bottom-modal-text" id="bottomAltaModalText1">Complete los datos y presione "Actualizar Insumo"</p>
+            </div>
+        </div>
+
+        <!-- TAB 2 -->
+        <div class="tab-pane" role="tabpanel" id="materiales">
+            <div class="row" id="fieldsRow1Mod" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                <h7 class="indicator-label">Seleccione los materiales que se requerirán para producir el insumo:</h7>
+                <div class="dropdown-box" id="dropdown-mod">
+                    <h4 id="heading-option" onclick="dropdownManagerMod();">
+                        Seleccionar Materiales 
+                        <img src="/static/img/chevron.svg" class="chevron"></img>
+                    </h4>
+                    <div class="menu-option-box" id="menu-option-box-2">
+                        {%for material in materiales%}
+                        <p class="menu-option-box-op" onclick="dropdownOptionSelectMod({{material.id}},1);"><i class="fa fa-check dropdown-option-check" id="{{material.id|string + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>
+                        {%endfor%}
+                    </div>       
+                </div>                 
+            </div>
+            <div class="row" id="cards-row-materiales-mod">
+                <h7 class="indicator-label-2">Se requerirán:</h7>
+                <p id="warning-label-mod"><i class="fa fa-exclamation-triangle" id="warning-icon-mod"></i></p>
+                {% for material in materiales %}
+                <div class="container modal-large-card-sm card-mod" id="{{material.id|string + '-card-mod'}}" style="display: none;">
+                    <div class="row">
+                        <div class="modal-card-col-sm">
+                            <div class="circle materiales-large-card-img" id="{{material.id|string + '-img-mod'}}" style="background-color:{{material.color}}">{{material.nombre[0]}}</div>
+                        </div>
+                        <div class="modal-card-col-sm" >
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="nombre-material-mod">{{material.nombre}}</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Nombre material</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="unidad-medida-mod">{{material.unidadMedida}}</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Unidad de medida</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <input hidden name="id-{{material.id|string}}" value="{{material.id}}">
+                                <input hidden class="cost-input-mod" value={{material.costoRecoleccion}}>
+                                <input class="cant-input-mod" style="width: 60%;top: -10px;position: relative;border-bottom: none;background: transparent;left: 20px;box-shadow:none;" type="number" value=0 id="cantidad-mod-{{material.id}}" name="cantidad-{{material.id|string}}" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_cantidad_mod({{material.id}})' onkeyup='verificar_cantidad_mod({{material.id}})'>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Cantidad</p>
+                            </div>
+                            <p id="error-mod-{{material.id|string}}" class="modalErrorMessage"></p>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+                <input type="text" id="materiales-mod" name = "materiales-altaPD" hidden>
+            </div>
+            <div class="row">
+                <p class="bottom-modal-text" id="bottomAltaModalTextModPD">Una vez finalizadas las modificaciones, presione "Guardar Cambios".<br>
+                <span class="bottom-modal-text costo-total-label" id="bottomMatText"></span>
+                </p>
+                
+            </div>
+            <div class="row margin-row-mod" style="height:20px !important;"></div>
+        </div>
+
+        <!-- TAB 3 -->
+        <div class="tab-pane" role="tabpanel" id="costos">
+            <div class="row" id="row-to-hide-2-mod">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input type="text" id="cmInputMod" class="data-show-input" name="costoMateriales" readonly required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("mat")' onkeyup='document.getElementById("costoMInsErrorMod").innerHTML="";calcularCostoMod("mat");'>
+                        <label>Costo de Materiales</label>
+                        <p id="costoMInsErrorMod" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input type="text" id="cpInputMod" name="costoProduccion" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("prod")' onkeyup='document.getElementById("costoPInsErrorMod").innerHTML="";calcularCostoMod("prod");'>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Costo de Producción</label>
+                        <p id="costoPInsErrorMod" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="row-to-hide-3-mod">
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input type="text" id="ocInputMod" name="otrosCostos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("otros")' onkeyup='document.getElementById("costoOInsErrorMod").innerHTML="";calcularCostoMod("otros");'>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Otros Costos</label>
+                        <p id="costoOInsErrorMod" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-left: 10%;">
+                        <input hidden>
+                        <input type="text" id="colorInputMod" required name="color" onkeyup = "checkColorMod()" style="display: inline;" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 70) || (event.charCode >= 97 && event.charCode <= 102) || (event.charCode == 35)'>
+                        <i id="color-markerMod" style="margin-left:-8%; color:red;display: inline;" class="fas fa-circle" onclick='randomColorMod();'></i>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Color</label>
+                        <p id="colorErrorMod" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <p class="bottom-modal-text" id="bottomCTModalText">CostoTotal</p>
+            </div>
+        </div>
+            
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-mod">Cancelar</button>
+          <button type="button" class="primary-btn btn" onclick="edit_insumo()" id="edit-btn" name ="add-btn" disabled>Actualizar Insumo</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+<!--Delete Modal -->
+
+<div class="modal fade modal-lg" id="bajaInsumodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Eliminar un Insumo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body-baja" >
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row margin-bottom-row" id="fieldsRowBaja">
+                <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark">
+                <p class="bottom-modal-text-baja" id="baja-question">¿Está seguro que desea eliminar el Insumo? </p>
+                <p class="bottom-modal-text less-margin-top"> Una vez eliminado, el Insumo no se podrá recuperar.</p>
+            </div>
+            <p class="b-modal-text-baja" id="baja-custom-text">
+            </p>
+        </div>
+        <p class="bottom-modal-text" id="bottomBajaModalText"></p>
+        <input type="text" name="" id="idInsumo" hidden>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
+          <button type="button" class="btn" onclick="baja_entidad();" id="primary-btn-alert">Eliminar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script src="static/js/insumos.js"></script>
+{% endblock %}

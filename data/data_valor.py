@@ -1,6 +1,9 @@
 from data.data import Datos
 import custom_exceptions
 
+from data.data import Datos
+import custom_exceptions
+
 class DatosValor(Datos):
     @classmethod
     def get_from_TAid(cls, id, noClose=False):
