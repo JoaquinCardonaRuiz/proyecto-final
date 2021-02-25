@@ -16,24 +16,28 @@
 
 {% extends 'layout.html' %}
 {% block body %}
-s
 <div class="page-content" style="text-align: left;" id="content">
     <div class="container" id="heading-container">
         <h1 class="heading">Gestión de Pedidos</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Visualice y gestione los Pedidos de EcoAsistente.</span></h6>
     </div>
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container" id="option1" onclick="redirect('deposito')">
+            <div class="container" id="option1" onclick="window.location.href = '/gestion-pedidos/deposito';">
                 <i class="fa fa-warehouse fa-4x" style="float: left;" id="option-img-puntos"></i>
                 <p class="option-title-puntos">Depósito Central</p>
                 <p class="option-description">Gestionar todos los pedidos.</p>
             </div>
-            <hr>
-            <div class="container" id="option2" onclick="redirect('retiro')">
-                <i class="fa fa-map-marker-alt fa-4x" style="float: left;" id="option-img-puntos"></i>
-                <p class="option-title-puntos">Zona Norte</p>
-                <p class="option-description">Gestionar los pedidos de Zona Norte.</p>
+            <div class="container" style="margin-bottom: 3%">
+                <hr>
             </div>
+            {%for pr in puntosRetiro%}
+            <div class="container" id="option2" onclick="window.location.href = '/gestion-pedidos/{{pr.id}}';">
+                <i class="fa fa-map-marker-alt fa-4x" style="float: left;" id="option-img-puntos"></i>
+                <p class="option-title-puntos">{{pr.nombre}}</p>
+                <p class="option-description">Gestionar los pedidos de {{pr.nombre}}.</p>
+            </div>
+            {%endfor%}
         </div>
         <div class="row" id="loadingRowPuntos">
             <div id="lds-ring-big" class="lds-ring"><div></div><div></div><div></div><div></div></div>

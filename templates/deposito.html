@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<!-- Sidebar import -->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+
+
+
+
+    <!-- Heading -->
+
+    <div class="container" id="heading-container">
+        <h1 class="heading">Gestión de Pedidos - Deposito</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Visualice y gestione los pedidos.</span></h6>
+    </div>
+    
+
+
+    <!-- Tabla Pedidos Pendientes-->
+    <form action="{{url_for('update_estado_pedido')}}" method="POST" id="modUpdateEstado" autocomplete="off" hidden>
+        <input id ="idInput" name="idInput">
+        <input id ="estadoInput" name="estadoInput">
+    </form>
+    <div class="container" id="table-container">
+        <h4 style="margin-left:4%;padding-top:3%;">Pedidos en Preparación</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                    <th scope="col" class="table-heading">P. de Retiro</th>
+                    <th scope="col" class="table-heading">Articulos</th>
+                    <th class="table-heading"></th>
+                    <th class="table-heading"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for p in pedidos%}
+                    {%if p.estado == 'pendiente'%}                        
+                        <tr>
+                            <th scope="row">{{p.id}}</th>
+                            <td scope="row">${{p.valorTotal}}</td>
+                            <td scope="row">{{p.fechaEncargo}}</td>
+                            {%for pr in puntosRetiro%}
+                                {%if pr.id == p.idPuntoRetiro%}
+                                    <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
+                                {%endif%}
+                            {%endfor%}
+                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'preparado')">Marcar Preparado</button></td>
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr style="width:70%">
+
+    <!-- Tabla Pedidos Preparados-->
+
+    <div class="container" id="table-container">
+        <h4 style="margin-left:4%;padding-top:3%;">Pedidos Preparados (En Tránsito)</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                    <th scope="col" class="table-heading">P. de Retiro</th>
+                    <th scope="col" class="table-heading">Articulos</th>
+                    <th class="table-heading"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for p in pedidos%}
+                    {%if p.estado == 'preparado'%}
+                        <tr>
+                            <th scope="row">{{p.id}}</th>
+                            <td scope="row">{{p.valorTotal}}</td>
+                            <td scope="row">{{p.fechaEncargo}}</td>
+                            {%for pr in puntosRetiro%}
+                                {%if pr.id == p.idPuntoRetiro%}
+                                    <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
+                                {%endif%}
+                            {%endfor%}
+                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr style="width:70%">
+
+    <!-- Tabla Pedidos Listos-->
+
+    <div class="container" id="table-container">
+        <h4 style="margin-left:4%;padding-top:3%;">Pedidos Listos para Retiro</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                    <th scope="col" class="table-heading">P. de Retiro</th>
+                    <th scope="col" class="table-heading">Articulos</th>
+                    <th class="table-heading"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for p in pedidos%}
+                    {%if p.estado == 'listo'%}
+                        <tr>
+                            <th scope="row">{{p.id}}</th>
+                            <td scope="row">{{p.valorTotal}}</td>
+                            <td scope="row">{{p.fechaEncargo}}</td>
+                            {%for pr in puntosRetiro%}
+                                {%if pr.id == p.idPuntoRetiro%}
+                                    <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
+                                {%endif%}
+                            {%endfor%}
+                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr style="width:70%">
+
+
+    <!-- Tabla Pedidos Cancelados-->
+
+    <div class="container" id="table-container">
+        <h4 style="margin-left:4%;padding-top:3%;">Pedidos Cancelados</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">Valor</th>
+                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                    <th scope="col" class="table-heading">P. de Retiro</th>
+                    <th scope="col" class="table-heading">Articulos</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for p in pedidos%}
+                    {%if p.estado == 'cancelado'%}
+                        <tr>
+                            <th scope="row">{{p.id}}</th>
+                            <td scope="row">{{p.valorTotal}}</td>
+                            <td scope="row">{{p.fechaEncargo}}</td>
+                            {%for pr in puntosRetiro%}
+                                {%if pr.id == p.idPuntoRetiro%}
+                                    <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
+                                {%endif%}
+                            {%endfor%}
+                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script src="static/js/pedidos.js"></script>
+{% endblock %}

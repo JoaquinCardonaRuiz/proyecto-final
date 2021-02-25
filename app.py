@@ -319,8 +319,31 @@ def gestion_articulos():
 @app.route('/elegir-PR')
 def elegirPR():
     try:
-        puntosRetiro = NegocioPuntoRetiro.g
+        puntosRetiro = NegocioPuntoRetiro.get_all()
+        return render_template('elegir-PR.html',puntosRetiro = puntosRetiro)
+    except Exception as e:
+        return error(e,"pedidos")
 
+@app.route('/gestion-pedidos/deposito')
+def deposito():
+    try:
+        pedidos = NegocioPedido.get_all()
+        puntosRetiro = NegocioPuntoRetiro.get_all()
+        return render_template('deposito.html',pedidos = pedidos,puntosRetiro=puntosRetiro)
+    except Exception as e:
+        return error(e,"pedidos")
+
+
+@app.route('/gestion-pedidos/actualizar')
+def update_estado_pedido():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idCancelar"])
+            estado = request.form["estado"]
+            NegocioPedido.update_estado(id,estado)
+            return redirect(url_for("deposito"))
+    except Exception as e:
+        return error(e,"pedidos")
 
 
 if __name__ == '__main__':

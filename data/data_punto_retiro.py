@@ -22,13 +22,42 @@ class DatosPuntoRetiro(Datos):
             cls.cursor.execute(sql)
             pr = cls.cursor.fetchall()[0]
             direccion = DatosDireccion.get_one_id(pr[4],noClose=True)
-            horarios = DatosHorario.get_horariosPD_id(pr[0],noClose=True)
-            stock = DatosCantArticulo.get_PR_stock(pr[0],noClose=True)
-            puntoRetiro = PuntoRetiro(direccion,pr[3],pr[1],horarios,pr[2],stock)
+            horarios = DatosHorario.get_horariosPR_id(pr[0],noClose=True)
+            puntoRetiro = PuntoRetiro(direccion,pr[3],pr[1],horarios,pr[2])
             return puntoRetiro
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_punto_retiro.get_by_id()",
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo un punto de retiro desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_all(cls):
+        """
+        Obtiene todos los puntos de retiro de la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT idPunto, \
+                           estado, \
+                           demoraFija, \
+                           nombre, \
+                           idDireccion \
+                        FROM puntosRetiro WHERE estado != \"eliminado\";")
+            cls.cursor.execute(sql)
+            puntos = cls.cursor.fetchall()
+            puntosRetiro = []
+            for pr in puntos:
+                direccion = DatosDireccion.get_one_id(pr[4],noClose=True)
+                horarios = DatosHorario.get_horariosPR_id(pr[0],noClose=True)
+                puntoRetiro = PuntoRetiro(pr[0],direccion,pr[3],pr[1],horarios,pr[2])
+                puntosRetiro.append(puntoRetiro)
+            return puntosRetiro
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_punto_retiro.get_all()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los puntos de retiro desde la BD.")
         finally:
             cls.cerrar_conexion()
