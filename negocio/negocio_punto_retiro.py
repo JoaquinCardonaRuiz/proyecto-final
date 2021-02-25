@@ -9,3 +9,11 @@ class NegocioPuntoRetiro(Negocio):
             return DatosPuntoRetiro.get_all()
         except Exception as e:
             raise e
+
+
+    @classmethod
+    def get_by_id(cls,id):
+        try:
+            return DatosPuntoRetiro.get_by_id(id)
+        except Exception as e:
+            raise e

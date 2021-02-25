@@ -11,8 +11,8 @@ class DatosPuntoRetiro(Datos):
         """
         Obtiene un punto de retiro de la BD a partir de su id.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idPunto, \
                            estado, \
                            demoraFija, \
@@ -21,9 +21,9 @@ class DatosPuntoRetiro(Datos):
                         FROM puntosRetiro WHERE idPunto = {} AND estado != \"eliminado\";".format(id))
             cls.cursor.execute(sql)
             pr = cls.cursor.fetchall()[0]
-            direccion = DatosDireccion.get_one_id(pr[4],noClose=True)
-            horarios = DatosHorario.get_horariosPR_id(pr[0],noClose=True)
-            puntoRetiro = PuntoRetiro(direccion,pr[3],pr[1],horarios,pr[2])
+            direccion = DatosDireccion.get_one_id(pr[4])
+            horarios = DatosHorario.get_horariosPR_id(pr[0])
+            puntoRetiro = PuntoRetiro(pr[0],direccion,pr[3],pr[1],horarios,pr[2])
             return puntoRetiro
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_punto_retiro.get_by_id()",
@@ -38,8 +38,8 @@ class DatosPuntoRetiro(Datos):
         """
         Obtiene todos los puntos de retiro de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idPunto, \
                            estado, \
                            demoraFija, \
@@ -50,8 +50,8 @@ class DatosPuntoRetiro(Datos):
             puntos = cls.cursor.fetchall()
             puntosRetiro = []
             for pr in puntos:
-                direccion = DatosDireccion.get_one_id(pr[4],noClose=True)
-                horarios = DatosHorario.get_horariosPR_id(pr[0],noClose=True)
+                direccion = DatosDireccion.get_one_id(pr[4])
+                horarios = DatosHorario.get_horariosPR_id(pr[0])
                 puntoRetiro = PuntoRetiro(pr[0],direccion,pr[3],pr[1],horarios,pr[2])
                 puntosRetiro.append(puntoRetiro)
             return puntosRetiro

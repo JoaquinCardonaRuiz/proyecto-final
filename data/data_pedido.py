@@ -9,8 +9,8 @@ class DatosPedido(Datos):
         """
         Obtiene todos los pedidos de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT \
                     idPedido, \
                     fechaEnc, \
@@ -24,7 +24,7 @@ class DatosPedido(Datos):
             pedidos_ = cls.cursor.fetchall()
             pedidos = []
             for p in pedidos_:
-                articulos = DatosCantArticulo.get_from_Pid(p[0],noClose=True)
+                articulos = DatosCantArticulo.get_from_Pid(p[0])
                 pedido_ =  Pedido(p[0],p[1].strftime("%d/%m/%Y"),p[2].strftime("%d/%m/%Y"),articulos,p[3],p[4],p[5],p[6])
                 pedidos.append(pedido_)
             return pedidos
@@ -33,6 +33,40 @@ class DatosPedido(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_all()",
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo los pedidos desde la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_by_idPR(cls,idPR,noClose=False):
+        """
+        Obtiene todos los pedidos de la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("SELECT \
+                    idPedido, \
+                    fechaEnc, \
+                    fechaRet, \
+                    valTotal, \
+                    valPagoEP, \
+                    idPunto, \
+                    estado \
+                    FROM pedidos WHERE estado != \"eliminado\" AND idPunto={};").format(idPR)
+            cls.cursor.execute(sql)
+            pedidos_ = cls.cursor.fetchall()
+            pedidos = []
+            for p in pedidos_:
+                articulos = DatosCantArticulo.get_from_Pid(p[0],noClose=True)
+                pedido_ =  Pedido(p[0],p[1].strftime("%d/%m/%Y"),p[2].strftime("%d/%m/%Y"),articulos,p[3],p[4],p[5],p[6])
+                pedidos.append(pedido_)
+            return pedidos
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_by_idPR()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los pedidos de un PRdesde la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()

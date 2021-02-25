@@ -32,7 +32,7 @@
                 <hr>
             </div>
             {%for pr in puntosRetiro%}
-            <div class="container" id="option2" onclick="window.location.href = '/gestion-pedidos/{{pr.id}}';">
+            <div class="container" id="option2" onclick="window.location.href = '/gestion-pedidos/pr/{{pr.id}}';">
                 <i class="fa fa-map-marker-alt fa-4x" style="float: left;" id="option-img-puntos"></i>
                 <p class="option-title-puntos">{{pr.nombre}}</p>
                 <p class="option-description">Gestionar los pedidos de {{pr.nombre}}.</p>
