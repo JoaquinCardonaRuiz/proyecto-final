@@ -45,7 +45,7 @@ class DatosPuntoRetiro(Datos):
                            demoraFija, \
                            nombre, \
                            idDireccion \
-                        FROM puntosRetiro WHERE estado != \"eliminado\";")
+                        FROM puntosRetiro WHERE estado != \"eliminado\" order by nombre ASC;")
             cls.cursor.execute(sql)
             puntos = cls.cursor.fetchall()
             puntosRetiro = []

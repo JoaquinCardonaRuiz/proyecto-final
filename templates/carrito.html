@@ -28,7 +28,7 @@
 <div class="page-content" style="text-align: left;" id="content">
     <div class="container" id="table-container">
         <!--Section: Block Content-->
-        <section class="carrito-content">
+        <section class="carrito-content" id="carrito-content">
 
             <!--Grid row-->
             <div class="row">
@@ -205,7 +205,7 @@
                         </div>
                     </td>
         
-                    <button type="button" id="checkout-button" class="btn primary-btn btn-block">Checkout</button>
+                    <button type="button" id="checkout-button" class="btn primary-btn btn-block" onclick="changeForm();">Checkout</button>
         
                 </div>
                 </div>
@@ -218,32 +218,40 @@
         </section>
         <section class="carrito-content">
 
-            <!--Grid row-->
-            <div class="row">
+        <!--Grid row-->
+        <div class="row">
+        </section>
+
+        <!--Grid column-->
+            <div id="punto-retiro-content">
         
-            <!--Grid column-->
-                <div class="col-lg-8">
-            
-                    <!-- Card -->
-                    <div class="mb-3" style="width: 97.5%; margin-right: 2.5%;">
-                    <div class="pt-4 wish-list">
-                        <h5 class="mb-4">Seleccionar Punto de Retiro</h5>
-                        {%for pr in puntos_retiro%}
+                <!-- Card -->
+                <div class="mb-3" style="width: 95%; margin-right: 2.5%; margin-left: 2.5%;">
+                    <h5 class="mb-4">Seleccionar Punto de Retiro</h5>
+                    <div class="row">
+                        <div class="col cards-pr-col" style="width:100% !important; min-width: 400px;">
+                            {%for pr in puntos_retiro%}
                             <div class="container pr-card" id="" onclick="redirect('retiro')">
-                                <i class="fa fa-map-marker-alt fa-3x" style="float: left;" id="option-img-puntos"></i>
+                                <i class="fa fa-map-marker-alt fa-3x option-img-pr" style="float: left;" id=""></i>
                                 <p class="option-title-cards-pr">{{pr.nombre}}</p>
-                                <p class="option-description">Direccion.</p>
+                                <p class="option-description-pr">{{pr.direccion.calle + ' '}}{{pr.direccion.altura}}</p>
+                                <p class="option-description-pr text-muted"  style="margin-top: 0.2%;">Disponible en aprox. {{pr.demoraFija}} días</p>
                             </div>
                         {%endfor%}
+                        </div>
                         
+                        <div class="col" style="float: right; min-width: 300px;">
+                            <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" class="map-pr"></iframe>
+                        </div>
+                    </div>
                         
                 </div>
-            <!--Grid column-->
-        
             </div>
-            <!-- Grid row -->
-        
-        </section>
+        <!--Grid column-->
+    
+        </div>
+        <!-- Grid row -->
+    
         <form action="{{url_for('eliminar_carrito')}}" method="POST" id="remove_from_cart">
             <input type="text" hidden name="idEliminacion" id="idEliminacion">
         </form>

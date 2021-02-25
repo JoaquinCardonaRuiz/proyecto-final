@@ -11,8 +11,8 @@ class DatosArticulo(Datos):
         Obtiene todos los articulos de la BD.
         """
         
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idTipoArticulo, \
                            nombre, \
                            cProduccion, \
@@ -30,8 +30,8 @@ class DatosArticulo(Datos):
             articulos_ = cls.cursor.fetchall()
             articulos = []
             for a in articulos_:
-                insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
-                valor = DatosValor.get_from_TAid(a[0],noClose=True)[2]
+                insumos = DatosCantInsumo.get_from_TAid(a[0])
+                valor = DatosValor.get_from_TAid(a[0])[2]
                 articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
                 articulos.append(articulo_)
             return articulos
@@ -46,11 +46,11 @@ class DatosArticulo(Datos):
 
     @classmethod
     def get_by_id(cls, id, noClose = False):
-        cls.abrir_conexion()
         """Obtiene un articulo de la BD en base a un ID. Devuelve False si no encuentra 
         ninguno.
         """
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idTipoArticulo, \
                            nombre, \
                            cProduccion, \
@@ -69,8 +69,8 @@ class DatosArticulo(Datos):
             if a == None:
                 return False
             else:
-                insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
-                valor = DatosValor.get_from_TAid(a[0],noClose=True)[2]
+                insumos = DatosCantInsumo.get_from_TAid(a[0])
+                valor = DatosValor.get_from_TAid(a[0])[2]
                 articulo = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
                 return articulo
         except Exception as e:
@@ -87,9 +87,8 @@ class DatosArticulo(Datos):
         """
         Obtiene todos los articulos de la BD que no están en la lista de ids.
         """
-        
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idTipoArticulo, \
                            nombre, \
                            cProduccion, \
@@ -113,8 +112,8 @@ class DatosArticulo(Datos):
             articulos_ = cls.cursor.fetchall()
             articulos = []
             for a in articulos_:
-                insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
-                valor = DatosValor.get_from_TAid(a[0],noClose=True)[2]
+                insumos = DatosCantInsumo.get_from_TAid(a[0])
+                valor = DatosValor.get_from_TAid(a[0])[2]
                 articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
                 articulos.append(articulo_)
             return articulos
@@ -134,9 +133,8 @@ class DatosArticulo(Datos):
         """
         Obtiene todos los articulos de la BD que no están en la lista de ids.
         """
-        
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idTipoArticulo, \
                            nombre, \
                            cProduccion, \
@@ -164,8 +162,8 @@ class DatosArticulo(Datos):
             articulos_ = cls.cursor.fetchall()
             articulos = []
             for a in articulos_:
-                insumos = DatosCantInsumo.get_from_TAid(a[0],noClose=True)
-                valor = DatosValor.get_from_TAid(a[0],noClose=True)[2]
+                insumos = DatosCantInsumo.get_from_TAid(a[0])
+                valor = DatosValor.get_from_TAid(a[0])[2]
                 articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
                 articulos.append(articulo_)
             return articulos
