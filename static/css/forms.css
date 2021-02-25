@@ -679,6 +679,14 @@
   margin-right: 5px;
 }
 
+.carrito-price-img-total{
+  width: 26px;
+  padding-left: 3px;
+  padding-top: -6px;
+  margin-top: -3%;
+  margin-right: 2px;
+}
+
 .carrito-price{
   font-family: 'Montserrat', sans-serif !important;
   margin-top: 0.2%;
@@ -701,3 +709,21 @@
 .info-label-carrito{
   color: #6c757d !important;
 }
+
+#cantEP:hover{
+  cursor: default;
+}
+
+#cantMoney:hover{
+  cursor: default;
+}
+
+#priceError{
+  display: none;
+  margin-left: 5%;
+}
+
+.card-link-secondary:hover{
+  text-decoration: none;
+}
+

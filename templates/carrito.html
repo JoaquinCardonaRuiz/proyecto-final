@@ -17,6 +17,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    <script src="/static/js/carrito.js"></script>
+
 
 
 </head>
@@ -37,7 +39,6 @@
                 <!-- Card -->
                 <div class="mb-3" style="width: 97.5%; margin-right: 2.5%;">
                 <div class="pt-4 wish-list">
-                    
                     <h5 class="mb-4">Carrito (<span>{{carrito|length}}</span> productos)</h5>
                     
                     {%for articulo in articulos%}
@@ -57,14 +58,14 @@
                                     <script>
                                         $("#" +'{{articulo.id}}' + "-stock").text(Math.round(parseFloat($("#" + '{{articulo.id}}' + "-stock").text())));
                                     </script>
-                                    <p class="mb-3 text-muted text-uppercase small">Color: blue</p>
+                                    <p class="mb-3 text-muted text-uppercase small">X vendidos de este artículo este mes</p>
                                 </div>
                                 <div>
                                     <div>
-                                        <input class="quantity" min="0" name="quantity" value="1" type="number" style="width: 100%; margin-right: -120px; text-align: right;">
+                                        <p style="width: 100%; text-align: right;">1 {{articulo.unidadMedida}}</p>
                                     </div>
-                                    <small id="passwordHelpBlock" class="form-text text-muted text-center">
-                                        {{articulo.unidadMedida}}
+                                    <small id="passwordHelpBlock" class="form-text text-muted text-center" style="margin-top:-15%">
+                                        Cantidad
                                     </small>
                                 </div>
                             </div>
@@ -72,7 +73,7 @@
                                 <div>
                                 <a type="button" class="card-link-secondary small text-uppercase mr-3" onmouseover="changeColors({{articulo.id}});" onmouseleave="returnColors({{articulo.id}});" onclick="removeFromCart({{articulo.id}});">
                                     <i class="fas fa-trash-alt mr-1" id="trash-item-carrito-{{articulo.id}}"></i>Eliminar del carrito </a>
-                                <a type="button" class="card-link-secondary small text-uppercase" onmouseover="changeColorsInfo({{articulo.id}});" onmouseleave="returnColorsInfo({{articulo.id}});">
+                                <a type="button" class="card-link-secondary small text-uppercase" href="/eco-tienda/producto/{{articulo.id}}" onmouseover="changeColorsInfo({{articulo.id}});" onmouseleave="returnColorsInfo({{articulo.id}});">
                                     <i class="fas fa-info-circle mr-1" id="info-item-carrito-{{articulo.id}}"></i>Ver detalles </a>
                                 </div>
                                 <p class="mb-0 carrito-price"><span><strong id="{{articulo.id}}-articulo">{{articulo.valor * valor_ep}}</strong></span><img src="/static/img/econpuntos-logo.png" class="carrito-price-img"></p class="mb-0">
@@ -159,29 +160,78 @@
                         <p class="">
                             Descuento 2,5%
                             <span style="float: right;">
-                                <span id="descuento-detalle" class="carrito-price" style="color: #95C22B">-200</span>
+                                <span id="descuento-detalle" class="carrito-price" style="color: #95C22B">-<span id="descuento-total">{{valor * valor_ep * (nivel.descuento/100)}}</span></span>
                                 <img src="/static/img/econpuntos-logo.png" class="carrito-price-img">
                             </span>
                         </p>
                         <p class="">
                             Adicional en pesos
-                            <span style="float: right;">$253</span>
+                            <span style="float: right;" id="adicional-pesos">$253</span>
                         </p>
                         <hr style="color: lightgray;">
                         <p class="">
                             <strong>
                                 Precio Total
-                                <span style="float: right;">$253 ARS + 300 </span>
+                                <span style="float: right;">
+                                    <span class="carrito-price" id="precioTotal">{{valor * valor_ep * (1-nivel.descuento/100)}}</span>
+                                    <img src="/static/img/econpuntos-logo.png" class="carrito-price-img-total">
+                                    <span class="carrito-price" id="precioTotalARS">{{valor * valor_ep * (1-nivel.descuento/100)}}</span>
+                                </span>
+                                
                             </strong>
-                            
                         </p>
                     </div>
+                    <hr>
+                    <h6 class="mb-1" style="margin-bottom:20%">Proporción de pago</h6>
+                    <td class="pl-0 pb-0 w-25" >
+                        <div class="row" style="width: 100%;">
+                            <div class="col" style="width: 100%;">
+                            <div class="range" style="height: 2px !important; font-size: 12px; width: 100%;">
+                                <input type="range" id="slideInput" name="range" min="0" max="100" value="{{usuario.totalEcopuntos * 100 / val_tot_ep}}" step="{{step}}" oninput="setPvalues(value, {{val_tot_ep}}, {{valor}}, {{nivel.descuento}}); validaInput({{usuario.totalEcopuntos}},{{val_tot_ep}});" ondblclick="value = '{{usuario.totalEcopuntos * 100 / val_tot_ep}}'; setPvalues(value, {{val_tot_ep}}, {{valor}}, {{nivel.descuento}}); validaInput({{usuario.totalEcopuntos}},{{val_tot_ep}});" style="border: none!important;">
+                                <div class="row">
+                                    <div class="col">
+                                        <p id="cantMoney" unselectable="on"></p>
+                                    </div>
+                                    <div class="col" style="text-align: right; width: 150%; margin-right:-10%;">
+                                        <p id="cantEP" unselectable="on"></p>
+                                    </div>
+                                    <p id="priceError" class="modalErrorMessage">* No posee suficientes EcoPuntos</p>
+                                </div>
+                                <script>
+                                    setPvalues({{usuario.totalEcopuntos * 100 / val_tot_ep}}, {{val_tot_ep}}, {{valor}}, {{nivel.descuento}}); validaInput({{usuario.totalEcopuntos}},{{val_tot_ep}});
+                                </script>                        
+                            </div>
+                            </div>    
+                        </div>
+                    </td>
         
-                    <button type="button" class="btn primary-btn btn-block">Checkout</button>
+                    <button type="button" id="checkout-button" class="btn primary-btn btn-block">Checkout</button>
         
                 </div>
                 </div>
             </div>
+            <!--Grid column-->
+        
+            </div>
+            <!-- Grid row -->
+        
+        </section>
+        <section class="carrito-content">
+
+            <!--Grid row-->
+            <div class="row">
+        
+            <!--Grid column-->
+                <div class="col-lg-8">
+            
+                    <!-- Card -->
+                    <div class="mb-3" style="width: 97.5%; margin-right: 2.5%;">
+                    <div class="pt-4 wish-list">
+                        <h5 class="mb-4">Carrito (<span>{{carrito|length}}</span> productos)</h5>
+                        
+                        
+                        
+                </div>
             <!--Grid column-->
         
             </div>
@@ -194,18 +244,10 @@
         
         <!--Section: Block Content-->
     </div>
+    <script>
+        initialRoundValues();
+    </script>
 </div>
-<!-- SCRIPTS -->
-<!-- JQuery -->
-<script src="./Material Design Bootstrap_files/jquery-3.4.1.min.js.descarga"></script>
-<!-- Bootstrap tooltips -->
-<script type="text/javascript" src="./Material Design Bootstrap_files/popper.min.js.descarga"></script>
-<!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="./Material Design Bootstrap_files/bootstrap.js.descarga"></script>
-<!-- MDB core JavaScript -->
-<script type="text/javascript" src="./Material Design Bootstrap_files/mdb.min.js.descarga"></script>
-<!-- MDB Ecommerce JavaScript -->
-<script type="text/javascript" src="./Material Design Bootstrap_files/mdb.ecommerce.min.js.descarga"></script>
-  <script src="/static/js/carrito.js"></script>
+
 
   {% endblock %}

@@ -57,7 +57,6 @@ def logout(val):
         return redirect(url_for('login'))
     return render_template('login.html')
 
-
 ''' 
     -------
     EcoTienda
@@ -140,9 +139,16 @@ def carrito():
         if "carrito" not in session.keys():
             session["carrito"] = {}
         articulos = NegocioArticulo.get_by_id_array(session["carrito"].keys())
+        valor = 0
+        for articulo in articulos:
+              valor += int(session["carrito"][str(articulo.id)]) * articulo.valor
         valor_ep = NegocioEcoPuntos.get_valor_EP()
         demora_prom = NegocioPuntoRetiro.get_demora_promedio()
-        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, valor_ep = valor_ep, demora_prom = demora_prom)
+        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+        usuario = session["usuario"]
+        val_tot_ep = round(valor * valor_ep * (1-nivel.descuento/100))
+        step = 100/val_tot_ep
+        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, valor_ep = valor_ep, demora_prom = demora_prom, valor = valor, nivel=nivel, usuario = usuario, val_tot_ep = val_tot_ep, step = step)
     except Exception as e:
         return error(e, "eco-tienda")
 

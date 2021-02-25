@@ -6,10 +6,7 @@ $(document).ready(function () {
   });
 
 
-function setPvalues(value){
-    $("#cantEP").text(String(value) + " EcoPuntos");
-    $("#cantMoney").text("$" + String(100-value) + " ARS");
-}
+
 
 function setTotalVal(priceEP, value, descuento){
     priceEP = priceEP * value * (1-descuento/100);
@@ -47,5 +44,4 @@ function addToCart(){
     $("#add_to_cart").submit();
 }
 
-setPvalues(0);
 initialValueRound();
