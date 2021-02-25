@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/simulador-depositos.css')}}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: #f0f1f3;">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#"><img src="/static/img/logo-gris.png" width="150px"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Inicio<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Login</a>
+            </li>
+          </ul>
+        </div>
+        <form class="form-inline">
+                <a class="nav-link disabled" href="#">Simulador de Depósitos</a>
+        </form>
+    </nav>
+
+    <div class="jumbotron" id="main-container">
+        <div id="initial-page">
+            <div class="row d-flex justify-content-center" style="width: 100%;">
+                <h3 class="title">Bienvenido al simulador de Depósitos</h3>
+                <p class="page-content-subtitle">Simulá la experiencia de un Punto de Depósito</p>
+            </div>
+            <div class="row d-flex justify-content-center" style="width: 100%;">
+                <img src="/static/img/flat-man-recycling.png" class="main-img">
+            </div>
+            <button type="button" class="btn btn-outline-primary" id="main-button" data-mdb-ripple-color="dark" onclick="hideInitialPage();">
+                Hacer un depósito
+            </button>
+        </div>
+
+
+        <div class="multisteps-form" id="multisteps-form">
+            <!--progress bar-->
+            <div class="row">
+              <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
+                <div class="multisteps-form__progress">
+                  <button class="multisteps-form__progress-btn js-active" type="button" title="User Info">User Info</button>
+                  <button class="multisteps-form__progress-btn" type="button" title="Address">Address</button>
+                  <button class="multisteps-form__progress-btn" type="button" title="Order Info">Order Info</button>
+                  <button class="multisteps-form__progress-btn" type="button" title="Comments">Comments        </button>
+                </div>
+              </div>
+            </div>
+            <!--form panels-->
+            <div class="row">
+              <div class="col-12 col-lg-8 m-auto">
+                <form class="multisteps-form__form">
+                  <!--single form panel-->
+                  <div class="multisteps-form__panel shadow p-4 rounded bg-white js-active" data-animation="scaleIn">
+                    <h3 class="multisteps-form__title">Your User Info</h3>
+                    <div class="multisteps-form__content">
+                      <div class="form-row mt-4">
+                        <div class="col-12 col-sm-6">
+                          <input class="multisteps-form__input form-control" type="text" placeholder="First Name"/>
+                        </div>
+                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                          <input class="multisteps-form__input form-control" type="text" placeholder="Last Name"/>
+                        </div>
+                      </div>
+                      <div class="form-row mt-4">
+                        <div class="col-12 col-sm-6">
+                          <input class="multisteps-form__input form-control" type="text" placeholder="Login"/>
+                        </div>
+                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                          <input class="multisteps-form__input form-control" type="email" placeholder="Email"/>
+                        </div>
+                      </div>
+                      <div class="form-row mt-4">
+                        <div class="col-12 col-sm-6">
+                          <input class="multisteps-form__input form-control" type="password" placeholder="Password"/>
+                        </div>
+                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                          <input class="multisteps-form__input form-control" type="password" placeholder="Repeat Password"/>
+                        </div>
+                      </div>
+                      <div class="button-row d-flex mt-4">
+                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
+                      </div>
+                    </div>
+                  </div>
+                  <!--single form panel-->
+                  <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                    <h3 class="multisteps-form__title">Your Address</h3>
+                    <div class="multisteps-form__content">
+                      <div class="form-row mt-4">
+                        <div class="col">
+                          <input class="multisteps-form__input form-control" type="text" placeholder="Address 1"/>
+                        </div>
+                      </div>
+                      <div class="form-row mt-4">
+                        <div class="col">
+                          <input class="multisteps-form__input form-control" type="text" placeholder="Address 2"/>
+                        </div>
+                      </div>
+                      <div class="form-row mt-4">
+                        <div class="col-12 col-sm-6">
+                          <input class="multisteps-form__input form-control" type="text" placeholder="City"/>
+                        </div>
+                        <div class="col-6 col-sm-3 mt-4 mt-sm-0">
+                          <select class="multisteps-form__select form-control">
+                            <option selected="selected">State...</option>
+                            <option>...</option>
+                          </select>
+                        </div>
+                        <div class="col-6 col-sm-3 mt-4 mt-sm-0">
+                          <input class="multisteps-form__input form-control" type="text" placeholder="Zip"/>
+                        </div>
+                      </div>
+                      <div class="button-row d-flex mt-4">
+                        <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
+                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
+                      </div>
+                    </div>
+                  </div>
+                  <!--single form panel-->
+                  <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                    <h3 class="multisteps-form__title">Your Order Info</h3>
+                    <div class="multisteps-form__content">
+                      <div class="row">
+                        <div class="col-12 col-md-6 mt-4">
+                          <div class="card shadow-sm">
+                            <div class="card-body">
+                              <h5 class="card-title">Item Title</h5>
+                              <p class="card-text">Small and nice item description</p><a class="btn btn-primary" href="#" title="Item Link">Item Link</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-6 mt-4">
+                          <div class="card shadow-sm">
+                            <div class="card-body">
+                              <h5 class="card-title">Item Title</h5>
+                              <p class="card-text">Small and nice item description</p><a class="btn btn-primary" href="#" title="Item Link">Item Link</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="button-row d-flex mt-4 col-12">
+                          <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
+                          <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--single form panel-->
+                  <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                    <h3 class="multisteps-form__title">Additional Comments</h3>
+                    <div class="multisteps-form__content">
+                      <div class="form-row mt-4">
+                        <textarea class="multisteps-form__textarea form-control" placeholder="Additional Comments and Requirements"></textarea>
+                      </div>
+                      <div class="button-row d-flex mt-4">
+                        <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
+                        <button class="btn btn-success ml-auto" type="button" title="Send">Send</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+               </div>
+            </div>
+          </div>
+
+    </div>
+
+
+</body>
+
+<script src="/static/js/simulador-depositos.js"></script>
+<script src="/path/to/bootstrap.min.css"></script>
+

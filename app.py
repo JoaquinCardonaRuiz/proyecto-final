@@ -729,6 +729,24 @@ def update_estado_pedido():
         return error(e,"pedidos")
 
 
+
+'''
+    -----------------------
+    Simulador de Depósitos
+    -----------------------
+'''
+
+@app.route('/simulador', methods = ['GET','POST'])
+def simulador_depositos():
+    try:
+        if request.method == 'POST':
+            pass
+        pds = NegocioPuntoDeposito.get_all()
+        return render_template('simulador-depositos.html', puntos_deposito = pds)  
+    except Exception as e:
+        return error(e,"simulador_depositos")
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
