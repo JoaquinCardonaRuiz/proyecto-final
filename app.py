@@ -98,7 +98,7 @@ def product_page(id):
 def agregar_carrito():
     try:
         if request.method == "POST":
-            cantidad = request.form['cantProd']
+            cantidad = float(request.form['cantProd'])
             id = str(request.form['idProd'])
 
             if "carrito" not in session.keys():
@@ -147,8 +147,11 @@ def carrito():
         nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
         usuario = session["usuario"]
         val_tot_ep = round(valor * valor_ep * (1-nivel.descuento/100))
-        step = 100/val_tot_ep
+        if val_tot_ep > 0: step = 100/val_tot_ep
+        else:  step = 1
         puntos_retiro = NegocioPuntoRetiro.get_all()
+        carrito = Utils.carrito_to_list(session["carrito"])
+        
         return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, 
                                 valor_ep = valor_ep, demora_prom = demora_prom, valor = valor, nivel=nivel, 
                                 usuario = usuario, val_tot_ep = val_tot_ep, step = step, puntos_retiro = puntos_retiro)
@@ -156,21 +159,12 @@ def carrito():
         return error(e, "eco-tienda")
 
 
-@app.route('/eco-tienda/checkout')
-def checkout():
-    try:
-        if "carrito" not in session.keys():
-            session["carrito"] = {}
-        return render_template('checkout.html',carrito=Utils.carrito_to_list(session["carrito"]))
-    except Exception as e:
-        return error(e, "eco-tienda")
-
-@app.route('/eco-tienda/checkout/confirmar/<idPR>')
-def confirmar_checkout(idPR):
+@app.route('/eco-tienda/checkout/confirmar/<idPR>/<totalEP>/<totalARS>')
+def confirmar_checkout(idPR, totalEP, totalARS):
     try:
         if "carrito" in session.keys() and session["carrito"] != {}:
-            pass
-            #NegocioPedido.add(carrito=session["carrito"], usuario = session["usuario"],puntoRetiro=idPR)
+            return jsonify([idPR, totalARS, totalEP])
+            #NegocioPedido.add(carrito=session["carrito"], usuario = session["usuario"],puntoRetiro=idPR,valTotal=valTotal,proporcion=proporcion)
     except Exception as e:
         return error(e, "eco-tienda")
 

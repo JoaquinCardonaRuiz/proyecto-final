@@ -1,5 +1,8 @@
 var carrito = true;
 var pr = false;
+var id_pr = false;
+var cant_ars = false;
+var cant_ep = false;
 
 function changeColors(id){
     $("#trash-item-carrito-" + String(id)).css({"color":"rgb(230 24 24)"});
@@ -25,6 +28,7 @@ function removeFromCart(id){
 function initialRoundValues(){
     $("#precioTotal").text(Math.round(parseFloat($("#precioTotal").text())));
     $("#descuento-total").text(Math.round(parseFloat($("#descuento-total").text())));
+    $("#payment-button").prop('disabled', true);
     $("#carrito-content").fadeIn();    
 }
 
@@ -65,6 +69,30 @@ function changeForm(){
     carrito = true;
     pr = false;
   }
+}
+
+function disableEnableButton(id, id_array){
+    pr = id;
+    for (var i in id_array){
+        if (id_array[i] == id){
+            $("#" + String(id_array[i]) + "-pr-card").css("border", "2px solid #95C22B");
+        }
+        else{
+            $("#" + String(id_array[i]) + "-pr-card").css("border", "2px solid transparent");
+        }
+    }
+    if (pr != false){
+        $("#payment-button").prop('disabled', false);
+    }
+    else{
+        $("#payment-button").prop('disabled', true);
+    }
+}
+
+function hacerPedido(){
+    $.getJSON("/eco-tienda/checkout/confirmar/" + String(pr) + "/"+ String(cant_ep) + "/" + String(cant_ars) ,function (result){
+        alert(result);
+    });
 }
 
 setPvalues(0);
