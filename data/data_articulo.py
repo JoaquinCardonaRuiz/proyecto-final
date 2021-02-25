@@ -176,8 +176,6 @@ class DatosArticulo(Datos):
             cls.cerrar_conexion()
 
 
-
-
     @classmethod
     def add(cls,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal):
         """

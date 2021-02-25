@@ -88,6 +88,10 @@ class Utils():
     def date_format(cls, fecha):
         """
         Convierte la fecha del formato utilizado por MySQL (aaaa-mm-dd) al formato (dd/mm/aaaa).
+        TODO: Esto es innecesario. No hace falta hacerle strftime al parametro pasado, para despues hacerle strptime y strftime de vuelta
+        esta funcion solo tiene que hacer:
+
+        return fecha.strftime("%d/%m/%Y")
         """
         try:
             fecha = fecha.strftime('%Y-%m-%d')

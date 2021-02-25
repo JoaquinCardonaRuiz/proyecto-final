@@ -454,6 +454,71 @@ def gestion_articulos():
     except Exception as e:
         return error(e,"articulos")
 
+@app.route('/articulos/alta', methods = ['GET','POST'])
+def alta_articulo():
+    if request.method == 'POST':
+        nombre =                request.form['nombre']
+        unidad =                request.form['unidad']
+        imagen =                request.form['imagen']
+        ventaUsuario = None
+        try: 
+            request.form['ventaUsuario']
+            ventaUsuario = 1
+        except:
+            ventaUsuario = 0
+        costoInsumos =          request.form['costoInsumos']
+        costoProduccion =       request.form['costoProduccion']
+        otrosCostos =           request.form['otrosCostos']
+        costoObtencionAlt =     request.form['costoObtencionAlt']
+        margen =                request.form['margen']
+        valor =                 request.form['valor']
+
+        try:
+            NegocioArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor)
+        except Exception as e:
+            return error(e,"articulos")
+        return redirect(url_for('gestion_articulos'))
+
+
+@app.route('/articulos/edit', methods = ['GET','POST'])
+def edit_articulo():
+    if request.method == 'POST':
+        idArt =                 request.form['idArticulo']
+        nombre =                request.form['nombre']
+        unidad =                request.form['unidad']
+        imagen =                request.form['imagen']
+        ventaUsuario = None
+        #Aparentemente cuando un input tipo checkbox está "no chequeado"
+        #no se manda en el form, asi que chequeo si puedo leerlo, para
+        #ver si esta activado
+        try: 
+            request.form['ventaUsuario']
+            ventaUsuario = 1
+        except:
+            ventaUsuario = 0
+        costoInsumos =          request.form['costoInsumos']
+        costoProduccion =       request.form['costoProduccion']
+        otrosCostos =           request.form['otrosCostos']
+        costoObtencionAlt =     request.form['costoObtencionAlt']
+        margen =                request.form['margen']
+        valor =                 request.form['valor']
+
+        try:
+            NegocioArticulo.update(idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor)
+        except Exception as e:
+            return error(e,"articulos")
+        return redirect(url_for('gestion_articulos'))
+
+
+@app.route('/articulos/baja/<id>')
+def baja_articulo(id):
+    id = int(id)
+    try:
+        NegocioArticulo.delete(id)
+    except Exception as e:
+        return error(e,"articulos")
+    return redirect(url_for('gestion_articulos'))
+
 
 
 ''' 

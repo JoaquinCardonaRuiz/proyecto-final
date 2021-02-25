@@ -95,7 +95,6 @@
     margin-top: 15px;
 }
 
-
 /*
 @font-face {font-family: "Cordia New"; src: url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.eot"); 
     src: url("/static/fonts/@font-face/1059ad38e2a3bd334504686a2901eedb.eot?#iefix") format("embedded-opentype"), 
@@ -270,6 +269,9 @@ h2 		 {
     cursor: pointer;
 }
 
+#estado-activo{
+    color: #7cc22b;
+    font-size: 11px;
 
 
 .color-activo{
@@ -280,10 +282,6 @@ h2 		 {
     color: rgb(170, 170, 170) !important;
 }
 
-#estado-activo{
-    font-size: 11px;
-   color: #7cc22b;
-}
 
 #estado-inactivo{
     color: #f52926;
@@ -292,7 +290,6 @@ h2 		 {
 
 .icon-column{
     text-align: center;
-  
 }
 
 .text-box{
@@ -325,6 +322,7 @@ h2 		 {
 
 .error{
     color:#dd0000 !important;
+
 }
 
 .text-box{
