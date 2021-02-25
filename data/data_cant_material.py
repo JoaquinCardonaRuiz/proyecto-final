@@ -29,6 +29,7 @@ class DatosCantMaterial(Datos):
             if not(noClose):
                 cls.cerrar_conexion()
 
+
     @classmethod
     def addComponente(cls,idMat,idIns,cant):
         """
@@ -85,3 +86,24 @@ class DatosCantMaterial(Datos):
                                                     msj_adicional="Error eliminando un material componente de un insumo en la BD.")
         finally:
             cls.cerrar_conexion()
+
+            
+    @classmethod
+    def deshabilitar(cls,idMat,noClose=False):
+        """
+        Deshabilita todos los elementos de la receta de un insumo que correspondan a un id material.
+        Se llama cuando se elimina un material.
+        """
+        cls.abrir_conexion()
+        try:
+            sql= ("UPDATE mat_ins SET estado=\"deshabilitado\" WHERE idMaterial={};").format(idMat)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_cant_material.deshabilitar()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error deshabilitando un componente de un insumo en la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()

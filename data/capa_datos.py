@@ -25,3 +25,4 @@ from data.data_tipo_documento         import DatosTipoDocumento
 from data.data_tipo_usuario           import DatosTipoUsuario
 from data.data_usuario                import DatosUsuario
 from data.data_valor                  import DatosValor
+from data.data_direccion              import DatosDireccion

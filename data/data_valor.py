@@ -1,6 +1,9 @@
 from data.data import Datos
 import custom_exceptions
 
+from data.data import Datos
+import custom_exceptions
+
 class DatosValor(Datos):
     @classmethod
     def get_from_TAid(cls, id, noClose=False):
@@ -27,3 +30,23 @@ class DatosValor(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+
+    @classmethod
+    def add(cls,idArt,fecha,valor):
+        """
+        Da de alta un nuevo valor de un articulo en el sistema.
+        """
+        cls.abrir_conexion()
+        try:
+            sql = ("INSERT INTO valoresTipArt (idTipoArticulo, fecha, valor) \
+                    VALUES ({},\"{}\",{});".format(idArt,fecha,valor))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_valor.add()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error dando de alta un valor en la BD.")
+        finally:
+            cls.cerrar_conexion()
