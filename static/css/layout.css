@@ -142,3 +142,7 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 html {
 	scroll-behavior: smooth;
   }
+
+.fa-sign-out-alt{
+	color: #95C22B !important;
+}

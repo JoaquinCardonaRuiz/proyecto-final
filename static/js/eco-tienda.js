@@ -35,4 +35,5 @@ function roundPrices(ids){
     }
 }
 
+
 cambia_ancho_tarjetas();

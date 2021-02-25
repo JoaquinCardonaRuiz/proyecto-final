@@ -71,7 +71,7 @@ function changeForm(){
   }
 }
 
-function disableEnableButton(id, id_array){
+function disableEnableButton(id, id_array,calle,altura,ciudad,provincia,pais){
     pr = id;
     for (var i in id_array){
         if (id_array[i] == id){
@@ -87,7 +87,16 @@ function disableEnableButton(id, id_array){
     else{
         $("#payment-button").prop('disabled', true);
     }
+    actualiza_mapa(calle,altura,ciudad,provincia,pais);
 }
+
+function actualiza_mapa(calle,altura,ciudad,provincia,pais){
+    direccion = calle + altura + ciudad + provincia + pais;
+    encodeURI(direccion);
+    src_value = "https://maps.google.com/maps?q=" + direccion + "&t=&z=15&ie=UTF8&iwloc=&output=embed";
+    $("#gmap_canvas").attr("src",src_value);
+}
+
 
 function hacerPedido(){
     $.getJSON("/eco-tienda/checkout/confirmar/" + String(pr) + "/"+ String(cant_ep) + "/" + String(cant_ars) ,function (result){
