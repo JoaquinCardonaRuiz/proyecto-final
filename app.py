@@ -70,9 +70,10 @@ def eco_tienda():
         if valida_session(): return redirect(url_for('login'))
         articulos = NegocioArticulo.get_all()
         nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+        valor_ep = NegocioEcoPuntos.get_valor_EP()
     except Exception as e:
         return error(e, "eco-tienda")
-    return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel)
+    return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel, valor_ep = valor_ep)
 
 
 @app.route('/eco-tienda/producto/<id>')
@@ -152,7 +153,6 @@ def carrito():
             val_tot_ep = 1
         step = 100/val_tot_ep
         puntos_retiro = NegocioPuntoRetiro.get_all()
-        carrito = Utils.carrito_to_list(session["carrito"])
         
         return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, 
                                 valor_ep = valor_ep, demora_prom = demora_prom, valor = valor, nivel=nivel, 
