@@ -100,7 +100,7 @@ def product_page(id):
 def agregar_carrito():
     try:
         if request.method == "POST":
-            cantidad = float(request.form['cantProd'])
+            cantidad = int(request.form['cantProd'])
             id = str(request.form['idProd'])
 
             if "carrito" not in session.keys():
@@ -110,7 +110,7 @@ def agregar_carrito():
                 session["carrito"][str(id)] = cantidad
             
             else:
-                session["carrito"][str(id)] += cantidad
+                session["carrito"][str(id)] = int(cantidad + session["carrito"][str(id)])
 
             return redirect(url_for("carrito"))
     except Exception as e:

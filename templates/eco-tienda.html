@@ -24,12 +24,14 @@
 <div class="page-content" style="text-align: left;" id="content">
     <div class="container" id="heading-container">
         <h1 class="heading">EcoTienda</h1>
-        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Cree, elimine, modifique y configure los Puntos de Depósito de EcoAsistente.</span></h6>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Canjee sus EcoPuntos por productos de la tienda.</span></h6>
     </div>
     <div class="container" id="heading-container" style="margin-top: 5%;">
-        <div class="container">
+        <div class="container" id="products-container">
             <div class="row">
+                {%set ids_art = []%}
                 {%for articulo in articulos%}
+                <!-- {{ids_art.append(articulo.id)}} -->
                 <div class="col-md-4 card-column" style="min-width: 250px; transition: width 1s, height 1s, transform 1s;">
                     <figure class="card card-product" onclick="redirect('/eco-tienda/producto/{{articulo.id}}');">
                         <div class="img-wrap">
@@ -40,8 +42,12 @@
                                 <h4 class="title" style="font-size:17px;">{{articulo.nombre}}</h4>
                             </div>	
                             <div class="price-wrap h5">
-                                <p class="price-new">${{articulo.valor * (1-nivel.descuento/100)}}</p>
-                                <p class="price-old"><del class="price-old">{{articulo.valor}}</del><span class="desc">{{nivel.descuento|string}}% OFF</span></p>
+                                <p class="price-new" >
+                                    <span id="{{articulo.id}}-price">{{(articulo.valor * (1-nivel.descuento/100)*valor_ep)}}</span>
+                                    <img src="/static/img/econpuntos-logo.png" class="eco-tienda-price-img">
+                                </p>
+                                
+                                <p class="price-old"><del class="price-old" id="{{articulo.id}}-price-old">{{articulo.valor * valor_ep}}</del><span class="desc">{{nivel.descuento|string}}% OFF</span></p>
                             </div>                            
                         </div> <!-- bottom-wrap.// -->
                     </figure>
@@ -53,4 +59,6 @@
 </div>
 
 <script src="static/js/eco-tienda.js"></script>
+<script>roundPrices({{ids_art}});</script>
+
 {% endblock %}
