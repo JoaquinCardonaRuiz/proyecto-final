@@ -70,7 +70,7 @@ class DatosCantArticulo(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql = ("INSERT INTO mat_ins (idTipoArticulo, idPedido, cantidad) \
+            sql = ("INSERT INTO tiposArt_pedidos (idTipoArticulo, idPedido, cantidad) \
                     VALUES ({},{},{});".format(idArt,idPed,cant))
             cls.cursor.execute(sql)
             cls.db.commit()

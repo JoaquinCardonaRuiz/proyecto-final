@@ -167,7 +167,7 @@ def carrito():
 def confirmar_checkout(idPR, totalEP, totalARS):
     try:
         if "carrito" in session.keys() and session["carrito"] != {}:
-            NegocioPedido.add(session["carrito"],session["usuario"],idPR,float(totalEP),float(totalARS))
+            NegocioPedido.add(Utils.carrito_to_list(session["carrito"]),session["usuario"],idPR,float(totalEP),float(totalARS))
             return jsonify("exito")
         else:
             raise Exception("Carrito vacio")
@@ -714,6 +714,15 @@ def pedidosPR(id):
         pedidos = NegocioPedido.get_by_idPR(int(id))
         puntoRetiro = NegocioPuntoRetiro.get_by_id(int(id))
         return render_template('pedidosPR.html',pedidos = pedidos,puntoRetiro=puntoRetiro)
+    except Exception as e:
+        return error(e,"pedidos")
+
+@app.route('/gestion-pedidos/usuario')
+def pedidosUser():
+    try:
+        pedidos = NegocioPedido.get_by_user_id(session["usuario"].id)
+        puntosRetiro = NegocioPuntoRetiro.get_all()
+        return render_template('pedidosUser.html',pedidos = pedidos,puntosRetiro=puntosRetiro)
     except Exception as e:
         return error(e,"pedidos")
 

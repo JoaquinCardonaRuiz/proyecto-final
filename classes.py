@@ -592,7 +592,8 @@ class EcoPuntos:
         """
         pass
 
-    def __init__(self, cantidad, cantidadRestante):
+    def __init__(self, id,cantidad, cantidadRestante):
+        self.id = id
         self.cantidad = cantidad
         self.cantidadRestante = cantidadRestante
         self.fechaVencimiento = self.calcularFechaVenc()

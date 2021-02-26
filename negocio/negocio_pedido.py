@@ -15,8 +15,6 @@ class NegocioPedido(Negocio):
         puntoRetiro = DatosPuntoRetiro.get_by_id(idPR)
         fechaEnc = datetime.now()
         fechaRet = fechaEnc + timedelta(days=puntoRetiro.demoraFija)
-        fechaEnc = fechaEnc.strftime('%Y-%m-%d %H:%M:%S')
-        fechaRet = fechaRet.strftime('%Y-%m-%d %H:%M:%S')
         idPedido = DatosPedido.add(fechaEnc,fechaRet,totalEP,totalARS,idPR,usuario.id)
         
         #Pago
@@ -49,5 +47,12 @@ class NegocioPedido(Negocio):
     def update_estado(cls,id,estado):
         try:
             DatosPedido.update_estado(id,estado)
+        except Exception as e:
+            raise e
+
+    @classmethod
+    def get_by_user_id(cls,uid):
+        try:
+            return DatosPedido.get_by_user_id(uid)
         except Exception as e:
             raise e

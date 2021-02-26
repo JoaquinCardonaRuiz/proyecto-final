@@ -243,7 +243,7 @@ class DatosArticulo(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql= ("UPDATE tiposArticulo stock={} WHERE idTipoArticulo={};").format(cant,idTA)
+            sql= ("UPDATE tiposArticulo SET stock={} WHERE idTipoArticulo={};").format(cant,idTA)
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
