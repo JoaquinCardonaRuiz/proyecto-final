@@ -11,8 +11,8 @@ class DatosInsumo(Datos):
         Obtiene un insumo de la BD en base a su id.
         """
         
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idInsumo, \
                            nombre, \
                            unidadMedida, \
@@ -45,9 +45,8 @@ class DatosInsumo(Datos):
         """
         Obtiene todos los insumos de la BD.
         """
-        
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idInsumo, \
                            nombre, \
                            unidadMedida, \
@@ -80,8 +79,8 @@ class DatosInsumo(Datos):
         """
         Agrega un articulo a la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql= ("INSERT INTO insumos (nombre,unidadMedida,cMateriales,cProduccion,otrosCostos,cTotal,color,stock,estado) \
                    VALUES (\"{}\",\"{}\",{},{},{},{},\"{}\",0,\"disponible\");".format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color))
             cls.cursor.execute(sql)
@@ -100,8 +99,8 @@ class DatosInsumo(Datos):
         """
         Actualiza un insumo en la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql= ("UPDATE insumos SET nombre=\"{}\",unidadMedida=\"{}\",cMateriales={},cProduccion={},otrosCostos={},cTotal={},color=\"{}\",stock=0,estado=\"disponible\" WHERE idInsumo={};").format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color,idIns)
             cls.cursor.execute(sql)
             cls.db.commit()
@@ -120,8 +119,8 @@ class DatosInsumo(Datos):
         """
         Elimina un insumo de la BD a partir de su id.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("UPDATE insumos SET estado = \"eliminado\" WHERE idInsumo={}".format(id))
             cls.cursor.execute(sql)
             cls.db.commit()

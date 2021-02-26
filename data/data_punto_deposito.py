@@ -13,8 +13,8 @@ class DatosPuntoDeposito(Datos):
         """
         Obtiene todos los Puntos de Depósito de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("select * from puntosDeposito where estadoEliminacion = 'disponible' order by nombre ASC")
             cls.cursor.execute(sql)
             puntosDeposito = cls.cursor.fetchall()
@@ -39,8 +39,8 @@ class DatosPuntoDeposito(Datos):
         """
         Obtiene todos los nombres de los Puntos de Depósito de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("select nombre from puntosDeposito where estadoEliminacion = 'disponible'")
             cls.cursor.execute(sql)
             puntosDeposito = cls.cursor.fetchall()
@@ -64,8 +64,8 @@ class DatosPuntoDeposito(Datos):
         """
         Añade un Punto de Depósito a la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             #Obtengo el ID que se le va a asignar para poder guardarlo en el Horario.
             sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'puntosDeposito'")
             cls.cursor.execute(sql)
@@ -92,8 +92,8 @@ class DatosPuntoDeposito(Datos):
         """
         Añade un los materiales aceptados por un Punto de Depósito a la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             if len(materiales) > 0:
                 for material in materiales:
                     print(str(material))
@@ -115,8 +115,8 @@ class DatosPuntoDeposito(Datos):
         """
         Modifica un Punto de Depósito en la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             #Hago el alta del PD en la BD.
             sql = ("UPDATE puntosDeposito SET nombre = %s, estado = %s where idPunto = %s")
             values =  (puntoDep.nombre, puntoDep.estado, puntoDep.id)
@@ -136,8 +136,8 @@ class DatosPuntoDeposito(Datos):
         """
         Hace un borrado lógico de los materiales aceptados por un Punto de Depósito a la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             if len(materiales) > 0:
                 for material in materiales:
                     print(str(material))
@@ -159,40 +159,40 @@ class DatosPuntoDeposito(Datos):
         """
         Realiza el borrado lógico un Punto de Depósito en base al ID que recibe como parámetro.
         """
-        cls.abrir_conexion()
         try:
-                #Elimina horarios del Punto
-                sql = ("DELETE from horariosPD where idPunto = %s")
-                values = (idPunto,)
-                cls.cursor.execute(sql,values)
+            cls.abrir_conexion()
+            #Elimina horarios del Punto
+            sql = ("DELETE from horariosPD where idPunto = %s")
+            values = (idPunto,)
+            cls.cursor.execute(sql,values)
 
-                #Obtengo el ID de la dirección del Punto
-                sql = ("SELECT idDireccion from puntosDeposito where idPunto = %s")
-                values = (idPunto,)
-                cls.cursor.execute(sql,values)
-                idDireccion = cls.cursor.fetchone()[0]
+            #Obtengo el ID de la dirección del Punto
+            sql = ("SELECT idDireccion from puntosDeposito where idPunto = %s")
+            values = (idPunto,)
+            cls.cursor.execute(sql,values)
+            idDireccion = cls.cursor.fetchone()[0]
 
-                #Elimino Horarios
-                sql = ("DELETE from horariosPD where idPunto = %s")
-                values = (idPunto,)
-                cls.cursor.execute(sql, values)
+            #Elimino Horarios
+            sql = ("DELETE from horariosPD where idPunto = %s")
+            values = (idPunto,)
+            cls.cursor.execute(sql, values)
 
-                #Elimino logicamente relacion con materiales
-                sql = ("UPDATE puntosDep_mat SET estado = 'eliminado' where idPunto = %s")
-                values = (idPunto,)
-                cls.cursor.execute(sql, values)
+            #Elimino logicamente relacion con materiales
+            sql = ("UPDATE puntosDep_mat SET estado = 'eliminado' where idPunto = %s")
+            values = (idPunto,)
+            cls.cursor.execute(sql, values)
 
-                #Elimino logicamente el Punto de Depósito
-                sql = ("UPDATE puntosDeposito SET estadoEliminacion ='eliminado', idDireccion = NULL where idPunto = %s")
-                values = (idPunto,)
-                cls.cursor.execute(sql, values)
+            #Elimino logicamente el Punto de Depósito
+            sql = ("UPDATE puntosDeposito SET estadoEliminacion ='eliminado', idDireccion = NULL where idPunto = %s")
+            values = (idPunto,)
+            cls.cursor.execute(sql, values)
 
-                #Elimino la dirección del Punto.
-                sql = ("DELETE from direcciones where idDireccion = %s")
-                values = (idDireccion,)
-                cls.cursor.execute(sql, values)
+            #Elimino la dirección del Punto.
+            sql = ("DELETE from direcciones where idDireccion = %s")
+            values = (idDireccion,)
+            cls.cursor.execute(sql, values)
 
-                cls.db.commit()
+            cls.db.commit()
             
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data.baja_pd()",

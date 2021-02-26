@@ -86,10 +86,10 @@ class DatosEcoPuntos(Datos):
 
     @classmethod
     def get_by_id(cls, id, noClose = False):
-        cls.abrir_conexion()
         """Obtiene los EcoPuntos de un deposito según su ID.
         """
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idEcoPuntos, \
                            cantidad, \
                            cantidadRestante \
@@ -115,8 +115,8 @@ class DatosEcoPuntos(Datos):
         """
         Actualiza la cantidad de ecopuntos restantes de un lote en la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("UPDATE ecoPuntos SET cantidadRestante = {} WHERE idEcoPuntos={}").format(cant,idEP)
             cls.cursor.execute(sql)
             cls.db.commit()

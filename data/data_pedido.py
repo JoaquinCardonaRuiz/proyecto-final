@@ -9,8 +9,8 @@ class DatosPedido(Datos):
         """
         Obtiene todos los pedidos de un usuario de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT \
                     idPedido, \
                     fechaEnc, \
@@ -112,8 +112,8 @@ class DatosPedido(Datos):
         """
         Agrega un pedido a la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql= ("INSERT INTO pedidos (fechaEnc,fechaRet,totalEP,totalARS,idPunto,idUsuario,estado) \
                    VALUES (\"{}\",\"{}\",{},{},{},{},\"pendiente\");".format(fechaEnc,fechaRet,totalEP,totalARS,idPR,uid))
             cls.cursor.execute(sql)
@@ -131,8 +131,8 @@ class DatosPedido(Datos):
         """
         Actualiza el estado de un pedido en la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("UPDATE pedidos SET estado = \"{}\" WHERE idPedido={}".format(estado,id))
             cls.cursor.execute(sql)
             cls.db.commit()

@@ -7,8 +7,8 @@ class DatosSalidaStock(Datos):
     
     @classmethod
     def get_salidas_by_entidad(cls,id,noClose = False):
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idSalida, \
                            idTipoArticulo, \
                            fecha, \
