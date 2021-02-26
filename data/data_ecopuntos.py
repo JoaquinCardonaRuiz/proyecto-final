@@ -42,7 +42,7 @@ class DatosEcoPuntos(Datos):
             if ep == None:
                 return False
             else:
-                ecopunto = EcoPuntos(ep[1],ep[2])
+                ecopunto = EcoPuntos(ep[0],ep[1],ep[2])
                 return ecopunto
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_by_id()",

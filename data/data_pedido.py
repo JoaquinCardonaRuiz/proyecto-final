@@ -115,7 +115,7 @@ class DatosPedido(Datos):
         cls.abrir_conexion()
         try:
             sql= ("INSERT INTO pedidos (fechaEnc,fechaRet,totalEP,totalARS,idPunto,idUsuario,estado) \
-                   VALUES ({},{},{},{},{},{},\"disponible\");".format(fechaEnc,fechaRet,totalEP,totalARS,idPR,uid))
+                   VALUES (\"{}\",\"{}\",{},{},{},{},\"disponible\");".format(fechaEnc,fechaRet,totalEP,totalARS,idPR,uid))
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
