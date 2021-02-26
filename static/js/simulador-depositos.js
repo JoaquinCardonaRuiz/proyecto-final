@@ -1,8 +1,73 @@
+var unidad = '-';
+var id_pd = '-';
+var nombre_pd = '-';
+var nombre_mat = '-';
+var id_mat = '-';
+var cantidad = '-';
+
 function hideInitialPage(){
     $("#initial-page").fadeOut();
-    $("#multisteps-form").fadeIn();
+    $("#multisteps-form").fadeIn(1000);
 }
 
+function setUnidadValue(){
+  var values = String($("#mat-select").val()).split(',');
+  id_mat = values[0];
+  unidad = values[1];
+  nombre_mat = values[2];
+  $("#unidadMedida").text(unidad);
+  $("#material-img").text(nombre_mat.charAt(0).toUpperCase());
+  $("#nombre-material").text(nombre_mat);
+}
+
+function setPD(){
+  var values = String($("#pd-select").val()).split(',');
+  id_pd = values[0];
+  nombre_pd = values[1];
+  $("#nombre-pd").text(nombre_pd);
+}
+
+function setCant(){
+  cantidad = $("#cantidad-input").val();
+  $("#cantidad").text($("#cantidad-input").val() + ' ' + String(unidad));
+  if ($("#cantidad-input").val() != ''){
+    $("#cant-next-btn").prop("disabled", false);
+  }
+  else{
+    $("#cant-next-btn").prop("disabled", true);
+  }
+}
+
+function submitForm(){
+  loading();
+  $.getJSON("/simulador/alta-deposito/" + String(id_mat) + '/' + String(id_pd) + '/' + String(cantidad),function (result){
+    alert(result);
+  });
+}
+
+function loading(){
+  $("#multisteps-form").hide();
+  $("#lds-ring-big").fadeIn();
+  $("#loading-text").fadeIn();
+  nextMsgDeposito();
+}
+
+$("#loadingRowPuntos").show();
+
+function nextMsgDeposito() {
+  if (messagesDeposito.length == 1) {
+      $('#loading-text').html(messagesDeposito.pop()).fadeIn(500);
+
+  } else {
+      $('#loading-text').html(messagesDeposito.pop()).fadeIn(500).delay(5000).fadeOut(500, nextMsgDeposito);
+  }
+};
+
+var messagesDeposito = [
+  "Estamos registrando el Depósito",
+  "¡Parece que has generado EcoPuntos!",
+  "¡Casi listo! Últimos retoques"
+].reverse();
 
 //DOM elements
 const DOMstrings = {

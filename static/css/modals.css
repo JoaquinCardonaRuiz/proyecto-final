@@ -257,6 +257,11 @@ margin-left: 20px;
 margin-right: 20px;
 }
 
+.card-first-row-sm{
+  margin-top: 12px;
+}
+
+
 .subheader{
 font-size: large;
 color: #aaa;

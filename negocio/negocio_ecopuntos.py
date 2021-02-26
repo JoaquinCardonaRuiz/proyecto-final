@@ -10,6 +10,13 @@ class NegocioEcoPuntos(Negocio):
         except Exception as e:
             raise e
 
+    @classmethod
+    def get_factor_recompensa_EP(cls):
+        try:
+            return DatosEcoPuntos.get_valor_EP()
+        except Exception as e:
+            raise e
+
 
     @classmethod
     def updateEps(cls,idEP,cant):

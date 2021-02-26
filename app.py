@@ -9,6 +9,7 @@ import traceback
 from flask_session import Session 
 from utils import Utils
 
+
 #app
 app = Flask(__name__)
 app.secret_key = 'SecretKeyForSigningCookies'
@@ -746,10 +747,24 @@ def simulador_depositos():
         if request.method == 'POST':
             pass
         pds = NegocioPuntoDeposito.get_all()
-        return render_template('simulador-depositos.html', puntos_deposito = pds)  
+        materiales = NegocioMaterial.get_all()
+        return render_template('simulador-depositos.html', puntos_deposito = pds, materiales = materiales)  
     except Exception as e:
         return error(e,"simulador_depositos")
 
+@app.route('/simulador/alta-deposito/<idmat>/<idpd>/<cantidad>', methods = ['GET','POST'])
+def alta_deposito(idmat,idpd,cantidad):
+    try:
+        material = NegocioMaterial.get_by_id(idmat)
+        factor_conversion = NegocioEcoPuntos.get_factor_recompensa_EP()
+        #TODO: Consultar si acá hace falta multiplicar también por el factor de conversión de ARS a EP.
+        cant_EP = material.costoRecoleccion * factor_conversion * float(cantidad)
+        #Codigo = IDdeposito + fecha + idMaterial
+        codigo = NegocioDeposito.alta(idmat,idpd,cantidad,cant_EP)
+        print(cant_EP)
+        return jsonify(codigo)
+    except Exception as e:
+        return error(e,"simulador_depositos")
 
 if __name__ == '__main__':
     app.debug = True

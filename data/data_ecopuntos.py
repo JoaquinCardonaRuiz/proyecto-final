@@ -3,13 +3,48 @@ from classes import EcoPuntos
 import custom_exceptions
 
 class DatosEcoPuntos(Datos):
+
+    @classmethod
+    def add(cls, fecha_vencimiento, cantidad):
+        """
+        Obtiene valor actual de los EP.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("INSERT into ecoPuntos (fechaVencimiento, cantidad, cantidadRestante) values ('{}',{},{})").format(fecha_vencimiento, cantidad, cantidad)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_valor_EP()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo el valor de los EP de la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
+    def get_tiempo_vigencia(cls):
+        try:
+            cls.abrir_conexion()
+            sql = "SELECT tiempoVigencia,fecha,valor FROM datosEcoPuntos;"
+            cls.cursor.execute(sql)
+            valores = cls.cursor.fetchall()
+            max_date = valores[0]
+            for v in valores:
+                if v[1] > max_date[1]:
+                    max_date = v
+            return max_date[0]
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_tiempo_vigencia()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo el valor de los EP de la BD.") 
+
     @classmethod
     def get_valor_EP(cls):
         """
         Obtiene valor actual de los EP.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = "SELECT tiempoVigencia,fecha,valor FROM datosEcoPuntos;"
             cls.cursor.execute(sql)
             valores = cls.cursor.fetchall()
@@ -22,6 +57,28 @@ class DatosEcoPuntos(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_valor_EP()",
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo el valor de los EP de la BD.")
+        finally:
+            cls.cerrar_conexion()
+        
+    @classmethod
+    def get_porcentaje_rec_EP(cls):
+        """
+        Obtiene el factor de recompensa actual de los EP.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = "SELECT tiempoVigencia,fecha,valor, porc_rec_EP FROM datosEcoPuntos;"
+            cls.cursor.execute(sql)
+            valores = cls.cursor.fetchall()
+            max_date = valores[0]
+            for v in valores:
+                if v[1] > max_date[1]:
+                    max_date = v
+            return max_date[3]
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_porcentaje_rec_EP()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo el factor de recompensa de EP de la BD.")
         finally:
             cls.cerrar_conexion()
 

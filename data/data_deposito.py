@@ -3,6 +3,8 @@ from data.data_cant_material import DatosCantMaterial
 from data.data_ecopuntos import DatosEcoPuntos
 from classes import Deposito, CantMaterial, EcoPuntos
 import custom_exceptions
+from datetime import datetime, timedelta
+from utils import Utils
 
 class DatosDeposito(Datos):
     @classmethod
@@ -38,3 +40,51 @@ class DatosDeposito(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+    
+    @classmethod
+    def add(cls,id_mat, id_pd,cantidad,cant_ep,noClose=False):
+        """
+        Añade un depósito a la BD.
+        """
+        cls.abrir_conexion()
+        try:
+            #Obtengo ID EcoPuntos
+            sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'ecoPuntos'")
+            cls.cursor.execute(sql)
+            id_ep = cls.cursor.fetchone()[0]
+
+            tiempo_vigencia = DatosEcoPuntos.get_tiempo_vigencia()
+            fecha_vencimiento = datetime.now() + timedelta(days=int(tiempo_vigencia))
+            fecha_vencimiento = fecha_vencimiento.strftime('%Y-%m-%d %H:%M:%S')
+
+            #Guardo los EP
+            DatosEcoPuntos.add(fecha_vencimiento,cant_ep)
+
+            #Obtengo id Deposito para calcular el codigo
+            sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'depositos'")
+            cls.cursor.execute(sql)
+            id_dep = cls.cursor.fetchone()[0]
+
+            codigo = str(id_dep) + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + str(id_mat)
+            codigo = Utils.encripta_codigo(codigo)
+
+            today = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+            #Guardo el deposito
+            
+            sql = ("INSERT into depositos (codigo, cant, fechaReg, fechaDep, idMaterial, idUsuario,idPunto,idEcoPuntos) values ('{}',{},{},'{}',{},{},{},{})").format(codigo, cantidad,"NULL",today,id_mat,"NULL",id_pd,id_ep)
+            
+            cls.cursor.execute(sql)
+            
+            cls.db.commit()
+
+            return codigo
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_deposito.add()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error agregando un deposito a la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
+    

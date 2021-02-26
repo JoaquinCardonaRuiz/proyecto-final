@@ -13,8 +13,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300&display=swap" rel="stylesheet">
 </head>
-<body style="background-color: #f0f1f3;">
-    <nav class="navbar navbar-expand-lg navbar-light">
+<body style="background-color: #ffffff;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#"><img src="/static/img/logo-gris.png" width="150px"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -34,7 +34,7 @@
         </form>
     </nav>
 
-    <div class="jumbotron" id="main-container">
+    <div class="" id="main-container">
         <div id="initial-page">
             <div class="row d-flex justify-content-center" style="width: 100%;">
                 <h3 class="title">Bienvenido al simulador de Depósitos</h3>
@@ -48,11 +48,10 @@
             </button>
         </div>
 
-
         <div class="multisteps-form" id="multisteps-form">
             <!--progress bar-->
             <div class="row">
-              <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
+              <div class="col-12 ml-auto mr-auto mb-4" style="width: 60% !important;">
                 <div class="multisteps-form__progress">
                   <button class="multisteps-form__progress-btn js-active" type="button" title="User Info" disabled>Punto de Depósito</button>
                   <button class="multisteps-form__progress-btn" type="button" title="Address" disabled>Material</button>
@@ -63,107 +62,96 @@
             </div>
             <!--form panels-->
             <div class="row">
-              <div class="col-12 col-lg-8 m-auto">
-                <form class="multisteps-form__form">
+              <div class="col-12 ml-auto mr-auto">
+                <form class="multisteps-form__form" style="margin-left: 10%; width: 80%; margin-top: 3%;">
                   <!--single form panel-->
                   <div class="multisteps-form__panel shadow p-4 rounded bg-white js-active" data-animation="scaleIn">
                     <h3 class="multisteps-form__title">Seleccionar Punto de Depósito</h3>
                     <div class="multisteps-form__content">
-                      <div class="form-row mt-4">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                      <div class="form-row mt-4 mb-4">
+                        <select class="multisteps-form__select form-control mt-4" id="pd-select" onchange="setPD();">
+                            {% for pd in puntos_deposito%}
+                            <option value="{{pd.id}},{{pd.nombre}}">{{pd.nombre}}</option>
+                            {%endfor%}
                           </select>
                       </div>
-                      <div class="form-row mt-4">
-                        <div class="col-12 col-sm-6">
-                          <input class="multisteps-form__input form-control" type="password" placeholder="Password"/>
-                        </div>
-                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
-                          <input class="multisteps-form__input form-control" type="password" placeholder="Repeat Password"/>
-                        </div>
-                      </div>
-                      <div class="button-row d-flex mt-4">
-                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
+                      <div class="row d-flex btn-row">
+                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Siguiente</button>
                       </div>
                     </div>
                   </div>
                   <!--single form panel-->
                   <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
-                    <h3 class="multisteps-form__title">Your Address</h3>
+                    <h3 class="multisteps-form__title">Seleccione el material depositado</h3>
                     <div class="multisteps-form__content">
-                      <div class="form-row mt-4">
-                        <div class="col">
-                          <input class="multisteps-form__input form-control" type="text" placeholder="Address 1"/>
-                        </div>
+                      <div class="form-row mt-4 mb-4">
+                        <select class="multisteps-form__select form-control mt-4" id="mat-select" aria-placeholder="Seleccione un material..." onchange="setUnidadValue();">
+                            {% for mat in materiales%}
+                            <option value={{mat.id}},{{mat.unidadMedida|lower}},{{mat.nombre}}>{{mat.nombre}}</option>
+                            {%endfor%}
+                        </select>
                       </div>
-                      <div class="form-row mt-4">
-                        <div class="col">
-                          <input class="multisteps-form__input form-control" type="text" placeholder="Address 2"/>
-                        </div>
-                      </div>
-                      <div class="form-row mt-4">
-                        <div class="col-12 col-sm-6">
-                          <input class="multisteps-form__input form-control" type="text" placeholder="City"/>
-                        </div>
-                        <div class="col-6 col-sm-3 mt-4 mt-sm-0">
-                          <select class="multisteps-form__select form-control">
-                            <option selected="selected">State...</option>
-                            <option>...</option>
-                          </select>
-                        </div>
-                        <div class="col-6 col-sm-3 mt-4 mt-sm-0">
-                          <input class="multisteps-form__input form-control" type="text" placeholder="Zip"/>
-                        </div>
-                      </div>
-                      <div class="button-row d-flex mt-4">
-                        <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
+                      <div class="row d-flex btn-row">
+                        <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Anterior</button>
+                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Siguiente</button>
                       </div>
                     </div>
                   </div>
                   <!--single form panel-->
                   <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
-                    <h3 class="multisteps-form__title">Your Order Info</h3>
+                    <h3 class="multisteps-form__title">Ingrese la cantidad de <span id="unidadMedida"></span></h3>
                     <div class="multisteps-form__content">
-                      <div class="row">
-                        <div class="col-12 col-md-6 mt-4">
-                          <div class="card shadow-sm">
-                            <div class="card-body">
-                              <h5 class="card-title">Item Title</h5>
-                              <p class="card-text">Small and nice item description</p><a class="btn btn-primary" href="#" title="Item Link">Item Link</a>
+                      <div class="form-row mt-4 mb-4">
+                            <div class="col mt-4">
+                                <input class="form-control" type="number" id="cantidad-input" oninput="setCant();" placeholder="Ingrese la cantidad depositada..."/>
                             </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-6 mt-4">
-                          <div class="card shadow-sm">
-                            <div class="card-body">
-                              <h5 class="card-title">Item Title</h5>
-                              <p class="card-text">Small and nice item description</p><a class="btn btn-primary" href="#" title="Item Link">Item Link</a>
-                            </div>
-                          </div>
-                        </div>
                       </div>
-                      <div class="row">
-                        <div class="button-row d-flex mt-4 col-12">
-                          <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                          <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
-                        </div>
+                      <div class="row d-flex btn-row">
+                        <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Anterior</button>
+                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next"  id="cant-next-btn" disabled>Siguiente</button>
                       </div>
                     </div>
                   </div>
                   <!--single form panel-->
                   <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
-                    <h3 class="multisteps-form__title">Additional Comments</h3>
+                    <h3 class="multisteps-form__title">Resumen del Depósito</h3>
                     <div class="multisteps-form__content">
                       <div class="form-row mt-4">
-                        <textarea class="multisteps-form__textarea form-control" placeholder="Additional Comments and Requirements"></textarea>
-                      </div>
-                      <div class="button-row d-flex mt-4">
-                        <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                        <button class="btn btn-success ml-auto" type="button" title="Send">Send</button>
+                        <div class="container modal-large-card-sm" id="material-card" style="width: 100% !important;">
+                            <div class="row">
+                                <div class="modal-card-col-sm">
+                                    <div class="circle materiales-large-card-img" id="material-img">M</div>
+                                </div>
+                                <div class="modal-card-col-sm" >
+                                    <div class="row d-flex justify-content-center card-first-row-sm">
+                                        <p class="material-card-title" id="nombre-material">Nombre</p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center card-second-row">
+                                        <p class="text-box material-card-subtitle">Nombre material</p>
+                                    </div>
+                                </div>
+                                <div class="modal-card-col-sm">
+                                    <div class="row d-flex justify-content-center card-first-row-sm">
+                                        <p class="material-card-title" id="cantidad">-</p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center card-second-row">
+                                        <p class="text-box material-card-subtitle">Cantidad</p>
+                                    </div>
+                                </div>
+                                <div class="modal-card-col-sm">
+                                    <div class="row d-flex justify-content-center card-first-row-sm">
+                                        <p class="material-card-title" id="nombre-pd">-</p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center card-second-row">
+                                        <p class="text-box material-card-subtitle">Punto de depósito</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>                      
+                      <div class="row d-flex btn-row">
+                        <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Anterior</button>
+                        <button class="btn btn-success ml-auto" type="button" title="Send" onclick="submitForm();">Confirmar depósito</button>
                       </div>
                     </div>
                   </div>
@@ -172,6 +160,11 @@
             </div>
           </div>
 
+          <div class="row" id="loadingRowPuntos">
+            <div id="lds-ring-big" class="lds-ring" style="display: none; margin-top: 5% !important;"><div></div><div></div><div></div><div></div></div>
+        </div>
+        <p id="loading-text">Creando depósito..</p>
+
     </div>
 
 
@@ -179,4 +172,7 @@
 
 <script src="/static/js/simulador-depositos.js"></script>
 <script src="/path/to/bootstrap.min.css"></script>
+<script>setPD();</script>
+<script>setUnidadValue();</script>
+
 

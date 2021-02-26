@@ -1,6 +1,8 @@
 import custom_exceptions
 from classes import CantArticulo
 import datetime
+from hashlib import blake2b, blake2s
+
 
 class Utils():
     """Clase con funciones de utilidad para el programa."""
@@ -165,3 +167,13 @@ class Utils():
         for art in carrito.keys():
             nuevo_carrito.append(CantArticulo(carrito[art],art))
         return nuevo_carrito
+
+    @classmethod
+    def encripta_codigo(cls,code):
+        h = blake2b(key=b'pseudorandom key', digest_size=8)
+        h.update(code.encode('utf-8'))
+        return h.hexdigest()
+
+        
+    
+    

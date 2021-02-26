@@ -1,3 +1,6 @@
+@import url("modals.css"); 
+@import url("loading-elements.css"); 
+
 .navbar-brand{
     margin-top: -10px;
 }
@@ -6,18 +9,19 @@
     margin-top: 10px;
 }
 
-.navbar{
-    background-color: white !important;
-}
 
 #main-container{
     position: relative; 
     margin-left: 20%;
     margin-right: 20%; 
-    min-width: 350px; 
     margin-top: 5%;
     background-color: white !important;
     min-height: 550px;
+    margin-bottom: 10%;
+}
+
+.button-row{
+    margin-top: 10% !important;
 }
 
 .main-img{
@@ -48,7 +52,22 @@
 
 }
 
+.circle {
+    width: 58px;
+    height: 58px;
+    line-height: 58px;
+    border-radius: 58px;
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(226, 192, 128);
+}
 
+#lds-ring-big div {
+    border-color: #0275d8 transparent transparent transparent !important;
+}
 
 #multisteps-form{
     display: none;
@@ -58,6 +77,15 @@
     grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   }
   
+.multisteps-form__content{
+    margin-top: 5%;
+}
+
+.btn-row{
+    margin-top: 10%;
+    margin-left: 0% !important;
+    margin-right: -0.5% !important;
+}
   .multisteps-form__progress-btn {
     transition-property: all;
     transition-duration: 0.15s;
@@ -124,6 +152,10 @@
     background-color: currentColor;
     z-index: 1;
   }
+
+  .multisteps-form__title{
+    font-family: 'Hind', sans-serif;
+  }
   
   .multisteps-form__progress-btn:first-child:after {
     display: none;
@@ -172,4 +204,13 @@
     transition-delay: 0s;
     -webkit-transform: scale(1);
             transform: scale(1);
+  }
+
+  .button-row{
+    margin-top: 40px;
+  }
+
+  #unidadMedida{
+    font-family: 'Hind', sans-serif;
+    font-size: 29px;
   }
