@@ -181,8 +181,8 @@ class DatosArticulo(Datos):
         """
         Agrega un articulo a la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql= ("INSERT INTO tiposArticulo (nombre,unidadMedida,img,vUsuario,cInsumos,cProduccion,otrosCostos,cObtencionAlt,cTotal,margenGanancia,stock,estado) \
                    VALUES (\"{}\",\"{}\",\"{}\",{},{},{},{},{},{},{},0,\"disponible\");".format(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen))
             cls.cursor.execute(sql)
@@ -202,8 +202,8 @@ class DatosArticulo(Datos):
         """
         Elimina un artículo de la BD a partir de su id.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("UPDATE tiposArticulo SET estado = \"eliminado\" WHERE idTipoArticulo={}".format(id))
             cls.cursor.execute(sql)
             cls.db.commit()
@@ -222,8 +222,8 @@ class DatosArticulo(Datos):
         """
         Actualiza un articulo en la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql= ("UPDATE tiposArticulo SET nombre=\"{}\",unidadMedida=\"{}\",img=\"{}\",vUsuario={},cInsumos={},cProduccion={},otrosCostos={},cObtencionAlt={},cTotal={},margenGanancia={},stock=0,estado=\"disponible\" WHERE idTipoArticulo={};").format(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen,idArt)
             cls.cursor.execute(sql)
             cls.db.commit()

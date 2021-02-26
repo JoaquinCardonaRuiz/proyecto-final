@@ -12,8 +12,8 @@ class DatosCantInsumo(Datos):
         """
         Obtiene los insumos que componen un tipo articulo de la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT tiposArt_ins.cantidad,tiposArt_ins.idInsumo \
                     FROM tiposArt_ins \
                     INNER JOIN tiposArticulo \

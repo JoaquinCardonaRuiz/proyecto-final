@@ -401,10 +401,10 @@
                                 Seleccionar Materiales 
                                 <img src="/static/img/chevron.svg" class="chevron"></img>
                             </h4>
-                            <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
+                            <div class="menu-option-box" id="menu-option-box-1" >
                                 {%for material in materiales%}
                                 {%if material.estado == 'habilitado'%}
-                                    <p class="menu-option-box-op" onclick="dropdownOptionSelect('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check" id="{{material.nombre + '-check'}}" style="display: none;"></i>{{material.nombre}}</p>              
+                                    <p class="menu-option-box-op" onclick="dropdownOptionSelect('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check" id="{{material.id|string + '-check'}}" style="display: none;"></i>{{material.nombre}}</p>              
                                 {%else%}
                                     <p class="menu-option-box-op-suspended" data-toggle="tooltip" data-placement="right" title="Los depósitos de este material se encuentran suspendidos">{{material.nombre}}</p>              
                                 {%endif%}
@@ -417,10 +417,10 @@
                         <p class="warning-label-altaPD" id="warning-label-altaPD"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
                         {% for material in materiales %}
                         {%if material.estado == 'habilitado'%}
-                        <div class="container modal-large-card-sm card-altaPD" id="{{material.nombre + '-card'}}" style="display: none;">
+                        <div class="container modal-large-card-sm card-altaPD" id="{{material.id|string + '-card'}}" style="display: none;">
                             <div class="row">
                                 <div class="modal-card-col-sm">
-                                    <div class="circle materiales-large-card-img" id="{{material.nombre + '-img'}}">{{material.nombre[0]}}</div>
+                                    <div class="circle materiales-large-card-img" id="{{material.id|string + '-img'}}">{{material.nombre[0]}}</div>
                                 </div>
                                 <div class="modal-card-col-sm" >
                                     <div class="row d-flex justify-content-center card-first-row-sm">
@@ -654,12 +654,12 @@
                                 Seleccionar Materiales 
                                 <img src="/static/img/chevron.svg" class="chevron"></img>
                             </h4>
-                            <div class="menu-option-box" id="menu-option-box-1-mod" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
+                            <div class="menu-option-box" id="menu-option-box-1-mod" >
                                 {%for material in materiales%}
                                 {%if material.estado == 'habilitado'%}
-                                    <p class="menu-option-box-op" onclick="dropdownOptionSelectMod('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check mod-check" id="{{material.nombre + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>              
+                                    <p class="menu-option-box-op" onclick="dropdownOptionSelectMod('{{material.id}}', '{{material.nombre}}','{{material.color}}');"><i class="fa fa-check dropdown-option-check mod-check" id="{{material.id|string + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>              
                                 {%else%}
-                                    <p class="menu-option-box-op-suspended" onclick="dropdownOptionSuspendedSelectMod('{{material.id}}', '{{material.nombre}}');" data-toggle="tooltip" data-placement="right" title="Los depósitos de este material se encuentran suspendidos"><i class="fa fa-check dropdown-option-check mod-check" id="{{material.nombre + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>              
+                                    <p class="menu-option-box-op-suspended" onclick="dropdownOptionSuspendedSelectMod('{{material.id}}', '{{material.nombre}}');" data-toggle="tooltip" data-placement="right" title="Los depósitos de este material se encuentran suspendidos"><i class="fa fa-check dropdown-option-check mod-check" id="{{material.id|string + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>              
                                 {%endif%}
                                 {%endfor%}
                             </div>       
@@ -670,10 +670,10 @@
                         <p class="warning-label-altaPD" id="warning-label-modPD"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-modPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
                         {% for material in materiales %}
                         {%if material.estado == 'habilitado'%}
-                        <div class="container modal-large-card-sm card-modPD" id="{{material.nombre + '-card-mod'}}" style="display: none;">
+                        <div class="container modal-large-card-sm card-modPD" id="{{material.id|string + '-card-mod'}}" style="display: none;">
                             <div class="row">
                                 <div class="modal-card-col-sm">
-                                    <div class="circle materiales-large-card-img" id="{{material.nombre + '-img-mod'}}">{{material.nombre[0]}}</div>
+                                    <div class="circle materiales-large-card-img" id="{{material.id|string + '-img-mod'}}">{{material.nombre[0]}}</div>
                                 </div>
                                 <div class="modal-card-col-sm" >
                                     <div class="row d-flex justify-content-center card-first-row-sm">
@@ -702,10 +702,10 @@
                             </div>
                         </div>
                         {%elif material.estado == 'suspendido'%}
-                        <div class="container modal-large-card-sm card-modPD grey-card" data-toggle="tooltip" data-placement="right" title="Los depósitos de este material se encuentran suspendidos" id="{{material.nombre + '-card-mod'}}" style="display: none;">
+                        <div class="container modal-large-card-sm card-modPD grey-card" data-toggle="tooltip" data-placement="right" title="Los depósitos de este material se encuentran suspendidos" id="{{material.id|string + '-card-mod'}}" style="display: none;">
                             <div class="row">
                                 <div class="modal-card-col-sm">
-                                    <div class="circle materiales-large-card-img gray-mat-img" id="{{material.nombre + '-img-mod'}}">{{material.nombre[0]}}</div>
+                                    <div class="circle materiales-large-card-img gray-mat-img" id="{{material.id|string + '-img-mod'}}">{{material.nombre[0]}}</div>
                                 </div>
                                 <div class="modal-card-col-sm" >
                                     <div class="row d-flex justify-content-center card-first-row-sm">

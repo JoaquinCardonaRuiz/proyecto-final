@@ -11,8 +11,8 @@ class DatosNivel(Datos):
         """
         Obtiene todos los niveles de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("select * from niveles")
             cls.cursor.execute(sql)
             niveles_ = cls.cursor.fetchall()
@@ -33,8 +33,8 @@ class DatosNivel(Datos):
     @classmethod
     def alta_nivel(cls, nivel, noClose = False):
         """Añade el nivel que recibe como parametro a la BD."""
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("INSERT INTO niveles (nombre, minEcoPuntos, maxEcoPuntos, descuento) \
                     VALUES (%s, %s, %s, %s);")
             values = (nivel.nombre, nivel.minimoEcoPuntos, nivel.maximoEcoPuntos, nivel.descuento)
@@ -50,11 +50,11 @@ class DatosNivel(Datos):
 
     @classmethod
     def get_nivel_id(cls, id, noClose = False):
-        cls.abrir_conexion()
         """Obtiene un nivel de la BD en base a un ID. Devuelve False si no encuentra 
         ninguno.
         """
         try:
+            cls.abrir_conexion()
             sql = ("select * from niveles where idNivel = %s")
             values = (id,)
             cls.cursor.execute(sql, values)
@@ -74,11 +74,11 @@ class DatosNivel(Datos):
 
     @classmethod
     def get_nivel_nombre(cls, nombre, noClose = False):
-        cls.abrir_conexion()
         """Obtiene un nivel de la BD en base a un Numero de nivel (Nombre). Devuelve False si no encuentra 
         ninguno.
         """
         try:
+            cls.abrir_conexion()
             sql = ("select * from niveles where nombre = %s")
             values = (str(nombre),)
             cls.cursor.execute(sql, values)
@@ -98,11 +98,11 @@ class DatosNivel(Datos):
 
     @classmethod
     def baja_nivel(cls, nuevo_min, nombre_min, nuevo_max, nombre_max, nivel, noClose = False):
-        cls.abrir_conexion()
         """Elimina un nivel, y modifica el máximo de EcoPuntos del nivel anterior, y el máximo 
         de EcoPuntos del nivel siguiente.
         """
         try:
+            cls.abrir_conexion()
             if int(nivel.nombre) == 1:
                 #Actualiza el mínimo del nivel siguiente, ya que no existe nivel anterior.
                 sql = ("UPDATE niveles SET minEcoPuntos = %s WHERE nombre = %s")
@@ -156,10 +156,10 @@ class DatosNivel(Datos):
         
     @classmethod
     def get_max_nivel(cls, noClose = False):
-        cls.abrir_conexion()
         """Obtiene el nivel mas grande registrado en la BD. Si no hay niveles registrados, devuelve False.
         """
         try:
+            cls.abrir_conexion()
             sql = ("select * from niveles where nombre = (select max(nombre) from niveles);")
             cls.cursor.execute(sql)
             nivel = cls.cursor.fetchone()
@@ -175,10 +175,10 @@ class DatosNivel(Datos):
     
     @classmethod
     def baja_nivel_nombre(cls, nombre, noClose = False):
-        cls.abrir_conexion()
         """Elimina un nivel de la BD en base al nombre recibido.
         """
         try:
+            cls.abrir_conexion()
             sql = ("DELETE FROM niveles WHERE nombre = %s")
             values = (nombre,)
             cls.cursor.execute(sql, values)    
@@ -193,10 +193,10 @@ class DatosNivel(Datos):
     
     @classmethod
     def baja_nivel_mod(cls, niveles_baja, nivel_mod, desc, minEP, maxEP, inf, sup, nuevos_niveles, noClose = False):
-        cls.abrir_conexion()
         """Elimina los niveles que deban eliminarse en base a una modificación realizada.
         """
         try:
+            cls.abrir_conexion()
             #Elimina niveles en la lista de niveles a eliminar
             for nivel in niveles_baja:
                 sql = ("DELETE FROM niveles WHERE nombre = %s")
@@ -242,8 +242,8 @@ class DatosNivel(Datos):
     @classmethod
     def get_max_descuento(cls, noClose = False):
         """Devuelve el mayor descuento registrado en la BD."""
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("select max(descuento) from niveles;")
             cls.cursor.execute(sql)
             maxDescuento = cls.cursor.fetchall()[0][0]
@@ -258,11 +258,11 @@ class DatosNivel(Datos):
 
     @classmethod
     def get_max_ecoPuntos(cls, noClose = False):
-        cls.abrir_conexion()
         """Devuelve la mayor cantidad EcoPuntos solicitada para un nivel registrado en la 
         BD.
         """
         try:
+            cls.abrir_conexion()
             sql = ("select max(maxEcoPuntos) from niveles;")
             cls.cursor.execute(sql)
             maxEP = cls.cursor.fetchall()[0][0]
@@ -280,8 +280,8 @@ class DatosNivel(Datos):
         """Devuelve la mayor cantidad EcoPuntos solicitada para un nivel registrado en la 
         BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("select count(idNivel) from niveles;")
             cls.cursor.execute(sql)
             return int(cls.cursor.fetchone()[0])
@@ -295,10 +295,10 @@ class DatosNivel(Datos):
 
     @classmethod
     def get_nivel_EP(cls, ecoPuntos, noClose = False):
-        cls.abrir_conexion()
         """Obtiene el nivel al que corresponde una determinada cantidad de ecoPuntos.
         """
         try:
+            cls.abrir_conexion()
             sql = ("select * from niveles where minEcoPuntos <= %s and maxEcoPuntos >= %s")
             values = (str(ecoPuntos), str(ecoPuntos),)
             cls.cursor.execute(sql, values)

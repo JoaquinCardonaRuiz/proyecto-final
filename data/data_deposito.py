@@ -12,8 +12,8 @@ class DatosDeposito(Datos):
         """
         Obtiene todos los Depositos de la BD correspondientes a un usuario segun su id.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idDeposito, \
                     codigo, \
                     idMaterial, \
@@ -46,8 +46,8 @@ class DatosDeposito(Datos):
         """
         Añade un depósito a la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             #Obtengo ID EcoPuntos
             sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'ecoPuntos'")
             cls.cursor.execute(sql)

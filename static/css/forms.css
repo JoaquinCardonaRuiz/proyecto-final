@@ -509,11 +509,11 @@ input:focus ~ .highlight {
   position: absolute; 
   background-color:white; 
   width: 600px;
-  height: 200px;
+  max-height: 200px;
   display: none;
   margin-top: -8px;
   box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
-  overflow: scroll;
+  overflow: auto;
   overflow-x: hidden;
   z-index: 9;
 }

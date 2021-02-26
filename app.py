@@ -679,6 +679,15 @@ def baja_material(id):
         return error(e,"materiales")
     return redirect(url_for('gestion_materiales'))
 
+
+@app.route('/gestion-materiales/val_delete/<idMat>')
+def get_recetas_insumos(idMat):
+    try:
+        arr = NegocioInsumo.get_nombres_by_idMat(idMat)
+        print(arr)
+        return jsonify(arr)
+    except Exception as e:
+        return error(e,"materiales")
   
   
 def valida_session():

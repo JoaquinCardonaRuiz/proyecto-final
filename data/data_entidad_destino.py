@@ -11,8 +11,8 @@ class DatosEntidadDestino(Datos):
         """
         Obtiene todas las entidades de destino de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT * FROM entidadesDestino WHERE entidadesDestino.estado != \"eliminado\";")
             cls.cursor.execute(sql)
             entidades_ = cls.cursor.fetchall()
@@ -35,8 +35,8 @@ class DatosEntidadDestino(Datos):
         """
         Da de alta una nueva entidad destino en el sistema.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("INSERT INTO entidadesDestino (nombre, estado) \
                     VALUES (\"{}\",\"{}\");".format(nombre,"disponible"))
             cls.cursor.execute(sql)
@@ -54,8 +54,8 @@ class DatosEntidadDestino(Datos):
         """
         Obtiene una entidad de destino de la BD a partir de su id.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT * FROM entidadesDestino WHERE idEntidad = {} AND estado != \"eliminado\";".format(id))
             cls.cursor.execute(sql)
             e = cls.cursor.fetchall()[0]
@@ -75,9 +75,8 @@ class DatosEntidadDestino(Datos):
         """
         Elimina una entidad de destino de la BD a partir de su id.
         """
-
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("UPDATE entidadesDestino SET estado = \"eliminado\" WHERE idEntidad={}".format(id))
             cls.cursor.execute(sql)
             cls.db.commit()
@@ -95,8 +94,8 @@ class DatosEntidadDestino(Datos):
         """
         Actualiza el nombre de una entidad de destino en la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("UPDATE entidadesDestino SET nombre = \"{}\" WHERE idEntidad={}".format(nombre,idEnt))
             cls.cursor.execute(sql)
             cls.db.commit()
@@ -114,9 +113,8 @@ class DatosEntidadDestino(Datos):
         """
         Comprueba si no existe ninguna entidad destino con un nombre dado
         """
-
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT COUNT(idEntidad) FROM entidadesDestino WHERE nombre=\"{}\" And estado!=\"eliminado\";".format(nombre))
             cls.cursor.execute(sql)
             count = cls.cursor.fetchall()[0][0]

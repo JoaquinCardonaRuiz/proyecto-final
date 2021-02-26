@@ -55,8 +55,8 @@ class DatosCantMaterial(Datos):
         """
         Actualiza una cantidad de un material requerido para la produccion de un insumo.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("UPDATE mat_ins SET cantidad={} WHERE idMaterial={} AND idInsumo={};".format(cant,idMat,idIns))
             cls.cursor.execute(sql)
             cls.db.commit()
@@ -74,8 +74,8 @@ class DatosCantMaterial(Datos):
         """
         Actualiza una cantidad de un material requerido para la produccion de un insumo.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("DELETE FROM mat_ins WHERE idMaterial={} AND idInsumo={};".format(idMat,idIns))
             cls.cursor.execute(sql)
             cls.db.commit()
@@ -94,8 +94,8 @@ class DatosCantMaterial(Datos):
         Deshabilita todos los elementos de la receta de un insumo que correspondan a un id material.
         Se llama cuando se elimina un material.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql= ("UPDATE mat_ins SET estado=\"deshabilitado\" WHERE idMaterial={};").format(idMat)
             cls.cursor.execute(sql)
             cls.db.commit()

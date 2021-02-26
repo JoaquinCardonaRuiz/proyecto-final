@@ -67,7 +67,7 @@
     <!-- Tabla Articulos-->
 
     <div class="container" id="table-container">
-        <div class="row">
+        <div class="row d-flex justify-content-center">
             <table class="table" id="content-table">
                 <thead style=" border-top:none">
                 <tr>
@@ -108,7 +108,7 @@
                         </td>
                     {%endif%}
                     <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{mat.id}}','{{mat.nombre}}','{{mat.costoRecoleccion}}','{{mat.unidadMedida}}','{{mat.color}}','{{mat.estado}}')"></i></td>
-                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{mat.id}}','{{mat.nombre}}')"></i></td>
+                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="resetBaja();openBajaModal('{{mat.id}}','{{mat.nombre}}')"></i></td>
                 </tr>
                 {%endfor%}
                 </tbody>
@@ -331,14 +331,17 @@
             <div class="row" id="loadingRow">
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
-            <p class="b-modal-text-baja" id="baja-custom-text">
+            <div class="row margin-bottom-row" id="fieldsRowBaja">
+                <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark" id="delete-img">
+                <p class="bottom-modal-text-baja" id="baja-custom-text" style="margin-left:2%;margin-right:2%;">¿Está seguro que desea eliminar el Material? </p>
+                <p class="bottom-modal-text less-margin-top" id="bottomBajaModalText"></p>
+                </div>
             </p>
         </div>
-        <p class="bottom-modal-text" id="bottomBajaModalText"></p>
         <input type="text" name="" id="idMaterial" hidden>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
-          <button type="button" class="btn" onclick="baja_entidad();" id="primary-btn-alert">Eliminar</button>
+          <button type="button" class="btn" onclick="baja_entidad();" id="primary-btn-alert" disabled>Eliminar</button>
         </div>
       </div>
     </div>

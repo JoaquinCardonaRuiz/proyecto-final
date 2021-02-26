@@ -58,10 +58,6 @@ function headingOptionLeave(){
     $(".chevron").css({transform: 'rotate(0deg)'});
 }
 
-//Manejo del tooltip.
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-})
 
 function openMenu() {
     $("#menu-option-box-1").fadeIn();
@@ -90,14 +86,14 @@ function dropdownOptionSelect(idOption, nameOption, color){
         if (index > -1) {
             selectedOptions.splice(index, 1);
         }
-        $("#" + String(nameOption) + "-check").fadeOut();
-        $("#" + String(nameOption) + "-card").fadeOut();
+        $("#" + String(idOption) + "-check").fadeOut();
+        $("#" + String(idOption) + "-card").fadeOut();
     }
     else{
         selectedOptions.push(idOption);
-        $("#" + String(nameOption) + "-check").fadeIn();
-        setColor(nameOption,color);
-        $("#" + String(nameOption) + "-card").fadeIn();
+        $("#" + String(idOption) + "-check").fadeIn();
+        setColor(idOption,color);
+        $("#" + String(idOption) + "-card").fadeIn();
     }
     labelShowHide();
     $("#materiales-altaPD").val("[" + selectedOptions + "]");  
@@ -1452,14 +1448,15 @@ function dropdownOptionSelectMod(idOption, nameOption, color){
         if (index > -1) {
             selectedOptionsMod.splice(index, 1);
         }
-        $("#" + String(nameOption) + "-check-mod").fadeOut();
-        $("#" + String(nameOption) + "-card-mod").fadeOut();
+        $("#" + String(idOption) + "-check-mod").hide().fadeOut();
+        $("#" + String(idOption) + "-card-mod").hide().fadeOut();
     }
     else{
+        console.log(idOption);
         selectedOptionsMod.push(idOption);
-        $("#" + String(nameOption) + "-check-mod").fadeIn();
-        setColorMod(nameOption,color);
-        $("#" + String(nameOption) + "-card-mod").fadeIn();
+        $("#" + String(idOption) + "-check-mod").show().fadeIn();
+        setColorMod(idOption,color);
+        $("#" + String(idOption) + "-card-mod").show().fadeIn();
     }
     labelShowHideMod();
     calc_cant_cambios();
@@ -1477,8 +1474,8 @@ function dropdownOptionSuspendedSelectMod(idOption, nameOption){
         if (index > -1) {
             selectedOptionsMod.splice(index, 1);
         }
-        $("#" + String(nameOption) + "-check-mod").fadeOut();
-        $("#" + String(nameOption) + "-card-mod").fadeOut();
+        $("#" + String(idOption) + "-check-mod").fadeOut();
+        $("#" + String(idOption) + "-card-mod").fadeOut();
     }
     labelShowHideMod();
     calc_cant_cambios();
@@ -1545,9 +1542,9 @@ function setMaterialesPDvalues(id){
         $(".mod-check").hide();
         for (var i in result){
             materiales_PD.push(String(result[i]["id"]));
-            $("#" + String(result[i]["nombre"]) + "-check-mod").show();
-            setColorMod(result[i]["nombre"],result[i]["color"]);
-            $("#" + String(result[i]["nombre"]) + "-card-mod").show();
+            $("#" + String(result[i]["id"]) + "-check-mod").show();
+            setColorMod(result[i]["id"],result[i]["color"]);
+            $("#" + String(result[i]["id"]) + "-card-mod").show();
         }
 
         if (result.length > 0){

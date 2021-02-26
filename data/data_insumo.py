@@ -11,8 +11,8 @@ class DatosInsumo(Datos):
         Obtiene un insumo de la BD en base a su id.
         """
         
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idInsumo, \
                            nombre, \
                            unidadMedida, \
@@ -45,9 +45,8 @@ class DatosInsumo(Datos):
         """
         Obtiene todos los insumos de la BD.
         """
-        
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idInsumo, \
                            nombre, \
                            unidadMedida, \
@@ -80,8 +79,8 @@ class DatosInsumo(Datos):
         """
         Agrega un articulo a la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql= ("INSERT INTO insumos (nombre,unidadMedida,cMateriales,cProduccion,otrosCostos,cTotal,color,stock,estado) \
                    VALUES (\"{}\",\"{}\",{},{},{},{},\"{}\",0,\"disponible\");".format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color))
             cls.cursor.execute(sql)
@@ -100,8 +99,8 @@ class DatosInsumo(Datos):
         """
         Actualiza un insumo en la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql= ("UPDATE insumos SET nombre=\"{}\",unidadMedida=\"{}\",cMateriales={},cProduccion={},otrosCostos={},cTotal={},color=\"{}\",stock=0,estado=\"disponible\" WHERE idInsumo={};").format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color,idIns)
             cls.cursor.execute(sql)
             cls.db.commit()
@@ -120,8 +119,8 @@ class DatosInsumo(Datos):
         """
         Elimina un insumo de la BD a partir de su id.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("UPDATE insumos SET estado = \"eliminado\" WHERE idInsumo={}".format(id))
             cls.cursor.execute(sql)
             cls.db.commit()
@@ -130,5 +129,28 @@ class DatosInsumo(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_insumo.delete()",
                                                     msj=str(e),
                                                     msj_adicional="Error eliminando un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_nombres_by_idMat(cls, idMat):
+        """
+        Obtiene los insumos de la BD con un idMat en su receta
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT nombre FROM insumos JOIN mat_ins USING(idInsumo) WHERE insumos.estado!=\"eliminado\" AND idMaterial={};").format(idMat)
+            cls.cursor.execute(sql)
+            nombres = cls.cursor.fetchall()
+            if len(nombres) == 0:
+                return []
+            else:
+                return list(nombres[0])
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.get_nombres_by_idMat()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los insumos desde la BD.")
         finally:
             cls.cerrar_conexion()
