@@ -357,24 +357,47 @@ function removeEntidad(){
     }
 }
 
-
+function resetBaja(){
+    $("#fieldsRowBaja").hide();
+    $('#primary-btn-alert').prop('disabled', true);
+    document.getElementById("baja-custom-text").innerHTML = "";
+    document.getElementById("bottomBajaModalText").innerHTML = "";
+}
 
 
 function openBajaModal(idMat,nombreMat){
     //Manejo de elementos de carga
     $("#fieldsRowBaja").show();
     $(".lds-ring").hide();
-    $('#bottomBajaModalText').hide();
-    $('#primary-btn-alert').prop('disabled', false);
-    $('#secondary-btn-baja').prop('disabled', false);
-    document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea eliminar el material " + nombreMat + "? Una vez eliminado, este no se podrá recuperar.";
+    $('#bottomBajaModalText').show();
+    $.getJSON("/gestion-materiales/val_delete/"+String(idMat),function (result){
+        console.log(result);
+        if(result.length == 0){
+            $('#primary-btn-alert').prop('disabled', false);
+            $('#secondary-btn-baja').prop('disabled', false);
+            document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea eliminar el material " + nombreMat + "?";        
+            document.getElementById("bottomBajaModalText").innerHTML = "Una vez eliminado, este no se podrá recuperar."
+        }else{
+            $('#primary-btn-alert').prop('disabled', true);
+            $('#secondary-btn-baja').prop('disabled', false);
+            document.getElementById("bottomBajaModalText").innerHTML = "Por favor primero elimine el material de sus composiciones para continuar."
+            var s = "El material " + nombreMat + " no puede ser eliminado debido a que es parte de la composición de los siguientes insumos: ";
+            for(var i in result){
+                s += result[i];
+                s += ", "
+            }
+            s = s.slice(0, -2); 
+            document.getElementById("baja-custom-text").innerHTML = s;
+        }
+    });
+    
 
     //Manejo de carteles
     jQuery.noConflict();
-    $('#primary-btn-alert').prop('disabled', false); 
     $('#idMaterial').val(String(idMat));
     $('#bajaInsumodModal').modal('show');
 }
+
 
 
 function baja_entidad(){
@@ -384,6 +407,8 @@ function baja_entidad(){
     $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
     $(".lds-ring").show().fadeIn(500);
     $('#bottomBajaModalText').show();
+    $('#baja-custom-text').hide()
+    $('#delete-img').hide()
     $('#primary-btn-alert').prop('disabled', true);
     $('#secondary-btn-baja').prop('disabled', true);
 

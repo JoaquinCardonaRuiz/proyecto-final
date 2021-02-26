@@ -131,3 +131,26 @@ class DatosInsumo(Datos):
                                                     msj_adicional="Error eliminando un insumo en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_nombres_by_idMat(cls, idMat):
+        """
+        Obtiene los insumos de la BD con un idMat en su receta
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT nombre FROM insumos JOIN mat_ins USING(idInsumo) WHERE insumos.estado!=\"eliminado\" AND idMaterial={};").format(idMat)
+            cls.cursor.execute(sql)
+            nombres = cls.cursor.fetchall()
+            if len(nombres) == 0:
+                return []
+            else:
+                return list(nombres[0])
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.get_nombres_by_idMat()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los insumos desde la BD.")
+        finally:
+            cls.cerrar_conexion()

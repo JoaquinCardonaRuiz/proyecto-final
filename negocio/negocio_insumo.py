@@ -87,3 +87,11 @@ class NegocioInsumo(Negocio):
             DatosInsumo.delete(id)
         except Exception as e:
             raise e
+
+    
+    @classmethod
+    def get_nombres_by_idMat(cls,idMat):
+        try:
+            return DatosInsumo.get_nombres_by_idMat(idMat)
+        except Exception as e:
+            raise e
