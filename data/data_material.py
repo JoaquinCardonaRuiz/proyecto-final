@@ -35,13 +35,16 @@ class DatosMaterial(Datos):
 
 
     @classmethod
-    def get_all_byIdPuntoDep(cls, idPuntoDep, noClose = False):
+    def get_all_byIdPuntoDep(cls, idPuntoDep, noSuspendidos =False,noClose = False):
         """
         Obtiene todos los Puntos de Depósito de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial, materiales.estado from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' and materiales.estado != 'eliminado' order by materiales.nombre ASC;")
+            if noSuspendidos:
+                sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial, materiales.estado from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' and materiales.estado = 'habilitado' order by materiales.nombre ASC;")
+            else:
+                sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial, materiales.estado from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' and materiales.estado != 'eliminado' order by materiales.nombre ASC;")
             values = (idPuntoDep,)
             cls.cursor.execute(sql, values)
             materiales = cls.cursor.fetchall()

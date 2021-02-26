@@ -11,7 +11,7 @@ class NegocioDeposito(Negocio):
         """
         #Conexión con el motor de BD.
         try:
-            return DatosDeposito.add(int(id_mat),int(id_pd),int(cantidad),int(cant_ep))
+            return DatosDeposito.add(int(id_mat),int(id_pd),float(cantidad),float(cant_ep))
 
         except custom_exceptions.ErrorDeConexion as e:
             raise e
