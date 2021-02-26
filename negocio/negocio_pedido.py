@@ -49,3 +49,10 @@ class NegocioPedido(Negocio):
             DatosPedido.update_estado(id,estado)
         except Exception as e:
             raise e
+
+    @classmethod
+    def get_by_user_id(cls,uid):
+        try:
+            return DatosPedido.get_by_user_id(uid)
+        except Exception as e:
+            raise e

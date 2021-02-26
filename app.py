@@ -716,6 +716,15 @@ def pedidosPR(id):
     except Exception as e:
         return error(e,"pedidos")
 
+@app.route('/gestion-pedidos/usuario')
+def pedidosUser():
+    try:
+        pedidos = NegocioPedido.get_by_user_id(session["usuario"].id)
+        puntosRetiro = NegocioPuntoRetiro.get_all()
+        return render_template('pedidosUser.html',pedidos = pedidos,puntosRetiro=puntosRetiro)
+    except Exception as e:
+        return error(e,"pedidos")
+
 
 @app.route('/gestion-pedidos/actualizar', methods = ['GET','POST'])
 def update_estado_pedido():

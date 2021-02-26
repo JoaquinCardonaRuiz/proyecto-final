@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<!-- Sidebar import -->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <!-- Heading -->
+
+    <div class="container" id="heading-container">
+        <h1 class="heading">Mis pedidos</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted">Visualice un historial de sus pedidos realizados en EcoAsistente.</span></h6>
+    </div>
+    
+
+
+    <!-- Tabla Pedidos-->
+    <div class="container" id="table-container">
+        <h4 style="margin-left:4%;padding-top:3%;">Pedidos en Preparación</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Código</th>
+                    <th scope="col" class="table-heading">EcoPuntos</th>
+                    <th scope="col" class="table-heading">Pesos</th>
+                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                    <th scope="col" class="table-heading">P. de Retiro</th>
+                    <th scope="col" class="table-heading">Artículos</th>
+                    <th scope="col" class="table-heading">Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for p in pedidos%}
+                    <tr>
+                        <th scope="row">{{p.id}}</th>
+                        <td scope="row">{{p.totalEP}}</td>
+                        <td scope="row">${{p.totalARS}}</td>
+                        <td scope="row">{{p.fechaEncargo}}</td>
+                        {%for pr in puntosRetiro%}
+                            {%if pr.id == p.idPuntoRetiro%}
+                                <td scope="row">{{pr.nombre}}</td>
+                            {%endif%}
+                        {%endfor%}
+                        <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                        {%if p.estado == "pendiente"%}
+                            <td>
+                                <div>
+                                    <i class="fas fa-circle" style="color:#3399ff" id="estado-activo"></i>
+                                    En preparación
+                                </div>
+                            </td>
+                        {%endif%}
+                        {%if p.estado == "preparado"%}
+                            <td>
+                                <div>
+                                    <i class="fas fa-circle" style="color:#ddbb44" id="estado-activo"></i>
+                                    En camino
+                                </div>
+                            </td>
+                        {%endif%}
+                        {%if p.estado == "listo"%}
+                            <td>
+                                <div>
+                                    <i class="fas fa-circle" style="color:#00aa44" id="estado-activo"></i>
+                                    Listo para retirar
+                                </div>
+                            </td>
+                        {%endif%}
+                        {%if p.estado == "cancelado"%}
+                            <td>
+                                <div>
+                                    <i class="fas fa-circle" style="color:#cc4444" id="estado-activo"></i>
+                                    Cancelado
+                                </div>
+                            </td>
+                        {%endif%}
+                        {%if p.estado == "devuelto"%}
+                            <td>
+                                <div>
+                                    <i class="fas fa-circle" style="color:#882288" id="estado-activo"></i>
+                                    Reembolsado
+                                </div>
+                            </td>
+                        {%endif%}
+                    </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script src="/static/js/pedidos.js"></script>
+{% endblock %}

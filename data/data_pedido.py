@@ -19,13 +19,13 @@ class DatosPedido(Datos):
                     totalEP, \
                     idPunto, \
                     estado \
-                    FROM pedidos WHERE idUsuario = {};").format(uid)
+                    FROM pedidos WHERE idUsuario = {} ORDER BY fechaEnc;").format(uid)
             cls.cursor.execute(sql)
             pedidos_ = cls.cursor.fetchall()
             pedidos = []
             for p in pedidos_:
                 articulos = DatosCantArticulo.get_from_Pid(p[0],noClose=True)
-                pedido_ =  Pedido(p[0],p[1],p[2],articulos,p[3],p[4],p[5],p[6])
+                pedido_ =  Pedido(p[0],p[1].strftime("%d/%m/%Y"),p[2].strftime("%d/%m/%Y"),articulos,p[3],p[4],p[5],p[6])
                 pedidos.append(pedido_)
             return pedidos
             
@@ -115,7 +115,7 @@ class DatosPedido(Datos):
         cls.abrir_conexion()
         try:
             sql= ("INSERT INTO pedidos (fechaEnc,fechaRet,totalEP,totalARS,idPunto,idUsuario,estado) \
-                   VALUES (\"{}\",\"{}\",{},{},{},{},\"disponible\");".format(fechaEnc,fechaRet,totalEP,totalARS,idPR,uid))
+                   VALUES (\"{}\",\"{}\",{},{},{},{},\"pendiente\");".format(fechaEnc,fechaRet,totalEP,totalARS,idPR,uid))
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
