@@ -168,6 +168,7 @@ def confirmar_checkout(idPR, totalEP, totalARS):
     try:
         if "carrito" in session.keys() and session["carrito"] != {}:
             NegocioPedido.add(Utils.carrito_to_list(session["carrito"]),session["usuario"],idPR,float(totalEP),float(totalARS))
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
             return jsonify("exito")
         else:
             raise Exception("Carrito vacio")
@@ -790,6 +791,23 @@ def alta_deposito(idmat,idpd,cantidad):
         return jsonify(codigo)
     except Exception as e:
         return error(e,"simulador_depositos")
+
+
+@app.route('/codigo')
+def canjear_codigo():
+    try:
+        return render_template('codigo.html')
+    except Exception as e:
+        return error(e,"codigo")
+
+@app.route('/codigo/<cod>')
+def verificar_codigo(cod):
+    try:
+        response = NegocioDeposito.verificar_codigo(cod,session["usuario"].id)
+        session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        return jsonify(response)
+    except Exception as e:
+        return error(e,"codigo")
 
 if __name__ == '__main__':
     app.debug = True

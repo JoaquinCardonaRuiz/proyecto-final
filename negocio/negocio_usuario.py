@@ -90,3 +90,10 @@ class NegocioUsuario(Negocio):
                 NegocioEcoPuntos.updateEps(ep.id, cant = 0)
                 ep_restantes -= cant_rest
             
+
+    @classmethod
+    def get_by_id(cls,uid):
+        try:
+            return DatosUsuario.get_by_id(uid)
+        except Exception as e:
+            raise e

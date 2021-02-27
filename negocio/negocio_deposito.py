@@ -16,6 +16,16 @@ class NegocioDeposito(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio_direccion.alta()",
-                                                    msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio dando de alta los un depósito.")
+            raise e
+
+
+    @classmethod
+    def verificar_codigo(cls,cod,uid):
+        """
+        Verifica que el codigo corresponda a un deposito y le asigna el deposito al usuario correspondiente
+        Devuelve la cantidad de filas afecatadas
+        """
+        try:
+            return DatosDeposito.verificar_codigo(cod,uid)
+        except Exception as e:
+            raise e

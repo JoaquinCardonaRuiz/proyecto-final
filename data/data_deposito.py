@@ -88,3 +88,23 @@ class DatosDeposito(Datos):
             if not(noClose):
                 cls.cerrar_conexion()
     
+
+    @classmethod
+    def verificar_codigo(cls, cod,uid):
+        """
+        Verifica que el codigo corresponda a un deposito y le asigna el deposito al usuario correspondiente
+        Devuelve la cantidad de filas afecatadas
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE depositos SET idUsuario = {} WHERE codigo=\"{}\"".format(uid,cod))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            rwcount = cls.cursor.rowcount
+            return rwcount
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.update_estado()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando un pedido en la BD.")
+        finally:
+            cls.cerrar_conexion()
