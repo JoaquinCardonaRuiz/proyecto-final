@@ -623,6 +623,16 @@ def get_materiales(ids):
         return error(e,"materiales")
     return redirect(url_for('gestion_materiales'))
 
+
+@app.route('/insumos/val_delete/<idIns>')
+def get_recetas_articulos(idIns):
+    try:
+        arr = NegocioArticulo.get_nombres_by_idIns(idIns)
+        print(arr)
+        return jsonify(arr)
+    except Exception as e:
+        return error(e,"insumos")
+
   
 ''' 
     -----------------
@@ -680,7 +690,7 @@ def baja_material(id):
     return redirect(url_for('gestion_materiales'))
 
 
-@app.route('/gestion-materiales/val_delete/<idMat>')
+@app.route('/materiales/val_delete/<idMat>')
 def get_recetas_insumos(idMat):
     try:
         arr = NegocioInsumo.get_nombres_by_idMat(idMat)

@@ -66,7 +66,7 @@
     <!-- Tabla Insumos-->
 
     <div class="container" id="table-container">
-        <div class="row">
+        <div class="row d-flex justify-content-center">
             <table class="table" id="content-table">
                 <thead style=" border-top:none">
                 <tr>
@@ -110,7 +110,7 @@
                     <td scope="row">{{ins.unidadMedida}}</td>
                     <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{ins.nombre}}',{{ids_materiales}},{{cantidades}});">Ver materiales</a></td>
                     <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}','{{ins.color}}',{{ids_materiales}},{{cantidades}},{{cantidades_totales}})"></i></td>
-                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{ins.id}}','{{ins.nombre}}')"></i></td>
+                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="resetBaja();openBajaModal('{{ins.id}}','{{ins.nombre}}')"></i></td>
                 </tr>
                 {%endfor%}
                 </tbody>
@@ -306,7 +306,7 @@
                     </div>       
                 </div>                 
             </div>
-            <div class="row" id="cards-row-materiales">
+            <div class="row cards-row-materiales" id="cards-row-materiales">
                 <h6 class="indicator-label-2" id="se-req-msj">Se requerirán:</h6>
                 <p class="warning-label-altaPD" id="warning-label-altaPD"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
                 {% for material in materiales %}
@@ -317,7 +317,15 @@
                         </div>
                         <div class="modal-card-col-sm" >
                             <div class="row d-flex justify-content-center card-first-row-sm">
-                                <p class="material-card-title" id="nombre-material">{{material.nombre}}</p>
+                                {%if material.nombre|length < 15%}
+                                    <p class="material-card-title" id="nombre-material">{{material.nombre}}</p>
+                                {%elif material.nombre|length < 20%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:17px;text-align:center">{{material.nombre}}</p>
+                                {%elif material.nombre|length < 25%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:15px;text-align:center">{{material.nombre}}</p>
+                                {%else%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:13px;text-align:center">{{material.nombre}}</p>
+                                {%endif%}
                             </div>
                             <div class="row d-flex justify-content-center card-second-row">
                                 <p class="text-box material-card-subtitle">Nombre material</p>
@@ -350,7 +358,7 @@
             <div class="row">
                 <p class="bottom-modal-text" id="bottomAltaModalText"></p>
             </div>
-            
+            <div class="row margin-row" style="display: none;"></div>
         </form>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
@@ -386,12 +394,11 @@
           </ul>
         </div>
         <form action="{{url_for('edit_insumo')}}" method="POST" id="editInsumoForm" autocomplete="off" class="tab-content modal-body">
-
+        <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
         <!-- TAB 1 -->
         <div class="tab-pane active" role="tabpanel" id="datos-basicos">
-            <div class="row" id="loadingRow">
-            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-          </div>
             <div class="row" id="row-to-hide-1-mod">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
@@ -414,19 +421,16 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalText1">Complete los datos y presione "Actualizar Insumo"</p>
-            </div>
         </div>
 
         <!-- TAB 2 -->
         <div class="tab-pane" role="tabpanel" id="materiales">
-            <div class="row" id="fieldsRow1Mod" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
-                <h7 class="indicator-label">Seleccione los materiales que se requerirán para producir el insumo:</h7>
+            <div class="row cards-row-materiales" id="fieldsRow1Mod" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                <h6 class="indicator-label">Seleccione los materiales que se requerirán para producir el insumo:</h6>
                 <div class="dropdown-box" id="dropdown-mod">
                     <h4 id="heading-option" onclick="dropdownManagerMod();">
                         Seleccionar Materiales 
-                        <img src="/static/img/chevron.svg" class="chevron"></img>
+                        <img src="/static/img/chevron.svg" class="chevron">
                     </h4>
                     <div class="menu-option-box" id="menu-option-box-2">
                         {%for material in materiales%}
@@ -435,8 +439,8 @@
                     </div>       
                 </div>                 
             </div>
-            <div class="row" id="cards-row-materiales-mod">
-                <h7 class="indicator-label-2">Se requerirán:</h7>
+            <div class="row cards-row-materiales" id="cards-row-materiales-mod">
+                <h6 class="indicator-label-2">Se requerirán:</h6>
                 <p id="warning-label-mod"><i class="fa fa-exclamation-triangle" id="warning-icon-mod"></i></p>
                 {% for material in materiales %}
                 <div class="container modal-large-card-sm card-mod" id="{{material.id|string + '-card-mod'}}" style="display: none;">
@@ -446,7 +450,15 @@
                         </div>
                         <div class="modal-card-col-sm" >
                             <div class="row d-flex justify-content-center card-first-row-sm">
-                                <p class="material-card-title" id="nombre-material-mod">{{material.nombre}}</p>
+                                {%if material.nombre|length < 15%}
+                                    <p class="material-card-title" id="nombre-material">{{material.nombre}}</p>
+                                {%elif material.nombre|length < 20%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:17px;text-align:center">{{material.nombre}}</p>
+                                {%elif material.nombre|length < 25%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:15px;text-align:center">{{material.nombre}}</p>
+                                {%else%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:13px;text-align:center">{{material.nombre}}</p>
+                                {%endif%}
                             </div>
                             <div class="row d-flex justify-content-center card-second-row">
                                 <p class="text-box material-card-subtitle">Nombre material</p>
@@ -477,7 +489,6 @@
                 <input type="text" id="materiales-mod" name = "materiales-altaPD" hidden>
             </div>
             <div class="row">
-                <p class="bottom-modal-text" id="bottomAltaModalTextModPD">Una vez finalizadas las modificaciones, presione "Guardar Cambios".<br>
                 <span class="bottom-modal-text costo-total-label" id="bottomMatText"></span>
                 </p>
                 
@@ -534,7 +545,9 @@
                 <p class="bottom-modal-text" id="bottomCTModalText">CostoTotal</p>
             </div>
         </div>
-            
+        <div class="row" id ="bottom-row">
+                <p class="bottom-modal-text" id="bottomAltaModalTextMod">Complete los datos y presione "Actualizar Insumo"</p>
+            </div>
         </form>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-mod">Cancelar</button>
@@ -564,11 +577,10 @@
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
             <div class="row margin-bottom-row" id="fieldsRowBaja">
-                <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark">
-                <p class="bottom-modal-text-baja" id="baja-question">¿Está seguro que desea eliminar el Insumo? </p>
-                <p class="bottom-modal-text less-margin-top"> Una vez eliminado, el Insumo no se podrá recuperar.</p>
+                <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark" id="delete-img">
+                <p class="bottom-modal-text-baja" id="baja-custom-text" style="margin-left:2%;margin-right:2%;">¿Está seguro que desea eliminar el Insumo? </p>
+                <p class="bottom-modal-text less-margin-top" id="bottomBajaModalText"></p>
             </div>
-            <p class="b-modal-text-baja" id="baja-custom-text">
             </p>
         </div>
         <p class="bottom-modal-text" id="bottomBajaModalText"></p>

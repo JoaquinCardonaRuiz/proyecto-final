@@ -498,6 +498,9 @@ function edit_insumo(){
     $("#row-to-hide-1-mod").hide();
     $("#row-to-hide-2-mod").hide();
     $("#row-to-hide-3-mod").hide();
+    $("#datos-basicos").hide();
+    $("#materiales").hide();
+    $("#costos").hide();
     $('#alta-btn-mod').prop('disabled', true);
     $('#secondary-btn-mod').prop('disabled', true);
     submitForm('editInsumoForm');
@@ -531,22 +534,44 @@ function removeEntidad(){
 }
 
 
-function openBajaModal(idInsumo,nombreInsumo){
+function openBajaModal(idIns,nombreIns){
     //Manejo de elementos de carga
     $("#fieldsRowBaja").show();
     $(".lds-ring").hide();
-    $('#bottomBajaModalText').hide();
-    $('#primary-btn-alert').prop('disabled', false);
-    $('#secondary-btn-baja').prop('disabled', false);
-    document.getElementById("baja-question").innerHTML = "¿Está seguro que desea eliminar el insumo " + nombreInsumo + "? Una vez eliminado, este no se podrá recuperar.";
-
+    $('#bottomBajaModalText').show();
+    $.getJSON("/insumos/val_delete/"+String(idIns),function (result){
+        console.log(result);
+        if(result.length == 0){
+            $('#primary-btn-alert').prop('disabled', false);
+            $('#secondary-btn-baja').prop('disabled', false);
+            document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea eliminar el insumo " + nombreIns + "?";        
+            document.getElementById("bottomBajaModalText").innerHTML = "Una vez eliminado, este no se podrá recuperar."
+        }else{
+            $('#primary-btn-alert').prop('disabled', true);
+            $('#secondary-btn-baja').prop('disabled', false);
+            document.getElementById("bottomBajaModalText").innerHTML = "Por favor primero elimine el insumo de sus composiciones para continuar."
+            var s = "El insumo " + nombreIns + " no puede ser eliminado debido a que es parte de la composición de los siguientes artículos: ";
+            for(var i in result){
+                s += result[i];
+                s += ", "
+            }
+            s = s.slice(0, -2); 
+            document.getElementById("baja-custom-text").innerHTML = s;
+        }
+    });
     //Manejo de carteles
     jQuery.noConflict();
-    $('#primary-btn-alert').prop('disabled', false); 
-    $('#idInsumo').val(String(idInsumo));
+    $('#idInsumo').val(String(idIns));
     $('#bajaInsumodModal').modal('show');
 }
 
+
+function resetBaja(){
+    $("#fieldsRowBaja").hide();
+    $('#primary-btn-alert').prop('disabled', true);
+    document.getElementById("baja-custom-text").innerHTML = "";
+    document.getElementById("bottomBajaModalText").innerHTML = "";
+}
 
 function baja_entidad(){
 
@@ -590,6 +615,20 @@ function openModalMateriales(nombre, materiales,cantidades){
                 for(i=0; i < result.length ; i++){
                     clone = card.clone();
                     clone.find("#nombre-material").text(result[i]["nombre"]);
+                    var size;
+                    if(result[i]["nombre"].length < 15){
+                        size = "20px";
+                    }
+                    else if(result[i]["nombre"].length < 20){
+                        size = "17px";
+                    }else if(result[i]["nombre"].length < 25){
+                        size = "15px";
+                    }
+                    else{
+                        size = "13px";
+                    }
+                    clone.find("#nombre-material").css("text-align","center");
+                    clone.find("#nombre-material").css("font-size",size);
                     clone.find("#unidad-medida").text(result[i]["unidadmedida"]);
                     clone.find("#material-img").css('background-color',result[i]["color"]);
                     clone.find("#material-img").text(result[i]["nombre"][0]);
@@ -623,9 +662,9 @@ function openMenu() {
     $(".dropdown-box").css("border","1px solid #95C22B");
     $('#cards-row-materiales').css({"transform":"translateY(200px)"});
     $("#bottomAltaModalText").css({"transform":"translateY(200px)"});
-    $("#bottomAltaModalText").css({"margin-bottom":"25px"});
     $(".margin-row").show();
     $(".margin-row").css({"transform":"translateY(200px)"});
+    $("#bottomAltaModalText").css({"margin-bottom":"25px"});
 };
 
 
@@ -754,30 +793,16 @@ function verificar_cantidades(){
 }
 
 
-
-$("#menu-option-box-1-mod").hide();
-    $(".dropdown-box").css("border","1px solid rgb(184, 184, 184)");
-    $('#cards-row-materiales-mod').css({"transform":"translateY(0px)"});
-    $("#bottomAltaModalTextModPD").css({"transform":"translateY(-25px)"});
-    $("#bottomAltaModalTextModPD").css({"margin-bottom":""});
-    $(".margin-row-mod").css({"transform":"translateY(0px)"});
-    $(".margin-row-mod").hide();
-
-
-
-
-
-
-
 function openMenuMod() {
     $("#menu-option-box-2").fadeIn();
     $(".dropdown-box").css("border","1px solid #95C22B");
     $('#cards-row-materiales-mod').css({"transform":"translateY(200px)"});
-    $("#bottomAltaModalTextModPD").css({"transform":"translateY(200px)"});
-    document.getElementById('bottomMatText').hidden = true;
+    $("#bottomMatText").css({"transform":"translateY(200px)"});
+    $("#bottomMatText").css({"margin-bottom":"25px"});
+    $("#bottom-row").css({"transform":"translateY(200px)"});
     $(".margin-row").show();
-    $(".margin-row").css({"transform":"translateY(190px)"});
-    $("#bottomAltaModalTextModPD").css({"margin-bottom":"10px"});
+    $(".margin-row").css({"transform":"translateY(200px)"});
+    $("#bottom-row").css({"margin-bottom":"25px"});
 };
 
 
@@ -785,9 +810,10 @@ function closeMenuMod() {
     $("#menu-option-box-2").hide();
     $(".dropdown-box").css("border","1px solid rgb(184, 184, 184)");
     $('#cards-row-materiales-mod').css({"transform":"translateY(0px)"});
-    $("#bottomAltaModalTextModPD").css({"transform":"translateY(-25px)"});
-    $("#bottomAltaModalTextModPD").css({"margin-bottom":""});
-    document.getElementById('bottomMatText').hidden = false;
+    $("#bottomMatText").css({"transform":"translateY(0px)"});
+    $("#bottomMatText").css({"margin-bottom":""});
+    $("#bottom-row").css({"transform":"translateY(0px)"});
+    $("#bottom-row").css({"margin-bottom":""});
     $(".margin-row").css({"transform":"translateY(0px)"});
     $(".margin-row").hide();
 };
@@ -892,3 +918,14 @@ function verificar_cantidades_mod(){
     }
     permiteEdit();
 }
+
+
+function truncateString(str, num) {
+    // If the length of str is less than or equal to num
+    // just return str--don't truncate it.
+    if (str.length <= num) {
+      return str
+    }
+    // Return str truncated with '...' concatenated to the end of str.
+    return str.slice(0, num) + '...'
+  }

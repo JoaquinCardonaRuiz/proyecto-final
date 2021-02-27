@@ -370,7 +370,7 @@ function openBajaModal(idMat,nombreMat){
     $("#fieldsRowBaja").show();
     $(".lds-ring").hide();
     $('#bottomBajaModalText').show();
-    $.getJSON("/gestion-materiales/val_delete/"+String(idMat),function (result){
+    $.getJSON("/materiales/val_delete/"+String(idMat),function (result){
         console.log(result);
         if(result.length == 0){
             $('#primary-btn-alert').prop('disabled', false);

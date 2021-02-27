@@ -253,3 +253,26 @@ class DatosArticulo(Datos):
                                                     msj_adicional="Error actualizando el stock de un articulo en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_nombres_by_idIns(cls, idIns):
+        """
+        Obtiene los articulos de la BD con un idArt en su receta
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT nombre FROM tiposArticulo JOIN tiposArt_ins USING(idTipoArticulo) WHERE tiposArticulo.estado!=\"eliminado\" AND idInsumo={};").format(idIns)
+            cls.cursor.execute(sql)
+            nombres = cls.cursor.fetchall()
+            if len(nombres) == 0:
+                return []
+            else:
+                return list(nombres[0])
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_nombres_by_idIns()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los articulos desde la BD.")
+        finally:
+            cls.cerrar_conexion()

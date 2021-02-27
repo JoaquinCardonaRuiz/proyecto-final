@@ -119,3 +119,11 @@ class NegocioArticulo(Negocio):
         if nueva_cant < 0:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.disminuirStock()",msj="Stock insuficiente para realizar pedido")
         DatosArticulo.updateStock(idTA,nueva_cant)
+
+
+    @classmethod
+    def get_nombres_by_idIns(cls,idIns):
+        try:
+            return DatosArticulo.get_nombres_by_idIns(idIns)
+        except Exception as e:
+            raise e
