@@ -70,6 +70,7 @@
                     <div class="multisteps-form__content">
                       <div class="form-row mt-4 mb-4">
                         <select class="multisteps-form__select form-control mt-4" id="pd-select" onchange="setPD();">
+                          <option selected disabled>-- Por favor, seleccione un Punto de Depósito --</option>
                             {% for pd in puntos_deposito%}
                               {%if pd.iDsMaterial|length > 0 %}
                                 <option value="{{pd.id}},{{pd.nombre}}">{{pd.nombre}}</option>
@@ -78,7 +79,7 @@
                           </select>
                       </div>
                       <div class="row d-flex btn-row">
-                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Siguiente</button>
+                        <button class="btn btn-primary ml-auto js-btn-next" id="siguiente1btn" type="button" title="Next" disabled>Siguiente</button>
                       </div>
                     </div>
                   </div>
@@ -87,12 +88,13 @@
                     <h3 class="multisteps-form__title">Seleccione el material depositado</h3>
                     <div class="multisteps-form__content">
                       <div class="form-row mt-4 mb-4">
-                        <select class="multisteps-form__select form-control mt-4" id="mat-select" aria-placeholder="Seleccione un material..." onchange="setUnidadValue();">
+                        <select class="multisteps-form__select form-control mt-4" id="mat-select" onchange="setUnidadValue();">
+                          <option selected disabled>-- Por favor, seleccione un Material</option>
                         </select>
                       </div>
                       <div class="row d-flex btn-row">
                         <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Anterior</button>
-                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Siguiente</button>
+                        <button class="btn btn-primary ml-auto js-btn-next" id="siguiente2btn" disabled type="button" title="Next">Siguiente</button>
                       </div>
                     </div>
                   </div>
@@ -186,6 +188,4 @@
 
 <script src="/static/js/simulador-depositos.js"></script>
 <script src="/path/to/bootstrap.min.css"></script>
-<script>setPD();  setUnidadValue();</script>
-
 

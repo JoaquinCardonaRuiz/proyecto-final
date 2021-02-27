@@ -12,34 +12,46 @@ function hideInitialPage(){
 }
 
 function setUnidadValue(){
+  document.getElementById("siguiente2btn").disabled = false;
   var id_mat = parseInt($("#mat-select").val());
-  console.log("----------------");
-  console.log(id_mat);
-  console.log(materiales.length);
   for (var i in materiales){
-    console.log("-----");
-    console.log(materiales[i]["id"]);
-    console.log(materiales[i]["unidadMedida"]);
-    console.log(materiales[i]["nombre"]);
     if (materiales[i]["id"]==id_mat){
       unidad = materiales[i]["unidadMedida"];
       nombre_mat = materiales[i]["nombre"];
-      alert("hey");
     }
   }
   $("#unidadMedida").text(unidad.toLocaleLowerCase());
   $("#material-img").text(nombre_mat.charAt(0).toUpperCase());
+  var size;
+  if(nombre_mat.length < 15){
+      size = "20px";
+  }
+  else if(nombre_mat.length < 20){
+      size = "17px";
+  }else if(nombre_mat.length < 25){
+      size = "15px";
+  }
+  else{
+      size = "13px";
+  }
+  $("#nombre-material").css("text-align","center");
+  $("#nombre-material").css("font-size",size);
   $("#nombre-material").text(nombre_mat);
 }
 
 function setPD(){
+  document.getElementById("siguiente1btn").disabled = false;
   var values = String($("#pd-select").val()).split(',');
   id_pd = values[0];
   nombre_pd = values[1];
   $("#mat-select option").each(function() {
     $(this).remove();
   });
-  console.log(id_pd);
+  $('#mat-select').append($('<option>', {
+    text: "-- Por favor, seleccione un Material --",
+    disabled: true,
+    selected: true
+  }));
   $.getJSON("/gestion-puntos-deposito/materiales/"+ String(id_pd),function (result){
     console.log(result);
     materiales = result;
@@ -69,7 +81,6 @@ function setCant(){
 
 function submitForm(){
   loading();
-  alert(id_mat)
   $.getJSON("/simulador/alta-deposito/" + String(id_mat) + '/' + String(id_pd) + '/' + String(cantidad),function (result){
     $("#code").text(result);
     $("#lds-ring-big").fadeOut();
