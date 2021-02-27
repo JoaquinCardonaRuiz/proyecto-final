@@ -775,8 +775,7 @@ def simulador_depositos():
         if request.method == 'POST':
             pass
         pds = NegocioPuntoDeposito.get_all()
-        materiales = NegocioMaterial.get_all()
-        return render_template('simulador-depositos.html', puntos_deposito = pds, materiales = materiales)  
+        return render_template('simulador-depositos.html', puntos_deposito = pds)  
     except Exception as e:
         return error(e,"simulador_depositos")
 
@@ -785,11 +784,9 @@ def alta_deposito(idmat,idpd,cantidad):
     try:
         material = NegocioMaterial.get_by_id(idmat)
         factor_conversion = NegocioEcoPuntos.get_factor_recompensa_EP()
-        #TODO: Consultar si acá hace falta multiplicar también por el factor de conversión de ARS a EP.
-        cant_EP = material.costoRecoleccion * factor_conversion * float(cantidad)
-        #Codigo = IDdeposito + fecha + idMaterial
+        valor_ep = NegocioEcoPuntos.get_valor_EP()
+        cant_EP = round(float(material.costoRecoleccion * factor_conversion * float(cantidad) * float(valor_ep)),0)
         codigo = NegocioDeposito.alta(idmat,idpd,cantidad,cant_EP)
-        print(cant_EP)
         return jsonify(codigo)
     except Exception as e:
         return error(e,"simulador_depositos")

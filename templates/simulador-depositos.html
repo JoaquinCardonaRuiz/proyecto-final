@@ -71,7 +71,9 @@
                       <div class="form-row mt-4 mb-4">
                         <select class="multisteps-form__select form-control mt-4" id="pd-select" onchange="setPD();">
                             {% for pd in puntos_deposito%}
-                            <option value="{{pd.id}},{{pd.nombre}}">{{pd.nombre}}</option>
+                              {%if pd.iDsMaterial|length > 0 %}
+                                <option value="{{pd.id}},{{pd.nombre}}">{{pd.nombre}}</option>
+                              {%endif%}
                             {%endfor%}
                           </select>
                       </div>
@@ -86,9 +88,6 @@
                     <div class="multisteps-form__content">
                       <div class="form-row mt-4 mb-4">
                         <select class="multisteps-form__select form-control mt-4" id="mat-select" aria-placeholder="Seleccione un material..." onchange="setUnidadValue();">
-                            {% for mat in materiales%}
-                            <option value={{mat.id}},{{mat.unidadMedida|lower}},{{mat.nombre}}>{{mat.nombre}}</option>
-                            {%endfor%}
                         </select>
                       </div>
                       <div class="row d-flex btn-row">
@@ -163,6 +162,21 @@
           <div class="row" id="loadingRowPuntos">
             <div id="lds-ring-big" class="lds-ring" style="display: none; margin-top: 5% !important;"><div></div><div></div><div></div><div></div></div>
         </div>
+        <div class="row" id="ticket">
+          <div class="container ticket-container">
+            <h3 class="ticket-title">¡Ha generado 200 EcoPuntos!</h3>
+            <p class="ticket-code-subtitle">Su código es:</p>
+
+            <p class="ticket-code" id="code">
+                AGSJSJ80912kJASHHS
+            </p>
+            <p class="ticket-thanks">¡Muchas gracias por su depósito!</p>
+            <p class="ticket-subtitle">Recuerde cargar el código en EcoAsistente para acreditar sus EcoPuntos</p>
+
+          </div>
+
+        </div>
+        </div>
         <p id="loading-text">Creando depósito..</p>
 
     </div>
@@ -172,7 +186,6 @@
 
 <script src="/static/js/simulador-depositos.js"></script>
 <script src="/path/to/bootstrap.min.css"></script>
-<script>setPD();</script>
-<script>setUnidadValue();</script>
+<script>setPD();  setUnidadValue();</script>
 
 

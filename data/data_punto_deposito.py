@@ -20,9 +20,13 @@ class DatosPuntoDeposito(Datos):
             puntosDeposito = cls.cursor.fetchall()
             puntosDeposito_ = []
             for punto in puntosDeposito:
-                #Se instancia sin los materiales y sin los horarios ya que no se muestran, para no generar tráfico de datos innecesario.
+                #Se instancia sin los horarios ya que no se muestran, para no generar tráfico de datos innecesario.
                 direccion = DatosDireccion.get_one_id(punto[4])
-                puntosDeposito_.append(PuntoDeposito(punto[0],direccion,punto[1],punto[2], None, None)) 
+                materiales_ = DatosMaterial.get_all_byIdPuntoDep(punto[0],True)
+                materiales = []
+                for mat in materiales_:
+                    materiales.append(mat.id)
+                puntosDeposito_.append(PuntoDeposito(punto[0],direccion,punto[1],punto[2], materiales, None)) 
             return puntosDeposito_
             
         except Exception as e:
@@ -46,7 +50,6 @@ class DatosPuntoDeposito(Datos):
             puntosDeposito = cls.cursor.fetchall()
             puntosDeposito_ = []
             for punto in puntosDeposito:
-                #Se instancia sin los materiales y sin los horarios ya que no se muestran, para no generar tráfico de datos innecesario.
                 puntosDeposito_.append(punto[0])
             return puntosDeposito_
             

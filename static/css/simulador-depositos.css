@@ -17,7 +17,7 @@
     margin-top: 5%;
     background-color: white !important;
     min-height: 550px;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
 }
 
 .button-row{
@@ -42,6 +42,7 @@
     text-align: center;
     font-size: 20px;
     font-family: 'Hind', sans-serif;
+
 }
 
 #main-button{
@@ -67,6 +68,55 @@
 
 #lds-ring-big div {
     border-color: #0275d8 transparent transparent transparent !important;
+}
+
+.ticket-title{
+  text-align: center;
+  font-family: 'Hind', sans-serif;
+  margin-top: 7%;
+  color: #95C22B;
+
+}
+
+.ticket-subtitle{
+  margin-top: -1.5%;
+  text-align: center;
+  font-size: 17px;
+  font-family: 'Hind', sans-serif;
+}
+
+#ticket{
+  display: none;
+}
+
+.ticket-thanks{
+  margin-top: 4%;
+  text-align: center;
+  font-size: 16px;
+  font-family: 'Hind', sans-serif;
+}
+
+.ticket-code{
+  font-size: 40px;
+  font-family: 'Montserrat', sans-serif !important;
+  text-align: center;
+  letter-spacing: 7px;
+  margin-top: 2%;
+  color: rgb(88, 88, 88);
+}
+
+.ticket-code-subtitle{
+  margin-top: 4%;
+  text-align: center;
+  font-size: 17px;
+  font-family: 'Hind', sans-serif;
+}
+
+.ticket-container{
+  box-shadow:0 1px 1px 0 rgb(21 28 40 / 12%), 0 2px 4px 0 rgb(21 28 40 / 8%), inset 0 -1px 1px 0 rgb(23 26 31 / 4%), inset 0 1px 2px 0 rgb(255 255 255 / 24%);
+  width: auto !important; 
+  height: auto; 
+  border: 1px solid rgba(22,25,30,.12);
 }
 
 #multisteps-form{
@@ -189,21 +239,6 @@
     height: auto;
     opacity: 1;
     visibility: visible;
-  }
-  Define your own CSS3 animations in the CSS.
-  
-  .multisteps-form__panel[data-animation="scaleIn"] {
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9);
-  }
-  
-  .multisteps-form__panel[data-animation="scaleIn"].js-active {
-    transition-property: all;
-    transition-duration: 0.2s;
-    transition-timing-function: linear;
-    transition-delay: 0s;
-    -webkit-transform: scale(1);
-            transform: scale(1);
   }
 
   .button-row{

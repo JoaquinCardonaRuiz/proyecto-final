@@ -13,7 +13,7 @@ class NegocioEcoPuntos(Negocio):
     @classmethod
     def get_factor_recompensa_EP(cls):
         try:
-            return DatosEcoPuntos.get_valor_EP()
+            return DatosEcoPuntos.get_porcentaje_rec_EP()
         except Exception as e:
             raise e
 
