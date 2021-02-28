@@ -100,8 +100,16 @@ class DatosDeposito(Datos):
             sql = ("UPDATE depositos SET idUsuario = {} WHERE codigo=\"{}\"".format(uid,cod))
             cls.cursor.execute(sql)
             cls.db.commit()
-            rwcount = cls.cursor.rowcount
-            return rwcount
+            rwcount = int(cls.cursor.rowcount)
+            print("El rwcount es: " + str(rwcount))
+            if rwcount > 0:
+                sql = ("SELECT cantidad FROM depositos join ecoPuntos using (idEcoPuntos) where codigo = %s")
+                values = (cod,)
+                cls.cursor.execute(sql,values)
+                cantEP = cls.cursor.fetchall()[0]
+                return [True,cantEP]
+            else:
+                return [False,0]
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_pedido.update_estado()",
                                                     msj=str(e),
