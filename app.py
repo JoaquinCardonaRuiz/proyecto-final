@@ -48,7 +48,7 @@ def authentication(email, password):
         session["usuario"] = NegocioUsuario.login(email, password)
         return jsonify({"login-state":True})
     except Exception as e:
-        return error(e, "login")
+        return jsonify({"login-state":False})
 
     return render_template('login.html')
 
@@ -788,7 +788,7 @@ def alta_deposito(idmat,idpd,cantidad):
         valor_ep = NegocioEcoPuntos.get_valor_EP()
         cant_EP = round(float(material.costoRecoleccion * factor_conversion * float(cantidad) * float(valor_ep)),0)
         codigo = NegocioDeposito.alta(idmat,idpd,cantidad,cant_EP)
-        return jsonify(codigo)
+        return jsonify(codigo, cant_EP)
     except Exception as e:
         return error(e,"simulador_depositos")
 

@@ -81,7 +81,6 @@
 .olvido-password{
     color: #95C22B;
     transition: width 0.5s, height 0.5s, transform 0.5s;
-
 }
 
 .olvido-password:hover{
@@ -89,10 +88,49 @@
     cursor: pointer;
 }
 
+.cartel-error{
+   color: #f81919 !important;
+   font-size: 13px;
+   margin-top: 4px; 
+   display: none;
+   margin-bottom: 15px;
+}
+
+.error-msg-login{
+    background-color: #ffecf2;
+    border: 1px solid #e81f37;
+    border-radius: 5px;
+    margin-top: 1%;
+    margin-bottom: -1%;
+    width: 400px;
+    height: 45px;
+    transition: width 1s, height 1s, transform 1s;
+    text-align: center;
+    display: none;
+
+}
+
+.error-msg-text{
+    padding-top: 10px;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    text-align: center;
+    color: rgb(63, 63, 63);
+}
+
+.loadingRowLogin{
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
 .row{
     width: 400px;
     transition: width 0.5s, height 0.5s, transform 0.5s;
+}
 
+.row-error{
+    width: 400px;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+    margin-left: -15px;
 }
 
 #start-button{

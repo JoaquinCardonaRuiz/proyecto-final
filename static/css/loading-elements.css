@@ -67,3 +67,15 @@
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #95C22B transparent transparent transparent;
 }
+
+#loading-text-login{
+  width: 100%;
+  text-align: center;
+  display: none;
+}
+
+#loadingRowLogin{
+  display: none;
+  margin-left: -11.5%;
+  margin-top: 100px;
+}

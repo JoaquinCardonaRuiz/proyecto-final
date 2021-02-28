@@ -9,6 +9,9 @@
     margin-top: 10px;
 }
 
+#initial-page{
+  display: none;
+}
 
 #main-container{
     position: relative; 
@@ -17,7 +20,7 @@
     margin-top: 5%;
     background-color: white !important;
     min-height: 550px;
-    margin-bottom: 5%;
+    margin-bottom: 0% !important;
 }
 
 .button-row{
@@ -50,6 +53,25 @@
     margin-left: 20%;
     margin-top: 8%;
     border-radius: 10px !important;
+
+}
+
+#otro-deposito-btn{
+  width: 100%;
+  margin-top: 8%;
+  width: 49%;
+  border-radius: 10px !important;
+
+
+}
+
+#ecoasistente-btn{
+  width: 49%;
+  margin-top: 8%;
+  border-radius: 10px !important;
+  margin-left: 0.5%;
+  margin-right: 0.5%;
+
 
 }
 
@@ -87,6 +109,7 @@
 
 #ticket{
   display: none;
+  margin-top: -5%;
 }
 
 .ticket-thanks{

@@ -6,6 +6,10 @@ var id_mat = '-';
 var cantidad = '-';
 var materiales = [];
 
+function muestraInitialPage(){
+  $("#initial-page").fadeIn();
+}
+
 function hideInitialPage(){
     $("#initial-page").fadeOut();
     $("#multisteps-form").fadeIn(1000);
@@ -13,7 +17,7 @@ function hideInitialPage(){
 
 function setUnidadValue(){
   document.getElementById("siguiente2btn").disabled = false;
-  var id_mat = parseInt($("#mat-select").val());
+  id_mat = parseInt($("#mat-select").val());
   for (var i in materiales){
     if (materiales[i]["id"]==id_mat){
       unidad = materiales[i]["unidadMedida"];
@@ -22,6 +26,7 @@ function setUnidadValue(){
   }
   $("#unidadMedida").text(unidad.toLocaleLowerCase());
   $("#material-img").text(nombre_mat.charAt(0).toUpperCase());
+
   var size;
   if(nombre_mat.length < 15){
       size = "20px";
@@ -53,7 +58,6 @@ function setPD(){
     selected: true
   }));
   $.getJSON("/gestion-puntos-deposito/materiales/"+ String(id_pd),function (result){
-    console.log(result);
     materiales = result;
     for (var i in result){
       if (result[i]["estado"] != "suspendido"){
@@ -82,10 +86,12 @@ function setCant(){
 function submitForm(){
   loading();
   $.getJSON("/simulador/alta-deposito/" + String(id_mat) + '/' + String(id_pd) + '/' + String(cantidad),function (result){
-    $("#code").text(result);
-    $("#lds-ring-big").fadeOut();
-    $("#loading-text").fadeOut();
+    $("#code").text(result[0]);
+    $("#cantEP").text(result[1]);
+    $("#lds-ring-big").hide();
+    $("#loading-text").remove();
     $("#ticket").fadeIn();
+    
   });
 }
 
@@ -97,6 +103,10 @@ function loading(){
 }
 
 $("#loadingRowPuntos").show();
+
+function redirect(link){
+  window.location.href = link;
+}
 
 function nextMsgDeposito() {
   if (messagesDeposito.length == 1) {

@@ -164,22 +164,27 @@
           <div class="row" id="loadingRowPuntos">
             <div id="lds-ring-big" class="lds-ring" style="display: none; margin-top: 5% !important;"><div></div><div></div><div></div><div></div></div>
         </div>
+        <p id="loading-text">Creando depósito..</p>
         <div class="row" id="ticket">
           <div class="container ticket-container">
-            <h3 class="ticket-title">¡Ha generado 200 EcoPuntos!</h3>
+            <h3 class="ticket-title">¡Ha generado <span id="cantEP"></span> EcoPuntos!</h3>
             <p class="ticket-code-subtitle">Su código es:</p>
 
             <p class="ticket-code" id="code">
-                AGSJSJ80912kJASHHS
+                Ups! Algo salió mal.
             </p>
             <p class="ticket-thanks">¡Muchas gracias por su depósito!</p>
             <p class="ticket-subtitle">Recuerde cargar el código en EcoAsistente para acreditar sus EcoPuntos</p>
 
           </div>
-
+          <button type="button" class="btn btn-success" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/')">
+            Ir a EcoAsistente
+          </button>
+          <button type="button" class="btn btn-outline-primary" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/simulador')">
+            Hacer otro depósito
+          </button>
         </div>
         </div>
-        <p id="loading-text">Creando depósito..</p>
 
     </div>
 
@@ -188,4 +193,5 @@
 
 <script src="/static/js/simulador-depositos.js"></script>
 <script src="/path/to/bootstrap.min.css"></script>
+<script>muestraInitialPage();</script>
 
