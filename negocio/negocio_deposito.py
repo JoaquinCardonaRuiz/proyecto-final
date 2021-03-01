@@ -31,11 +31,11 @@ class NegocioDeposito(Negocio):
             raise e
     
     @classmethod
-    def get_by_id_usuario(cls,uid):
+    def get_by_id_usuario(cls,uid, limit=False):
         """
         Busca los depósitos que correspondan a un usuario en base a su ID.
         """
         try:
-            return DatosDeposito.get_by_id_usuario(uid)
+            return DatosDeposito.get_by_id_usuario(uid, limit)
         except Exception as e:
             raise e

@@ -30,7 +30,11 @@ def main():
         nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
         pedidos = NegocioPedido.get_by_user_id(session["usuario"].id, 3)
         puntosRetiro = NegocioPuntoRetiro.get_all()
-    return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],nivel=nivel)
+        depositos = NegocioDeposito.get_by_id_usuario(session["usuario"].id, 3)
+        puntosDep = NegocioPuntoDeposito.get_all()
+        materiales = NegocioMaterial.get_all()
+    return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
+    nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales)
 
 ''' 
     -----------------
@@ -198,7 +202,7 @@ def gestion_niveles():
         maxDescuento = NegocioNivel.get_max_descuento()
     except Exception as e:
         return error(e, "gestion_niveles")
-    return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0],max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento)
+    return render_template('gestion-niveles.html', niveles = niveles, min_nivel = min_max_nivel[0],max_level = min_max_nivel[1], maxEP = maxEP, maxDescuento = maxDescuento, usuario=session["usuario"])
 
 @app.route('/gestion-niveles/alta', methods = ['GET','POST'])
 def alta_nivel():
@@ -259,7 +263,7 @@ def gestion_ed():
         entidades = NegocioEntidadDestino.get_all()
     except Exception as e:
         return error(e,"gestion_ed")
-    return render_template('gestion-entidades-destino.html', entidades = entidades)
+    return render_template('gestion-entidades-destino.html', entidades = entidades, usuario=session["usuario"])
 
 
 @app.route('/gestion-ed/articulos', methods = ['GET','POST'])
@@ -544,7 +548,7 @@ def gestion_insumos():
     try:
         insumos = NegocioInsumo.get_all()
         materiales = NegocioMaterial.get_all()
-        return render_template('gestion-insumos.html',insumos=insumos,materiales=materiales)
+        return render_template('gestion-insumos.html',insumos=insumos,materiales=materiales, usuario = session["usuario"])
     except Exception as e:
         return error(e,"insumos")
 
@@ -777,7 +781,8 @@ def depositos():
     try:
         depositos = NegocioDeposito.get_by_id_usuario(session["usuario"].id)
         puntosDep = NegocioPuntoDeposito.get_all()
-        return render_template('depositosUser.html', usuario=session["usuario"],depositos = depositos, puntosDep = puntosDep)  
+        materiales = NegocioMaterial.get_all()
+        return render_template('depositosUser.html',usuario = session["usuario"],depositos = depositos, puntosDep = puntosDep, materiales = materiales)  
     except Exception as e:
         return error(e,"depositos")
 

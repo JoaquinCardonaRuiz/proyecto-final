@@ -156,67 +156,37 @@
                                 <thead style=" border-top:none">
                                 <tr>
                                     <th scope="col" class="table-heading">Código</th>
+                                    <th scope="col" class="table-heading">Código acreditación</th>
+                                    <th scope="col" class="table-heading">Fecha depósito</th>
                                     <th scope="col" class="table-heading">EcoPuntos</th>
-                                    <th scope="col" class="table-heading">Pesos</th>
-                                    <th scope="col" class="table-heading">Fecha Encargo</th>
-                                    <th scope="col" class="table-heading">P. de Retiro</th>
-                                    <th scope="col" class="table-heading">Artículos</th>
+                                    <th scope="col" class="table-heading">Material</th>
+                                    <th scope="col" class="table-heading">Punto</th>
                                     <th scope="col" class="table-heading">Estado</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {%for p in pedidos%}
+                                {%for dep in depositos%}
                                     <tr>
-                                        <th scope="row">{{p.id}}</th>
-                                        <td scope="row">{{p.totalEP}}</td>
-                                        <td scope="row">${{p.totalARS}}</td>
-                                        <td scope="row">{{p.fechaEncargo}}</td>
-                                        {%for pr in puntosRetiro%}
-                                            {%if pr.id == p.idPuntoRetiro%}
-                                                <td scope="row">{{pr.nombre}}</td>
+                                        <th scope="row">{{dep.id}}</th>
+                                        <td scope="row">{{dep.codigo}}</td>
+                                        <td scope="row">{{dep.fechaDeposito}}</td>
+                                        <td scope="row">{{dep.ecoPuntos.cantidad}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
+                                        {%for mat in materiales%}
+                                            {%if mat.id|int == dep.material.idMaterial|int%}
+                                                <td scope="row">{{mat.nombre|truncate(20,true,'...')}}</td>
                                             {%endif%}
-                                        {%endfor%}
-                                        <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
-                                        {%if p.estado == "pendiente"%}
-                                            <td>
-                                                <div>
-                                                    <i class="fas fa-circle" style="color:#3399ff" id="estado-activo"></i>
-                                                    En preparación
-                                                </div>
-                                            </td>
-                                        {%endif%}
-                                        {%if p.estado == "preparado"%}
-                                            <td>
-                                                <div>
-                                                    <i class="fas fa-circle" style="color:#ddbb44" id="estado-activo"></i>
-                                                    En camino
-                                                </div>
-                                            </td>
-                                        {%endif%}
-                                        {%if p.estado == "listo"%}
-                                            <td>
-                                                <div>
-                                                    <i class="fas fa-circle" style="color:#00aa44" id="estado-activo"></i>
-                                                    Listo para retirar
-                                                </div>
-                                            </td>
-                                        {%endif%}
-                                        {%if p.estado == "cancelado"%}
-                                            <td>
-                                                <div>
-                                                    <i class="fas fa-circle" style="color:#cc4444" id="estado-activo"></i>
-                                                    Cancelado
-                                                </div>
-                                            </td>
-                                        {%endif%}
-                                        {%if p.estado == "devuelto"%}
-                                            <td>
-                                                <div>
-                                                    <i class="fas fa-circle" style="color:#882288" id="estado-activo"></i>
-                                                    Reembolsado
-                                                </div>
-                                            </td>
-                                        {%endif%}
+                                        {%endfor%} 
+                                        {%for pd in puntosDep%}
+                                            {%if pd.id == dep.idPuntoDeposito%}
+                                                <td scope="row">{{pd.nombre}}</td>
+                                            {%endif%}
+                                        {%endfor%}  
+                                        <td>
+                                            <div>
+                                                <i class="fas fa-circle" style="color:#00aa44" id="estado-activo"></i>
+                                                Acreditado
+                                            </div>
+                                        </td>
                                     </tr>
                                 {%endfor%}
                                 </tbody>

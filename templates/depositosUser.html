@@ -47,12 +47,16 @@
                 {%for dep in depositos%}
                     <tr>
                         <th scope="row">{{dep.id}}</th>
-                        <td scope="row">{{p.codigo}}</td>
-                        <td scope="row">{{p.fechaDeposito}}</td>
-                        <td scope="row">{{p.ecoPuntos.cantidad}}</td>
-                        <td scope="row">{{p.material.nombre}}</td>
+                        <td scope="row">{{dep.codigo}}</td>
+                        <td scope="row">{{dep.fechaDeposito}}</td>
+                        <td scope="row">{{dep.ecoPuntos.cantidad}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
+                        {%for mat in materiales%}
+                            {%if mat.id|int == dep.material.idMaterial|int%}
+                                <td scope="row">{{mat.nombre|truncate(20,true,'...')}}</td>
+                            {%endif%}
+                        {%endfor%} 
                         {%for pd in puntosDep%}
-                            {%if pd.id == dep.idPunto%}
+                            {%if pd.id == dep.idPuntoDeposito%}
                                 <td scope="row">{{pd.nombre}}</td>
                             {%endif%}
                         {%endfor%}  

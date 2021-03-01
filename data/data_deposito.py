@@ -119,21 +119,27 @@ class DatosDeposito(Datos):
             cls.cerrar_conexion()
     
     @classmethod
-    def get_by_id_usuario(cls,uid,noClose=False):
+    def get_by_id_usuario(cls,uid,limit=False,noClose=False):
         """
         Obtiene los depósitos correspondientes a un usuario por su ID.
         """
         try:
             cls.abrir_conexion()
-            sql = ("Select idDeposito, codigo, fechaReg, fechaDep, idMaterial, idUsuario, idPunto, idEcoPuntos, cant from depositos where idUsuario = %s")
-            values = (uid,)
+            if limit == False:
+                sql = ("Select idDeposito, codigo, fechaReg, fechaDep, idMaterial, idUsuario, idPunto, idEcoPuntos, cant from depositos where idUsuario = %s")
+                values = (uid,)
+            else:
+                sql = ("Select idDeposito, codigo, fechaReg, fechaDep, idMaterial, idUsuario, idPunto, idEcoPuntos, cant from depositos where idUsuario = %s LIMIT %s")
+                values = (uid,limit)
             cls.cursor.execute(sql, values)
             depositos_ = cls.cursor.fetchall()
             depositos = []
             for dep in depositos_:
-                mat = CantMaterial(dep[8], DatosMaterial.get_by_id(dep[4]).id)
-                ep = DatosEcoPuntos.get_by_id(dep[7]) 
-                depositos.append(Deposito(dep[0], dep[1],mat, dep[6], dep[3], ep, dep[2]))
+                mat = CantMaterial(dep[8], dep[4])
+                ep = DatosEcoPuntos.get_by_id(dep[7])
+                ep.cantidad = int(ep.cantidad) 
+                depositos.append(Deposito(dep[0], dep[1],mat, dep[6], dep[3].strftime("%d/%m/%Y"), ep, dep[2]))
+            return depositos
             
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_by_id_usuario()",
