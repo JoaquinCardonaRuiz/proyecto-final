@@ -37,6 +37,7 @@ class DatosPedido(Datos):
             for p in pedidos_:
                 articulos = DatosCantArticulo.get_from_Pid(p[0],noClose=True)
                 pedido_ =  Pedido(p[0],p[1].strftime("%d/%m/%Y"),p[2].strftime("%d/%m/%Y"),articulos,p[3],p[4],p[5],p[6])
+                pedido_.totalEP = int(pedido_.totalEP)
                 pedidos.append(pedido_)
             return pedidos
             
