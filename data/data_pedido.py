@@ -5,21 +5,32 @@ import custom_exceptions
 
 class DatosPedido(Datos):
     @classmethod
-    def get_by_user_id(cls,uid,noClose=False):
+    def get_by_user_id(cls,uid,limit=False,noClose=False):
         """
         Obtiene todos los pedidos de un usuario de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT \
-                    idPedido, \
-                    fechaEnc, \
-                    fechaRet, \
-                    totalARS, \
-                    totalEP, \
-                    idPunto, \
-                    estado \
-                    FROM pedidos WHERE idUsuario = {} ORDER BY fechaEnc;").format(uid)
+            if limit == False:
+                sql = ("SELECT \
+                        idPedido, \
+                        fechaEnc, \
+                        fechaRet, \
+                        totalARS, \
+                        totalEP, \
+                        idPunto, \
+                        estado \
+                        FROM pedidos WHERE idUsuario = {} ORDER BY fechaEnc;").format(uid)
+            else:
+                sql = ("SELECT \
+                        idPedido, \
+                        fechaEnc, \
+                        fechaRet, \
+                        totalARS, \
+                        totalEP, \
+                        idPunto, \
+                        estado \
+                        FROM pedidos WHERE idUsuario = {} ORDER BY fechaEnc LIMIT {};").format(uid, limit)
             cls.cursor.execute(sql)
             pedidos_ = cls.cursor.fetchall()
             pedidos = []

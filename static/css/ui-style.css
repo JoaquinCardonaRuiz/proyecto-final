@@ -107,6 +107,13 @@
 
 .heading{
     font-size: 35px;
+    font-family: 'Hind', sans-serif;
+    margin-top: 5% !important;
+}
+
+.subheading{
+    font-family: 'Hind', sans-serif;
+    margin-bottom: -1.5%;
 }
 
 #heading-description{

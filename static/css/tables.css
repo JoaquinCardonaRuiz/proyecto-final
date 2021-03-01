@@ -6,6 +6,15 @@
     border-top:2px solid white !important
 }
 
+.content-table-main{
+  position: relative;
+  width: 85%;
+  margin-top: 0%;
+  margin-bottom: 3%;
+  margin-left: 6%;
+  border-top:2px solid white !important
+}
+
 #content-table-modal{
   position: relative;
   width: 95%;
@@ -43,4 +52,11 @@
 #modify-table-icon:hover{
   color: #d1f089e1;
   cursor: pointer;
+}
+
+.table-title{
+  margin-left:4%;
+  padding-top:3%;
+  font-family: 'Hind', sans-serif;
+
 }

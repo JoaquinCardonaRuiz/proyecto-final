@@ -51,8 +51,8 @@ class NegocioPedido(Negocio):
             raise e
 
     @classmethod
-    def get_by_user_id(cls,uid):
+    def get_by_user_id(cls,uid, limit=False):
         try:
-            return DatosPedido.get_by_user_id(uid)
+            return DatosPedido.get_by_user_id(uid, limit)
         except Exception as e:
             raise e

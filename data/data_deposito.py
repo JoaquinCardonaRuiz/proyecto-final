@@ -1,4 +1,5 @@
 from data.data import Datos
+from data.data_material import DatosMaterial
 from data.data_cant_material import DatosCantMaterial
 from data.data_ecopuntos import DatosEcoPuntos
 from classes import Deposito, CantMaterial, EcoPuntos
@@ -116,3 +117,28 @@ class DatosDeposito(Datos):
                                                     msj_adicional="Error actualizando un pedido en la BD.")
         finally:
             cls.cerrar_conexion()
+    
+    @classmethod
+    def get_by_id_usuario(cls,uid,noClose=False):
+        """
+        Obtiene los depósitos correspondientes a un usuario por su ID.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("Select idDeposito, codigo, fechaReg, fechaDep, idMaterial, idUsuario, idPunto, idEcoPuntos, cant from depositos where idUsuario = %s")
+            values = (uid,)
+            cls.cursor.execute(sql, values)
+            depositos_ = cls.cursor.fetchall()
+            depositos = []
+            for dep in depositos_:
+                mat = CantMaterial(dep[8], DatosMaterial.get_by_id(dep[4]).id)
+                ep = DatosEcoPuntos.get_by_id(dep[7]) 
+                depositos.append(Deposito(dep[0], dep[1],mat, dep[6], dep[3], ep, dep[2]))
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_by_id_usuario()",
+                                                    msj=str(e),
+                                                    msj_adicional="Obtiene los depósitos correspondientes a un usuario por su ID.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()

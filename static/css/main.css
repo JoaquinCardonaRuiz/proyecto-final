@@ -13,5 +13,86 @@
 }
 
 
+.circle {
+    width: 200px;
+    margin: 6px 6px 20px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    line-height: 1.2;
+  }
+  
+  .circle canvas {
+    vertical-align: top;
+    width: 200px !important;
+  }
+  
+  .circle strong {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 40px;
+    font-size: 30px;
+    color: black;
+  }
+  
+  .circle strong i {
+    font-style: normal;
+    font-size: 0.6em;
+    font-weight: normal;
+  }
+  
+  .circle span {
+    display: block;
+    color: #aaa;
+    margin-top: 12px;
+  }
 
+  .second circle{
+      background-color: transparent !important;
+  }
 
+  #cantEP{
+    margin-top: 22%;
+    font-size: 40px;
+    font-family: 'Hind', sans-serif;
+    font-weight: 300;
+    color: gray;
+  }
+
+  #label-ep{
+    font-family: 'Hind', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    margin-top: -4px;
+
+  }
+
+  #label-nivel{
+    font-size: 22px;
+    font-family: 'Hind', sans-serif;
+  }
+
+  .info-result{
+    font-size: 40px;
+    font-family: 'Hind', sans-serif;
+    font-weight: 300;
+    color: #95C22B;
+  }
+
+  .info-label{
+    font-family: 'Hind', sans-serif;
+    color: gray;
+    font-size: 14px;
+    margin-top: -30px;
+  }
+
+  .mi-cuenta{
+    font-family: 'Hind', sans-serif;
+    font-size: 20px;
+    margin-left: 3%;
+    margin-top: 2%;
+    margin-bottom: -0.5%;
+  }

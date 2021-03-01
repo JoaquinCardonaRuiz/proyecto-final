@@ -1,3 +1,33 @@
+ ::-webkit-scrollbar {
+	width: 8px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+	background: #ffffff; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+	background: rgb(202, 202, 202); 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+	background: rgb(177, 177, 177); 
+  }
+
+  #up-bar{
+	background-color: rgb(255, 255, 255); 
+	width: calc(100%-15.5rem); 
+	margin-left: calc(15.5rem - 8px); 
+	height: 3.8rem; 
+	box-shadow: none !important; 
+	z-index: 9; 	
+	box-shadow: none !important; border-bottom: 1px solid rgb(240, 240, 240) !important;
+	border-left: 1px solid rgb(240, 240, 240) !important;
+	position: relative;
+  }
 
 /*footer*/
 .col_white_amrc { color:#FFF;}
@@ -40,6 +70,18 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
   color: inherit; /* blue colors for links too */
   text-decoration: inherit; /* no underline */
 }
+
+#user-username{
+	margin-left: auto; 
+	margin-right: 2.4%; 
+	display: flex;
+}
+
+.user-username-text{
+	font-size: 14px;
+}
+
+
 
 #reference:hover{
 	color:#fff

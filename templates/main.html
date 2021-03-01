@@ -8,29 +8,222 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;600&display=swap" rel="stylesheet">
+
 </head>
 
 {% extends 'layout.html' %}
 {% block body %}
 <div class="page-content" style="text-align: left;" id="content">
-    <div class="container" id="top-container">
+    <div class="container" id="heading-container">
+        <h1 class="heading main-heading">Hola, {{usuario.nombre + ' ' + usuario.apellido}}</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Este es tu panel principal. Desde acá podés gestionar tus depósitos y pedidos, ver tus EcoPuntos y seguir los movimientos de tu cuenta.</span></h6>
+    </div>
+    <div class="container" id="top-container" style="margin-top: -2%;">
         <div class="row">
-            <div class="container" id="user-container">
-                <div class="option-text">
-                    <h1 class="heading">{{'Hola, ' + usuario.nombre + ' ' + usuario.apellido}}</h1>
-                    <p class="text-muted">Bienvenido a EcoAsistente, el lugar donde ganás reciclando.</p>
-                    <p>Direccion: {{usuario.direccion.calle}}</p>
-                    {%for dep in usuario.depositosActivos%}
-                    <p>Id deposito: {{dep.id}}</p>
-                    {%endfor%}
-                    <p>Nivel: {{usuario.idNivel}}</p>
-                    {%for ped in usuario.pedidos%}
-                    <p>Id pedido: {{ped.id}}</p>
-                    {%endfor%}
+            <div class="container" id="user-container" style="margin-top: 5%;">
+                <div class="row text-center" style="width: 100%;">
+                    <p class="mi-cuenta">Mi cuenta</p>
+                    <hr style="width: 100%; margin-left: 2.5%;">
+
+                    <div class="col ml-4 mt-2 mb-3" style="width: 60%;">
+                        <div class="row">
+                            <p class="mi-cuenta">Mis estadísticas</p>
+                        </div>
+                        <div class="row" style="margin-top: 5%;">
+                            <div class="col" style="margin-right: -20%;">
+                                <p class="info-result">10%</p>
+                                <p class="info-label">Mi descuento</p>
+                            </div>
+                            <div class="col">
+                                <p class="info-result">3</p>
+                                <p class="info-label">Cantidad de Pedidos</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col" style="margin-right: -20%;">
+                                <p class="info-result">10</p>
+                                <p class="info-label">Cantidad de Depósitos</p>
+                            </div>
+                            <div class="col">
+                                <p class="info-result">3</p>
+                                <p class="info-label">Cantidad de Pedidos</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col ml-4 mt-3 mb-3">
+                        <div class="progressbar">
+                        <div class="second circle" style="background-color: transparent;"data-percent="{{(usuario.totalEcopuntos - nivel.minimoEcoPuntos)*100/(nivel.maximoEcoPuntos - nivel.minimoEcoPuntos)}}">
+                          <strong id="cantEP"><br><span id="label-ep">EcoPuntos</span></strong>
+                          <span id="label-nivel">Nivel {{nivel.nombre}}<br></span>
+                        </div>
+                        </div>
+                    </div>             
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container" id="user-container" style="margin-top: 4%;">
+                <div class="row text-center" style="width: 100%;">
+                    <p class="mi-cuenta">Últimos Pedidos</p>
+                    <hr style="width: 100%; margin-left: 2.5%;">
+                    <div class="row" style="width: 100%; text-align: left;">
+                        <table class="table content-table-main" id="">
+                            <thead style=" border-top:none">
+                            <tr>
+                                <th scope="col" class="table-heading">Código</th>
+                                <th scope="col" class="table-heading">EcoPuntos</th>
+                                <th scope="col" class="table-heading">Pesos</th>
+                                <th scope="col" class="table-heading">Fecha Encargo</th>
+                                <th scope="col" class="table-heading">P. de Retiro</th>
+                                <th scope="col" class="table-heading">Artículos</th>
+                                <th scope="col" class="table-heading">Estado</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {%for p in pedidos%}
+                                <tr>
+                                    <th scope="row">{{p.id}}</th>
+                                    <td scope="row">{{p.totalEP}}</td>
+                                    <td scope="row">${{p.totalARS}}</td>
+                                    <td scope="row">{{p.fechaEncargo}}</td>
+                                    {%for pr in puntosRetiro%}
+                                        {%if pr.id == p.idPuntoRetiro%}
+                                            <td scope="row">{{pr.nombre}}</td>
+                                        {%endif%}
+                                    {%endfor%}
+                                    <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                                    {%if p.estado == "pendiente"%}
+                                        <td>
+                                            <div>
+                                                <i class="fas fa-circle" style="color:#3399ff" id="estado-activo"></i>
+                                                En preparación
+                                            </div>
+                                        </td>
+                                    {%endif%}
+                                    {%if p.estado == "preparado"%}
+                                        <td>
+                                            <div>
+                                                <i class="fas fa-circle" style="color:#ddbb44" id="estado-activo"></i>
+                                                En camino
+                                            </div>
+                                        </td>
+                                    {%endif%}
+                                    {%if p.estado == "listo"%}
+                                        <td>
+                                            <div>
+                                                <i class="fas fa-circle" style="color:#00aa44" id="estado-activo"></i>
+                                                Listo para retirar
+                                            </div>
+                                        </td>
+                                    {%endif%}
+                                    {%if p.estado == "cancelado"%}
+                                        <td>
+                                            <div>
+                                                <i class="fas fa-circle" style="color:#cc4444" id="estado-activo"></i>
+                                                Cancelado
+                                            </div>
+                                        </td>
+                                    {%endif%}
+                                    {%if p.estado == "devuelto"%}
+                                        <td>
+                                            <div>
+                                                <i class="fas fa-circle" style="color:#882288" id="estado-activo"></i>
+                                                Reembolsado
+                                            </div>
+                                        </td>
+                                    {%endif%}
+                                </tr>
+                            {%endfor%}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>         
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 100px;">
+                <div class="container" id="user-container" style="margin-top: 4%;">
+                    <div class="row text-center" style="width: 100%;">
+                        <p class="mi-cuenta">Últimos Depósitos</p>
+                        <hr style="width: 100%; margin-left: 2.5%;">
+                        <div class="row d-flex justify-content-center" style="width: 100%; text-align: left;">
+                            <table class="table content-table-main" id="">
+                                <thead style=" border-top:none">
+                                <tr>
+                                    <th scope="col" class="table-heading">Código</th>
+                                    <th scope="col" class="table-heading">EcoPuntos</th>
+                                    <th scope="col" class="table-heading">Pesos</th>
+                                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                                    <th scope="col" class="table-heading">P. de Retiro</th>
+                                    <th scope="col" class="table-heading">Artículos</th>
+                                    <th scope="col" class="table-heading">Estado</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {%for p in pedidos%}
+                                    <tr>
+                                        <th scope="row">{{p.id}}</th>
+                                        <td scope="row">{{p.totalEP}}</td>
+                                        <td scope="row">${{p.totalARS}}</td>
+                                        <td scope="row">{{p.fechaEncargo}}</td>
+                                        {%for pr in puntosRetiro%}
+                                            {%if pr.id == p.idPuntoRetiro%}
+                                                <td scope="row">{{pr.nombre}}</td>
+                                            {%endif%}
+                                        {%endfor%}
+                                        <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                                        {%if p.estado == "pendiente"%}
+                                            <td>
+                                                <div>
+                                                    <i class="fas fa-circle" style="color:#3399ff" id="estado-activo"></i>
+                                                    En preparación
+                                                </div>
+                                            </td>
+                                        {%endif%}
+                                        {%if p.estado == "preparado"%}
+                                            <td>
+                                                <div>
+                                                    <i class="fas fa-circle" style="color:#ddbb44" id="estado-activo"></i>
+                                                    En camino
+                                                </div>
+                                            </td>
+                                        {%endif%}
+                                        {%if p.estado == "listo"%}
+                                            <td>
+                                                <div>
+                                                    <i class="fas fa-circle" style="color:#00aa44" id="estado-activo"></i>
+                                                    Listo para retirar
+                                                </div>
+                                            </td>
+                                        {%endif%}
+                                        {%if p.estado == "cancelado"%}
+                                            <td>
+                                                <div>
+                                                    <i class="fas fa-circle" style="color:#cc4444" id="estado-activo"></i>
+                                                    Cancelado
+                                                </div>
+                                            </td>
+                                        {%endif%}
+                                        {%if p.estado == "devuelto"%}
+                                            <td>
+                                                <div>
+                                                    <i class="fas fa-circle" style="color:#882288" id="estado-activo"></i>
+                                                    Reembolsado
+                                                </div>
+                                            </td>
+                                        {%endif%}
+                                    </tr>
+                                {%endfor%}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>         
+                    </div>
                 </div>
             </div>
         </div>
@@ -38,6 +231,9 @@
 </div>
 
 
-
 <script src="static/js/main.js"></script>
+<script>setCantEP({{usuario.totalEcopuntos}});</script>
+
+<script src="https://rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.js"></script>
+
 {% endblock %}

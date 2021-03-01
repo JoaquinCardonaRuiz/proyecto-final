@@ -26,7 +26,11 @@ def start():
 @app.route('/main', methods = ['GET','POST'])
 def main():
     if valida_session(): return redirect(url_for('login'))
-    return render_template('main.html',usuario=session["usuario"])
+    else: 
+        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+        pedidos = NegocioPedido.get_by_user_id(session["usuario"].id, 3)
+        puntosRetiro = NegocioPuntoRetiro.get_all()
+    return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],nivel=nivel)
 
 ''' 
     -----------------
@@ -344,7 +348,7 @@ def error(err="", url_redirect="/main"):
 @app.route('/elegir-tipo-punto', methods = ['GET','POST'])
 def selection():
     if valida_session(): return redirect(url_for('login'))
-    return render_template('elegir-tipo-punto.html')
+    return render_template('elegir-tipo-punto.html', usuario = session["usuario"])
 
 
 @app.route('/gestion-puntos-deposito', methods = ['GET','POST'])
@@ -356,7 +360,7 @@ def gestion_pd():
         dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
     except Exception as e:
         return error(e,"gestion_pd") 
-    return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito, dias = dias, materiales = materiales)
+    return render_template('gestion-puntos-deposito.html', puntos_deposito = puntos_deposito, dias = dias, materiales = materiales, usuario = session["usuario"])
 
 @app.route('/gestion-puntos-deposito/horarios/<int:id>')
 def horarios_pd(id):
@@ -458,7 +462,7 @@ def gestion_articulos():
     try:
         if valida_session(): return redirect(url_for('login'))
         articulos = NegocioArticulo.get_all()
-        return render_template('gestion-articulos.html',articulos=articulos)
+        return render_template('gestion-articulos.html',articulos=articulos, usuario = session["usuario"])
     except Exception as e:
         return error(e,"articulos")
 
@@ -645,7 +649,7 @@ def get_recetas_articulos(idIns):
 def gestion_materiales():
     try:
         materiales = NegocioMaterial.get_all()
-        return render_template('gestion-materiales.html',materiales=materiales)
+        return render_template('gestion-materiales.html',materiales=materiales, usuario = session["usuario"])
     except Exception as e:
         return error(e,"materiales")
 
@@ -715,7 +719,7 @@ def valida_session():
 def elegirPR():
     try:
         puntosRetiro = NegocioPuntoRetiro.get_all()
-        return render_template('elegir-PR.html',puntosRetiro = puntosRetiro)
+        return render_template('elegir-PR.html',puntosRetiro = puntosRetiro, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
 
@@ -724,7 +728,7 @@ def deposito():
     try:
         pedidos = NegocioPedido.get_all()
         puntosRetiro = NegocioPuntoRetiro.get_all()
-        return render_template('deposito.html',pedidos = pedidos,puntosRetiro=puntosRetiro)
+        return render_template('deposito.html',pedidos = pedidos,puntosRetiro=puntosRetiro, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
 
@@ -733,7 +737,7 @@ def pedidosPR(id):
     try:
         pedidos = NegocioPedido.get_by_idPR(int(id))
         puntoRetiro = NegocioPuntoRetiro.get_by_id(int(id))
-        return render_template('pedidosPR.html',pedidos = pedidos,puntoRetiro=puntoRetiro)
+        return render_template('pedidosPR.html',pedidos = pedidos,puntoRetiro=puntoRetiro, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
 
@@ -742,7 +746,7 @@ def pedidosUser():
     try:
         pedidos = NegocioPedido.get_by_user_id(session["usuario"].id)
         puntosRetiro = NegocioPuntoRetiro.get_all()
-        return render_template('pedidosUser.html',pedidos = pedidos,puntosRetiro=puntosRetiro)
+        return render_template('pedidosUser.html',pedidos = pedidos,puntosRetiro=puntosRetiro, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
 
@@ -763,6 +767,19 @@ def update_estado_pedido():
         return error(e,"pedidos")
 
 
+'''
+    -----------------------
+    Depósitos (Usuario)
+    -----------------------
+'''
+@app.route('/depositos/usuario', methods = ['GET','POST'])
+def depositos():
+    try:
+        depositos = NegocioDeposito.get_by_id_usuario(session["usuario"].id)
+        puntosDep = NegocioPuntoDeposito.get_all()
+        return render_template('depositosUser.html', depositos = depositos, puntosDep = puntosDep, usuario = session["usuario"])  
+    except Exception as e:
+        return error(e,"depositos")
 
 '''
     -----------------------
@@ -796,7 +813,7 @@ def alta_deposito(idmat,idpd,cantidad):
 @app.route('/codigo')
 def canjear_codigo():
     try:
-        return render_template('codigo.html')
+        return render_template('codigo.html', usuario = session["usuario"])
     except Exception as e:
         return error(e,"codigo")
 

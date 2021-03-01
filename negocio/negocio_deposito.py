@@ -29,3 +29,13 @@ class NegocioDeposito(Negocio):
             return DatosDeposito.verificar_codigo(cod,uid)
         except Exception as e:
             raise e
+    
+    @classmethod
+    def get_by_id_usuario(cls,uid):
+        """
+        Busca los depósitos que correspondan a un usuario en base a su ID.
+        """
+        try:
+            return DatosDeposito.get_by_id_usuario(uid)
+        except Exception as e:
+            raise e
