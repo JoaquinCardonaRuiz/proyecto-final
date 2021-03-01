@@ -777,7 +777,7 @@ def depositos():
     try:
         depositos = NegocioDeposito.get_by_id_usuario(session["usuario"].id)
         puntosDep = NegocioPuntoDeposito.get_all()
-        return render_template('depositosUser.html', depositos = depositos, puntosDep = puntosDep, usuario=session["usuario"])  
+        return render_template('depositosUser.html', usuario=session["usuario"],depositos = depositos, puntosDep = puntosDep)  
     except Exception as e:
         return error(e,"depositos")
 
