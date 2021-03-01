@@ -4,6 +4,7 @@ var id_pr = false;
 var cant_ars = false;
 var cant_ep = false;
 
+
 function changeColors(id){
     $("#trash-item-carrito-" + String(id)).css({"color":"rgb(230 24 24)"});
 }
@@ -60,6 +61,12 @@ function changeForm(){
   if(carrito){
     $("#carrito-content").fadeOut();
     $("#punto-retiro-content").fadeIn();
+    if (cant_ars == 0){
+        $("#payment-button").text("Canjear EcoPuntos");
+    }
+    else{
+        $("#payment-button").text("Pagar dinero + EcoPuntos");
+    }
     carrito = false;
     pr = true;
   }
