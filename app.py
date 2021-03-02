@@ -33,8 +33,9 @@ def main():
         depositos = NegocioDeposito.get_by_id_usuario(session["usuario"].id, 3)
         puntosDep = NegocioPuntoDeposito.get_all()
         materiales = NegocioMaterial.get_all()
+        max_level = NegocioNivel.get_min_max_niveles()[1]
     return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
-    nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales)
+    nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales, max_level = max_level)
 
 ''' 
     -----------------
@@ -159,6 +160,9 @@ def carrito():
         nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
         usuario = session["usuario"]
         val_tot_ep = round(valor * valor_ep * (1-nivel.descuento/100))
+        print(val_tot_ep)
+        print(session["usuario"].totalEcopuntos)
+        print(int(round(session["usuario"].totalEcopuntos,0)) * 100 / int(round(val_tot_ep)))
         if val_tot_ep == 0: 
             val_tot_ep = 1
         step = 100/val_tot_ep
