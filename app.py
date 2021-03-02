@@ -160,9 +160,6 @@ def carrito():
         nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
         usuario = session["usuario"]
         val_tot_ep = round(valor * valor_ep * (1-nivel.descuento/100))
-        print(val_tot_ep)
-        print(session["usuario"].totalEcopuntos)
-        print(int(round(session["usuario"].totalEcopuntos,0)) * 100 / int(round(val_tot_ep)))
         if val_tot_ep == 0: 
             val_tot_ep = 1
         step = 100/val_tot_ep
