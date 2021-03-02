@@ -180,8 +180,6 @@ def confirmar_checkout(idPR, totalEP, totalARS):
             return jsonify("exito")
         else:
             raise Exception("Carrito vacio")
-    except ErrorDePago:
-        return jsonify("error_pago")
     except Exception as e:
         return error(e, "eco-tienda")
 
@@ -825,7 +823,9 @@ def canjear_codigo():
 @app.route('/codigo/<cod>')
 def verificar_codigo(cod):
     try:
-        response = NegocioDeposito.verificar_codigo(cod,session["usuario"].id)
+        response = NegocioDeposito.verificar_codigo(cod,session["usuario"])
+        nuevos_ep = response + session["usuario"].totalEcopuntos
+        NegocioUsuario.update_nivel(session["usuario"].id,nuevos_ep)
         session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
         return jsonify(response)
     except Exception as e:

@@ -20,13 +20,14 @@ class NegocioDeposito(Negocio):
 
 
     @classmethod
-    def verificar_codigo(cls,cod,uid):
+    def verificar_codigo(cls,cod,user):
         """
         Verifica que el codigo corresponda a un deposito y le asigna el deposito al usuario correspondiente
-        Devuelve la cantidad de filas afecatadas
+        Devuelve la cantidad de EP acreditados
         """
         try:
-            return DatosDeposito.verificar_codigo(cod,uid)
+            return DatosDeposito.verificar_codigo(cod,user.id)
+
         except Exception as e:
             raise e
     

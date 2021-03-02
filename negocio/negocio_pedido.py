@@ -16,13 +16,13 @@ class NegocioPedido(Negocio):
         fechaEnc = datetime.now()
         fechaRet = fechaEnc + timedelta(days=puntoRetiro.demoraFija)
         idPedido = DatosPedido.add(fechaEnc,fechaRet,totalEP,totalARS,idPR,usuario.id)
-        
-        #Pago
-        #TODO: Procesar pago
-        #TODO: Levantar excepcion del nuevo tipo (ErrorDePago) si hay un error
 
+        
         #EcoPuntos
-        NegocioUsuario.useEP(usuario.id,totalEP)
+        nuevos_ep = NegocioUsuario.useEP(usuario.id,totalEP)
+
+        #Nivel
+        NegocioUsuario.update_nivel(usuario.id,nuevos_ep)
         
         #Articulos y Stock
         for art in carrito:

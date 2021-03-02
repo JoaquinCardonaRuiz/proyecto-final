@@ -1,5 +1,4 @@
 from negocio.negocio import Negocio
-from negocio.negocio_usuario import NegocioUsuario
 import custom_exceptions
 from utils import Utils
 from data.data_nivel import DatosNivel
@@ -128,7 +127,7 @@ class NegocioNivel(Negocio):
             else:
                 nivel = Nivel(None, numeroNivel, minEcoPuntos, maxEcoPuntos, descuento)
                 DatosNivel.alta_nivel(nivel)
-                NegocioUsuario.actualiza_nivel_all()
+                cls.actualiza_nivel_all()
         
         except custom_exceptions.ErrorDeConexion as e:
             raise e
@@ -223,7 +222,7 @@ class NegocioNivel(Negocio):
                 else:
                     nuevo_min = 0
                     DatosNivel.baja_nivel(nuevo_min, None, None, None, nivel)
-                    NegocioUsuario.actualiza_nivel_all()
+                    cls.actualiza_nivel_all()
             elif int(nivel.nombre) == int(max_nivel):
                 factor_mod =  (nivel.maximoEcoPuntos - nivel.minimoEcoPuntos + 1)/2
                 nuevo_max = round(nivel.minimoEcoPuntos) - 1
@@ -233,7 +232,7 @@ class NegocioNivel(Negocio):
                                     nuevo_max, 
                                     int(nivel.nombre)-1, 
                                     nivel)
-                NegocioUsuario.actualiza_nivel_all()
+                cls.actualiza_nivel_all()
             else:
                 #Valida regla RN05 y RN10
                 factor_mod =  (nivel.maximoEcoPuntos - nivel.minimoEcoPuntos + 1)/2
@@ -244,7 +243,7 @@ class NegocioNivel(Negocio):
                                     nuevo_max, 
                                     int(nivel.nombre)-1, 
                                     nivel)
-                NegocioUsuario.actualiza_nivel_all()
+                cls.actualiza_nivel_all()
         
         except custom_exceptions.ErrorDeConexion as e:
             raise e
@@ -450,7 +449,7 @@ class NegocioNivel(Negocio):
             mas_cercano_inf = Utils.nearest_element(Utils.lower_higher_elements_than(nuevos_niveles,nivel_mod)[0],nivel_mod)
             mas_cercano_sup = Utils.nearest_element(Utils.lower_higher_elements_than(nuevos_niveles,nivel_mod)[1],nivel_mod)
             DatosNivel.baja_nivel_mod(niveles_baja,nivel_mod,nuevo_des,nuevo_minEP,nuevo_maxEP,mas_cercano_inf,mas_cercano_sup,nuevos_niveles)
-            NegocioUsuario.actualiza_nivel_all()
+            cls.actualiza_nivel_all()
             
         
         except custom_exceptions.ErrorDeConexion as e:
@@ -459,3 +458,9 @@ class NegocioNivel(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocioNivel.modifica_nivel_logic()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio en el manejo de la lógica de la modifiacion del nivel.")
+
+
+    @classmethod
+    def actualiza_nivel_all():
+        #TODO: codificar metodo
+        pass

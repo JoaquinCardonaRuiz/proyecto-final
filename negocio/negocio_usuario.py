@@ -1,6 +1,7 @@
 from negocio.negocio import Negocio
 import custom_exceptions
 from negocio.negocio_ecopuntos import NegocioEcoPuntos
+from negocio.negocio_nivel import NegocioNivel
 from data.data_usuario import DatosUsuario
 
 import re
@@ -43,21 +44,6 @@ class NegocioUsuario(Negocio):
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de negocio actualizando el nivel de todos los usuarios.")
 
-    @classmethod
-    def actualiza_nivel_all(cls):
-            """
-            Actualiza el nivel de todos los usuarios en la BD en base a la cantidad de EcoPuntos.
-            """
-            try:
-                #TODO: CODIFICAR METODO
-                print('Se actualizaron los niveles de todos los usuarios.')
-            except custom_exceptions.ErrorDeConexion as e:
-                raise e
-            except Exception as e:
-                raise custom_exceptions.ErrorDeNegocio(origen="negocio.actualiza_nivel_all()",
-                                                        msj=str(e),
-                                                        msj_adicional="Error en la capa de negocio actualizando el nivel de todos los usuarios.")
-
 
 
     @classmethod
@@ -89,6 +75,7 @@ class NegocioUsuario(Negocio):
             else:
                 NegocioEcoPuntos.updateEps(ep.id, cant = 0)
                 ep_restantes -= cant_rest
+        return nueva_cant_ep
             
 
     @classmethod
@@ -97,3 +84,9 @@ class NegocioUsuario(Negocio):
             return DatosUsuario.get_by_id(uid)
         except Exception as e:
             raise e
+
+
+    @classmethod
+    def update_nivel(cls,uid,eps):
+        nuevo_nivel = NegocioNivel.obtiene_nivel(eps)
+        DatosUsuario.update_nivel(uid,nuevo_nivel.id)

@@ -58,8 +58,8 @@ class DatosUsuario(Datos):
         """
         Busca un usuario en la BD segun su id.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT usuarios.idUsuario, \
                 usuarios.nroDoc, \
                 usuarios.nombre, \
@@ -95,4 +95,23 @@ class DatosUsuario(Datos):
                                                     msj_adicional="Error buscando usuario en la BD.")
         finally:
             if not(noClose):
-                cls.cerrar_conexion()        
+                cls.cerrar_conexion()
+
+
+    @classmethod
+    def update_nivel(cls,uid,id_nivel):
+        """
+        Asigna un nuevo nivel a un usuario
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE usuarios SET idNivel={} WHERE idUsuario={}").format(id_nivel,uid)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.update_nivel()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando un nivel de un usuario en la BD.")
+        finally:
+            cls.cerrar_conexion()

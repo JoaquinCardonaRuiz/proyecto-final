@@ -94,7 +94,7 @@ class DatosDeposito(Datos):
     def verificar_codigo(cls, cod,uid):
         """
         Verifica que el codigo corresponda a un deposito y le asigna el deposito al usuario correspondiente
-        Devuelve la cantidad de filas afecatadas
+        Devuelve la cantidad de EPS acreditados
         """
         try:
             cls.abrir_conexion()
@@ -107,10 +107,10 @@ class DatosDeposito(Datos):
                 sql = ("SELECT cantidad FROM depositos join ecoPuntos using (idEcoPuntos) where codigo = %s")
                 values = (cod,)
                 cls.cursor.execute(sql,values)
-                cantEP = cls.cursor.fetchall()[0]
-                return [True,cantEP]
+                cantEP = cls.cursor.fetchall()[0][0]
+                return cantEP
             else:
-                return [False,0]
+                return -1
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_pedido.update_estado()",
                                                     msj=str(e),
