@@ -12,8 +12,8 @@ class DatosUsuario(Datos):
         """
         Busca un usuario en la BD que tenga el email y la contraseña que recibe como parámetro. Si no hay ninguno, devuelve False.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT usuarios.idUsuario, \
                 usuarios.nroDoc, \
                 usuarios.nombre, \

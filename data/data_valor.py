@@ -10,8 +10,8 @@ class DatosValor(Datos):
         """
         Obtiene el valor de un tipo articulo de la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT idValor, fecha, valor \
                     FROM valoresTipArt \
                     WHERE idTipoArticulo = {};").format(id)
@@ -37,8 +37,8 @@ class DatosValor(Datos):
         """
         Da de alta un nuevo valor de un articulo en el sistema.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("INSERT INTO valoresTipArt (idTipoArticulo, fecha, valor) \
                     VALUES ({},\"{}\",{});".format(idArt,fecha,valor))
             cls.cursor.execute(sql)

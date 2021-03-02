@@ -8,8 +8,8 @@ class DatosCantMaterial(Datos):
         """
         Obtiene los materiales que componen un insumo de la BD
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("SELECT mat_ins.cantidad,mat_ins.idMaterial \
                     FROM mat_ins \
                     WHERE idInsumo = {};").format(id)
@@ -35,8 +35,8 @@ class DatosCantMaterial(Datos):
         """
         Registra una cantidad de un material requerido para la produccion de un insumo.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("INSERT INTO mat_ins (idMaterial, idInsumo, cantidad, estado) \
                     VALUES ({},{},{},\"{}\");".format(idMat,idIns,cant,"disponible"))
             cls.cursor.execute(sql)
