@@ -62,10 +62,13 @@ function changeForm(){
     $("#carrito-content").fadeOut();
     $("#punto-retiro-content").fadeIn();
     if (cant_ars == 0){
-        $("#payment-button").text("Canjear EcoPuntos");
+        $("#payment-button").text("Canjear " + cant_ep + " EcoPuntos");
+    }
+    else if (cant_ep == 0){
+            $("#payment-button").text("Pagar $" + cant_ars);
     }
     else{
-        $("#payment-button").text("Pagar dinero + EcoPuntos");
+        $("#payment-button").text("Pagar $" + cant_ars + " + " + cant_ep + " EcoPuntos");
     }
     carrito = false;
     pr = true;
