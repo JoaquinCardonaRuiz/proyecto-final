@@ -34,7 +34,13 @@ function initialRoundValues(){
 }
 
 function setPvalues(value, val_tot_ep, valor_ars, porcentaje_descuento){
+    value = Math.round(value);
+    console.log(val_tot_ep);
+    console.log(valor_ars);
+    console.log(porcentaje_descuento);
+    console.log("----");
     cant_ep = String(Math.round((value) * val_tot_ep /100));
+    console.log(cant_ep);
     $("#cantEP").text(cant_ep + " EcoPuntos");
     $("#precioTotal").text(cant_ep);
     
@@ -62,10 +68,13 @@ function changeForm(){
     $("#carrito-content").fadeOut();
     $("#punto-retiro-content").fadeIn();
     if (cant_ars == 0){
-        $("#payment-button").text("Canjear EcoPuntos");
+        $("#payment-button").text("Canjear " + cant_ep + " EcoPuntos");
+    }
+    else if (cant_ep == 0){
+            $("#payment-button").text("Pagar $" + cant_ars);
     }
     else{
-        $("#payment-button").text("Pagar dinero + EcoPuntos");
+        $("#payment-button").text("Pagar $" + cant_ars + " + " + cant_ep + " EcoPuntos");
     }
     carrito = false;
     pr = true;
