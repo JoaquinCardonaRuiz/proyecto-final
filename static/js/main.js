@@ -32,3 +32,5 @@ $(document).ready(function ($) {
     animateElements();
     $(window).scroll(animateElements);
 });
+
+$("#top-container").fadeIn(500);
