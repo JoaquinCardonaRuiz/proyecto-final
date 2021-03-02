@@ -29,7 +29,7 @@
 
     <!-- Tabla Pedidos-->
     <div class="container" id="table-container">
-        <h4 class="table-title">Historial de depósitos</h4>
+        <h4 class="table-title">Historial de depósitos acreditados</h4>
         <div class="row d-flex justify-content-center scrollable-table">
             <table class="table" id="content-table">
                 <thead style=" border-top:none">
@@ -40,7 +40,6 @@
                     <th scope="col" class="table-heading">EcoPuntos</th>
                     <th scope="col" class="table-heading">Material</th>
                     <th scope="col" class="table-heading">Punto</th>
-                    <th scope="col" class="table-heading">Estado</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,7 +51,7 @@
                         <td scope="row">{{dep.ecoPuntos.cantidad}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                         {%for mat in materiales%}
                             {%if mat.id|int == dep.material.idMaterial|int%}
-                                <td scope="row">{{mat.nombre|truncate(20,true,'...')}}</td>
+                                <td scope="row">{{mat.nombre|truncate(30,true,'...')}}</td>
                             {%endif%}
                         {%endfor%} 
                         {%for pd in puntosDep%}
@@ -60,12 +59,6 @@
                                 <td scope="row">{{pd.nombre}}</td>
                             {%endif%}
                         {%endfor%}  
-                        <td>
-                            <div>
-                                <i class="fas fa-circle" style="color:#00aa44" id="estado-activo"></i>
-                                Acreditado
-                            </div>
-                        </td>
                     </tr>
                 {%endfor%}
                 </tbody>

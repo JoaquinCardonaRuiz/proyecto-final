@@ -47,8 +47,8 @@
                 {%for p in pedidos%}
                     <tr>
                         <th scope="row">{{p.id}}</th>
-                        <td scope="row">{{p.totalEP}}</td>
-                        <td scope="row">${{p.totalARS}}</td>
+                        <td scope="row">{{p.totalEP}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
+                        <td scope="row" id="price-val">${{p.totalARS}}</td>
                         <td scope="row">{{p.fechaEncargo}}</td>
                         {%for pr in puntosRetiro%}
                             {%if pr.id == p.idPuntoRetiro%}

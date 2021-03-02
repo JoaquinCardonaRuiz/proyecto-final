@@ -166,7 +166,7 @@
                             {%endfor%}
                         {%endfor%}
                         <p class="">
-                            Descuento 2,5%
+                            Descuento {{nivel.descuento}}%
                             <span style="float: right;">
                                 <span id="descuento-detalle" class="carrito-price" style="color: #95C22B">-<span id="descuento-total">{{valor * valor_ep * (nivel.descuento/100)}}</span></span>
                                 <img src="/static/img/econpuntos-logo.png" class="carrito-price-img">
@@ -281,6 +281,10 @@
     </div>
     <script>
         initialRoundValues();
+    </script>
+    <script>
+        setPvalues($("#slideInput").val(), {{val_tot_ep}}, {{valor}}, {{nivel.descuento}}); 
+        validaInput({{usuario.totalEcopuntos}},{{val_tot_ep}}); 
     </script>
 </div>
 

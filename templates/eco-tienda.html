@@ -31,6 +31,7 @@
             <div class="row">
                 {%set ids_art = []%}
                 {%for articulo in articulos%}
+                {%if articulo.stock|int > 0%}
                 <!-- {{ids_art.append(articulo.id)}} -->
                 <div class="col-md-4 card-column" style="min-width: 250px; transition: width 1s, height 1s, transform 1s;">
                     <figure class="card card-product" onclick="redirect('/eco-tienda/producto/{{articulo.id}}');">
@@ -52,6 +53,7 @@
                         </div> <!-- bottom-wrap.// -->
                     </figure>
                 </div> <!-- col // -->
+                {%endif%}
                 {%endfor%}
             </div> <!-- row.// -->
         </div> 

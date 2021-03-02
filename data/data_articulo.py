@@ -147,7 +147,7 @@ class DatosArticulo(Datos):
                            otrosCostos, \
                            img, \
                            vUsuario \
-                           FROM tiposArticulo WHERE estado!=\"eliminado\" AND vUsuario=1")
+                           FROM tiposArticulo WHERE estado!=\"eliminado\" AND vUsuario=1 and stock>0")
             if ids != []:
                 sql += " AND idTipoArticulo!={}"
                 for _ in ids[1:]:
