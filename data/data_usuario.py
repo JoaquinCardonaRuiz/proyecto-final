@@ -35,7 +35,7 @@ class DatosUsuario(Datos):
                 da = [d for d in depositos if d.isActivo()]
                 dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4])
                 usuario.calcularTotalEcopuntos()
                 return usuario
             else:
@@ -80,7 +80,7 @@ class DatosUsuario(Datos):
                 da = [d for d in depositos if d.isActivo()]
                 dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4])
                 usuario.calcularTotalEcopuntos()
                 return usuario
             else:

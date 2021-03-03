@@ -58,7 +58,6 @@ def authentication(email, password):
         return jsonify({"login-state":True})
     except Exception as e:
         return jsonify({"login-state":False})
-
     return render_template('login.html')
 
 @app.route('/logout/<val>', methods = ['GET','POST'])
@@ -68,6 +67,23 @@ def logout(val):
         del session["usuario"]
         return redirect(url_for('login'))
     return render_template('login.html')
+
+''' 
+    ------------------
+    Perfil de usuario
+    ------------------
+'''
+
+@app.route('/perfil', methods = ['GET','POST'])
+def perfil():
+    if valida_session(): return redirect(url_for('login'))
+    nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+    tipoDoc = NegocioTipoDocumento.get_by_id(session["usuario"].tipoDoc)
+    password = '*' * len(session["usuario"].password)
+    return render_template('perfil.html',usuario = session["usuario"], nivel = nivel, tipoDoc = tipoDoc, password = password)
+
+
+
 
 ''' 
     -------

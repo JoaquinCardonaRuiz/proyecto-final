@@ -73,7 +73,8 @@ class Usuario:
                 idNivel=None,
                 recomendacionesPlantas=[],
                 estimacionesCO2=[],
-                estimacionesEnergia=[]):
+                estimacionesEnergia=[],
+                email=None):
         self.id = id
         self.nroDoc = nroDoc
         self.tipoDoc = tipoDoc
@@ -90,6 +91,7 @@ class Usuario:
         self.recomendacionesPlantas = recomendacionesPlantas
         self.estimacionesCO2 = estimacionesCO2
         self.estimacionesEnergia = estimacionesEnergia
+        self.email = email
 
     def comprobarVencimientoDepositos(self,):
         """ """
