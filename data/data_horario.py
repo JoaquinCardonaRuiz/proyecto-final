@@ -10,8 +10,8 @@ class DatosHorario(Datos):
         """
         Obtiene todos los horarios de un Punto de Depósito de la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("select * from horariosPD  where idPunto = %s")
             values = (idPunto,)
             cls.cursor.execute(sql, values)
@@ -41,8 +41,8 @@ class DatosHorario(Datos):
         """
         Añade un horario de un Punto de Depósito a la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("INSERT into horariosPD (idPunto, horaDesde, horaHasta, dia) values (%s,%s,%s,%s)")
             values = (idPuntoDep,horario.horaDesde, horario.horaHasta, horario.dia)
             cls.cursor.execute(sql,values)
@@ -62,8 +62,8 @@ class DatosHorario(Datos):
         """
         Modifica un horario de un Punto de Depósito a la BD.
         """
-        cls.abrir_conexion()
         try:
+            cls.abrir_conexion()
             sql = ("UPDATE horariosPD SET horaDesde = %s, horaHasta = %s where idPunto = %s and dia = %s")
             values = (horario.horaDesde, horario.horaHasta,idPuntoDep, horario.dia)
             cls.cursor.execute(sql,values)
