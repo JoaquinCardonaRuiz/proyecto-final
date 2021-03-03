@@ -47,7 +47,7 @@
                                         {{usuario.nombre + ' ' + usuario.apellido}}
                                     </h5>
                                     <h6>
-                                        Usuario estándar
+                                        {{tipoUsuario.nombre}}
                                     </h6>
                                     <p class="proile-rating">Nivel : <span>{{nivel.nombre}}</span></p>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -69,16 +69,12 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-work">
-                            <p>WORK LINK</p>
-                            <a href="">Website Link</a><br/>
-                            <a href="">Bootsnipp Profile</a><br/>
-                            <a href="">Bootply Profile</a>
-                            <p>SKILLS</p>
-                            <a href="">Web Designer</a><br/>
-                            <a href="">Web Developer</a><br/>
-                            <a href="">WordPress</a><br/>
-                            <a href="">WooCommerce</a><br/>
-                            <a href="">PHP, .Net</a><br/>
+                            <p>Editar datos</p>
+                            <a href=""><i class="fas fa-edit"></i> Modificar email</a><br/>
+                            <a href=""><i class="fas fa-edit"></i> Modificar documento</a><br/>
+                            <a href="#" onclick="openModal('dir');"><i class="fas fa-edit"></i> Modificar direccion</a>
+                            <p>Configuración de seguridad</p>
+                            <a href=""><i class="fas fa-edit"></i> Modificar contraseña</a><br/>
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -115,9 +111,6 @@
                                             <div class="col-md-6">
                                                 <p>{{usuario.email}}</p>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <h3 id="start-button" onclick="redirect('/register')">Modificar datos personales</h3>
                                         </div>
                             </div>
                             
@@ -172,6 +165,101 @@
         </div>
     </div>
 </div>
+
+
+<!--Dirección Modal -->
+<div class="modal fade modal-lg" id="direccionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Modificar dirección</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body modal-body-card" id="altaNivelForm">
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row subheader-row" id="subheader-alta-pd">
+                <div class="col">
+                    <label class="subheader" id="subheader-alta">Dirección</label>
+                </div>
+            </div>
+            <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                <div class="col">
+                    <div class="group" style="margin-top: 2%;">
+                        <input type="text" required id="callePD" onkeyup="updateMap('alta'); validaDireccion('alta','calle');" name="callePD" autocomplete="off" style="width: 215%;" value="{{usuario.direccion.calle}}"> 
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight" style="width: 215%;"></span>
+                        <span class="bar" style="width: 215%;"></span>
+                        <label>Calle</label>
+                        <p id="error-calle" class="modalErrorMessage" style="display: none; width: 215%;">* La calle no puede quedar vacía.</p>
+
+                    </div>
+                </div>
+                <div class="col" style="margin-left: 33.3%;">
+                    <div class="group" style=" margin-top: 2%;">
+                        <input type="text" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('alta'); validaDireccion('alta','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.direccion.altura}}"> 
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight" style="width: 100%;"></span>
+                        <span class="bar" style="width: 100%;"></span>
+                        <label>Altura</label>
+                        <p id="error-altura" class="modalErrorMessage" style="display: none;">* Complete la altura.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="fieldsRow1AltaPD2" style="margin-left: 6.5%; margin-right: 8%;">
+                <div class="col">
+                    <div class="group" style="margin-top: 2%;">
+                        <input type="text" required id="ciudadPD" onkeyup="updateMap('alta'); validaDireccion('alta','ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;" value="{{usuario.direccion.ciudad}}"> 
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight" style="width: 100%;"></span>
+                        <span class="bar" style="width: 100%;"></span>
+                        <label>Ciudad</label>
+                        <p id="error-ciudad" class="modalErrorMessage" style="display: none;">* Complete la ciudad.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-top: 2%;">
+                        <input type="text" required id="provinciaPD" onkeyup="updateMap('alta'); validaDireccion('alta','provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.direccion.provincia}}"> 
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight" style="width: 100%;"></span>
+                        <span class="bar" style="width: 100%;"></span>
+                        <label>Provincia</label>
+                        <p id="error-provincia" class="modalErrorMessage" style="display: none;">* Complete la provincia.</p>
+
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="group" style="margin-top: 2%;">
+                        <input type="text" required id="paisPD" onkeyup="updateMap('alta'); validaDireccion('alta','pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.direccion.pais}}"> 
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight" style="width: 100%;"></span>
+                        <span class="bar" style="width: 100%;"></span>
+                        <label>País</label>
+                        <p id="error-pais" class="modalErrorMessage" style="display: none;">* Complete el país.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="fieldsRow1AltaPD2" style="margin-bottom: -30px;">
+                <div class="mapouter" style="margin-left: 10%;">
+                    <div class="gmap_canvas">
+                        <iframe width="603" height="280" id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-dir" disabled>Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script src="/static/js/perfil.js"></script>
+
 
 {% endblock %}
 
