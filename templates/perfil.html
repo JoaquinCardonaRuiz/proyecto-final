@@ -2,22 +2,16 @@
 <head>
     <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
     <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500&display=swap" rel="stylesheet">
-    <script src="/static/js/carrito.js"></script>
     <script src="/static/js/perfil.js"></script>
 
 
@@ -71,7 +65,7 @@
                         <div class="profile-work">
                             <p>Editar datos</p>
                             <a href=""><i class="fas fa-edit"></i> Modificar email</a><br/>
-                            <a href=""><i class="fas fa-edit"></i> Modificar documento</a><br/>
+                            <a href="#" onclick="openModal('doc');"><i class="fas fa-edit"></i> Modificar documento</a><br/>
                             <a href="#" onclick="openModal('dir');"><i class="fas fa-edit"></i> Modificar direccion</a>
                             <p>Configuración de seguridad</p>
                             <a href=""><i class="fas fa-edit"></i> Modificar contraseña</a><br/>
@@ -167,7 +161,7 @@
 </div>
 
 
-<!--Dirección Modal -->
+<!--Modal Modificar Dirección -->
 <div class="modal fade modal-lg" id="direccionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
       <div class="modal-content">
@@ -247,6 +241,62 @@
                     <div class="gmap_canvas">
                         <iframe width="603" height="280" id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0"></iframe>
                     </div>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-dir" disabled>Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Modal Modificar documento -->
+<div class="modal fade modal-lg" id="documentoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Modificar documento</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body modal-body-card" id="altaNivelForm">
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row subheader-row" id="subheader-alta-pd">
+                <div class="col">
+                    <label class="subheader" id="subheader-alta">Documento</label>
+                </div>
+            </div>
+            <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                <div class="col">
+                    <div class="group" style="margin-top: 5%;">
+                        <input type="text" style="width: 200%;" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('alta'); validaDireccion('alta','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.nroDoc}}"> 
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight" style="width: 200%;"></span>
+                        <span class="bar" style="width: 200%;"></span>
+                        <label style="margin-top: -3%;">Número de Documento</label>
+                        <p id="error-calle" class="modalErrorMessage" style="display: none; width: 200%;">* El documento no puede quedar vacío.</p>
+                    </div>
+                </div>
+                <div class="col" style="margin-left: 33.3%; height: auto;">
+                    <div class="group" style="margin-top: 2%;">
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <label>Tipo de Documento</label>             
+                    </div>
+                    <div class="form-group" style="margin-top: -15%;">
+                        <select class="form-control" id="exampleFormControlSelect1" style="text-align-last:left !important;">
+                          <option class="tipo-doc-option" style="padding-left: 10%;">1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                        </select>
+                    </div>           
+                      
                 </div>
             </div>
         </form>

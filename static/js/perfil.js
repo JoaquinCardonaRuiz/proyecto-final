@@ -40,6 +40,10 @@ function openModal(modal){
         jQuery.noConflict();
         $("#direccionModal").modal("show");
     }
+    else if (modal == "doc"){
+        jQuery.noConflict();
+        $("#documentoModal").modal("show");
+    }
 }
 
 function validaDireccion(modal_type, campoValidacion){
@@ -96,8 +100,7 @@ function validaDireccion(modal_type, campoValidacion){
         }
     }
     if (provincia == true && ciudad == true && pais == true && calle == true && altura == true){
-        alert(ant_ciudad);
-        if ($("#provinciaPD").val() != ant_provincia && $("#ciudadPD").val() != ant_ciudad && $("#paisPD").val() != ant_pais && ant_altura != $("#alturaPD").val() && ant_calle != $("#callePD").val()){
+        if ($("#provinciaPD").val() != ant_provincia || $("#ciudadPD").val() != ant_ciudad || $("#paisPD").val() != ant_pais || ant_altura != $("#alturaPD").val() || ant_calle != $("#callePD").val()){
             $('#primary-btn-dir').prop('disabled', false);
             $('#primary-btn-dir').text('Guardar cambios');
         }
