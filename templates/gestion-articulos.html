@@ -77,6 +77,7 @@
                     <th scope="col" class="table-heading">Precio</th>
                     <th scope="col" class="table-heading">Stock</th>
                     <th scope="col" class="table-heading">Unidad</th>
+                    <th scope="col" class="table-heading">Insumos</th>
                     <th scope="col" class="table-heading">Publico</th>
                 </tr>
                 </thead>
@@ -85,21 +86,40 @@
                 {%for art in articulos%}
                 <!-- Jinja funciona en comentarios... sin esto imprime None en pantalla.-->
                 <!--{{nombres.append(art.nombre)}} -->
+                {%set ids_insumos = []%}
+                {%set cantidades = []%}
+                {%for ins in art.insumos%}
+                    <!--{{ids_insumos.append(ins.idInsumo)}} -->
+                    <!--{{cantidades.append(ins.cantidad)}} -->
+                {%endfor%}
+                {%set cantidades_totales = []%}
+                {%for ins in insumos%}
+                    <!--{{cantidades_totales.append(0)}} -->
+                    {%for ins_art in art.insumos%}
+                        {%if ins.id == ins_art.idInsumo%}
+                            {%set temp = cantidades_totales.pop()%}
+                            <!--{{cantidades_totales.append(ins_art.cantidad)}} -->
+                        {%endif%}
+                    {%endfor%}
+                {%endfor%}
                 <tr>
-                    <th scope="row">{{art.nombre}}</th>
+                    <th scope="row">{{art.nombre|truncate(25,true)}}</th>
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
+                    <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                    <button id="open-mat-vacio" href='#'data-toggle="modal" data-target="#materialesVacioModal"hidden="true"></button>
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
                     <td scope="row">{{art.costoTotal}}</td>
                     <td scope="row">{{art.margenGanancia * 100}}%</td>
                     <td scope="row">{{art.valor}}</td>
                     <td scope="row">{{art.stock}}</td>
                     <td scope="row">{{art.unidadMedida}}</td>
+                    <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalInsumos('{{art.nombre}}',{{ids_insumos}},{{cantidades}});">Ver insumos</a></td>
                     {% if art.ventaUsuario %}
                         <td scope="row">Si</td>
                     {% else %}
                         <td scope="row">No</td>
                     {% endif %}
-                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{art.id}}','{{art.nombre}}','{{art.costoProduccion}}','{{art.costoInsumos}}','{{art.costoTotal}}','{{art.valor}}','{{art.margenGanancia}}','{{art.unidadMedida}}','{{art.costoObtencionAlternativa}}','{{art.otrosCostos}}','{{art.imagen}}','{{art.ventaUsuario}}')"></i></td>
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{art.id}}','{{art.nombre}}','{{art.costoProduccion}}','{{art.costoInsumos}}','{{art.costoTotal}}','{{art.valor}}','{{art.margenGanancia}}','{{art.unidadMedida}}','{{art.costoObtencionAlternativa}}','{{art.otrosCostos}}','{{art.imagen}}','{{art.ventaUsuario}}',{{ids_insumos}},{{cantidades}},{{cantidades_totales}})"></i></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{art.id}}','{{art.nombre}}')"></i></td>
                 </tr>
                 {%endfor%}
@@ -127,10 +147,66 @@
 </div>
 
 
+
+
+<!-- Insumos Modal -->
+<div class="modal fade modal-lg" id="materialesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalMat"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-card" id="materiales-modal-body">
+                <div class="container modal-large-card-sm" id="material-card">
+                    <div class="row">
+                        <div class="modal-card-col-sm">
+                            <div class="circle materiales-large-card-img" id="material-img">I</div>
+                        </div>
+                        <div class="modal-card-col-sm" >
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="nombre-material">Nombre</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Nombre insumo</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="unidad-medida">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Unidad de medida</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="cantidad">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Cantidad</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        <div class="modal-footer">
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+
+
+
 <!--Alta Modal -->
 
 <div class="modal fade modal-lg" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" style="height: fit-content;" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="headingModal">Añadir un nuevo Insumo</h5>
@@ -138,21 +214,26 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{url_for('alta_articulo')}}" method="POST" class="modal-body" id="altaArticuloForm" autocomplete="off">
+        <form action="{{url_for('alta_articulo')}}" method="POST" class="modal-body modal-body-card" id="altaArticuloForm" autocomplete="off">
           <div class="row" id="loadingRow">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
-            <div class="row subheader-row" id="subheader-pag-1" style="display:none;">
+            <div class="row subheader-row" id="subheader-pag-1" style="display:none;margin-top:1% !important;">
               <div class="col">
               <label class="subheader">Datos Básicos</label>
               </div>
             </div>
-            <div class="row subheader-row" id="subheader-pag-2" style="display:none;">
+            <div class="row subheader-row" id="subheader-pag-2" style="display:none;margin-top:1% !important;">
+              <div class="col">
+              <label class="subheader">Insumos</label>
+              </div>
+            </div>
+            <div class="row subheader-row" id="subheader-pag-3" style="display:none;margin-top:1% !important;">
               <div class="col">
               <label class="subheader">Costos</label>
               </div>
             </div>
-            <div class="row subheader-row" id="subheader-pag-3" style="display:none;">
+            <div class="row subheader-row" id="subheader-pag-4" style="display:none;margin-top:1% !important;">
               <div class="col">
               <label class="subheader">Precio</label>
               </div>
@@ -191,16 +272,96 @@
                     <div class="group" style="margin-left: 10%">
                         <div class="form-check">
                           <label style="margin-top: 1%;">Venta a usuarios</label>
-                          <input style="margin-left: -3%;margin-top: 6%;" class="form-check-input" type="checkbox" id="usuariosCheck" name="ventaUsuario"></input>
+                          <input style="margin-left: -3%;margin-top: 6%;" class="form-check-input" type="checkbox" id="usuariosCheck" name="ventaUsuario">
                         </div>
                       </div>
                   </div>
               </div>
+
+
+
+            <!-- Insumos -->
+            <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                <h6 class="indicator-label">Seleccione los insumos que se requerirán para producir el articulos:</h6>
+                <div class="dropdown-box" id="dropdown-altaPD">
+                    <h4 id="heading-option" onclick="dropdownManager();">
+                        Seleccionar Insumo 
+                        <img src="/static/img/chevron.svg" class="chevron">
+                    </h4>
+                    <div class="menu-option-box" id="menu-option-box-1">
+                        {%for insumo in insumos%}
+                        <p class="menu-option-box-op" onclick="dropdownOptionSelect('{{insumo.id}}', '{{insumo.nombre}}','{{insumo.color}}');"><i class="fa fa-check dropdown-option-check" id="{{insumo.id|string + '-check'}}" style="display: none;"></i>{{insumo.nombre}}</p>
+                        {%endfor%}
+                    </div>       
+                </div>                 
+            </div>
+            <div class="row cards-row-materiales" id="cards-row-materiales">
+                <h6 class="indicator-label-2" id="se-req-msj">Se requerirán:</h6>
+                <p class="warning-label-altaPD" id="warning-label-altaPD"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-altaPD"></i> No ha seleccionado ningún Insumo para este Articulo.</p>
+                {% for insumo in insumos %}
+                <div class="container modal-large-card-sm card-altaPD" id="{{insumo.id|string + '-card'}}" style="display: none;">
+                    <div class="row">
+                        <div class="modal-card-col-sm">
+                            <div class="circle materiales-large-card-img" id="{{insumo.id|string + '-img'}}">{{insumo.nombre[0]}}</div>
+                        </div>
+                        <div class="modal-card-col-sm" >
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                {%if insumo.nombre|length < 15%}
+                                    <p class="material-card-title" id="nombre-material">{{insumo.nombre}}</p>
+                                {%elif insumo.nombre|length < 20%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:17px;text-align:center">{{insumo.nombre}}</p>
+                                {%elif insumo.nombre|length < 25%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:15px;text-align:center">{{insumo.nombre}}</p>
+                                {%else%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:13px;text-align:center">{{insumo.nombre}}</p>
+                                {%endif%}
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Nombre insumo</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="unidad-medida">{{insumo.unidadMedida}}</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Unidad de insumo</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <input hidden name="id-{{insumo.id|string}}" value="{{insumo.id}}">
+                                <input hidden class="cost-input" value={{insumo.costoTotal}}>
+                                <input class="cant-input" style="width: 60%;top: -10px;position: relative;border-bottom: none;background: transparent;left: 20px;box-shadow:none;" type="number" value=0 id="cantidad-{{insumo.id|string}}" name="cantidad-{{insumo.id|string}}" required min=1 max=999999999 onkeypress='return (event.charCode > 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_cantidad({{insumo.id}})' onkeyup='verificar_cantidad({{insumo.id}})'>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Cantidad</p>
+                            </div>
+                            <p id="error-{{insumo.id|string}}" class="modalErrorMessage"></p>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+                <input type="text" id="materiales-altaPD" name = "materiales-altaPD" hidden>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="row" id="row-pag-2-1" style="display:none;">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
                         <input hidden>
-                        <input type="text" id="ciInput" name="costoInsumos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("ins")' onkeyup='document.getElementById("costoIArtError").innerHTML="";calcularCosto("ins");'>
+                        <input type="text" id="ciInput" readonly class="data-show-input" name="costoInsumos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCosto("ins")' onkeyup='document.getElementById("costoIArtError").innerHTML="";calcularCosto("ins");'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Costo de Insumos</label>
@@ -285,28 +446,30 @@
 <!--Edit Modal -->
 
 <div class="modal fade modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
       <div class="modal-content">
       <div class="modal-header" style="border-bottom:none">
           <ul class="nav nav-tabs ed-tabs" id="myTab" role="tablist">
-            <li class="nav-item ed-tabs-item">
-              <a class="nav-link ed-link active" id="entidad-tab" onClick="configureModalTab(1);" data-toggle="tab" href="#datos-basicos" role="tab" aria-controls="datos-basicos" aria-selected="true">Datos Basicos <p hidden id="error-mark-db" style="display:inline" class="error">*</p></a>
+            <li class="nav-item ed-tabs-item" style="width:190px !important">
+              <a class="nav-link ed-link active" id="entidad-tab" data-toggle="tab" href="#datos-basicos" role="tab" aria-controls="datos-basicos" aria-selected="true">Datos Basicos <p hidden id="error-mark-db" style="display:inline" class="error">*</p></a>
             </li>
-            <li class="nav-item ed-tabs-item">
-              <a class="nav-link ed-link " id="demandas-tab" onClick="configureModalTab(2);" data-toggle="tab" href="#costos" role="tab" aria-controls="costos" aria-selected="false">Costos <p hidden id="error-mark-c" style="display:inline" class="error">*</p></a>
+            <li class="nav-item ed-tabs-item" style="width:190px !important">
+              <a class="nav-link ed-link " id="insumos-tab" data-toggle="tab" href="#insumos" role="tab" aria-controls="insumos" aria-selected="false">Insumos <p hidden id="error-mark-c" style="display:inline" class="error">*</p></a>
             </li>
-            <li class="nav-item ed-tabs-item">
-              <a class="nav-link ed-link " id="nuevademanda-tab" onClick="configureModalTab(3);" data-toggle="tab" href="#precio" role="tab" aria-controls="precio" aria-selected="false">Precio <p hidden id="error-mark-p" style="display:inline" class="error">*</p></a>
+            <li class="nav-item ed-tabs-item" style="width:190px !important">
+              <a class="nav-link ed-link " id="demandas-tab" data-toggle="tab" href="#costos" role="tab" aria-controls="costos" aria-selected="false">Costos <p hidden id="error-mark-c" style="display:inline" class="error">*</p></a>
+            </li>
+            <li class="nav-item ed-tabs-item" style="width:190px !important">
+              <a class="nav-link ed-link " id="nuevademanda-tab" data-toggle="tab" href="#precio" role="tab" aria-controls="precio" aria-selected="false">Precio <p hidden id="error-mark-p" style="display:inline" class="error">*</p></a>
             </li>
           </ul>
         </div>
-            <form action="{{url_for('edit_articulo')}}" method="POST" id="editArticuloForm" autocomplete="off" class="tab-content">
-                
+            <form action="{{url_for('edit_articulo')}}" method="POST" id="editArticuloForm" autocomplete="off" class="tab-content modal-body modal-body-card">
+                <div class="row" id="loadingRow">
+                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
                 <!-- TAB 1 -->
                 <div class="tab-pane active modal-body" role="tabpanel" id="datos-basicos">
-                    <div class="row" id="loadingRow">
-                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-                    </div>
                     <div class="row" id="row-pag-1-1-mod">
                         <div class="col">
                             <div class="group" style="margin-left: 10%;">
@@ -349,13 +512,107 @@
                     </div>
                 </div>
 
+
+
+
+
+
+
+
+
+
             <!-- TAB 2 -->
+        <div class="tab-pane" role="tabpanel" id="insumos">
+            <div class="row cards-row-materiales" id="fieldsRow1Mod" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                <h6 class="indicator-label">Seleccione los insumos que se requerirán para producir el artículo:</h6>
+                <div class="dropdown-box" id="dropdown-mod">
+                    <h4 id="heading-option" onclick="dropdownManagerMod();">
+                        Seleccionar Insumos 
+                        <img src="/static/img/chevron.svg" class="chevron">
+                    </h4>
+                    <div class="menu-option-box" id="menu-option-box-2">
+                        {%for material in insumos%}
+                        <p class="menu-option-box-op" onclick="dropdownOptionSelectMod({{material.id}},1);"><i class="fa fa-check dropdown-option-check" id="{{material.id|string + '-check-mod'}}" style="display: none;"></i>{{material.nombre}}</p>
+                        {%endfor%}
+                    </div>       
+                </div>                 
+            </div>
+            <div class="row cards-row-materiales" id="cards-row-materiales-mod">
+                <h6 class="indicator-label-2">Se requerirán:</h6>
+                <p class="warning-label-altaPD" id="warning-label-mod"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-altaPD"></i> No ha seleccionado ningún Insumo para este Articulo.</p>
+                {% for material in insumos %}  
+                <div class="container modal-large-card-sm card-mod" id="{{material.id|string + '-card-mod'}}" style="display: none;">
+                    <div class="row">
+                        <div class="modal-card-col-sm">
+                            <div class="circle materiales-large-card-img" id="{{material.id|string + '-img-mod'}}" style="background-color:{{material.color}}">{{material.nombre[0]}}</div>
+                        </div>
+                        <div class="modal-card-col-sm" >
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                {%if material.nombre|length < 15%}
+                                    <p class="material-card-title" id="nombre-material">{{material.nombre}}</p>
+                                {%elif material.nombre|length < 20%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:17px;text-align:center">{{material.nombre}}</p>
+                                {%elif material.nombre|length < 25%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:15px;text-align:center">{{material.nombre}}</p>
+                                {%else%}
+                                    <p class="material-card-title" id="nombre-material" style="font-size:13px;text-align:center">{{material.nombre}}</p>
+                                {%endif%}
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Nombre insumo</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="unidad-medida-mod">{{material.unidadMedida}}</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Unidad de medida</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <input hidden name="id-{{material.id|string}}" value="{{material.id}}">
+                                <input hidden class="cost-input-mod" value={{material.costoTotal}}>
+                                <input class="cant-input-mod" style="width: 60%;top: -10px;position: relative;border-bottom: none;background: transparent;left: 20px;box-shadow:none;" type="number" value=0 id="cantidad-mod-{{material.id}}" name="cantidad-{{material.id|string}}" required min=1 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_cantidad_mod({{material.id}})' onkeyup='verificar_cantidad_mod({{material.id}})'>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Cantidad</p>
+                            </div>
+                            <p id="error-mod-{{material.id|string}}" class="modalErrorMessage"></p>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+                <input type="text" id="materiales-mod" name = "materiales-altaPD" hidden>
+            </div>
+            <div class="row">
+                <span class="bottom-modal-text costo-total-label" id="bottomMatText"></span>
+                </p>
+                
+            </div>
+            <div class="row margin-row-mod" style="height:20px !important;"></div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- TAB 3 -->
             <div class="tab-pane modal-body" id="costos" role="tabpanel">
                 <div class="row" id="row-pag-2-1-mod">
                     <div class="col">
                         <div class="group" style="margin-left: 10%;">
                             <input hidden> 
-                            <input type="text" id="ciInput-mod" name="costoInsumos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("ins")' onkeyup='document.getElementById("costoIArtError").innerHTML="";calcularCostoMod("ins");'>
+                            <input class="data-show-input" readonly type="text" id="ciInput-mod" name="costoInsumos" required min=0 max=999999999 onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' onclick='calcularCostoMod("ins")' onkeyup='document.getElementById("costoIArtError").innerHTML="";calcularCostoMod("ins");'>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Costo de Insumos</label>
@@ -395,10 +652,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                <span class="bottom-modal-text costo-total-label" id="bottomMatText3"></span>
+                </p>
+            </div>
             </div>
 
 
-            <!-- TAB 3 -->
+            <!-- TAB 4 -->
             <div class="tab-pane modal-body" id="precio" role="tabpanel">
                 <div class="row" id="row-pag-3-1-mod">
                     <div class="col">

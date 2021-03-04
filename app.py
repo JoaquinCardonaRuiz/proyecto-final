@@ -4,7 +4,7 @@ from classes import Horario, CantArticulo
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
 from custom_exceptions import ErrorDePago
-from classes import CantMaterial
+from classes import CantMaterial, CantInsumo
 import traceback
 from flask_session import Session 
 from utils import Utils
@@ -483,7 +483,8 @@ def gestion_articulos():
     try:
         if valida_session(): return redirect(url_for('login'))
         articulos = NegocioArticulo.get_all()
-        return render_template('gestion-articulos.html',articulos=articulos, usuario = session["usuario"])
+        insumos = NegocioInsumo.get_all()
+        return render_template('gestion-articulos.html',articulos=articulos, usuario = session["usuario"],insumos=insumos)
     except Exception as e:
         return error(e,"articulos")
 
@@ -505,9 +506,16 @@ def alta_articulo():
         costoObtencionAlt =     request.form['costoObtencionAlt']
         margen =                request.form['margen']
         valor =                 request.form['valor']
+        cants = []
+        for key in request.form.keys():
+            if "id-" in key:
+                id = request.form[key]
+                cant = float(request.form["cantidad-"+id])
+                if cant > 0:
+                    cants.append({"idIns":id,"cantidad":cant})
 
         try:
-            NegocioArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor)
+            NegocioArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
         except Exception as e:
             return error(e,"articulos")
         return redirect(url_for('gestion_articulos'))
@@ -535,9 +543,14 @@ def edit_articulo():
         costoObtencionAlt =     request.form['costoObtencionAlt']
         margen =                request.form['margen']
         valor =                 request.form['valor']
-
+        cants = []
+        for key in request.form.keys():
+            if "id-" in key:
+                id = request.form[key]
+                cant = float(request.form["cantidad-"+id])
+                cants.append(CantInsumo(cant,int(id)))
         try:
-            NegocioArticulo.update(idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor)
+            NegocioArticulo.update(idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
         except Exception as e:
             return error(e,"articulos")
         return redirect(url_for('gestion_articulos'))
@@ -551,6 +564,30 @@ def baja_articulo(id):
     except Exception as e:
         return error(e,"articulos")
     return redirect(url_for('gestion_articulos'))
+
+
+
+@app.route('/articulos/insumos/<ids>')
+def get_insumos(ids):
+    # esto es probablemente lo mas inseguro que se puede hacer en un sistema web
+    # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
+    # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
+    #TODO: CAMBIAR ESTA LINEA:
+    ids = eval("["+ids+"]")
+    print(ids)
+    if ids == [-1]:
+        return jsonify(False)
+    try:
+        insumos = NegocioInsumo.get_by_id_array(ids)
+        insumos_dic =     [{"nombre":          i.nombre,
+                            "unidadmedida":    i.unidadMedida,
+                            "color":           i.color}
+                            for i in insumos]
+        return jsonify(insumos_dic)
+    except Exception as e:
+        return error(e,"insumos")
+    return redirect(url_for('gestion_articulos'))
+
 
 
 
@@ -636,7 +673,7 @@ def get_materiales(ids):
     #TODO: CAMBIAR ESTA LINEA:
     ids = eval("["+ids+"]")
     print(ids)
-    if ids == -1:
+    if ids == [-1]:
         return jsonify(False)
     try:
         materiales = NegocioMaterial.get_by_id_array(ids)
