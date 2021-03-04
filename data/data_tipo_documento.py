@@ -28,4 +28,33 @@ class DatosTipoDocumento(Datos):
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_tipo_documento.get_by_id()",
                                                     msj=str(e),
+           
                                                     msj_adicional="Error buscando tipo de documento en la BD.")
+    @classmethod
+    def get_all(cls, noClose = False):
+        """
+        Busca todos los tipos de dodcumento en la BD.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT tiposDocumento.idTipoDoc, \
+                tiposDocumento.nombre, \
+                tiposDocumento.estado \
+                from tiposDocumento")
+            cls.cursor.execute(sql)
+            tipoDocs_ = cls.cursor.fetchall()
+            tipoDocs = []
+            if len(tipoDocs_) > 0:
+                for td in tipoDocs_:
+                    tipoDocs.append(TipoDocumento(td[0],td[1],td[2]))
+                return tipoDocs
+            else:
+                raise custom_exceptions.ErrorDeConexion(origen="data_tipo_documento.get_all()",
+                                                        msj_adicional = "No hay Tipos de Documento cargados en la BD.")
+
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_tipo_documento.get_all()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error buscando todos los tipos de documento en la BD.")

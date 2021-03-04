@@ -10,3 +10,10 @@ class NegocioTipoDocumento(Negocio):
             return DatosTipoDocumento.get_by_id(id)
         except Exception as e:
             raise e
+    
+    @classmethod
+    def get_all(cls):
+        try:
+            return DatosTipoDocumento.get_all()
+        except Exception as e:
+            raise e

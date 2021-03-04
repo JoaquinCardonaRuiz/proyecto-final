@@ -4,6 +4,9 @@ var pais = true;
 var ciudad = true;
 var altura = true;
 var calle = true;
+var doc = true;
+var email = true;
+
 
 var ant_provincia = true;
 var ant_pais = true;
@@ -43,6 +46,10 @@ function openModal(modal){
     else if (modal == "doc"){
         jQuery.noConflict();
         $("#documentoModal").modal("show");
+    }
+    else if (modal == "email"){
+        jQuery.noConflict();
+        $("#emailModal").modal("show");
     }
 }
 
@@ -141,3 +148,77 @@ ant_ciudad = $("#ciudadPD").val();
 ant_pais = $("#paisPD").val();
 ant_altura = $("#alturaPD").val();
 ant_calle = $("#callePD").val();
+ant_doc = $("#documentoInput").val();
+ant_tipo_doc = $("#tipoDocSelect").val();
+ant_email = $("#emailInput").val();
+
+function validaDoc(val){
+    if (val == ""){
+        $("#error-doc").show();
+        doc = false;
+    }
+    else{
+        $("#error-doc").hide();
+        doc = true;
+    }
+    enable_disable_doc();
+}
+
+function enable_disable_doc(){
+    if (doc){
+        if (ant_doc == $("#documentoInput").val() && ant_tipo_doc == $("#tipoDocSelect").val()){
+            $("#primary-btn-doc").text('No hay cambios');
+            $("#primary-btn-doc").prop('disabled',true);
+        }
+        else{
+            $("#primary-btn-doc").prop('disabled',false);
+            $("#primary-btn-doc").text('Guardar cambios');
+        }
+
+    }
+    else{
+        $("#primary-btn-doc").prop('disabled',true);
+        $("#primary-btn-doc").text('Guardar cambios');
+    }
+    
+}
+
+function validateEmail(elementValue){      
+    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (elementValue == ""){
+        email = false;
+        $("#email-error").text("* El email no puede quedar vacío.")
+        $("#email-error").show();
+    }
+    else if (emailPattern.test(elementValue)){
+        email = true;
+        $("#email-error").hide();
+    }
+    else{
+        email = false;
+        $("#email-error").text("* Formato email inválido")
+        $("#email-error").show();
+    }
+    enable_disable_email();
+}
+
+function enable_disable_email(){
+    if (email){
+        if (ant_email == $("#emailInput").val()){
+            $("#primary-btn-email").text('No hay cambios');
+            $("#primary-btn-email").prop('disabled',true);
+        }
+        else{
+            $("#primary-btn-email").prop('disabled',false);
+            $("#primary-btn-email").text('Guardar cambios');
+        }
+
+    }
+    else{
+        $("#primary-btn-email").prop('disabled',true);
+        $("#primary-btn-email").text('Guardar cambios');
+    }
+    
+}
+
+

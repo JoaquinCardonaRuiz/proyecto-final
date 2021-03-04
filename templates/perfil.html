@@ -13,6 +13,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500&display=swap" rel="stylesheet">
     <script src="/static/js/perfil.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-3.4.1.js"></script>
+
 
 
 
@@ -64,7 +66,7 @@
                     <div class="col-md-4">
                         <div class="profile-work">
                             <p>Editar datos</p>
-                            <a href=""><i class="fas fa-edit"></i> Modificar email</a><br/>
+                            <a href="#" onclick="openModal('email')"><i class="fas fa-edit"></i> Modificar email</a><br/>
                             <a href="#" onclick="openModal('doc');"><i class="fas fa-edit"></i> Modificar documento</a><br/>
                             <a href="#" onclick="openModal('dir');"><i class="fas fa-edit"></i> Modificar direccion</a>
                             <p>Configuración de seguridad</p>
@@ -274,12 +276,12 @@
             <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
                 <div class="col">
                     <div class="group" style="margin-top: 5%;">
-                        <input type="text" style="width: 200%;" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('alta'); validaDireccion('alta','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.nroDoc}}"> 
+                        <input type="text" style="width: 200%;" required id="documentoInput" onkeyup="validaDoc(value);" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.nroDoc}}"> 
                         <input type="text" id="idEntidadInput" name="id" hidden>
                         <span class="highlight" style="width: 200%;"></span>
                         <span class="bar" style="width: 200%;"></span>
                         <label style="margin-top: -3%;">Número de Documento</label>
-                        <p id="error-calle" class="modalErrorMessage" style="display: none; width: 200%;">* El documento no puede quedar vacío.</p>
+                        <p id="error-doc" class="modalErrorMessage" style="display: none; width: 200%;">* El documento no puede quedar vacío.</p>
                     </div>
                 </div>
                 <div class="col" style="margin-left: 33.3%; height: auto;">
@@ -288,12 +290,10 @@
                         <label>Tipo de Documento</label>             
                     </div>
                     <div class="form-group" style="margin-top: -15%;">
-                        <select class="form-control" id="exampleFormControlSelect1" style="text-align-last:left !important;">
-                          <option class="tipo-doc-option" style="padding-left: 10%;">1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
+                        <select class="form-control" id="tipoDocSelect" oninput="enable_disable_doc();" style="text-align-last:left !important;padding-top: 6px !important;">
+                            {%for td in tiposDoc%}
+                            <option value="{{td.id}}">&nbsp {{td.nombre}}</option>  
+                            {%endfor%}                        
                         </select>
                     </div>           
                       
@@ -302,7 +302,45 @@
         </form>
         <div class="modal-footer">
           <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-dir" disabled>Guardar cambios</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-doc" disabled>Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Modal Modificar email -->
+<div class="modal fade modal-lg" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Modificar email</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body modal-body-card" id="altaNivelForm">
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row subheader-row" id="subheader-alta-pd">
+                <div class="col">
+                    <label class="subheader" id="subheader-alta">Email</label>
+                </div>
+            </div>
+            <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px;">
+                <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
+                    <input type="text" oninput="validateEmail(value)" required autocomplete="off" id="emailInput" class="email-input" name="email" style="width: 90%;" value="{{usuario.email}}">
+                    <input type="text" id="idEntidadInput" name="id" hidden>
+                    <span class="highlight" style="width: 90%;"></span>
+                    <span class="bar" style="width: 90%;"></span>
+                    <label style="margin-top: -5px;">Dirección de correo electrónico</label>
+                    <p id="email-error" class="modalErrorMessage" style="display: none;">* Email inválido.</p>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-email" disabled>Guardar cambios</button>
         </div>
       </div>
     </div>

@@ -81,7 +81,8 @@ def perfil():
     tipoDoc = NegocioTipoDocumento.get_by_id(session["usuario"].tipoDoc)
     password = '*' * len(session["usuario"].password)
     tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
-    return render_template('perfil.html',usuario = session["usuario"], nivel = nivel, tipoDoc = tipoDoc, password = password, tipoUsuario = tipoUsuario)
+    tiposDoc = NegocioTipoDocumento.get_all()
+    return render_template('perfil.html',usuario = session["usuario"], nivel = nivel, tipoDoc = tipoDoc, password = password, tipoUsuario = tipoUsuario, tiposDoc = tiposDoc)
 
 
 
