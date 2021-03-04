@@ -835,19 +835,26 @@ function  dropdownOptionSelectMod(idOption, cantidad){
         $("#" + String(idOption) + "-card-mod").show();
         document.getElementById("cantidad-mod-"+idOption).value = cantidad;
     }
-    labelShowHideMod();
     verificar_cantidades_mod();
+    labelShowHideMod();
 }
 
+//Manejo de carteles en la seleccion de materiales del dropdown.
 //Manejo de carteles en la seleccion de materiales del dropdown.
 function labelShowHideMod(){
     if (selectedOptionsMod.length == 0){
         $(".indicator-label-2").hide();
+        $(".bottom-modal-text").hide();
         $("#warning-label-mod").fadeIn(1000);
+        $("#warning-icon-mod").fadeIn(1000);
+        document.getElementById("edit-btn").disabled = true;
     }
     else{
+        $(".bottom-modal-text").fadeIn(400);
         $(".indicator-label-2").show();
         $("#warning-label-mod").hide();
+        $("#warning-icon-mod").hide();
+        document.getElementById("edit-btn").disabled = false;
     }
 }
 
