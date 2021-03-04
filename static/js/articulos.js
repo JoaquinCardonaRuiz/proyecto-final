@@ -828,6 +828,8 @@ function openMenuMod() {
     $('#cards-row-materiales-mod').css({"transform":"translateY(200px)"});
     $("#bottomMatText").css({"transform":"translateY(200px)"});
     $("#bottomMatText").css({"margin-bottom":"25px"});
+    $("#bottomAltaModalText-mod").css({"transform":"translateY(200px)"});
+    $("#bottomAltaModalText-mod").css({"margin-bottom":"25px"});
     $("#bottom-row").css({"transform":"translateY(200px)"});
     $(".margin-row").show();
     $(".margin-row").css({"transform":"translateY(200px)"});
@@ -841,6 +843,8 @@ function closeMenuMod() {
     $('#cards-row-materiales-mod').css({"transform":"translateY(0px)"});
     $("#bottomMatText").css({"transform":"translateY(0px)"});
     $("#bottomMatText").css({"margin-bottom":""});
+    $("#bottomAltaModalText-mod").css({"transform":"translateY(0px)"});
+    $("#bottomAltaModalText-mod").css({"margin-bottom":""});
     $("#bottom-row").css({"transform":"translateY(0px)"});
     $("#bottom-row").css({"margin-bottom":""});
     $(".margin-row").css({"transform":"translateY(0px)"});
@@ -863,19 +867,23 @@ function  dropdownOptionSelectMod(idOption, cantidad){
         $("#" + String(idOption) + "-card-mod").show();
         document.getElementById("cantidad-mod-"+idOption).value = cantidad;
     }
-    labelShowHideMod();
     verificar_cantidades_mod();
+    labelShowHideMod();
 }
 
 //Manejo de carteles en la seleccion de materiales del dropdown.
 function labelShowHideMod(){
     if (selectedOptionsMod.length == 0){
         $(".indicator-label-2").hide();
+        $(".bottom-modal-text").hide();
         $("#warning-label-mod").fadeIn(1000);
+        document.getElementById("edit-btn").disabled = true;
     }
     else{
+        $(".bottom-modal-text").fadeIn(400);
         $(".indicator-label-2").show();
         $("#warning-label-mod").hide();
+        document.getElementById("edit-btn").disabled = false;
     }
 }
 

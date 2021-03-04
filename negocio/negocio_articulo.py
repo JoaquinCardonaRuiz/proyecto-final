@@ -93,7 +93,7 @@ class NegocioArticulo(Negocio):
                         # delete
                         DatosCantInsumo.deleteComponente(i.idInsumo,idArt)
                         print("Delete ins: " + str(i.idInsumo))
-                    elif i.cantidad != [j.cantidad for j in insumos if j.idMaterial == i.idInsumo ][0]:
+                    elif i.cantidad != [j.cantidad for j in insumos if j.idInsumo == i.idInsumo ][0]:
                             # update
                             DatosCantInsumo.updateComponente(i.idInsumo,idArt,i.cantidad)
                             print("Update ins: " + str(i.idInsumo))

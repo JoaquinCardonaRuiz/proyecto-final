@@ -539,8 +539,8 @@
             </div>
             <div class="row cards-row-materiales" id="cards-row-materiales-mod">
                 <h6 class="indicator-label-2">Se requerirán:</h6>
-                <p id="warning-label-mod"><i class="fa fa-exclamation-triangle" id="warning-icon-mod"></i></p>
-                {% for material in insumos %}
+                <p class="warning-label-altaPD" id="warning-label-mod"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-altaPD"></i> No ha seleccionado ningún Insumo para este Articulo.</p>
+                {% for material in insumos %}  
                 <div class="container modal-large-card-sm card-mod" id="{{material.id|string + '-card-mod'}}" style="display: none;">
                     <div class="row">
                         <div class="modal-card-col-sm">
