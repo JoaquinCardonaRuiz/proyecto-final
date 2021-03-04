@@ -72,7 +72,7 @@ class DatosCantMaterial(Datos):
     @classmethod
     def deleteComponente(cls,idMat,idIns):
         """
-        Actualiza una cantidad de un material requerido para la produccion de un insumo.
+        Elimina una cantidad de un material requerido para la produccion de un insumo.
         """
         try:
             cls.abrir_conexion()

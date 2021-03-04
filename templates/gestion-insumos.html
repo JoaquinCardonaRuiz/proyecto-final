@@ -224,7 +224,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{url_for('alta_insumo')}}" method="POST" class="modal-body" id="altaInsumoForm" autocomplete="off">
+        <form action="{{url_for('alta_insumo')}}" method="POST" class="modal-body modal-body-card" id="altaInsumoForm" autocomplete="off">
           <div class="row" id="loadingRow">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
@@ -309,7 +309,7 @@
             </div>
             <div class="row cards-row-materiales" id="cards-row-materiales">
                 <h6 class="indicator-label-2" id="se-req-msj">Se requerirán:</h6>
-                <p class="warning-label-altaPD" id="warning-label-altaPD"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Punto de Depósito.</p>
+                <p class="warning-label-altaPD" id="warning-label-altaPD"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Insumo.</p>
                 {% for material in materiales %}
                 <div class="container modal-large-card-sm card-altaPD" id="{{material.id|string + '-card'}}" style="display: none;">
                     <div class="row">

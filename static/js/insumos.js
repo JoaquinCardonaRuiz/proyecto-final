@@ -781,6 +781,7 @@ function verificar_cantidades(){
         document.getElementById('bottomAltaModalText').innerHTML="Costo de Materiales: ARS $"+String(sum);
         document.getElementById("alta-btn").disabled = false;
         if(sum_cantidades <= 0){
+            document.getElementById("alta-btn").disabled = true;
             $("#warning-label-altaPD").show()
             document.getElementById("se-req-msj").hidden = true;
             document.getElementById('bottomAltaModalText').hidden = true;
