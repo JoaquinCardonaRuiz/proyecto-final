@@ -24,8 +24,6 @@ function navbarResize(){
   }
 }
 
-function hacerPedido(){
-  $.getJSON("/layout/datos-usuario",function (result){
-      $("#nombreUsuarioNavBar").text(result["nombre"]);
-  });
-}
+$.getJSON("/layout/datos-usuario",function (result){
+    $("#nombreUsuarioNavBar").text(result["nombre"]);
+});

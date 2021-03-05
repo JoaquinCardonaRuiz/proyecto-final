@@ -115,9 +115,42 @@ function actualiza_mapa(calle,altura,ciudad,provincia,pais){
 
 
 function hacerPedido(){
+    $("#punto-retiro-content").fadeOut();
+    $(".loading-content").fadeIn();
+    nextMsg();
+    
     $.getJSON("/eco-tienda/checkout/confirmar/" + String(pr) + "/"+ String(cant_ep) + "/" + String(cant_ars) ,function (result){
-        alert(result);
+        $(".loading-content").fadeOut();
+        $("#loading-text").remove();
+        if(result["estado"] == "ok"){
+            $("#codPedido").text(result["codigo"]);
+            $("#cantDias").text(result["demora"]);
+            $(".successful-order").fadeIn();
+        }
+        else if(result["estado"]=="error-stock"){
+            $(".error-order-stock").fadeIn();
+        }
+        else if(result["estado"]=="error-ep"){
+            $(".error-order-ep").fadeIn();
+        }
     });
 }
 
 setPvalues(0);
+
+function nextMsg() {
+    if (messages.length == 1) {
+        $('#loading-text').html(messages.pop()).fadeIn(300);
+
+    } else {
+        $('#loading-text').html(messages.pop()).fadeIn(300).delay(5000).fadeOut(300, nextMsg);
+    }
+};
+
+var messages = [
+    "Estamos registrando tu pedido",
+    "Estamos procesando tu pago",
+    "Estamos actualizando tus EcoPuntos",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+

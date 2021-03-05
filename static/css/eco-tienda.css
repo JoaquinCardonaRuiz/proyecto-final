@@ -429,4 +429,128 @@
     display: none;
   }
 
-  
+  .lds-ring{
+    display: block !important;
+  }
+
+.loading-content{
+  display: none;
+}
+
+#loadingRowPuntos{
+  margin-left: 14%;
+}
+
+#loading-text{
+  margin-left: 16.5%;
+}
+
+.ticket-title{
+  text-align: center;
+  font-family: 'Hind', sans-serif;
+  margin-top: 5%;
+  color: #95C22B;
+  font-size: 30px;
+
+}
+
+.ticket-subtitle{
+  margin-top: -1.5%;
+  text-align: center;
+  font-size: 17px;
+  font-family: 'Hind', sans-serif;
+}
+
+
+.ticket-thanks{
+  margin-top: 4%;
+  text-align: center;
+  font-size: 16px;
+  font-family: 'Hind', sans-serif;
+}
+
+.ticket-code{
+  font-size: 25px;
+  font-family: 'Montserrat', sans-serif !important;
+  text-align: center;
+  margin-top: 5%;
+  color: rgb(88, 88, 88);
+}
+
+.ticket-code-error{
+  font-size: 20px;
+  font-family: 'Montserrat', sans-serif !important;
+  text-align: center;
+  margin-top: 5%;
+  color: rgb(88, 88, 88);
+}
+
+.ticket-code-subtitle{
+  margin-top: 4%;
+  text-align: center;
+  font-size: 17px;
+  font-family: 'Hind', sans-serif;
+}
+
+.ticket-container{
+  box-shadow:0 1px 1px 0 rgb(21 28 40 / 12%), 0 2px 4px 0 rgb(21 28 40 / 8%), inset 0 -1px 1px 0 rgb(23 26 31 / 4%), inset 0 1px 2px 0 rgb(255 255 255 / 24%);
+  width: 80% !important; 
+  height: auto; 
+  border: 1px solid rgba(22,25,30,.12);
+}
+
+#otro-deposito-btn{
+  width: 100%;
+  margin-top: 5%;
+  width: 49%;
+  border-radius: 10px !important;
+  box-shadow: none;
+  border: 2px solid rgb(236, 236, 236) !important;
+}
+
+#ecoasistente-btn{
+  width: 49%;
+  margin-top: 5%;
+  border-radius: 10px !important;
+  margin-left: 0.5%;
+  margin-right: 1%;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+#codPedido{
+  letter-spacing: 3px;
+}
+
+.error-title{
+  color:#f03939 !important;
+}
+
+.error-btn{
+  background-color:#f03939 !important;
+}
+
+.error-btn:hover{
+  background-color:#cf3838 !important;
+}
+
+#error-order-ep{
+  display: none;
+  padding-top: 60px;
+  padding-bottom: 60px;
+
+}
+
+#error-order-stock{
+  display: none;
+  padding-top: 60px;
+  padding-bottom: 60px;
+
+}
+
+#successful-order{
+  display: none;
+  padding-top: 60px;
+  padding-bottom: 20px;
+
+}

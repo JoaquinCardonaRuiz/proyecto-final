@@ -224,11 +224,7 @@
             <!-- Grid row -->
         
         </section>
-        <section class="carrito-content">
-
-        <!--Grid row-->
-        <div class="row">
-        </section>
+        
 
         <!--Grid column-->
             <div id="punto-retiro-content">
@@ -272,12 +268,100 @@
     
         </div>
         <!-- Grid row -->
+
+        <div class="container" id="table-container">
+            <div id="loading-content" style="display: block;">
+            
+                <div class="row" id="successful-order">
+                    <div class="container ticket-container">
+                      <h3 class="ticket-title">¡Tu pedido se ha registrado con éxito!</h3>          
+                      <p class="ticket-code" id="code">
+                          Su código es:  <span id="codPedido">22</span>
+                      </p>
+                      <p class="ticket-thanks">¡Muchas gracias por su compra!</p>
+                      <p class="ticket-subtitle">Recuerde que su pedido estará listo en aproximadamente <span id="cantDias">2</span> días hábiles.</p>
+          
+                    </div>
+                    <div class="row" style="width: 80%; margin-left: 10%; margin-bottom: 3%;">
+                        <button type="button" class="btn primary-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/')">
+                            Volver a la EcoTienda
+                          </button>
+                          <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/simulador')">
+                            Ir a mis pedidos
+                          </button>
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="row" id="error-order-stock">
+                    <div class="container ticket-container">
+                      <h3 class="ticket-title error-title">¡Ups! Algo salió mal al procesar tu pedido</h3>          
+                      <p class="ticket-code-error" id="code">
+                         Nos hemos quedado sin stock de alguno de los productos que pediste</span>
+                      </p>
+                      <p class="ticket-thanks">Lamentamos mucho la situación</p>
+                      <p class="ticket-subtitle">Podés volver a la EcoTienda más tarde e intentar nuevamente, o elegir otros productos.</p>
+                    </div>
+                    <div class="row" style="width: 80%; margin-left: 10%; margin-bottom: 3%;">
+                        <button type="button" class="btn primary-btn error-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/')">
+                            Volver a la EcoTienda
+                          </button>
+                          <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/simulador')">
+                            Ir a mis pedidos
+                          </button>
+                    </div>
+                    
+                  </div>
+                  <div class="row" id="error-order-ep" >
+                    <div class="container ticket-container">
+                      <h3 class="ticket-title error-title">¡Ups! Algo salió mal al procesar tu pedido</h3>          
+                      <p class="ticket-code-error" id="code">
+                         No tenés suficientes EcoPuntos para hacer este pedido.</span>
+                      </p>
+                      <p class="ticket-thanks">¡No te desanimes!</p>
+                      <p class="ticket-subtitle">Recordá llevar tus residuos a un Punto de Depósito para sumar EcoPuntos.</p>
+                    </div>
+                    <div class="row" style="width: 80%; margin-left: 10%; margin-bottom: 3%;">
+                        <button type="button" class="btn primary-btn error-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/')">
+                            Volver a la EcoTienda
+                          </button>
+                          <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/simulador')">
+                            Ir a mis pedidos
+                          </button>
+                    </div>
+                    
+                  </div>
+                </div>
+                </div>
+            </div>
+            <!--Grid column-->
+
+            </div>
+            <!-- Grid row -->
+        </div>
     
         <form action="{{url_for('eliminar_carrito')}}" method="POST" id="remove_from_cart">
             <input type="text" hidden name="idEliminacion" id="idEliminacion">
         </form>
         
-        <!--Section: Block Content-->
+        <div class="container loading-content" id="table-container" style="background-color: transparent; box-shadow: none;">
+            <div id="loading-content" style="display: block;">
+            
+                <!-- Card -->
+                <div class="mb-3" style="width: 95%; margin-right: 2.5%; margin-left: 2.5%;">
+                    <div class="row" id="loadingRowPuntos">
+                        <div id="lds-ring-big" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <p id="loading-text">Estamos procesando tu pedido</p>
+                    
+                        
+                </div>
+            </div>
+            <!--Grid column-->
+    
+            </div>
+            <!-- Grid row -->
+        </div>
     </div>
     <script>
         initialRoundValues();
