@@ -88,7 +88,7 @@ function changeForm(){
 }
 
 function disableEnableButton(id, id_array,calle,altura,ciudad,provincia,pais){
-    pr = id;
+    id_pr = id;
     for (var i in id_array){
         if (id_array[i] == id){
             $("#" + String(id_array[i]) + "-pr-card").css("border", "2px solid #95C22B");
@@ -119,19 +119,21 @@ function hacerPedido(){
     $(".loading-content").fadeIn();
     nextMsg();
     
-    $.getJSON("/eco-tienda/checkout/confirmar/" + String(pr) + "/"+ String(cant_ep) + "/" + String(cant_ars) ,function (result){
+    $.getJSON("/eco-tienda/checkout/confirmar/" + String(id_pr) + "/"+ String(cant_ep) + "/" + String(cant_ars) ,function (result){
+        jQuery.noConflict();
+        alert("Terminé");
         $(".loading-content").fadeOut();
         $("#loading-text").remove();
         if(result["estado"] == "ok"){
             $("#codPedido").text(result["codigo"]);
             $("#cantDias").text(result["demora"]);
-            $(".successful-order").fadeIn();
+            $("#successful-order").fadeIn();
         }
         else if(result["estado"]=="error-stock"){
-            $(".error-order-stock").fadeIn();
+            $("#error-order-stock").fadeIn();
         }
         else if(result["estado"]=="error-ep"){
-            $(".error-order-ep").fadeIn();
+            $("#error-order-ep").fadeIn();
         }
     });
 }
@@ -153,4 +155,10 @@ var messages = [
     "Estamos actualizando tus EcoPuntos",
     "¡Casi listo! Últimos retoques"
 ].reverse();
+
+function ocultaResult(){
+    $("#successful-order").hide();
+    $("#error-order-stock").hide();
+    $("#error-order-ep").hide();
+}
 

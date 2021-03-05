@@ -134,7 +134,7 @@ class NegocioArticulo(Negocio):
 
     @classmethod
     def disminuirStock(cls,idTA,cant):
-        nueva_cant = DatosArticulo.get_by_id(idTA) - cant
+        nueva_cant = DatosArticulo.get_by_id(idTA).stock - cant
         DatosArticulo.updateStock(idTA,nueva_cant)
 
     @classmethod

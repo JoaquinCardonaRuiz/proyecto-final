@@ -33,6 +33,8 @@ class NegocioPedido(Negocio):
         for art in carrito:
             NegocioArticulo.disminuirStock(art.idTipoArticulo,art.cantidad)
             DatosCantArticulo.addArticuloPedido(art.idTipoArticulo,idPedido,art.cantidad)
+
+        return idPedido
             
     @classmethod
     def get_all(cls):

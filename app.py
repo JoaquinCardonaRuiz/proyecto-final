@@ -297,7 +297,7 @@ def carrito():
 
 @app.route('/eco-tienda/checkout/confirmar/<idPR>/<totalEP>/<totalARS>')
 def confirmar_checkout(idPR, totalEP, totalARS):
-    dic = {"estado": "exito", "codigo": None,"demora": None}
+    dic = {"estado": "ok", "codigo": None,"demora": None}
     try:
         if "carrito" in session.keys() and session["carrito"] != {}:
             dic["codigo"] = NegocioPedido.add(Utils.carrito_to_list(session["carrito"]),session["usuario"],idPR,float(totalEP),float(totalARS))

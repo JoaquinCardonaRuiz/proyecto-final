@@ -535,21 +535,21 @@
 }
 
 #error-order-ep{
-  display: none;
+  display: block;
   padding-top: 60px;
   padding-bottom: 60px;
 
 }
 
 #error-order-stock{
-  display: none;
+  display: block;
   padding-top: 60px;
   padding-bottom: 60px;
 
 }
 
 #successful-order{
-  display: none;
+  display: block;
   padding-top: 60px;
   padding-bottom: 20px;
 
