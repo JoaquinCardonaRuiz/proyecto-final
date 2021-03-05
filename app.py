@@ -8,16 +8,41 @@ from classes import CantMaterial, CantInsumo
 import traceback
 from flask_session import Session 
 from utils import Utils
+from werkzeug.utils import secure_filename
+import os
+
 
 
 #app
 app = Flask(__name__)
 app.secret_key = 'SecretKeyForSigningCookies'
 app.config['SESSION_TYPE'] = 'filesystem'
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #Session
 app.secret_key = 'myscretkey'
 Session(app)
+
+
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+
 
 @app.route('/', methods = ['GET','POST'])
 def start():
