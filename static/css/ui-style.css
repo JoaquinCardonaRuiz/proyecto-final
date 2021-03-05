@@ -534,3 +534,37 @@ h2 		 {
     -moz-appearance:none;
     appearance:none;
 }
+
+.passwd-reqs{
+    margin-top: -10px;
+    font-family: 'Hind', sans-serif;
+    font-weight: 500;
+    margin-left: 10%;
+    font-size: 12px;
+    width: 70%;
+
+}
+
+.password-error{
+    display: none;
+}
+
+#newPassword1, #newPassword2{
+    background-color: white;
+}
+
+#pass-reqs-row{
+    display: none;
+}
+
+#new-pass-container{
+    display: none;
+}
+
+.profile-loading-row{
+    margin-top: 2% !important;
+}
+
+.bottom-row{
+    margin-bottom: -2%;
+}

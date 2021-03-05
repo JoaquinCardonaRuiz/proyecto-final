@@ -13,10 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500&display=swap" rel="stylesheet">
     <script src="/static/js/perfil.js"></script>
-    <script type="text/javascript" src="~/Scripts/jquery-3.4.1.js"></script>
-
-
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 
 </head>
@@ -70,7 +67,7 @@
                             <a href="#" onclick="openModal('doc');"><i class="fas fa-edit"></i> Modificar documento</a><br/>
                             <a href="#" onclick="openModal('dir');"><i class="fas fa-edit"></i> Modificar direccion</a>
                             <p>Configuración de seguridad</p>
-                            <a href=""><i class="fas fa-edit"></i> Modificar contraseña</a><br/>
+                            <a href="#" onclick="openModal('passwd');"><i class="fas fa-edit"></i> Modificar contraseña</a><br/>
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -173,82 +170,88 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body modal-body-card" id="altaNivelForm">
-            <div class="row" id="loadingRow">
+        <div class="modal-body modal-body-card">
+            <div class="row profile-loading-row" id="loadingRow">
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
             <div class="row subheader-row" id="subheader-alta-pd">
                 <div class="col">
-                    <label class="subheader" id="subheader-alta">Dirección</label>
+                    <label class="subheader" id="subheader-dir">Dirección</label>
                 </div>
             </div>
-            <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
-                <div class="col">
-                    <div class="group" style="margin-top: 2%;">
-                        <input type="text" required id="callePD" onkeyup="updateMap('alta'); validaDireccion('alta','calle');" name="callePD" autocomplete="off" style="width: 215%;" value="{{usuario.direccion.calle}}"> 
-                        <input type="text" id="idEntidadInput" name="id" hidden>
-                        <span class="highlight" style="width: 215%;"></span>
-                        <span class="bar" style="width: 215%;"></span>
-                        <label>Calle</label>
-                        <p id="error-calle" class="modalErrorMessage" style="display: none; width: 215%;">* La calle no puede quedar vacía.</p>
+            <form action="{{url_for('actualizar_direccion')}}" method="POST" id="dirForm">
+                <div class="row" id="fieldsRow1Dir" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                    <div class="col">
+                        <div class="group" style="margin-top: 2%;">
+                            <input type="text" required id="callePD" onkeyup="updateMap('alta'); validaDireccion('alta','calle');" name="callePD" autocomplete="off" style="width: 215%;" value="{{usuario.direccion.calle}}"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 215%;"></span>
+                            <span class="bar" style="width: 215%;"></span>
+                            <label>Calle</label>
+                            <p id="error-calle" class="modalErrorMessage" style="display: none; width: 215%;">* La calle no puede quedar vacía.</p>
 
+                        </div>
+                    </div>
+                    <div class="col" style="margin-left: 33.3%;">
+                        <div class="group" style=" margin-top: 2%;">
+                            <input type="text" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('alta'); validaDireccion('alta','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.direccion.altura}}"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 100%;"></span>
+                            <span class="bar" style="width: 100%;"></span>
+                            <label>Altura</label>
+                            <p id="error-altura" class="modalErrorMessage" style="display: none;">* Complete la altura.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col" style="margin-left: 33.3%;">
-                    <div class="group" style=" margin-top: 2%;">
-                        <input type="text" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('alta'); validaDireccion('alta','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.direccion.altura}}"> 
-                        <input type="text" id="idEntidadInput" name="id" hidden>
-                        <span class="highlight" style="width: 100%;"></span>
-                        <span class="bar" style="width: 100%;"></span>
-                        <label>Altura</label>
-                        <p id="error-altura" class="modalErrorMessage" style="display: none;">* Complete la altura.</p>
+                <div class="row" id="fieldsRow1AltaPD2" style="margin-left: 6.5%; margin-right: 8%;">
+                    <div class="col">
+                        <div class="group" style="margin-top: 2%;">
+                            <input type="text" required id="ciudadPD" onkeyup="updateMap('alta'); validaDireccion('alta','ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;" value="{{usuario.direccion.ciudad}}"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 100%;"></span>
+                            <span class="bar" style="width: 100%;"></span>
+                            <label>Ciudad</label>
+                            <p id="error-ciudad" class="modalErrorMessage" style="display: none;">* Complete la ciudad.</p>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row" id="fieldsRow1AltaPD2" style="margin-left: 6.5%; margin-right: 8%;">
-                <div class="col">
-                    <div class="group" style="margin-top: 2%;">
-                        <input type="text" required id="ciudadPD" onkeyup="updateMap('alta'); validaDireccion('alta','ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;" value="{{usuario.direccion.ciudad}}"> 
-                        <input type="text" id="idEntidadInput" name="id" hidden>
-                        <span class="highlight" style="width: 100%;"></span>
-                        <span class="bar" style="width: 100%;"></span>
-                        <label>Ciudad</label>
-                        <p id="error-ciudad" class="modalErrorMessage" style="display: none;">* Complete la ciudad.</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="group" style="margin-top: 2%;">
-                        <input type="text" required id="provinciaPD" onkeyup="updateMap('alta'); validaDireccion('alta','provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.direccion.provincia}}"> 
-                        <input type="text" id="idEntidadInput" name="id" hidden>
-                        <span class="highlight" style="width: 100%;"></span>
-                        <span class="bar" style="width: 100%;"></span>
-                        <label>Provincia</label>
-                        <p id="error-provincia" class="modalErrorMessage" style="display: none;">* Complete la provincia.</p>
+                    <div class="col">
+                        <div class="group" style="margin-top: 2%;">
+                            <input type="text" required id="provinciaPD" onkeyup="updateMap('alta'); validaDireccion('alta','provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.direccion.provincia}}"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 100%;"></span>
+                            <span class="bar" style="width: 100%;"></span>
+                            <label>Provincia</label>
+                            <p id="error-provincia" class="modalErrorMessage" style="display: none;">* Complete la provincia.</p>
 
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="group" style="margin-top: 2%;">
+                            <input type="text" required id="paisPD" onkeyup="updateMap('alta'); validaDireccion('alta','pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.direccion.pais}}"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 100%;"></span>
+                            <span class="bar" style="width: 100%;"></span>
+                            <label>País</label>
+                            <p id="error-pais" class="modalErrorMessage" style="display: none;">* Complete el país.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="group" style="margin-top: 2%;">
-                        <input type="text" required id="paisPD" onkeyup="updateMap('alta'); validaDireccion('alta','pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.direccion.pais}}"> 
-                        <input type="text" id="idEntidadInput" name="id" hidden>
-                        <span class="highlight" style="width: 100%;"></span>
-                        <span class="bar" style="width: 100%;"></span>
-                        <label>País</label>
-                        <p id="error-pais" class="modalErrorMessage" style="display: none;">* Complete el país.</p>
+                <div class="row" id="fieldsRow1AltaPD2" style="margin-bottom: -30px;">
+                    <div class="mapouter" style="margin-left: 10%;">
+                        <div class="gmap_canvas">
+                            <iframe width="603" height="280" id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0"></iframe>
+                        </div>
                     </div>
                 </div>
+            </form>
+            <div class="row bottom-row">
+                <p class="bottom-modal-text" id="bottomAltaModalTextAltaPD" style="margin-top: 1%;">Una vez modificados todos los datos, presione "Guardar cambios".</p>
+                <p class="bottom-modal-text" id="bottomAltaModalTextDir"></p>            
             </div>
-            <div class="row" id="fieldsRow1AltaPD2" style="margin-bottom: -30px;">
-                <div class="mapouter" style="margin-left: 10%;">
-                    <div class="gmap_canvas">
-                        <iframe width="603" height="280" id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0"></iframe>
-                    </div>
-                </div>
-            </div>
-        </form>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-dir" disabled>Guardar cambios</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('dir')" id="primary-btn-dir" disabled>Guardar cambios</button>
         </div>
       </div>
     </div>
@@ -264,49 +267,60 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body modal-body-card" id="altaNivelForm">
-            <div class="row" id="loadingRow">
+        <div class="modal-body modal-body-card">
+            <div class="row profile-loading-row" id="loadingRow">
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
-            <div class="row subheader-row" id="subheader-alta-pd">
-                <div class="col">
-                    <label class="subheader" id="subheader-alta">Documento</label>
-                </div>
-            </div>
-            <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
-                <div class="col">
-                    <div class="group" style="margin-top: 5%;">
-                        <input type="text" style="width: 200%;" required id="documentoInput" onkeyup="validaDoc(value);" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.nroDoc}}"> 
-                        <input type="text" id="idEntidadInput" name="id" hidden>
-                        <span class="highlight" style="width: 200%;"></span>
-                        <span class="bar" style="width: 200%;"></span>
-                        <label style="margin-top: -3%;">Número de Documento</label>
-                        <p id="error-doc" class="modalErrorMessage" style="display: none; width: 200%;">* El documento no puede quedar vacío.</p>
+            <form action="{{url_for('actualizar_documento')}}" method="POST"  id="docForm">
+                <div class="row subheader-row" id="subheader-alta-pd">
+                    <div class="col">
+                        <label class="subheader" id="subheader-alta">Documento</label>
                     </div>
                 </div>
-                <div class="col" style="margin-left: 33.3%; height: auto;">
-                    <div class="group" style="margin-top: 2%;">
-                        <input type="text" id="idEntidadInput" name="id" hidden>
-                        <label>Tipo de Documento</label>             
+                <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                    <div class="col">
+                        <div class="group" style="margin-top: 5%;">
+                            <input type="text" style="width: 200%;" required id="documentoInput" onkeyup="validaDoc(value);" name="documentoInput" autocomplete="off" style="width: 100%;" autocomplete="off" value="{{usuario.nroDoc}}"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 200%;"></span>
+                            <span class="bar" style="width: 200%;"></span>
+                            <label style="margin-top: -3%;">Número de Documento</label>
+                            <p id="error-doc" class="modalErrorMessage" style="display: none; width: 200%;">* El documento no puede quedar vacío.</p>
+                        </div>
                     </div>
-                    <div class="form-group" style="margin-top: -15%;">
-                        <select class="form-control" id="tipoDocSelect" oninput="enable_disable_doc();" style="text-align-last:left !important;padding-top: 6px !important;">
-                            {%for td in tiposDoc%}
-                            <option value="{{td.id}}">&nbsp {{td.nombre}}</option>  
-                            {%endfor%}                        
-                        </select>
-                    </div>           
-                      
+                    <div class="col" style="margin-left: 33.3%; height: auto;">
+                        <div class="group" style="margin-top: 2%;">
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <label>Tipo de Documento</label>             
+                        </div>
+                        <div class="form-group" style="margin-top: -15%;">
+                            <select class="form-control" id="tipoDocSelect" name="tipoDocSelect" oninput="enable_disable_doc();" style="text-align-last:left !important;padding-top: 6px !important;">
+                                {%for td in tiposDoc%}
+                                    {%if td.id == tipoDoc.id%}
+                                    <option value="{{td.id}}" selected>&nbsp {{td.nombre}}</option>
+                                    {%else%}
+                                    <option value="{{td.id}}">&nbsp {{td.nombre}}</option>
+                                    {%endif%}  
+                                {%endfor%}                        
+                            </select>
+                        </div>           
+                        
+                    </div>
                 </div>
+            </form>
+            <div class="row bottom-row">
+                <p class="bottom-modal-text label-bottom" id="bottomAltaModalTextAltaPD" style="margin-top: 1%;">Una vez modificado el documento, presione "Guardar cambios".</p>
+                <p class="bottom-modal-text" id="bottomAltaModalTextDoc"></p>            
             </div>
-        </form>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-doc" disabled>Guardar cambios</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('doc')" id="primary-btn-doc" disabled>Guardar cambios</button>
         </div>
       </div>
     </div>
 </div>
+
 
 <!--Modal Modificar email -->
 <div class="modal fade modal-lg" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
@@ -318,35 +332,120 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body modal-body-card" id="altaNivelForm">
+        <div class="modal-body modal-body-card">
+            <div class="row profile-loading-row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <form action="{{url_for('actualizar_email')}}" method="POST" id="emailForm">
+                <div class="row subheader-row" id="subheader-alta-pd">
+                    <div class="col">
+                        <label class="subheader" id="subheader-alta">Email</label>
+                    </div>
+                </div>
+                <div class="row" id="fieldsRow1Alta1" style="margin-top: -2%;">
+                    <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
+                        <input type="text" oninput="validateEmail(value)" required autocomplete="off" id="emailInput" class="email-input" name="email" style="width: 90%;" value="{{usuario.email}}">
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight" style="width: 90%;"></span>
+                        <span class="bar" style="width: 90%;"></span>
+                        <label style="margin-top: -5px;">Dirección de correo electrónico</label>
+                        <p id="email-error" class="modalErrorMessage" style="display: none;">* Email inválido.</p>
+                    </div>
+                </div>
+            </form>
+            <div class="row bottom-row">
+                <p class="bottom-modal-text label-bottom" id="bottomAltaModalTextAltaPD" style="margin-top: 1%;">Una vez modificados el email, presione "Guardar cambios".</p>
+                <p class="bottom-modal-text" id="bottomAltaModalTextEmail"></p>            
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('email')" id="primary-btn-email" disabled>Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Modal Modificar password -->
+<div class="modal fade modal-lg" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Modificar contraseña</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modal-body-card">
             <div class="row" id="loadingRow">
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
-            <div class="row subheader-row" id="subheader-alta-pd">
-                <div class="col">
-                    <label class="subheader" id="subheader-alta">Email</label>
+            <form action="{{url_for('actualizar_password')}}" method="POST" id="passForm">
+                <div class="row subheader-row" id="subheader-alta-pd" style="margin-bottom: -2%;">
+                    <div class="col">
+                        <label class="subheader" id="subheader-alta" style="margin-bottom: 2%;">Ingrese su contraseña actual</label>
+                    </div>
                 </div>
-            </div>
-            <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px;">
-                <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
-                    <input type="text" oninput="validateEmail(value)" required autocomplete="off" id="emailInput" class="email-input" name="email" style="width: 90%;" value="{{usuario.email}}">
-                    <input type="text" id="idEntidadInput" name="id" hidden>
-                    <span class="highlight" style="width: 90%;"></span>
-                    <span class="bar" style="width: 90%;"></span>
-                    <label style="margin-top: -5px;">Dirección de correo electrónico</label>
-                    <p id="email-error" class="modalErrorMessage" style="display: none;">* Email inválido.</p>
+                <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px; margin-bottom: -2%;">
+                    <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
+                        <input type="text" oninput="checkOldPassword(value);" required autocomplete="off" id="oldPasswdInput" class="email-input" style="width: 90%;">
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight" style="width: 90%;"></span>
+                        <span class="bar" style="width: 90%;"></span>
+                        <label style="margin-top: -5px;">Contraseña actual</label>
+                        <p id="email-error" class="modalErrorMessage" style="display: none;">* Contraseña incorrecta</p>
+                    </div>
                 </div>
+                <div id="new-pass-container">
+                    <div class="row subheader-row" id="subheader-alta-pd" style="margin-bottom: 0%;">
+                        <div class="col">
+                            <label class="subheader" id="subheader-alta">Nueva contraseña</label>
+                        </div>
+                    </div>
+                    <div class="row" id="fieldsRow1Alta1" style="width: 87%; margin-left:3%">
+                        <div class="col">
+                            <div class="group" style="margin-left: 10%;">
+                                <input type="text" required id="newPassword1" oninput="checkPassword(value);" onfocus="showReqs();" name="newPassword1" autocomplete="off" disabled> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label class="new-pass-label">Nueva contraseña</label>
+                                <p id="password-1-error" class="password-error modalErrorMessage">* No cumple con los requisitos.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="margin-left: 10%">      
+                                <input type="text" id="newPassword2" oninput = "noFirstTimeRep(); validaPassRep();" onfocus="ocultaReqs();" name="newPassword2" autocomplete="off" disabled>
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label class="new-pass-label">Repetir nueva contraseña</label>
+                                <p id="password-2-error" class="password-error modalErrorMessage">* Las contraseñas no coinciden.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="" id="pass-reqs-row" style="margin-top: -20px;">
+                        <p class="passwd-reqs">- La contraseña debe tener al menos un número.</p>
+                        <p class="passwd-reqs">- La contraseña debe tener al menos una mayúscula.</p>
+                        <p class="passwd-reqs">- La contraseña debe tener entre 8 y 20 caracteres.</p>
+                    </div>
+                </div>
+            </form>
+            <div class="row bottom-row">
+                <p class="bottom-modal-text label-bottom" id="bottomAltaModalTextAltaPD" style="margin-top: 1%;">Una vez modificada la contraseña, presione "Guardar cambios".</p>
+                <p class="bottom-modal-text" id="bottomAltaModalTextPass"></p>            
             </div>
-        </form>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-email" disabled>Guardar cambios</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('pass')" id="primary-btn-passwd" disabled>Guardar cambios</button>
         </div>
       </div>
     </div>
 </div>
 
 <script src="/static/js/perfil.js"></script>
+<script>setPsswd('{{usuario.password}}');setEmails('{{emails}}')</script>
 
 
 {% endblock %}

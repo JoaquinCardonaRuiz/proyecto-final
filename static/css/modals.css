@@ -707,3 +707,7 @@ display: none;
 .less-margin-top{
   margin-top: -1%;
 }
+
+.modal-title{
+  font-family: 'Hind', sans-serif;
+}

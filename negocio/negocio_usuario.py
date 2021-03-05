@@ -30,7 +30,7 @@ class NegocioUsuario(Negocio):
             Valida la dirección de email con expresiones regulares.
         """
         try:
-            #TODO: Levantar Flash en el catch.
+            #Valida RN 29
             regex = '(<)?(\w+@\w+(?:\.\w+)+)(?(1)>|$)'
             if(re.search(regex,email)):  
                 return True
@@ -40,9 +40,28 @@ class NegocioUsuario(Negocio):
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio.actualiza_nivel_all()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.check_email()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de negocio actualizando el nivel de todos los usuarios.")
+                                                    msj_adicional="Formato email inválido.")
+    
+    @classmethod
+    def check_password(cls,password):
+        """
+            Valida la contraseña de un usuario con expresiones regulares.
+        """
+        try:
+            #Valida RN26, RN27 y RN28.
+            rgx = re.compile(r'\d.*?[A-Z].*?[a-z]')
+            if rgx.match(''.join(sorted(password))) and len(password) >= 8 and len(password) <=20:
+                return True
+            else:  
+                return False 
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.check_password()",
+                                                    msj=str(e),
+                                                    msj_adicional="Formato contraseña inválido.")
 
 
 
@@ -71,7 +90,7 @@ class NegocioUsuario(Negocio):
                 NegocioEcoPuntos.updateEps(ep.id, cant = cant_rest-ep_restantes)
                 break
 
-            #sino alcanza, actualizo ese deposito y sigo con el siguiente
+            #si no alcanza, actualizo ese deposito y sigo con el siguiente
             else:
                 NegocioEcoPuntos.updateEps(ep.id, cant = 0)
                 ep_restantes -= cant_rest
@@ -90,3 +109,38 @@ class NegocioUsuario(Negocio):
     def update_nivel(cls,uid,eps):
         nuevo_nivel = NegocioNivel.obtiene_nivel(eps)
         DatosUsuario.update_nivel(uid,nuevo_nivel.id)
+
+    @classmethod
+    def update_email(cls,email,uid):
+        try:
+            if cls.check_email(email):
+                DatosUsuario.update_email(email,uid) 
+        except Exception as e:
+            raise e
+    
+    @classmethod
+    def update_documento(cls,nro,tipo,uid):
+        try:
+            #Valida RN 30- El número de documento solo puede ser alfanumérico.
+            if str(nro).isalnum():
+                DatosUsuario.update_documento(nro,tipo,uid) 
+        except Exception as e:
+            raise e
+    
+    
+    @classmethod
+    def update_password(cls,psswd1,psswd2,uid):
+        try:
+            #Valida RN26, RN27 y RN28.
+            if psswd1 == psswd2:
+                if cls.check_password(psswd1):
+                    DatosUsuario.update_password(psswd1,uid)
+        except Exception as e:
+            raise e
+    
+    @classmethod
+    def get_all_emails(cls,uid):
+        try:
+            return DatosUsuario.get_all_emails(uid)
+        except Exception as e:
+            raise e

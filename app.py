@@ -82,10 +82,60 @@ def perfil():
     password = '*' * len(session["usuario"].password)
     tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
     tiposDoc = NegocioTipoDocumento.get_all()
-    return render_template('perfil.html',usuario = session["usuario"], nivel = nivel, tipoDoc = tipoDoc, password = password, tipoUsuario = tipoUsuario, tiposDoc = tiposDoc)
+    emails = NegocioUsuario.get_all_emails(session["usuario"].id)
+    return render_template('perfil.html',usuario = session["usuario"], nivel = nivel, tipoDoc = tipoDoc, 
+    password = password, tipoUsuario = tipoUsuario, tiposDoc = tiposDoc, emails = emails)
 
 
+@app.route('/perfil/actualizar-direccion', methods = ['GET','POST'])
+def actualizar_direccion():
+    if request.method == 'POST':
+        try:
+            calle = request.form['callePD']
+            altura = request.form['alturaPD']
+            ciudad = request.form['ciudadPD']
+            provincia = request.form['provinciaPD']
+            pais = request.form['paisPD']
+            NegocioDireccion.mod_direccion(session["usuario"].direccion.id, calle,altura,ciudad,provincia,pais,True)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
 
+@app.route('/perfil/actualizar-documento', methods = ['GET','POST'])
+def actualizar_documento():
+    if request.method == 'POST':
+        try:
+            nro = request.form['documentoInput']
+            tipo = request.form['tipoDocSelect']
+            NegocioUsuario.update_documento(nro,tipo,session["usuario"].id)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
+
+@app.route('/perfil/actualizar-email', methods = ['GET','POST'])
+def actualizar_email():
+    if request.method == 'POST':
+        try:
+            email = request.form['email']
+            NegocioUsuario.update_email(email,session["usuario"].id)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
+
+@app.route('/perfil/actualizar-password', methods = ['GET','POST'])
+def actualizar_password():
+    if request.method == 'POST':
+        try:
+            psswd1 = request.form['newPassword1']
+            psswd2 = request.form['newPassword2']
+            NegocioUsuario.update_password(psswd1,psswd2,session["usuario"].id)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
 
 ''' 
     -------
