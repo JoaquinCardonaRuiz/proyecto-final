@@ -45,7 +45,8 @@ def upload_user_img():
             filename = secure_filename(file.filename)
             dir = os.path.join(p, filename)
             file.save(dir)
-            NegocioUsuario.update_img(dir)
+            NegocioUsuario.update_img(session["usuario"].id,dir)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
     return redirect(url_for('perfil'))
 
 
