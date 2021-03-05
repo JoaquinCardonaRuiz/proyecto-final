@@ -2,6 +2,7 @@ from negocio.negocio import Negocio
 import custom_exceptions
 from data.data_articulo import DatosArticulo
 from data.data_valor import DatosValor
+from data.data_cant_insumo import DatosCantInsumo
 from datetime import datetime
 
 class NegocioArticulo(Negocio):
@@ -65,7 +66,7 @@ class NegocioArticulo(Negocio):
                                                     msj_adicional="Error en la capa de Negocio obtieniendo tipos de articulo de la capa de Datos.")
 
     @classmethod
-    def add(cls,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor):
+    def add(cls,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants):
         """
         Agrega un articulo a la BD
         """
@@ -74,15 +75,34 @@ class NegocioArticulo(Negocio):
             margen=float(margen)/100
             idArt = DatosArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal)
             DatosValor.add(idArt,datetime.now().strftime('%Y-%m-%d %H:%M:%S'),valor)
+            for c in cants:
+                DatosCantInsumo.addComponente(c["idIns"],idArt,c["cantidad"])
         except Exception as e:
             raise(e)
 
     @classmethod
-    def update(cls,idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor):
+    def update(cls,idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,ins):
         """
         Actualiza un articulo en la BD
         """
         try:
+            insumos = cls.get_by_id(int(idArt)).insumos
+            for i in ins:
+                if i.idInsumo in [j.idInsumo for j in insumos]:
+                    if i.cantidad == 0:
+                        # delete
+                        DatosCantInsumo.deleteComponente(i.idInsumo,idArt)
+                        print("Delete ins: " + str(i.idInsumo))
+                    elif i.cantidad != [j.cantidad for j in insumos if j.idInsumo == i.idInsumo ][0]:
+                            # update
+                            DatosCantInsumo.updateComponente(i.idInsumo,idArt,i.cantidad)
+                            print("Update ins: " + str(i.idInsumo))
+                elif i.cantidad > 0:
+                        # add
+                        DatosCantInsumo.addComponente(i.idInsumo,idArt,i.cantidad)
+                        print("Add mat: " + str(i.idInsumo))
+            
+
             costoTotal = float(costoInsumos)+float(costoProduccion)+float(otrosCostos)
             margen=float(margen)/100
             DatosArticulo.update(idArt, nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal)
