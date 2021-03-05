@@ -76,7 +76,7 @@ class Usuario:
                 estimacionesCO2=[],
                 estimacionesEnergia=[],
                 email=None,
-                img = ""):
+                img = "/static/img/avatar.png"):
         self.id = id
         self.nroDoc = nroDoc
         self.tipoDoc = tipoDoc
