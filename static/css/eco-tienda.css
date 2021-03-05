@@ -340,10 +340,12 @@
   
   #cantEP:hover{
     cursor: default;
+    user-select: none;
   }
   
   #cantMoney:hover{
     cursor: default;
+    user-select: none;
   }
   
   #priceError{

@@ -34,17 +34,17 @@ function initialRoundValues(){
 }
 
 function setPvalues(value, val_tot_ep, valor_ars, porcentaje_descuento){
-    value = Math.round(value);
-    console.log(val_tot_ep);
-    console.log(valor_ars);
-    console.log(porcentaje_descuento);
-    console.log("----");
+    
     cant_ep = String(Math.round((value) * val_tot_ep /100));
     console.log(cant_ep);
     $("#cantEP").text(cant_ep + " EcoPuntos");
     $("#precioTotal").text(cant_ep);
     
-    cant_ars = String(((100-value) * valor_ars/100*(1-porcentaje_descuento/100)).toFixed(2));
+    cant_ars = ((100-value) * valor_ars/100*(1-porcentaje_descuento/100)).toFixed(2);
+    if (cant_ars < 0){
+        cant_ars = Math.round(cant_ars);
+    }
+    cant_ars = String(cant_ars)
     $("#cantMoney").text("$" + cant_ars + " ARS");
     $("#adicional-pesos").text("$" + cant_ars);
     $("#precioTotalARS").text(" +  $" + cant_ars);
