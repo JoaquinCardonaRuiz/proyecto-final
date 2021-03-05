@@ -177,17 +177,13 @@ class DatosUsuario(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql = ("select email from usuarios where idUsuario != %s")
-            values = (uid,)
-            cls.cursor.execute(sql, values)
+            sql = ("select email from usuarios where idUsuario != {}").format(uid)
+            cls.cursor.execute(sql)
             emails_ = cls.cursor.fetchall()
             emails = []
-            if len(emails) > 0:
-                for email in emails_:
-                    emails.append(email[0])
-                return emails
-            else:
-                return []
+            for email in emails_:
+                emails.append(email[0])
+            return emails
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_usuario.get_all_emails()",
                                                     msj=str(e),

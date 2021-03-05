@@ -137,6 +137,15 @@ def actualizar_password():
             return error(e,"perfil")
     return redirect(url_for('perfil'))
 
+@app.route('/perfil/get-list/<type>', methods = ['GET','POST'])
+def perfil_listas(type):
+    try:
+        if type == 'emails':
+            return jsonify(NegocioUsuario.get_all_emails(session["usuario"].id))
+    except Exception as e:
+        return error(e,"perfil")
+    return render_template('login.html')
+
 ''' 
     -------
     EcoTienda

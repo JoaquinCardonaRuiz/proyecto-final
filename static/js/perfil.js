@@ -20,7 +20,8 @@ var ant_altura = true;
 var ant_calle = true;
 var antPassword = false;
 
-var emails = false;
+var emails = [];
+var documentos = [];
 
 
 function tabHandler(option){
@@ -60,6 +61,7 @@ function openModal(modal){
     }
     else if (modal == "doc"){
         jQuery.noConflict();
+        documentos = docs_list;
         $("#documentoInput").val(ant_doc);
         $("#tipoDocSelect").val(ant_tipo_doc);
         validaDoc( $("#documentoInput").val());
@@ -226,9 +228,14 @@ function enable_disable_doc(){
     
 }
 
-function validateEmail(elementValue){      
+function validateEmail(elementValue){
     var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (elementValue == ""){
+    if (emails.includes(String(elementValue))){
+        email = false;
+        $("#email-error").text("* El email ya se encuentra registrado.")
+        $("#email-error").show();
+    }      
+    else if (elementValue == ""){
         email = false;
         $("#email-error").text("* El email no puede quedar vacío.")
         $("#email-error").show();
@@ -489,9 +496,9 @@ $('#documentoInput').on('keypress', function (event) {
     }
 });
 
-function setEmails(list){
-    list = eval(list)
-    emails = list;
-    alert(emails[0]);
+$.getJSON("/perfil/get-list/emails",function (result){
+    for (var i in result){
+        emails.push(result[i]);
+    }
+});
 
-}
