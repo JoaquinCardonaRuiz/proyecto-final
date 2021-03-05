@@ -109,11 +109,13 @@
     font-size: 35px;
     font-family: 'Hind', sans-serif;
     margin-top: 5% !important;
+    font-weight: 300;
 }
 
 .subheading{
     font-family: 'Hind', sans-serif;
     margin-bottom: -1.5%;
+    font-weight: 300;
 }
 
 #heading-description{
@@ -360,3 +362,235 @@ h2 		 {
     overflow-x: hidden !important;
     max-height: 500px !important;
 }
+
+
+
+/*Profile*/
+
+.emp-profile{
+    padding: 3%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    border-radius: 0.5rem;
+    background: #fff;
+}
+.profile-img{
+    text-align: center;
+}
+.profile-img img{
+    width: 70%;
+    height: 100%;
+}
+.profile-img .file {
+    position: relative;
+    overflow: hidden;
+    margin-top: -20%;
+    width: 70%;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    background: #212529b8;
+}
+.profile-img .file input {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+.profile-head h5{
+    color: #333;
+    font-family: 'Hind', sans-serif;
+}
+.profile-head h6{
+    color: #95C22B;
+    font-family: 'Hind', sans-serif;
+}
+.profile-edit-btn{
+    border: none;
+    border-radius: 1.5rem;
+    width: 70%;
+    padding: 2%;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+    font-family: 'Hind', sans-serif;
+}
+.proile-rating{
+    font-size:  14px;
+    color: #818182;
+    margin-top: 5%;
+}
+.proile-rating span{
+    color: #95C22B;
+    font-size: 15px;
+    font-weight: 600;
+}
+.profile-head .nav-tabs{
+    margin-bottom:5%;
+}
+.profile-head .nav-tabs .nav-link{
+    font-weight:600;
+    border: none;
+}
+.profile-head .nav-tabs .nav-link.active{
+    border: none;
+    border-bottom:2px solid #95C22B;
+}
+.profile-work{
+    padding: 14%;
+    margin-top: -15%;
+}
+.profile-work p{
+    font-size: 16px;
+    color: #a6c22b;
+    font-weight: 500;
+    margin-top: 10%;
+    font-family: 'Hind', sans-serif;
+}
+.profile-work a{
+    text-decoration: none !important;
+    color: #586068;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: 'Hind', sans-serif;
+}
+
+.profile-work a:hover{
+    color: #8c97a3;
+    cursor: pointer;
+}
+
+.profile-work ul{
+    list-style: none;
+    font-family: 'Hind', sans-serif;
+    text-decoration: none;
+}
+.profile-tab label{
+    font-weight: 500;
+    color: #495057;
+    font-family: 'Hind', sans-serif;
+}
+.profile-tab p{
+    font-weight: 500;
+    color: #95C22B;
+    padding-top: 10px;
+    font-family: 'Hind', sans-serif;
+}
+
+#home-tab{
+    box-shadow: none !important;
+    color: #495057 !important;
+    background-color: transparent !important;
+    border-bottom:2px solid #95C22B;
+    font-family: 'Hind', sans-serif;
+}
+
+#profile-tab{
+    box-shadow: none !important;
+    color: #495057 !important;
+    border-bottom: none;
+    background-color: transparent !important;
+    font-family: 'Hind', sans-serif;
+}
+
+#security-tab{
+    box-shadow: none !important;
+    color: #495057 !important;
+    border-bottom: none;
+    background-color: transparent !important;
+    font-family: 'Hind', sans-serif;
+}
+
+.profile-nav-item{
+    background-color: transparent !important;
+}
+
+#start-button{
+    font-size: 15px;
+    font-weight: 450;
+    margin-top: 20px;
+    white-space: nowrap;
+    border-radius: 25px;
+    border: 1px solid #95C22B;
+    padding: 7px;
+    text-align: center;
+    width: 50%;
+    margin-left: 0%;
+    height: 35px;
+    background: transparent;
+    color: #95C22B;
+  }
+
+  select {
+    width: 268px;
+    padding: 5px;
+    padding-right: 15px;
+    font-size: 16px;
+    line-height: 1;
+    border: 0;
+    border-radius: 5px;
+    height: 34px;
+    background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right #ddd;
+    background-position-x: 244px;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+}
+
+.passwd-reqs{
+    margin-top: -10px;
+    font-family: 'Hind', sans-serif;
+    font-weight: 500;
+    margin-left: 10%;
+    font-size: 12px;
+    width: 70%;
+
+}
+
+.password-error{
+    display: none;
+}
+
+#newPassword1, #newPassword2{
+    background-color: white;
+}
+
+#pass-reqs-row{
+    display: none;
+}
+
+#new-pass-container{
+    display: none;
+}
+
+.profile-loading-row{
+    margin-top: 2% !important;
+}
+
+.bottom-row{
+    margin-bottom: -2%;
+}
+
+.field-icon {
+    float: right;
+    margin-left: -20% !important;
+    margin-top: -25px;
+    position: relative;
+    z-index: 2;
+  }
+
+  #password-field{
+      margin-left: -10% !important;
+  }
+
+  .mostrar-psswd-label{
+    font-family: 'Hind', sans-serif;
+    font-size: 14px;
+    color: #404549;
+    margin-top: -1.5%;
+  }
+
+  .emp-profile{
+      display: none;
+      padding-top: 40px;
+  }

@@ -4,7 +4,7 @@ from classes import Horario, CantArticulo
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
 from custom_exceptions import ErrorDePago
-from classes import CantMaterial
+from classes import CantMaterial, CantInsumo
 import traceback
 from flask_session import Session 
 from utils import Utils
@@ -58,7 +58,6 @@ def authentication(email, password):
         return jsonify({"login-state":True})
     except Exception as e:
         return jsonify({"login-state":False})
-
     return render_template('login.html')
 
 @app.route('/logout/<val>', methods = ['GET','POST'])
@@ -67,6 +66,86 @@ def logout(val):
     if val == "true":
         del session["usuario"]
         return redirect(url_for('login'))
+    return render_template('login.html')
+
+''' 
+    ------------------
+    Perfil de usuario
+    ------------------
+'''
+
+@app.route('/perfil', methods = ['GET','POST'])
+def perfil():
+    if valida_session(): return redirect(url_for('login'))
+    nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+    tipoDoc = NegocioTipoDocumento.get_by_id(session["usuario"].tipoDoc)
+    password = '*' * len(session["usuario"].password)
+    tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
+    tiposDoc = NegocioTipoDocumento.get_all()
+    emails = NegocioUsuario.get_all_emails(session["usuario"].id)
+    return render_template('perfil.html',usuario = session["usuario"], nivel = nivel, tipoDoc = tipoDoc, 
+    password = password, tipoUsuario = tipoUsuario, tiposDoc = tiposDoc, emails = emails)
+
+
+@app.route('/perfil/actualizar-direccion', methods = ['GET','POST'])
+def actualizar_direccion():
+    if request.method == 'POST':
+        try:
+            calle = request.form['callePD']
+            altura = request.form['alturaPD']
+            ciudad = request.form['ciudadPD']
+            provincia = request.form['provinciaPD']
+            pais = request.form['paisPD']
+            NegocioDireccion.mod_direccion(session["usuario"].direccion.id, calle,altura,ciudad,provincia,pais,True)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
+
+@app.route('/perfil/actualizar-documento', methods = ['GET','POST'])
+def actualizar_documento():
+    if request.method == 'POST':
+        try:
+            nro = request.form['documentoInput']
+            tipo = request.form['tipoDocSelect']
+            NegocioUsuario.update_documento(nro,tipo,session["usuario"].id)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
+
+@app.route('/perfil/actualizar-email', methods = ['GET','POST'])
+def actualizar_email():
+    if request.method == 'POST':
+        try:
+            email = request.form['email']
+            NegocioUsuario.update_email(email,session["usuario"].id)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
+
+@app.route('/perfil/actualizar-password', methods = ['GET','POST'])
+def actualizar_password():
+    if request.method == 'POST':
+        try:
+            psswd1 = request.form['newPassword1']
+            psswd2 = request.form['newPassword2']
+            NegocioUsuario.update_password(psswd1,psswd2,session["usuario"].id)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
+
+@app.route('/perfil/get-list/<type>', methods = ['GET','POST'])
+def perfil_listas(type):
+    try:
+        if type == 'emails':
+            return jsonify(NegocioUsuario.get_all_emails(session["usuario"].id))
+        if type == 'documentos':
+            return jsonify(NegocioUsuario.get_all_documentos(session["usuario"].id))
+    except Exception as e:
+        return error(e,"perfil")
     return render_template('login.html')
 
 ''' 
@@ -472,7 +551,8 @@ def gestion_articulos():
     try:
         if valida_session(): return redirect(url_for('login'))
         articulos = NegocioArticulo.get_all()
-        return render_template('gestion-articulos.html',articulos=articulos, usuario = session["usuario"])
+        insumos = NegocioInsumo.get_all()
+        return render_template('gestion-articulos.html',articulos=articulos, usuario = session["usuario"],insumos=insumos)
     except Exception as e:
         return error(e,"articulos")
 
@@ -494,9 +574,16 @@ def alta_articulo():
         costoObtencionAlt =     request.form['costoObtencionAlt']
         margen =                request.form['margen']
         valor =                 request.form['valor']
+        cants = []
+        for key in request.form.keys():
+            if "id-" in key:
+                id = request.form[key]
+                cant = float(request.form["cantidad-"+id])
+                if cant > 0:
+                    cants.append({"idIns":id,"cantidad":cant})
 
         try:
-            NegocioArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor)
+            NegocioArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
         except Exception as e:
             return error(e,"articulos")
         return redirect(url_for('gestion_articulos'))
@@ -524,9 +611,14 @@ def edit_articulo():
         costoObtencionAlt =     request.form['costoObtencionAlt']
         margen =                request.form['margen']
         valor =                 request.form['valor']
-
+        cants = []
+        for key in request.form.keys():
+            if "id-" in key:
+                id = request.form[key]
+                cant = float(request.form["cantidad-"+id])
+                cants.append(CantInsumo(cant,int(id)))
         try:
-            NegocioArticulo.update(idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor)
+            NegocioArticulo.update(idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
         except Exception as e:
             return error(e,"articulos")
         return redirect(url_for('gestion_articulos'))
@@ -540,6 +632,30 @@ def baja_articulo(id):
     except Exception as e:
         return error(e,"articulos")
     return redirect(url_for('gestion_articulos'))
+
+
+
+@app.route('/articulos/insumos/<ids>')
+def get_insumos(ids):
+    # esto es probablemente lo mas inseguro que se puede hacer en un sistema web
+    # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
+    # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
+    #TODO: CAMBIAR ESTA LINEA:
+    ids = eval("["+ids+"]")
+    print(ids)
+    if ids == [-1]:
+        return jsonify(False)
+    try:
+        insumos = NegocioInsumo.get_by_id_array(ids)
+        insumos_dic =     [{"nombre":          i.nombre,
+                            "unidadmedida":    i.unidadMedida,
+                            "color":           i.color}
+                            for i in insumos]
+        return jsonify(insumos_dic)
+    except Exception as e:
+        return error(e,"insumos")
+    return redirect(url_for('gestion_articulos'))
+
 
 
 
@@ -625,7 +741,7 @@ def get_materiales(ids):
     #TODO: CAMBIAR ESTA LINEA:
     ids = eval("["+ids+"]")
     print(ids)
-    if ids == -1:
+    if ids == [-1]:
         return jsonify(False)
     try:
         materiales = NegocioMaterial.get_by_id_array(ids)
