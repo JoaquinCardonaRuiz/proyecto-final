@@ -152,6 +152,13 @@ def carrito():
         if "carrito" not in session.keys():
             session["carrito"] = {}
         articulos = NegocioArticulo.get_by_id_array(session["carrito"].keys())
+        articulos_erroneos = []
+        for i in range(len(articulos)):
+            if articulos[i] == False:
+                del session["carrito"][list(session["carrito"].keys())[i]]
+                articulos_erroneos.append(i)
+        for ae in articulos_erroneos:
+            del articulos[ae]
         valor = 0
         for articulo in articulos:
               valor += int(session["carrito"][str(articulo.id)]) * articulo.valor
