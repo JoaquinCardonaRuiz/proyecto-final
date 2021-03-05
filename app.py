@@ -309,8 +309,9 @@ def confirmar_checkout(idPR, totalEP, totalARS):
             raise Exception("Carrito vacio")
     except custom_exceptions.ErrorDeNegocio as e:
         dic["estado"] = e.msj
+        return dic
     except Exception as e:
-        return error(e, "eco-tienda")
+        return dic
 
 
 ''' 
