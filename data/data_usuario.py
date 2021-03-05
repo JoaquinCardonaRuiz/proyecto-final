@@ -222,7 +222,7 @@ class DatosUsuario(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql = ("UPDATE usuarios SET img={} WHERE idUsuario={}").format(img,uid)
+            sql = ("UPDATE usuarios SET img=\"{}\" WHERE idUsuario={}").format(img,uid)
             cls.cursor.execute(sql)
             cls.db.commit()
         except Exception as e:
