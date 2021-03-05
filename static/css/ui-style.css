@@ -109,11 +109,13 @@
     font-size: 35px;
     font-family: 'Hind', sans-serif;
     margin-top: 5% !important;
+    font-weight: 300;
 }
 
 .subheading{
     font-family: 'Hind', sans-serif;
     margin-bottom: -1.5%;
+    font-weight: 300;
 }
 
 #heading-description{
@@ -568,3 +570,27 @@ h2 		 {
 .bottom-row{
     margin-bottom: -2%;
 }
+
+.field-icon {
+    float: right;
+    margin-left: -20% !important;
+    margin-top: -25px;
+    position: relative;
+    z-index: 2;
+  }
+
+  #password-field{
+      margin-left: -10% !important;
+  }
+
+  .mostrar-psswd-label{
+    font-family: 'Hind', sans-serif;
+    font-size: 14px;
+    color: #404549;
+    margin-top: -1.5%;
+  }
+
+  .emp-profile{
+      display: none;
+      padding-top: 40px;
+  }

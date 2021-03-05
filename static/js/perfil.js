@@ -61,7 +61,6 @@ function openModal(modal){
     }
     else if (modal == "doc"){
         jQuery.noConflict();
-        documentos = docs_list;
         $("#documentoInput").val(ant_doc);
         $("#tipoDocSelect").val(ant_tipo_doc);
         validaDoc( $("#documentoInput").val());
@@ -198,7 +197,13 @@ ant_tipo_doc = $("#tipoDocSelect").val();
 ant_email = $("#emailInput").val();
 
 function validaDoc(val){
-    if (val == ""){
+    if (documentos.includes(String(val))){
+        $("#error-doc").text("* El documento ya se encuentra registrado.");
+        $("#error-doc").show();
+        doc = false;
+    }
+    else if (val == ""){
+        $("#error-doc").text("* El documento no puede quedar vacío.");
         $("#error-doc").show();
         doc = false;
     }
@@ -502,3 +507,38 @@ $.getJSON("/perfil/get-list/emails",function (result){
     }
 });
 
+$.getJSON("/perfil/get-list/documentos",function (result){
+    for (var j in result){
+        documentos.push(result[j]);
+    }
+});
+
+$(".form-check-input").click(function() {
+
+    if ($("#oldPasswdInput").attr("type") == "password") {
+        $("#oldPasswdInput").attr("type", "text");
+    } else {
+        $("#oldPasswdInput").attr("type", "password");
+    }
+});
+
+$(".inputPass1").click(function() {
+
+    if ($("#newPassword1").attr("type") == "password") {
+        $("#newPassword1").attr("type", "text");
+    } else {
+        $("#newPassword1").attr("type", "password");
+    }
+});
+
+$(".inputPass2").click(function() {
+
+    if ($("#newPassword2").attr("type") == "password") {
+        $("#newPassword2").attr("type", "text");
+    } else {
+        $("#newPassword2").attr("type", "password");
+    }
+});
+
+$(".emp-profile").fadeIn();
+  

@@ -142,6 +142,8 @@ def perfil_listas(type):
     try:
         if type == 'emails':
             return jsonify(NegocioUsuario.get_all_emails(session["usuario"].id))
+        if type == 'documentos':
+            return jsonify(NegocioUsuario.get_all_documentos(session["usuario"].id))
     except Exception as e:
         return error(e,"perfil")
     return render_template('login.html')

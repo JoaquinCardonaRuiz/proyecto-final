@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="/static/js/perfil.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -21,6 +21,10 @@
 {% extends 'layout.html' %}
 {% block body %}
 <div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="heading-container">
+        <h1 class="heading">Mi perfil</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Configure su ceunta de EcoAsistente y modifique sus datos personales.</span></h6>
+    </div>
     <div class="container" id="table-container">
         <div class="container emp-profile">
             <form method="post">
@@ -383,12 +387,12 @@
             <form action="{{url_for('actualizar_password')}}" method="POST" id="passForm">
                 <div class="row subheader-row" id="subheader-alta-pd" style="margin-bottom: -2%;">
                     <div class="col">
-                        <label class="subheader" id="subheader-alta" style="margin-bottom: 2%;">Ingrese su contraseña actual</label>
+                        <label class="subheader" id="subheader-alta" style="margin-bottom: 2%;">Primero, ingrese su contraseña actual</label>
                     </div>
                 </div>
                 <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px; margin-bottom: -2%;">
                     <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
-                        <input type="text" oninput="checkOldPassword(value);" required autocomplete="off" id="oldPasswdInput" class="email-input" style="width: 90%;">
+                        <input type="password" oninput="checkOldPassword(value);" required autocomplete="off" id="oldPasswdInput" class="email-input" style="width: 90%;">
                         <input type="text" id="idEntidadInput" name="id" hidden>
                         <span class="highlight" style="width: 90%;"></span>
                         <span class="bar" style="width: 90%;"></span>
@@ -396,31 +400,67 @@
                         <p id="email-error" class="modalErrorMessage" style="display: none;">* Contraseña incorrecta</p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col" style="width: 10%;">
+                        <div class="group">
+                            <div class="form-check">
+                              <input style="margin-left: 5%;margin-top: -1%; width: 50px;" class="form-check-input" type="checkbox" id="usuariosCheck" name="ventaUsuario">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" style="width: 90%; margin-left: -75%;">
+                        <p class="mostrar-psswd-label">Mostrar contraseña</p>
+                    </div>
+                </div>
                 <div id="new-pass-container">
                     <div class="row subheader-row" id="subheader-alta-pd" style="margin-bottom: 0%;">
                         <div class="col">
-                            <label class="subheader" id="subheader-alta">Nueva contraseña</label>
+                            <label class="subheader" id="subheader-alta">Ahora, ingrese su nueva contraseña</label>
                         </div>
                     </div>
                     <div class="row" id="fieldsRow1Alta1" style="width: 87%; margin-left:3%">
                         <div class="col">
                             <div class="group" style="margin-left: 10%;">
-                                <input type="text" required id="newPassword1" oninput="checkPassword(value);" onfocus="showReqs();" name="newPassword1" autocomplete="off" disabled> 
+                                <input type="password" required id="newPassword1" oninput="checkPassword(value);" onfocus="showReqs();" name="newPassword1" autocomplete="off" disabled> 
                                 <input type="text" id="idEntidadInput" name="id" hidden>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label class="new-pass-label">Nueva contraseña</label>
                                 <p id="password-1-error" class="password-error modalErrorMessage">* No cumple con los requisitos.</p>
                             </div>
+                            <div class="row" style="margin-top:-9%;">
+                                <div class="col" style="width: 10%;">
+                                    <div class="group">
+                                        <div class="form-check">
+                                          <input style="margin-left: 0%;margin-top: -0.5%; width: 50px;" class="form-check-input inputPass1" type="checkbox" id="usuariosCheck" name="ventaUsuario">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col" style="width: 90%; margin-left: -60%; margin-top: -1%;">
+                                    <p class="mostrar-psswd-label">Mostrar contraseña</p>
+                                </div>
+                            </div>
                         </div>
                         <div class="col">
                             <div class="group" style="margin-left: 10%">      
-                                <input type="text" id="newPassword2" oninput = "noFirstTimeRep(); validaPassRep();" onfocus="ocultaReqs();" name="newPassword2" autocomplete="off" disabled>
+                                <input type="password" id="newPassword2" oninput = "noFirstTimeRep(); validaPassRep();" onfocus="ocultaReqs();" name="newPassword2" autocomplete="off" disabled>
                                 <input type="text" id="idEntidadInput" name="id" hidden>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label class="new-pass-label">Repetir nueva contraseña</label>
                                 <p id="password-2-error" class="password-error modalErrorMessage">* Las contraseñas no coinciden.</p>
+                            </div>
+                            <div class="row" style="margin-top:-9%;">
+                                <div class="col" style="width: 10%;">
+                                    <div class="group">
+                                        <div class="form-check">
+                                          <input style="margin-left: 0%;margin-top: -0.5%; width: 50px;" class="form-check-input inputPass2" type="checkbox" id="usuariosCheck" name="ventaUsuario">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col" style="width: 90%; margin-left: -60%; margin-top: -1%;">
+                                    <p class="mostrar-psswd-label">Mostrar contraseña</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -444,7 +484,6 @@
     </div>
 </div>
 
-<input name="" id="emails" value="{{emails}}">
 <script src="/static/js/perfil.js"></script>
 <script>setPsswd('{{usuario.password}}')</script>
 

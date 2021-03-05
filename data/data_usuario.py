@@ -190,3 +190,24 @@ class DatosUsuario(Datos):
                                                     msj_adicional="Error obteniendo todos los emails registrados distintos al del usuario de la BD.")
         finally:
             cls.cerrar_conexion()
+    
+    @classmethod
+    def get_all_documentos(cls,uid):
+        """
+        Obtiene todos los documentos registrados distintos al del usuario.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("select nroDoc from usuarios where idUsuario != {}").format(uid)
+            cls.cursor.execute(sql)
+            docs_ = cls.cursor.fetchall()
+            docs = []
+            for doc in docs_:
+                docs.append(doc[0])
+            return docs
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.get_all_emails()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo todos los emails registrados distintos al del usuario de la BD.")
+        finally:
+            cls.cerrar_conexion()

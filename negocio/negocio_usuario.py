@@ -113,17 +113,34 @@ class NegocioUsuario(Negocio):
     @classmethod
     def update_email(cls,email,uid):
         try:
+            #Valida RN18
             if cls.check_email(email):
-                DatosUsuario.update_email(email,uid) 
+                if email not in cls.get_all_emails(uid):
+                    DatosUsuario.update_email(email,uid)
+                else:
+                    raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.update_email()",
+                                                        msj="El email no puede estar repetido.")
+            else:
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.update_email()",
+                                                        msj="El email tiene un formato incorrecto.") 
         except Exception as e:
             raise e
     
     @classmethod
     def update_documento(cls,nro,tipo,uid):
         try:
-            #Valida RN 30- El número de documento solo puede ser alfanumérico.
+            #Valida RN30
             if str(nro).isalnum():
-                DatosUsuario.update_documento(nro,tipo,uid) 
+                #Valida RN20
+                if str(nro) not in cls.get_all_documentos(uid):
+                    DatosUsuario.update_documento(nro,tipo,uid)
+                else:
+                    raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.update_documento()",
+                                                        msj="El número de documento no puede estar repetido.")
+            else:
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.update_documento()",
+                                                        msj="El número de documento solo puede ser alfanumérico.")
+ 
         except Exception as e:
             raise e
     
@@ -142,5 +159,12 @@ class NegocioUsuario(Negocio):
     def get_all_emails(cls,uid):
         try:
             return DatosUsuario.get_all_emails(uid)
+        except Exception as e:
+            raise e
+    
+    @classmethod
+    def get_all_documentos(cls,uid):
+        try:
+            return DatosUsuario.get_all_documentos(uid)
         except Exception as e:
             raise e
