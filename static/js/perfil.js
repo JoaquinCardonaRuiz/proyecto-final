@@ -513,7 +513,7 @@ $.getJSON("/perfil/get-list/documentos",function (result){
     }
 });
 
-$(".form-check-input").click(function() {
+$(".oldPassCheck").click(function() {
 
     if ($("#oldPasswdInput").attr("type") == "password") {
         $("#oldPasswdInput").attr("type", "text");
@@ -547,3 +547,4 @@ function upload_img(){
     alert("llegue");
     $("#profileForm").submit();
 }
+

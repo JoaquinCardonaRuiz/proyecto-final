@@ -303,6 +303,7 @@ def confirmar_checkout(idPR, totalEP, totalARS):
             dic["codigo"] = NegocioPedido.add(Utils.carrito_to_list(session["carrito"]),session["usuario"],idPR,float(totalEP),float(totalARS))
             dic["demora"] = NegocioPuntoRetiro.get_by_id(int(idPR)).demoraFija
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session["carrito"] = {}
             return dic
         else:
             raise Exception("Carrito vacio")

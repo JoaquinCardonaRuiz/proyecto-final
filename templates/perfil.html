@@ -2,6 +2,7 @@
 <head>
     <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
     <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/profile.css')}}">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
@@ -14,8 +15,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="/static/js/perfil.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-
 </head>
 
 {% extends 'layout.html' %}
@@ -176,7 +175,7 @@
         </div>
         <div class="modal-body modal-body-card">
             <div class="row profile-loading-row" id="loadingRow">
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                <div class="lds-ring" style="display: none;"><div></div><div></div><div></div><div></div></div>
             </div>
             <div class="row subheader-row" id="subheader-alta-pd">
                 <div class="col">
@@ -273,7 +272,7 @@
         </div>
         <div class="modal-body modal-body-card">
             <div class="row profile-loading-row" id="loadingRow">
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                <div class="lds-ring" style="display: none;"><div></div><div></div><div></div><div></div></div>
             </div>
             <form action="{{url_for('actualizar_documento')}}" method="POST"  id="docForm">
                 <div class="row subheader-row" id="subheader-alta-pd">
@@ -337,8 +336,8 @@
           </button>
         </div>
         <div class="modal-body modal-body-card">
-            <div class="row profile-loading-row" id="loadingRow">
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            <div class="row profile-loading-row" style="display: none;" id="loadingRow">
+                <div class="lds-ring" style="display: none;"><div></div><div></div><div></div><div></div></div>
             </div>
             <form action="{{url_for('actualizar_email')}}" method="POST" id="emailForm">
                 <div class="row subheader-row" id="subheader-alta-pd">
@@ -382,7 +381,7 @@
         </div>
         <div class="modal-body modal-body-card">
             <div class="row" id="loadingRow">
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                <div class="lds-ring" style="display: none;"><div></div><div></div><div></div><div></div></div>
             </div>
             <form action="{{url_for('actualizar_password')}}" method="POST" id="passForm">
                 <div class="row subheader-row" id="subheader-alta-pd" style="margin-bottom: -2%;">
@@ -391,11 +390,11 @@
                     </div>
                 </div>
                 <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px; margin-bottom: -2%;">
-                    <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
-                        <input type="password" oninput="checkOldPassword(value);" required autocomplete="off" id="oldPasswdInput" class="email-input" style="width: 90%;">
+                    <div class="group" style="margin-left: 10%; width: 88%; margin-top: 2%;">
+                        <input type="password" oninput="checkOldPassword(value);" required autocomplete="off" id="oldPasswdInput" class="email-input" style="width: 92.5%;">
                         <input type="text" id="idEntidadInput" name="id" hidden>
-                        <span class="highlight" style="width: 90%;"></span>
-                        <span class="bar" style="width: 90%;"></span>
+                        <span class="highlight" style="width: 92.5%;"></span>
+                        <span class="bar" style="width: 92.5%;"></span>
                         <label style="margin-top: -5px;">Contraseña actual</label>
                         <p id="email-error" class="modalErrorMessage" style="display: none;">* Contraseña incorrecta</p>
                     </div>
@@ -404,7 +403,7 @@
                     <div class="col" style="width: 10%;">
                         <div class="group">
                             <div class="form-check">
-                              <input style="margin-left: 5%;margin-top: -1%; width: 50px;" class="form-check-input" type="checkbox" id="usuariosCheck" name="ventaUsuario">
+                              <input style="margin-left: 5%;margin-top: -1%; width: 50px;" class="form-check-input oldPassCheck" type="checkbox" id="usuariosCheck" name="ventaUsuario">
                             </div>
                         </div>
                     </div>
@@ -418,8 +417,8 @@
                             <label class="subheader" id="subheader-alta">Ahora, ingrese su nueva contraseña</label>
                         </div>
                     </div>
-                    <div class="row" id="fieldsRow1Alta1" style="width: 87%; margin-left:3%">
-                        <div class="col">
+                    <div class="row" id="fieldsRow1Alta1" style="width: 88%; margin-left:3%">
+                        <div class="col" style="width: 95%;">
                             <div class="group" style="margin-left: 10%;">
                                 <input type="password" required id="newPassword1" oninput="checkPassword(value);" onfocus="showReqs();" name="newPassword1" autocomplete="off" disabled> 
                                 <input type="text" id="idEntidadInput" name="id" hidden>
@@ -436,12 +435,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col" style="width: 90%; margin-left: -60%; margin-top: -1%;">
+                                <div class="col" style="width: 90%; margin-left: -60%; margin-top: -0.1%;">
                                     <p class="mostrar-psswd-label">Mostrar contraseña</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col" style="width: 95%;">
                             <div class="group" style="margin-left: 10%">      
                                 <input type="password" id="newPassword2" oninput = "noFirstTimeRep(); validaPassRep();" onfocus="ocultaReqs();" name="newPassword2" autocomplete="off" disabled>
                                 <input type="text" id="idEntidadInput" name="id" hidden>
@@ -458,7 +457,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col" style="width: 90%; margin-left: -60%; margin-top: -1%;">
+                                <div class="col" style="width: 90%; margin-left: -60%; margin-top: -0.1%;">
                                     <p class="mostrar-psswd-label">Mostrar contraseña</p>
                                 </div>
                             </div>
@@ -486,6 +485,7 @@
 
 <script src="/static/js/perfil.js"></script>
 <script>setPsswd('{{usuario.password}}')</script>
+<script>$(".lds-ring").hide();</script>
 
 
 {% endblock %}
