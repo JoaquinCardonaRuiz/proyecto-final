@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<!-- Sidebar import -->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+
+
+
+
+    <!-- Heading -->
+
+    <div class="container" id="heading-container">
+        <h1 class="heading">Producción de Artículos</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Registre y gestione la producción de Artículos.</span></h6>
+    </div>
+    
+
+
+
+    <!-- Alta-->
+
+    <div class="container" id="table-container">
+        <p style="text-align:left;padding-top:2%;padding-left:2%;color:#666;font-size:20px">Registrar producción de Artículo<p>
+        <div class="row d-flex justify-content-center" style="display:block !important">
+            <div class="row" id="row-to-hide-alta"style="padding-top:5%;margin-left:10%">
+                <div class="col">
+                    <div class="group">
+                        <input style="left:-25px;" class="wide-input" type="text" id="codigoInput" name="codigo" >
+                        <span class="highlight"></span>
+                        <span class="bar wide-bar"></span>
+                        <label>Nombre del Artículo</label>
+                        <p id="codigoError" class="modalErrorMessage"></p>
+                        <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">Seleccione el artículo producido.</p>
+                    </div>
+                </div>
+                 <div class="col" style="">
+                    <div class="group">
+                        <input style="left:-25px;" type="text" id="codigoInput" name="codigo" >
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Cantidad</label>
+                        <p id="codigoError" class="modalErrorMessage"></p>
+                        <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">Ingrese la cantidad producida.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="row-to-hide-alta"style="justify-content:right;display:grid;margin-right:13%;">
+                <div class="col">
+                    <div class="group">
+                        <button class="btn btn-outline-primary" style="box-shadow:none;font-size:15px;border-radius:30px;left:25px;" onclick="validarCodigo()">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <hr style="width:50%">
+
+    <!-- Tabla Articulos-->
+
+    <div class="container" id="table-container">
+    <p style="text-align:left;padding-top:2%;padding-left:2%;color:#666;font-size:20px">Historial de Producciones<p>
+        <div class="row d-flex justify-content-center">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Nombre</th>
+                    <th scope="col" class="table-heading">Costo</th>
+                    <th scope="col" class="table-heading">Margen</th>
+                    <th scope="col" class="table-heading">Precio</th>
+                    <th scope="col" class="table-heading">Stock</th>
+                    <th scope="col" class="table-heading">Unidad</th>
+                    <th scope="col" class="table-heading">Publico</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%set nombres = []%}
+                {%for art in articulos%}
+                <!-- Jinja funciona en comentarios... sin esto imprime None en pantalla.-->
+                <!--{{nombres.append(art.nombre)}} -->
+                <tr>
+                    <th scope="row">{{art.nombre}}</th>
+                    <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
+                    <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
+                    <td scope="row">{{art.costoTotal}}</td>
+                    <td scope="row">{{art.margenGanancia * 100}}%</td>
+                    <td scope="row">{{art.valor}}</td>
+                    <td scope="row">{{art.stock}}</td>
+                    <td scope="row">{{art.unidadMedida}}</td>
+                    {% if art.ventaUsuario %}
+                        <td scope="row">Si</td>
+                    {% else %}
+                        <td scope="row">No</td>
+                    {% endif %}
+                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{art.id}}','{{art.nombre}}','{{art.costoProduccion}}','{{art.costoInsumos}}','{{art.costoTotal}}','{{art.valor}}','{{art.margenGanancia}}','{{art.unidadMedida}}','{{art.costoObtencionAlternativa}}','{{art.otrosCostos}}','{{art.imagen}}','{{art.ventaUsuario}}')"></i></td>
+                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{art.id}}','{{art.nombre}}')"></i></td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+<!-- Loading Modal -->
+<!-- Para mostrar mientras se carga un modal-->
+
+  <div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <br><br><br><br><br><br><br><br>
+        <div class="row" id="loadingRow">
+              <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+              </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+<script src="static/js/articulos.js"></script>
+{% endblock %}

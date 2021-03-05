@@ -832,6 +832,28 @@ def verificar_codigo(cod):
     except Exception as e:
         return error(e,"codigo")
 
+
+'''
+    PRODUCCION
+'''
+@app.route('/produccion')
+def gestion_prod():
+    return render_template('elegirProd.html',usuario=session["usuario"])
+
+@app.route('/produccion/insumos')
+def prod_insumos():
+    materiales = NegocioMaterial.get_all()
+    insumos = NegocioInsumo.get_all()
+    return render_template('insumosProd.html',insumos=insumos,materiales=materiales,usuario=session["usuario"])
+
+@app.route('/produccion/articulos')
+def prod_Articulos():
+    insumos = NegocioInsumo.get_all()
+    articulos = NegocioArticulo.get_all()
+    return render_template('articulosProd.html', articulos=articulos,insumos=insumos,usuario=session["usuario"])
+
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
