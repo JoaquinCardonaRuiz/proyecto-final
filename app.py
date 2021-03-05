@@ -62,6 +62,11 @@ def main():
     return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
     nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales, max_level = max_level)
 
+
+@app.route('/layout/datos-usuario')
+def get_datos_usuario():
+    return jsonify({"nombre":session["usuario"].nombre + " " + session["usuario"].apellido, "totalEP":session["usuario"].totalEcopuntos})
+
 ''' 
     -----------------
     Login
