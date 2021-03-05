@@ -3,12 +3,13 @@ from flask.json import JSONEncoder
 from classes import Horario, CantArticulo
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
-from custom_exceptions import ErrorDePago
+import custom_exceptions
 from classes import CantMaterial, CantInsumo
 import traceback
 from flask_session import Session 
 from utils import Utils
 from werkzeug.utils import secure_filename
+from pathlib import Path
 import os
 
 
@@ -17,16 +18,13 @@ import os
 app = Flask(__name__)
 app.secret_key = 'SecretKeyForSigningCookies'
 app.config['SESSION_TYPE'] = 'filesystem'
-UPLOAD_FOLDER = '/path/to/the/uploads'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #Session
 app.secret_key = 'myscretkey'
 Session(app)
 
-
-def upload_file():
+@app.route('/perfil/usrimg',methods=["GET","POST"])
+def upload_user_img():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -39,8 +37,16 @@ def upload_file():
             flash('No selected file')
             return redirect(request.url)
         if file:
+            p = Path('static') / 'img' / 'users' / str(session["usuario"].id) / "profile"
+            try:
+                os.makedirs(p)
+            except:
+                pass
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            dir = os.path.join(p, filename)
+            file.save(dir)
+            NegocioUsuario.update_img(dir)
+    return redirect(url_for('perfil'))
 
 
 
@@ -291,13 +297,17 @@ def carrito():
 
 @app.route('/eco-tienda/checkout/confirmar/<idPR>/<totalEP>/<totalARS>')
 def confirmar_checkout(idPR, totalEP, totalARS):
+    dic = {"estado": "exito", "codigo": None,"demora": None}
     try:
         if "carrito" in session.keys() and session["carrito"] != {}:
-            NegocioPedido.add(Utils.carrito_to_list(session["carrito"]),session["usuario"],idPR,float(totalEP),float(totalARS))
+            dic["codigo"] = NegocioPedido.add(Utils.carrito_to_list(session["carrito"]),session["usuario"],idPR,float(totalEP),float(totalARS))
+            dic["demora"] = NegocioPuntoRetiro.get_by_id(int(idPR)).demoraFija
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
-            return jsonify("exito")
+            return dic
         else:
             raise Exception("Carrito vacio")
+    except custom_exceptions.ErrorDeNegocio as e:
+        dic["estado"] = e.msj
     except Exception as e:
         return error(e, "eco-tienda")
 

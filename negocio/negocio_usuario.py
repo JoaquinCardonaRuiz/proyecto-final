@@ -66,11 +66,17 @@ class NegocioUsuario(Negocio):
 
 
     @classmethod
-    def useEP(cls,id, totalEP):
+    def checkEP(cls,id,totalEP):
         user = DatosUsuario.get_by_id(id)
         nueva_cant_ep = user.totalEcopuntos - totalEP
         if nueva_cant_ep < 0:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.useEP()",msj="EP insuficientes para realizar pedido")
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.useEP()",msj="error-ep",msj_adicional="EP insuficientes para realizar pedido")
+
+
+    @classmethod
+    def useEP(cls,id, totalEP):
+        user = DatosUsuario.get_by_id(id)
+        nueva_cant_ep = user.totalEcopuntos - totalEP
         ep_restantes = totalEP
         deps_ordenados = sorted(user.depositosActivos, key=lambda x: x.fechaDeposito)
         
@@ -145,6 +151,7 @@ class NegocioUsuario(Negocio):
             raise e
     
     
+    
     @classmethod
     def update_password(cls,psswd1,psswd2,uid):
         try:
@@ -152,6 +159,14 @@ class NegocioUsuario(Negocio):
             if psswd1 == psswd2:
                 if cls.check_password(psswd1):
                     DatosUsuario.update_password(psswd1,uid)
+        except Exception as e:
+            raise e
+
+
+    @classmethod
+    def update_img(cls,uid,img):
+        try:
+            DatosUsuario.update_img(uid,img)
         except Exception as e:
             raise e
     

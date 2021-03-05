@@ -56,6 +56,7 @@ class Usuario:
             el usuario.
         estimacionesEnergia (Estimacion[]): Arreglo de estimaciones de consumo de energía
             recibidas por el usuario.
+        img (String): ruta a imagen de perfil
     """
 
     def __init__(self, 
@@ -74,7 +75,8 @@ class Usuario:
                 recomendacionesPlantas=[],
                 estimacionesCO2=[],
                 estimacionesEnergia=[],
-                email=None):
+                email=None,
+                img = "/static/img/avatar.png"):
         self.id = id
         self.nroDoc = nroDoc
         self.tipoDoc = tipoDoc
@@ -92,6 +94,7 @@ class Usuario:
         self.estimacionesCO2 = estimacionesCO2
         self.estimacionesEnergia = estimacionesEnergia
         self.email = email
+        self.img = img
 
     def comprobarVencimientoDepositos(self,):
         """ """

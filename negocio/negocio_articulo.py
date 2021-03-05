@@ -134,11 +134,15 @@ class NegocioArticulo(Negocio):
 
     @classmethod
     def disminuirStock(cls,idTA,cant):
+        nueva_cant = DatosArticulo.get_by_id(idTA) - cant
+        DatosArticulo.updateStock(idTA,nueva_cant)
+
+    @classmethod
+    def checkStock(cls,idTA,cant):
         articulo = DatosArticulo.get_by_id(idTA)
         nueva_cant = articulo.stock - cant
         if nueva_cant < 0:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.disminuirStock()",msj="Stock insuficiente para realizar pedido")
-        DatosArticulo.updateStock(idTA,nueva_cant)
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.disminuirStock()",msj="error-stock",msj_adicional="Stock insuficiente para realizar pedido")
 
 
     @classmethod

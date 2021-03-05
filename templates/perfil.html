@@ -27,14 +27,15 @@
     </div>
     <div class="container" id="table-container">
         <div class="container emp-profile">
-            <form method="post">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/>
                             <div class="file btn btn-lg btn-primary">
                                 Cambiar foto
-                                <input type="file" name="file"/>
+                                <form action="{{url_for('upload_user_img')}}" method="POST" id="profileForm" enctype="multipart/form-data">
+                                    <input id="fileInput" type="file" name="file" oninput="upload_img();"/>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -158,7 +159,6 @@
                         </div>
                     </div>
                 </div>
-            </form>           
         </div>
     </div>
 </div>

@@ -23,7 +23,8 @@ class DatosUsuario(Datos):
                 usuarios.idTipoUsuario, \
                 usuarios.idTipoDoc, \
                 usuarios.idDireccion, \
-                usuarios.idNivel \
+                usuarios.idNivel, \
+                usuarios.img \
                 from usuarios where email = %s and password = %s")
             values = (email, password)
             cls.cursor.execute(sql,values)
@@ -35,7 +36,7 @@ class DatosUsuario(Datos):
                 da = [d for d in depositos if d.isActivo()]
                 dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10])
                 usuario.calcularTotalEcopuntos()
                 return usuario
             else:
@@ -69,7 +70,8 @@ class DatosUsuario(Datos):
                 usuarios.idTipoUsuario, \
                 usuarios.idTipoDoc, \
                 usuarios.idDireccion, \
-                usuarios.idNivel \
+                usuarios.idNivel, \
+                usuarios.img \
                 from usuarios where usuarios.idUsuario = {}").format(id)
             cls.cursor.execute(sql)
             usuarios = cls.cursor.fetchall()
@@ -80,7 +82,7 @@ class DatosUsuario(Datos):
                 da = [d for d in depositos if d.isActivo()]
                 dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10])
                 usuario.calcularTotalEcopuntos()
                 return usuario
             else:
@@ -209,5 +211,23 @@ class DatosUsuario(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_usuario.get_all_emails()",
                                                     msj=str(e),
                                                     msj_adicional="Error obteniendo todos los emails registrados distintos al del usuario de la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def update_img(cls,uid,img):
+        """
+        Asigna una nueva imagen a un usuario
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE usuarios SET img={} WHERE idUsuario={}").format(img,uid)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.update_img()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando la imagen de un usuario en la BD.")
         finally:
             cls.cerrar_conexion()

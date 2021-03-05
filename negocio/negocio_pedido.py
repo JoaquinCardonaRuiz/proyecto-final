@@ -11,6 +11,11 @@ import custom_exceptions
 class NegocioPedido(Negocio):
     @classmethod
     def add(cls,carrito,usuario,idPR,totalEP,totalARS):
+        #verificaciones
+        for art in carrito:
+            NegocioArticulo.checkStock(art.idTipoArticulo,art.cantidad)
+        NegocioUsuario.checkEP(usuario.id,totalEP)
+
         #Pedido
         puntoRetiro = DatosPuntoRetiro.get_by_id(idPR)
         fechaEnc = datetime.now()
