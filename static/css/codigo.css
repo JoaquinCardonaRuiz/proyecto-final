@@ -41,10 +41,11 @@
   }
   
   .ticket-code-error{
-    font-size: 20px;
+    font-size: 25px;
     font-family: 'Montserrat', sans-serif !important;
     text-align: center;
     margin-top: 5%;
+    letter-spacing: 7px;
     color: rgb(88, 88, 88);
   }
   
@@ -128,4 +129,11 @@
     border-radius: 5px;;
     height: fit-content;
     box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.1);
-  }
+    display: none;
+}
+
+#successful-row, #repeated-row, #invalid-row{
+    padding-top: 60px;
+    padding-bottom: 40px;
+    display: none;
+}

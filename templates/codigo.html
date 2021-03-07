@@ -44,19 +44,19 @@
     <!-- Tabla Entidades-->
 
     <div class="container" id="table-container">
-        <h3 class="ticket-title-code">Ingresá el código que recibiste al realizar el depósito:</h3>          
+        <h3 class="ticket-title-code mb-2" style="padding-top: 50px;">Ingresá el código que recibiste al realizar el depósito:</h3>          
         <div class="row d-flex justify-content-center mt-4">
-            {%for i in range(0,18)%}
-            <div class="group" style="width:3.3rem !important; margin: 0 !important;">
+            {%for i in range(0,16)%}
+            <div class="group mt-2" style="width:3.6rem !important; margin: 0 !important;">
                 <input maxlength="1" class="code-input" type="text" id="{{i}}" name="codigo">
-                <span class="highlight" style="width: 45px !important"></span>
-                <span class="bar wide-bar" style="width: 45px !important"></span>
+                <span class="highlight" style="width: 51px !important"></span>
+                <span class="bar wide-bar" style="width: 51px !important"></span>
                 
             </div>
             {%endfor%}
         </div>
         <div class="row d-flex justify-content-center mt-4">
-            <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">El código de descuento tiene 18 caracteres.</p>
+            <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">El código de depósito tiene 16 caracteres.</p>
         </div>
         <div class="row d-flex justify-content-center">
             <button type="button" class="btn" id="ecoasistente-btn-code" data-mdb-ripple-color="dark" onclick="validarCodigo();" disabled>
@@ -66,57 +66,57 @@
     </div>
 
     <div class="container" id="table-container2">
-        <div class="row" style="padding-top: 50px;">
+        <div class="row" style="padding-top: 50px;" id="invalid-row">
             <div class="container ticket-container">
                 <h3 class="ticket-title error-title">¡Ups! Parece que el código no es válido.</h3>          
                 <p class="ticket-code-error" id="code">
                    Acá va el código</span>
                 </p>
                 <p class="ticket-thanks">Si te has equivocado, puedes intentarlo nuevamente</p>
-                <p class="ticket-subtitle">Recordá llevar tus residuos a los Puntos de depósito para obtener nuevos códigos.</p> 
+                <p class="ticket-subtitle">Recordá llevar tus residuos a los Puntos de depósito para obtener nuevos códigos y sumar EcoPuntos.</p> 
             </div>
             <div class="row" style="width: 80%; margin-left: 10%; margin-bottom: 3%;">
-                <button type="button" class="btn primary-btn error-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/')">
+                <button type="button" class="btn primary-btn error-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/codigo')">
                     Ingresar otro código
                   </button>
-                  <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/simulador')">
+                  <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/main')">
                     Volver a Mi Panel 
                   </button>
             </div>
         </div>
-        <div class="row" style="padding-top: 50px;">
+        <div class="row" style="padding-top: 50px;" id="repeated-row">
             <div class="container ticket-container">
                 <h3 class="ticket-title error-title">¡Ups! Parece que el código ya fue utilizado.</h3>          
-                <p class="ticket-code-error" id="code">
+                <p class="ticket-code-error" id="code-1">
                    Acá va el código</span>
                 </p>
                 <p class="ticket-thanks">Lamentamos mucho la situación</p>
                 <p class="ticket-subtitle">Recordá que los EcoPuntos de un código solo pueden ser acreditados una sola vez.</p> 
             </div>
             <div class="row" style="width: 80%; margin-left: 10%; margin-bottom: 3%;">
-                <button type="button" class="btn primary-btn error-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/')">
+                <button type="button" class="btn primary-btn error-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/codigo')">
                     Ingresar otro código
                   </button>
-                  <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/simulador')">
+                  <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/main')">
                     Volver a Mi Panel 
                   </button>
             </div>
         </div>
-        <div class="row" id="successful-order">
+        <div class="row" id="successful-row">
             <div class="container ticket-container">
               <h3 class="ticket-title">¡Su código se ha validado con éxito!</h3>          
               <p class="ticket-code" id="code">
-                  Hemos acreditado a su cuenta <span id="codPedido">22</span> EcoPuntos
+                  Hemos acreditado a su cuenta <span id="cantEPdep">22</span> EcoPuntos
               </p>
               <p class="ticket-thanks">¡Muchas gracias por su depósito!</p>
-              <p class="ticket-subtitle">Ya puede ver los EcoPuntos reflejados en su cuenta, y están disponibles para su utilización.</p>
+              <p class="ticket-subtitle">Ya podés ver los EcoPuntos reflejados en tu cuenta, y están disponibles para su utilización.</p>
   
             </div>
             <div class="row" style="width: 80%; margin-left: 10%; margin-bottom: 3%;">
-                <button type="button" class="btn primary-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/')">
+                <button type="button" class="btn primary-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/codigo')">
                     Ingresar otro código
                   </button>
-                  <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/simulador')">
+                  <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/depositos/usuario')">
                     Ir a mis depósitos
                   </button>
             </div>
@@ -125,12 +125,13 @@
         </div>
         
     </div>
-    <div class="row" id="loadingRowPuntos">
+    <div class="row" id="loadingRowCodigo" style="display: none;">
         <div id="lds-ring-big" class="lds-ring"><div></div><div></div><div></div><div></div></div>
     </div>
-    <div class="row d-flex justify-content-center">
+    <div class="row d-flex justify-content-center" id="loading-text-row">
         <p id="loading-text-codigo"></p>
     </div>
+    
 
         
 </div>

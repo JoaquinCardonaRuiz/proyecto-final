@@ -87,3 +87,16 @@
   display: none;
   font-size: 18px;
 }
+
+#loadingRowCodigo{
+  display: none;
+  margin-top:15%;
+  width: calc(100% - 15.5rem);
+	margin-left: 15.5rem;
+}
+
+#loading-text-row{
+  display: none;
+  width: calc(100% - 15.5rem);
+	margin-left: 15.5rem;
+}

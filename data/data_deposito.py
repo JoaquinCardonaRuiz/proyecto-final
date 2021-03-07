@@ -102,7 +102,6 @@ class DatosDeposito(Datos):
             cls.cursor.execute(sql)
             cls.db.commit()
             rwcount = int(cls.cursor.rowcount)
-            print("El rwcount es: " + str(rwcount))
             if rwcount > 0:
                 sql = ("SELECT cantidad FROM depositos join ecoPuntos using (idEcoPuntos) where codigo = %s")
                 values = (cod,)
@@ -110,11 +109,15 @@ class DatosDeposito(Datos):
                 cantEP = cls.cursor.fetchall()[0][0]
                 return cantEP
             else:
-                return -1
+                dep = cls.get_by_codigo(cod)
+                if dep == False:
+                    return 0
+                else:
+                    return -1
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.update_estado()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.verificar_codigo()",
                                                     msj=str(e),
-                                                    msj_adicional="Error actualizando un pedido en la BD.")
+                                                    msj_adicional="Error verificando un código de depósito en la BD.")
         finally:
             cls.cerrar_conexion()
     
@@ -126,10 +129,10 @@ class DatosDeposito(Datos):
         try:
             cls.abrir_conexion()
             if limit == False:
-                sql = ("Select idDeposito, codigo, fechaReg, fechaDep, idMaterial, idUsuario, idPunto, idEcoPuntos, cant from depositos where idUsuario = %s")
+                sql = ("Select idDeposito, codigo, fechaReg, fechaDep, idMaterial, idUsuario, idPunto, idEcoPuntos, cant from depositos where idUsuario = %s order by fechaDep DESC")
                 values = (uid,)
             else:
-                sql = ("Select idDeposito, codigo, fechaReg, fechaDep, idMaterial, idUsuario, idPunto, idEcoPuntos, cant from depositos where idUsuario = %s LIMIT %s")
+                sql = ("Select idDeposito, codigo, fechaReg, fechaDep, idMaterial, idUsuario, idPunto, idEcoPuntos, cant from depositos where idUsuario = %s order by fechaDep DESC LIMIT %s")
                 values = (uid,limit)
             cls.cursor.execute(sql, values)
             depositos_ = cls.cursor.fetchall()
@@ -145,6 +148,33 @@ class DatosDeposito(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_by_id_usuario()",
                                                     msj=str(e),
                                                     msj_adicional="Obtiene los depósitos correspondientes a un usuario por su ID.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
+        
+    @classmethod
+    def get_by_codigo(cls,cod,noClose=False):
+        """
+        Obtiene los depósitos correspondientes a un código.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("Select idDeposito, codigo, fechaReg, fechaDep, idMaterial, idUsuario, idPunto, idEcoPuntos, cant from depositos where codigo = %s")
+            values = (cod,)
+            cls.cursor.execute(sql, values)
+            dep = cls.cursor.fetchone()
+            if dep == None:
+                return False
+            else:
+                mat = CantMaterial(dep[8], dep[4])
+                ep = DatosEcoPuntos.get_by_id(dep[7])
+                ep.cantidad = int(ep.cantidad) 
+                return Deposito(dep[0], dep[1],mat, dep[6], dep[3].strftime("%d/%m/%Y"), ep, dep[2])
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_by_codigo()",
+                                                    msj=str(e),
+                                                    msj_adicional="Obtiene los depósitos correspondientes a un código.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
