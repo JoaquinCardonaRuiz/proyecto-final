@@ -121,7 +121,6 @@ function hacerPedido(){
     
     $.getJSON("/eco-tienda/checkout/confirmar/" + String(id_pr) + "/"+ String(cant_ep) + "/" + String(cant_ars) ,function (result){
         jQuery.noConflict();
-        alert("Terminé");
         $(".loading-content").fadeOut();
         $("#loading-text").remove();
         if(result["estado"] == "ok"){

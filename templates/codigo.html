@@ -2,6 +2,8 @@
 <head>
     <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
     <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/codigo.css')}}">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <meta charset="utf-8">
@@ -11,6 +13,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.3/clipboard.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
 </head>
 
 <!-- Sidebar import -->
@@ -34,23 +44,95 @@
     <!-- Tabla Entidades-->
 
     <div class="container" id="table-container">
-        <h5 style="text-align:center;padding-top:3%">Ingrese su Código de Descuento aquí:</h5>
-        <div class="row d-flex justify-content-center">
-            <div class="row" id="row-to-hide-alta"style="padding-top:7%">
-                <div class="col" style="display:inline">
-                    <div class="group">
-                        <input style="display:inline;left:-25px;" class="wide-input" type="text" id="codigoInput" name="codigo" >
-                        <button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;display:inline;left:25px;" onclick="validarCodigo()">Validar Código</button>
-                        <span class="highlight"></span>
-                        <span class="bar wide-bar"></span>
-                        <label>Código de Descuento</label>
-                        <p id="codigoError" class="modalErrorMessage"></p>
-                        <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">El código de descuento tiene 18 caracteres.</p>
-                    </div>
-                    
-                </div>
+        <h3 class="ticket-title-code">Ingresá el código que recibiste al realizar el depósito:</h3>          
+        <div class="row d-flex justify-content-center mt-4">
+            {%for i in range(0,18)%}
+            <div class="group" style="width:3.3rem !important; margin: 0 !important;">
+                <input maxlength="1" class="code-input" type="text" id="{{i}}" name="codigo">
+                <span class="highlight" style="width: 45px !important"></span>
+                <span class="bar wide-bar" style="width: 45px !important"></span>
+                
             </div>
+            {%endfor%}
+        </div>
+        <div class="row d-flex justify-content-center mt-4">
+            <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">El código de descuento tiene 18 caracteres.</p>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <button type="button" class="btn" id="ecoasistente-btn-code" data-mdb-ripple-color="dark" onclick="validarCodigo();" disabled>
+                Validar código de depósito
+            </button>
+        </div>
     </div>
+
+    <div class="container" id="table-container2">
+        <div class="row" style="padding-top: 50px;">
+            <div class="container ticket-container">
+                <h3 class="ticket-title error-title">¡Ups! Parece que el código no es válido.</h3>          
+                <p class="ticket-code-error" id="code">
+                   Acá va el código</span>
+                </p>
+                <p class="ticket-thanks">Si te has equivocado, puedes intentarlo nuevamente</p>
+                <p class="ticket-subtitle">Recordá llevar tus residuos a los Puntos de depósito para obtener nuevos códigos.</p> 
+            </div>
+            <div class="row" style="width: 80%; margin-left: 10%; margin-bottom: 3%;">
+                <button type="button" class="btn primary-btn error-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/')">
+                    Ingresar otro código
+                  </button>
+                  <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/simulador')">
+                    Volver a Mi Panel 
+                  </button>
+            </div>
+        </div>
+        <div class="row" style="padding-top: 50px;">
+            <div class="container ticket-container">
+                <h3 class="ticket-title error-title">¡Ups! Parece que el código ya fue utilizado.</h3>          
+                <p class="ticket-code-error" id="code">
+                   Acá va el código</span>
+                </p>
+                <p class="ticket-thanks">Lamentamos mucho la situación</p>
+                <p class="ticket-subtitle">Recordá que los EcoPuntos de un código solo pueden ser acreditados una sola vez.</p> 
+            </div>
+            <div class="row" style="width: 80%; margin-left: 10%; margin-bottom: 3%;">
+                <button type="button" class="btn primary-btn error-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/')">
+                    Ingresar otro código
+                  </button>
+                  <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/simulador')">
+                    Volver a Mi Panel 
+                  </button>
+            </div>
+        </div>
+        <div class="row" id="successful-order">
+            <div class="container ticket-container">
+              <h3 class="ticket-title">¡Su código se ha validado con éxito!</h3>          
+              <p class="ticket-code" id="code">
+                  Hemos acreditado a su cuenta <span id="codPedido">22</span> EcoPuntos
+              </p>
+              <p class="ticket-thanks">¡Muchas gracias por su depósito!</p>
+              <p class="ticket-subtitle">Ya puede ver los EcoPuntos reflejados en su cuenta, y están disponibles para su utilización.</p>
+  
+            </div>
+            <div class="row" style="width: 80%; margin-left: 10%; margin-bottom: 3%;">
+                <button type="button" class="btn primary-btn" id="ecoasistente-btn" data-mdb-ripple-color="dark" onclick="redirect('/')">
+                    Ingresar otro código
+                  </button>
+                  <button type="button" class="btn secondary-btn" id="otro-deposito-btn" data-mdb-ripple-color="dark" onclick="redirect('/simulador')">
+                    Ir a mis depósitos
+                  </button>
+            </div>
+            
+          </div>
+        </div>
+        
+    </div>
+    <div class="row" id="loadingRowPuntos">
+        <div id="lds-ring-big" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <p id="loading-text-codigo"></p>
+    </div>
+
+        
 </div>
 <script src="/static/js/codigo.js"></script>
 {% endblock %}

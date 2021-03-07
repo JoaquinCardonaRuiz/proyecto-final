@@ -79,3 +79,11 @@
   margin-left: -11.5%;
   margin-top: 100px;
 }
+
+#loading-text-codigo{
+  margin-top: 2.5%;
+  margin-left: -0.5%;
+  font-family: 'Roboto', sans-serif;
+  display: none;
+  font-size: 18px;
+}

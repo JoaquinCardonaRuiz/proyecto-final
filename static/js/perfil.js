@@ -544,7 +544,6 @@ $(".emp-profile").fadeIn();
   
 
 function upload_img(){
-    alert("llegue");
     $("#profileForm").submit();
 }
 
