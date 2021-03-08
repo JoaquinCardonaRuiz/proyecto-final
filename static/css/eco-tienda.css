@@ -413,6 +413,11 @@
     width: 100%;
     height:348px;
   }
+
+  .map-pr-encontrar{
+    width: 100%;
+    height:390px;
+  }
   
   .cards-pr-col{
     max-height: 410px;

@@ -194,6 +194,25 @@ def perfil_listas(type):
     return render_template('login.html')
 
 ''' 
+    -----------------
+    Encontrar Puntos de Depósito y Puntos de Retiro
+    -----------------
+'''
+
+@app.route('/encontrar-punto-deposito', methods = ['GET','POST'])
+def encontrar_pd():
+    puntos_dep = NegocioPuntoDeposito.get_all()
+    return render_template('encontrar-pd.html', puntos_dep = puntos_dep)
+
+@app.route('/encontrar-punto-retiro', methods = ['GET','POST'])
+def encontrar_pr():
+    puntos_ret = NegocioPuntoRetiro.get_all()
+    return render_template('encontrar-pr.html', puntos_ret = puntos_ret)
+
+
+
+
+''' 
     -------
     EcoTienda
     -------
@@ -923,10 +942,32 @@ def pedidosPR(id):
 def pedidosUser():
     try:
         pedidos = NegocioPedido.get_by_user_id(session["usuario"].id)
+        orden = {"listo":0,"preparado":1,"pendiente":2,"cancelado":3}
+        pedidos_ordenados = sorted(pedidos, key=lambda x: orden[x.estado])
         puntosRetiro = NegocioPuntoRetiro.get_all()
-        return render_template('pedidosUser.html',pedidos = pedidos,puntosRetiro=puntosRetiro, usuario=session["usuario"])
+        return render_template('pedidosUser.html',pedidos = pedidos_ordenados,puntosRetiro=puntosRetiro, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
+
+
+@app.route('/pedidos/articulos/<ids>')
+def get_articulos_pedido(ids):
+    # esto es probablemente lo mas inseguro que se puede hacer en un sistema web
+    # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
+    # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
+    #TODO: CAMBIAR ESTA LINEA:
+    try:
+        ids = eval("["+ids+"]")
+        print(ids)
+        articulos = NegocioArticulo.get_by_id_array(ids)
+        print("tengo articulos")
+        articulos_dic =  [{"nombre":          a.nombre,
+                            "unidadmedida":    a.unidadMedida}
+                            for a in articulos]
+        return jsonify(articulos_dic)
+    except Exception as e:
+        return error(e,"articulos")
+    return redirect(url_for('gestion_articulos'))
 
 
 @app.route('/gestion-pedidos/actualizar', methods = ['GET','POST'])

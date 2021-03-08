@@ -44,9 +44,11 @@ class NegocioArticulo(Negocio):
         """
             Obtiene TiposArticulos de la BD en base a una lista de IDs
         """
+        print("entre a negocioarticulo")
         try:
             articulos = []
             for id in ids:
+                print("getting art: "+str(id))
                 articulos.append(cls.get_by_id(int(id)))
             return articulos
         except Exception as e:
