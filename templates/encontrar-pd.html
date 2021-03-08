@@ -27,13 +27,16 @@
 {% extends 'layout.html' %}
 {% block body %}
 <div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="heading-container">
+        <h1 class="heading">Encontrar Punto de Depósito</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Seleccione un punto de depósito para ver su ubicación.</span></h6>
+    </div>
     <div class="container" id="table-container">
         <!--Grid column-->
             <div id="punto-retiro-content" style="display: block;">
         
                 <!-- Card -->
                 <div class="mb-3" style="width: 95%; margin-right: 2.5%; margin-left: 2.5%;">
-                    <h5 class="mb-4">Seleccionar Punto de Depósito</h5>
                     <div class="row">
                         <div class="col cards-pr-col" style="width:100% !important; min-width: 400px;">
                             {%set pd_id = []%}
