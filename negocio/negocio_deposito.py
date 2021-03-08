@@ -1,4 +1,5 @@
 from negocio.negocio import Negocio
+from data.data_material import DatosMaterial
 import custom_exceptions
 from data.data_deposito import DatosDeposito
 
@@ -9,12 +10,9 @@ class NegocioDeposito(Negocio):
         """
         Añade un nuevo depósito.
         """
-        #Conexión con el motor de BD.
         try:
+            DatosMaterial.addStock(id_mat,cantidad)
             return DatosDeposito.add(int(id_mat),int(id_pd),float(cantidad),float(cant_ep))
-
-        except custom_exceptions.ErrorDeConexion as e:
-            raise e
         except Exception as e:
             raise e
 
