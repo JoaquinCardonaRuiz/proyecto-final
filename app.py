@@ -59,15 +59,17 @@ def start():
 def main():
     if valida_session(): return redirect(url_for('login'))
     else: 
-        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel, True)
         pedidos = NegocioPedido.get_by_user_id(session["usuario"].id, 5)
         puntosRetiro = NegocioPuntoRetiro.get_all()
         depositos = NegocioDeposito.get_by_id_usuario(session["usuario"].id, 5)
         puntosDep = NegocioPuntoDeposito.get_all()
         materiales = NegocioMaterial.get_all()
         max_level = NegocioNivel.get_min_max_niveles()[1]
+        tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
+
     return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
-    nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales, max_level = max_level)
+    nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales, max_level = max_level, tipoUsuario = tipoUsuario)
 
 
 @app.route('/layout/datos-usuario')

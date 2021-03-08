@@ -34,3 +34,8 @@ $(document).ready(function ($) {
 });
 
 $("#top-container").fadeIn(500);
+
+function redirect(link){
+    window.location.href = link;
+}
+

@@ -28,30 +28,31 @@
                 <div class="row text-center" style="width: 100%;">
                     <p class="mi-cuenta">Mi cuenta</p>
                     <hr style="width: 100%; margin-left: 2.5%;">
-
-                    <div class="col ml-4 mt-2 mb-3" style="width: 60%;">
-                        <div class="row">
-                            <p class="mi-cuenta">Mis estadísticas</p>
-                        </div>
-                        <div class="row" style="margin-top: 5%;">
+                    <div class="col ml-4 mt-4 mb-3" style="width: 60%; margin-top: 3.2% !important;">
+                        <div class="row d-flex justify-content-center" style="margin-top: 5%;">
                             <div class="col" style="margin-right: -20%;">
-                                <p class="info-result">10%</p>
-                                <p class="info-label">Mi descuento</p>
+                                <p class="info-result">{{nivel.nombre}}</p>
+                                <p class="info-label">Mi nivel</p>
                             </div>
                             <div class="col">
-                                <p class="info-result">3</p>
-                                <p class="info-label">Cantidad de Pedidos</p>
+                                <p class="info-result">{{nivel.descuento}}%</p>
+                                <p class="info-label">Mi descuento</p>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row d-flex justify-content-center">
                             <div class="col" style="margin-right: -20%;">
-                                <p class="info-result">10</p>
+                                <p class="info-result">{{depositos|length}}</p>
                                 <p class="info-label">Cantidad de Depósitos</p>
                             </div>
                             <div class="col">
-                                <p class="info-result">3</p>
+                                <p class="info-result">{{pedidos|length}}</p>
                                 <p class="info-label">Cantidad de Pedidos</p>
                             </div>
+                        </div>
+                        <div class="row d-flex justify-content-center">
+                            <button type="button" class="btn" id="ecoasistente-btn-main" data-mdb-ripple-color="dark" onclick="redirect('/eco-tienda');">
+                                <i class="fa fa-shopping-bag mr-2 fa-fw" style="color: white;"></i>Visitar la EcoTienda
+                            </button>
                         </div>
                         
                     </div>

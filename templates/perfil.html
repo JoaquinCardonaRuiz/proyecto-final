@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
-                            <img src="{{usuario.img}}" alt=""/>
+                            <img src="{{usuario.img}}" onerror="if (this.src != '/static/img/avatar.png') this.src = '/static/img/avatar.png';">
                             <div class="file btn btn-lg btn-primary">
                                 Cambiar foto
                                 <form action="{{url_for('upload_user_img')}}" method="POST" id="profileForm" enctype="multipart/form-data">

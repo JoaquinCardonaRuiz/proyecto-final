@@ -408,7 +408,20 @@ h2 		 {
     color: #fff !important;
 }
 
-#ecoasistente-btn:hover{
+#ecoasistente-btn-main{
+    width: 70%;
+    margin-top: 5%;
+    border-radius: 10px !important;
+    margin-left: 0.5%;
+    margin-right: 1%;
+    font-size: 14px;
+    box-shadow: none !important;
+    border: none !important;
+    background-color: #95C22B;
+    color: #fff !important;
+  }
+
+#ecoasistente-btn-main:hover{
     background-color: #87af28;
 }
 

@@ -17,6 +17,10 @@ function validarCodigo(){
         $("#loading-text-codigo").hide();
         $("#loading-text-codigo").remove();
         if (result > 0){
+            $.getJSON("/layout/datos-usuario",function (result){
+                $("#nombreUsuarioNavBar").text(result["nombre"]);
+                $("#cantEPNavBar").text(result["totalEP"]);
+            });
             $("#table-container2").fadeIn();
             $("#cantEPdep").text(result);
             $("#successful-row").fadeIn();

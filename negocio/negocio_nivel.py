@@ -49,7 +49,7 @@ class NegocioNivel(Negocio):
                                                     msj_adicional="Error en la capa de Negocio calculando el máximo/mínimo nivel.")
 
     @classmethod
-    def get_nivel_id(cls, id):
+    def get_nivel_id(cls, id, convert_desc=False):
         """
         Obtiene un nivel en base a su ID de la BD.
         """
@@ -58,6 +58,8 @@ class NegocioNivel(Negocio):
             if nivel == None:
                 raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_nivel_id()",
                                                     msj_adicional="Error en la capa de Negocio obtieniendo un nivel en base su ID de la capa de Datos. No existe un nivel con el ID ingresado.")
+            if convert_desc:
+                 nivel.descuento = Utils.replace_dots(nivel.descuento, 1)
             return nivel
         
         except custom_exceptions.ErrorDeConexion as e:

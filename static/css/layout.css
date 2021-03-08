@@ -75,6 +75,8 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 	margin-left: auto; 
 	margin-right: 2.4%; 
 	display: flex;
+	width: 100%;
+	min-width: 255px;
 }
 
 .user-username-text{
@@ -189,3 +191,11 @@ html {
 .fa-sign-out-alt,.fa-barcode{
 	color: #95C22B !important;
 }
+
+.vl {
+	height: 30px;
+	color: rgb(241, 240, 240);
+	background-color: rgb(238, 238, 238);
+	margin-right: 15px;
+	margin-top: 0px;
+  }
