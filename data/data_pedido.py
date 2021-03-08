@@ -20,7 +20,7 @@ class DatosPedido(Datos):
                         totalEP, \
                         idPunto, \
                         estado \
-                        FROM pedidos WHERE idUsuario = {} ORDER BY fechaEnc;").format(uid)
+                        FROM pedidos WHERE idUsuario = {} ORDER BY fechaEnc DESC;").format(uid)
             else:
                 sql = ("SELECT \
                         idPedido, \
@@ -30,7 +30,7 @@ class DatosPedido(Datos):
                         totalEP, \
                         idPunto, \
                         estado \
-                        FROM pedidos WHERE idUsuario = {} ORDER BY fechaEnc LIMIT {};").format(uid, limit)
+                        FROM pedidos WHERE idUsuario = {} ORDER BY fechaEnc LIMIT {} DESC;").format(uid, limit)
             cls.cursor.execute(sql)
             pedidos_ = cls.cursor.fetchall()
             pedidos = []

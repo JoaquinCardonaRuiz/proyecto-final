@@ -32,7 +32,7 @@ class DatosUsuario(Datos):
             if len(usuarios) > 0:
                 usu = usuarios[0]
                 direc = DatosDireccion.get_one_id(usu[8])
-                depositos = DatosDeposito.get_by_user_id(usu[0])
+                depositos = DatosDeposito.get_by_id_usuario(usu[0])
                 da = [d for d in depositos if d.isActivo()]
                 dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
@@ -78,7 +78,7 @@ class DatosUsuario(Datos):
             if len(usuarios) > 0:
                 usu = usuarios[0]
                 direc = DatosDireccion.get_one_id(usu[8])
-                depositos = DatosDeposito.get_by_user_id(usu[0])
+                depositos = DatosDeposito.get_by_id_usuario(usu[0])
                 da = [d for d in depositos if d.isActivo()]
                 dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])

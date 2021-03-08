@@ -60,9 +60,15 @@ def main():
     if valida_session(): return redirect(url_for('login'))
     else: 
         nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel, True)
-        pedidos = NegocioPedido.get_by_user_id(session["usuario"].id, 5)
+        if len(session["usuario"].pedidos) >= 5:
+            pedidos = session["usuario"].pedidos[:5]
+        else:
+            pedidos = session["usuario"].pedidos
         puntosRetiro = NegocioPuntoRetiro.get_all()
-        depositos = NegocioDeposito.get_by_id_usuario(session["usuario"].id, 5)
+        if len(session["usuario"].depositosActivos) >= 5:
+            depositos = session["usuario"].depositosActivos[:5]
+        else:
+            depositos = session["usuario"].depositosActivos
         puntosDep = NegocioPuntoDeposito.get_all()
         materiales = NegocioMaterial.get_all()
         max_level = NegocioNivel.get_min_max_niveles()[1]
