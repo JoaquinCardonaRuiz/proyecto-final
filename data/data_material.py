@@ -150,3 +150,22 @@ class DatosMaterial(Datos):
                                                     msj_adicional="Error eliminando un material en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+    @classmethod
+    def addStock(cls, id,cant):
+        """
+        Agrega stock a un material.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE materiales SET stock = stock + {} WHERE idMaterial={}".format(cant,id))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.addStock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error agregando stock a un material en la BD.")
+        finally:
+            cls.cerrar_conexion()
