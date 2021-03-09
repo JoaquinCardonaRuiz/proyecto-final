@@ -1,6 +1,7 @@
 from negocio.negocio import Negocio
 import custom_exceptions
 from utils import Utils
+from data.data_usuario import DatosUsuario
 from data.data_nivel import DatosNivel
 from classes import Nivel
 import operator
@@ -463,6 +464,13 @@ class NegocioNivel(Negocio):
 
 
     @classmethod
-    def actualiza_nivel_all():
-        #TODO: codificar metodo
-        pass
+    def actualiza_nivel_all(cls):
+        try:
+            users = DatosUsuario.get_all()
+            print("Actualizando niveles...")
+            for u in users:
+                print("Actualizando nivel de user "+str(u.id))
+                nuevo_nivel = cls.obtiene_nivel(u.totalEcopuntos)
+                DatosUsuario.update_nivel(u.id,nuevo_nivel.id)
+        except Exception as e:
+            raise e

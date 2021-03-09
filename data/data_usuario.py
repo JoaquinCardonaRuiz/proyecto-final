@@ -231,3 +231,46 @@ class DatosUsuario(Datos):
                                                     msj_adicional="Error actualizando la imagen de un usuario en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def get_all(cls):
+        """
+        Obtiene todos los usuarios
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT usuarios.idUsuario, \
+                usuarios.nroDoc, \
+                usuarios.nombre, \
+                usuarios.apellido, \
+                usuarios.email, \
+                usuarios.password, \
+                usuarios.idTipoUsuario, \
+                usuarios.idTipoDoc, \
+                usuarios.idDireccion, \
+                usuarios.idNivel, \
+                usuarios.img \
+                from usuarios")
+            cls.cursor.execute(sql)
+            usuarios = cls.cursor.fetchall()
+            users = []
+            for usu in usuarios:
+                direc = DatosDireccion.get_one_id(usu[8])
+                depositos = DatosDeposito.get_by_id_usuario(usu[0])
+                da = [d for d in depositos if d.isActivo()]
+                dv = [d for d in depositos if not(d.isActivo())]
+                ped = DatosPedido.get_by_user_id(usu[0])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10])
+                usuario.calcularTotalEcopuntos()
+                users.append(usuario)
+            return users
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.get_all()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo todos los usuarios.")
+        finally:
+            cls.cerrar_conexion()

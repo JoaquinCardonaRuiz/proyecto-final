@@ -369,6 +369,7 @@ def alta_nivel():
             minEcoPuntos = request.form['minEcoPuntos']
             maxEcoPuntos = request.form['maxEcoPuntos']
             NegocioNivel.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
         except Exception as e:
             return error(e,"gestion_niveles")
     return redirect(url_for('gestion_niveles'))
@@ -381,6 +382,9 @@ def mod_nivel(id, desc, min, max):
         minEP = float(min)
         maxEP = float(max)
         NegocioNivel.modifica_nivel(numero,desc,minEP,maxEP)
+        print(session["usuario"].idNivel)
+        session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        print(session["usuario"].idNivel)
     except Exception as e:
         return error(e,"gestion_niveles")
     return redirect(url_for('gestion_niveles'))
@@ -390,6 +394,7 @@ def baja_nivel(id):
     try:
         id = int(id)
         NegocioNivel.baja_nivel(id)
+        session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
     except Exception as e:
         return error(e,"gestion_niveles")
     return redirect(url_for('gestion_niveles'))
