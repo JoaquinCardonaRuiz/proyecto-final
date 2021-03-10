@@ -516,7 +516,7 @@ def error(err="", url_redirect="/main"):
 
 ''' 
     ---------------------------
-    Puntos de Deposito y Retiro
+    Puntos de Deposito
     ---------------------------
 '''
 
@@ -625,6 +625,67 @@ def baja_pd():
         NegocioPuntoDeposito.baja_pd(id)
         
     return redirect(url_for('gestion_pd'))
+
+''' 
+    -----------------
+    Puntos de Retiro
+    -----------------
+'''
+@app.route('/gestion-puntos-retiro', methods = ['GET','POST'])
+def gestion_pr():
+    try:
+        if valida_session(): return redirect(url_for('login'))
+        materiales = NegocioMaterial.get_all()
+        puntos_retiro = NegocioPuntoRetiro.get_all()
+        dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    except Exception as e:
+        return error(e,"gestion_pr") 
+    return render_template('gestion-puntos-retiro.html', puntos_retiro = puntos_retiro, dias = dias, materiales = materiales, usuario = session["usuario"])
+
+@app.route('/gestion-puntos-retiro/horarios/<int:id>')
+def horarios_pr(id):
+    try:
+        id = int(id)
+        horarios = NegocioPuntoRetiro.get_horarios_id(id)
+        return jsonify(horarios)
+    except Exception as e:
+        return error(e,"gestion_pr")
+
+
+@app.route('/gestion-puntos-retiro/nombres-pr')
+def nombres_pr():
+    try:
+        nombres = NegocioPuntoRetiro.get_all_names()
+        demora_prom = NegocioPuntoRetiro.get_demora_promedio()
+        return jsonify([nombres,demora_prom])
+    except Exception as e:
+        return error(e,"gestion_pr")
+
+@app.route('/gestion-puntos-retiro/alta', methods = ['GET','POST'])
+def alta_pr():
+    
+    dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    horarios = []
+    
+    if request.method == 'POST':
+        try:
+            nombre = request.form['nombrePD']
+            estado = request.form['switch-value']
+            demora = request.form['demoraPR']
+            calle = request.form['callePD']
+            altura = request.form['alturaPD']
+            ciudad = request.form['ciudadPD']
+            provincia = request.form['provinciaPD']
+            pais = request.form['paisPD']
+            for dia in dias:
+                horaDesde = request.form[dia + '-horaDesde']
+                horaHasta = request.form[dia + '-horaHasta']
+                horarios.append([horaDesde,horaHasta, dia])
+            
+            NegocioPuntoRetiro.alta_pr(nombre, estado, calle, altura, ciudad, provincia, pais, horarios, demora)
+        except Exception as e:
+            return error(e,"gestion-puntos-retiro")
+    return redirect(url_for('gestion_pr'))
 
 ''' 
     -----------------

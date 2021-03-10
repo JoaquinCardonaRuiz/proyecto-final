@@ -55,6 +55,27 @@ class DatosHorario(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+    
+    @classmethod
+    def alta_horario_PR(cls, horario, idPuntoRetiro, noClose = False):
+        """
+        Añade un horario de un Punto de Retiro a la BD.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("INSERT into horariosPR (idPunto, horaDesde, horaHasta, dia) values (%s,%s,%s,%s)")
+            values = (idPuntoRetiro,horario.horaDesde, horario.horaHasta, horario.dia)
+            print(values)
+            cls.cursor.execute(sql,values)
+            cls.db.commit()
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.alta_horario_PR()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error añadiendo un horario de un Punto de DepóRetirosito a la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
 
 
     @classmethod
