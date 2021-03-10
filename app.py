@@ -47,6 +47,7 @@ def upload_user_img():
             file.save(dir)
             NegocioUsuario.update_img(session["usuario"].id,dir)
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
     return redirect(url_for('perfil'))
 
 
@@ -100,6 +101,7 @@ def login():
 def authentication(email, password):
     try:
         session["usuario"] = NegocioUsuario.login(email, password)
+        session.modified = True
         return jsonify({"login-state":True})
     except Exception as e:
         return jsonify({"login-state":False})
@@ -143,6 +145,7 @@ def actualizar_direccion():
             pais = request.form['paisPD']
             NegocioDireccion.mod_direccion(session["usuario"].direccion.id, calle,altura,ciudad,provincia,pais,True)
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
         except Exception as e:
             return error(e,"perfil")
     return redirect(url_for('perfil'))
@@ -155,6 +158,7 @@ def actualizar_documento():
             tipo = request.form['tipoDocSelect']
             NegocioUsuario.update_documento(nro,tipo,session["usuario"].id)
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
         except Exception as e:
             return error(e,"perfil")
     return redirect(url_for('perfil'))
@@ -166,6 +170,7 @@ def actualizar_email():
             email = request.form['email']
             NegocioUsuario.update_email(email,session["usuario"].id)
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
         except Exception as e:
             return error(e,"perfil")
     return redirect(url_for('perfil'))
@@ -178,6 +183,7 @@ def actualizar_password():
             psswd2 = request.form['newPassword2']
             NegocioUsuario.update_password(psswd1,psswd2,session["usuario"].id)
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
         except Exception as e:
             return error(e,"perfil")
     return redirect(url_for('perfil'))
@@ -332,6 +338,7 @@ def confirmar_checkout(idPR, totalEP, totalARS):
             dic["demora"] = NegocioPuntoRetiro.get_by_id(int(idPR)).demoraFija
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
             session["carrito"] = {}
+            session.modified = True
             return dic
         else:
             raise Exception("Carrito vacio")
@@ -370,6 +377,7 @@ def alta_nivel():
             maxEcoPuntos = request.form['maxEcoPuntos']
             NegocioNivel.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
         except Exception as e:
             return error(e,"gestion_niveles")
     return redirect(url_for('gestion_niveles'))
@@ -384,6 +392,7 @@ def mod_nivel(id, desc, min, max):
         NegocioNivel.modifica_nivel(numero,desc,minEP,maxEP)
         print(session["usuario"].idNivel)
         session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        session.modified = True
         print(session["usuario"].idNivel)
     except Exception as e:
         return error(e,"gestion_niveles")
@@ -395,6 +404,7 @@ def baja_nivel(id):
         id = int(id)
         NegocioNivel.baja_nivel(id)
         session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        session.modified = True
     except Exception as e:
         return error(e,"gestion_niveles")
     return redirect(url_for('gestion_niveles'))
@@ -1049,6 +1059,7 @@ def verificar_codigo(cod):
         nuevos_ep = response + session["usuario"].totalEcopuntos
         NegocioUsuario.update_nivel(session["usuario"].id,nuevos_ep)
         session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        session.modified = True
         return jsonify(response)
     except Exception as e:
         return error(e,"codigo")
