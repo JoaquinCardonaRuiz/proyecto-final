@@ -110,7 +110,7 @@ class DatosPuntoRetiro(Datos):
         try:
             cls.abrir_conexion()
             #Obtengo el ID que se le va a asignar para poder guardarlo en el Horario.
-            sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'puntosDeposito'")
+            sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'puntosRetiro'")
             cls.cursor.execute(sql)
             id_asignado = cls.cursor.fetchone()[0]
 
