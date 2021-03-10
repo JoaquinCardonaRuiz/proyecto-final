@@ -218,3 +218,65 @@ class NegocioPuntoRetiro(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.alta_pr()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio dando de alta un Punto de Retiro.")
+
+    @classmethod
+    def mod_pr(cls, nombre, estado, calle, altura, ciudad, provincia, pais, horarios, demora, id_direccion, id_punto, nombre_ant):
+        """
+        Gestiona la modificación de un PD.
+        """
+        try:
+            #Conexión con el motor de BD.
+            #Valida que el nombre no esté vacío.
+            if nombre == "":
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_retiro.mod_pr()",
+                                                        msj_adicional = "Error al modificar el Punto de Retiro. El nombre no puede quedar vacío.")
+            #Valida RN25
+            if nombre in cls.get_all_names() and nombre != nombre_ant:
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_retiro.mod_pr()",
+                                                        msj_adicional = "Error al modificar el Punto de Retiro. El nombre ya fue utilizado.")
+            #Valida RN24
+            estado = Utils.js_py_bool_converter(estado)
+            if estado != True and estado != False:
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_retiro.mod_pr()",
+                                                        msj_adicional = "Error al modificar el Punto de Retiro. El estado no puede ser distinto de True o False.")
+            
+            #Validación de direccion
+            NegocioDireccion.valida_direccion(calle, altura, ciudad, provincia, pais)
+            #Validacion horarios
+            for horario in horarios:
+                NegocioHorario.valida_horarios(horario)
+            
+            #Modificación de la direccion
+            NegocioDireccion.mod_direccion(id_direccion, calle, altura, ciudad, provincia, pais)
+            #Modificación Punto de Retiro
+            DatosPuntoRetiro.mod_pr(PuntoRetiro(id_punto,None,nombre,None,None,demora,estado))
+            #Modificación horarios
+            NegocioHorario.mod_horarios(horarios, id_punto, False)
+
+
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.mod_pd()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio modificando un Punto de Retiro.")
+
+    @classmethod
+    def baja_pr(cls, idPunto):
+        """
+        Gestiona el borrado lógico un Punto de Retiro en base al ID que recibe como parámetro.
+        """
+        #Conexión con el motor de BD.
+        try:
+            if id != None:
+                DatosPuntoRetiro.baja_pr(idPunto)
+            else:
+                raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_retiro.baja_pr()",
+                                                        msj_adicional = "Error al dar de baja el Punto de Retiro. El id del Punto está vacío.")
+                
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.baja_pr()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio eliminando un Punto de Retiro.")

@@ -10,7 +10,6 @@ var altura = false;
 var calle = false;
 var menuShown = false;
 var selectedOptions = [];
-var materiales_PD = [];
 var menuShownMod = false;
 var selectedOptionsMod = [];
 
@@ -22,6 +21,8 @@ var cambio_calle = false;
 var cambio_altura = false;
 var cambio_ciudad = false;
 var cambio_pais = false;
+var cambi0_demanda = false;
+var cambio_demora = false;
 var cambio_horarios = [false, false, false, false, false, false, false];
 
 //Valores originales
@@ -34,6 +35,7 @@ var ciudad_ant = false;
 var provincia_ant = false;
 var pais_ant = false;
 var horarios_mod = false;
+var demora_ant = false;
 var estado_horario_ant = [true,true,true,true,true,true,true];
 var estado_horario = [true,true,true,true,true,true,true];
  
@@ -51,99 +53,7 @@ var error_horarios = [false, false, false, false, false, false, false];
 
 var demora_prom_pr = 0;
 
-//Funciones específicas que manejan el dropdwon.
-function headingOptionHover(){
-    $(".chevron").css({cursor: 'pointer', transform: 'rotate(180deg)'});
-}
 
-function headingOptionLeave(){
-    $(".chevron").css({transform: 'rotate(0deg)'});
-}
-
-
-function openMenu() {
-    $("#menu-option-box-1").fadeIn();
-    $(".dropdown-box").css("border","1px solid #95C22B");
-    $('#cards-row-materiales').css({"transform":"translateY(200px)"});
-    $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(200px)"});
-    $(".margin-row").show();
-    $(".margin-row").css({"transform":"translateY(200px)"});
-    $("#bottomAltaModalTextAltaPD").css({"margin-bottom":"25px"});
-};
-
-
-function closeMenu() {
-    $("#menu-option-box-1").hide();
-    $(".dropdown-box").css("border","1px solid rgb(184, 184, 184)");
-    $('#cards-row-materiales').css({"transform":"translateY(0px)"});
-    $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(0px)"});
-    $("#bottomAltaModalTextAltaPD").css({"margin-bottom":""});
-    $(".margin-row").css({"transform":"translateY(0px)"});
-    $(".margin-row").hide();
-};
-
-function dropdownOptionSelect(idOption, nameOption, color){
-    if (selectedOptions.includes(idOption)){
-        const index = selectedOptions.indexOf(idOption);
-        if (index > -1) {
-            selectedOptions.splice(index, 1);
-        }
-        $("#" + String(idOption) + "-check").fadeOut();
-        $("#" + String(idOption) + "-card").fadeOut();
-    }
-    else{
-        selectedOptions.push(idOption);
-        $("#" + String(idOption) + "-check").fadeIn();
-        setColor(idOption,color);
-        $("#" + String(idOption) + "-card").fadeIn();
-    }
-    labelShowHide();
-    $("#materiales-altaPD").val("[" + selectedOptions + "]");  
-     
-}
-
-//Manejo de carteles en la seleccion de materiales del dropdown.
-function labelShowHide(){
-    if (selectedOptions.length == 0){
-        $(".indicator-label-2").hide();
-        $("#warning-label-altaPD").fadeIn(1000);
-    }
-    else{
-        $(".indicator-label-2").show();
-        $("#warning-label-altaPD").hide();
-    }
-}
-
-//Setea el color de las tarjetas de materiales.
-function setColor(nombre,color){
-    $("#"+String(nombre)+"-img").css("background-color", String(color));
-}
-
-//Cierra el dropdown al clickear fuera de el y su
-$(document).on('click', function (e) {
-    if ($(e.target).closest("#dropdown-altaPD").length === 0) {
-        if (menuShown == true){
-            closeMenu();
-            headingOptionLeave();
-            menuShown=false;
-        }
-    }
-});
-
-//Funcion principal de manejo del compartamiento el dropdown.
-function dropdownManager(){
-    if (menuShown == false){
-        openMenu();
-        headingOptionHover();
-        menuShown = true
-    }
-    else{
-        closeMenu();
-        headingOptionLeave();
-        menuShown=false;
-    }
-
-}
 
 $.getJSON("/gestion-puntos-retiro/nombres-pr",function (result){
     nombres = result[0];
@@ -527,10 +437,30 @@ function validaDemoraPR(tipo){
             $('#primary-btn-alta').prop('disabled', false);
         }
     }
+    if (tipo == "mod"){
+        if ((String($("#demoraPRMod").val()).trim()) == demora_ant){
+            $("#demoraPRerrorMod").hide();
+            cambio_demora = false;
+            error_demora = false;
+        }
+        else if ((String($("#demoraPRMod").val()).trim()) == ""){
+            $("#demoraPRerrorMod").text("* No puede quedar vacía.");
+            $("#demoraPRerrorMod").show();
+            cambio_demora = true;
+            error_demora = true;
+        }
+        else{
+            $("#demoraPRerrorMod").hide();
+            cambio_demora = true;
+            error_demora = false;
+        }
+        error_datos_basicos();
+        calc_cant_cambios();
+    }
 }
 
 function error_datos_basicos(){
-    if (error_nombre == true){
+    if (error_nombre == true || error_demora == true){
         $("#db-error-tab").show();
         return true;
     }
@@ -876,6 +806,9 @@ function calc_cant_cambios(){
     if (cambio_estado == true){
         cant_cambios += 1;
     }
+    if (cambio_demora == true){
+        cant_cambios += 1;
+    }
 
     //Direccion
     if (cambio_provincia == true){
@@ -898,12 +831,6 @@ function calc_cant_cambios(){
     cant_cambios += cambio_horarios.reduce(function(n, val) {
         return n + (val === true);
     }, 0);
-
-    //Materiales
-    var difference = materiales_PD
-                .filter(x => !selectedOptionsMod.includes(x))
-                .concat(selectedOptionsMod.filter(x => !materiales_PD.includes(x)));
-    cant_cambios += difference.length;
     
     $("#primary-btn-mod").text("Confirmar " + String(cant_cambios) + " cambios");
 
@@ -956,11 +883,11 @@ function labelPosition(){
 
     var pos_switch = document.getElementById("customSwitch2").offsetTop;
     var pos_switch_left = document.getElementById("customSwitch2").offsetLeft;
-    $("#pdActivoMod").css({top: pos_switch - 24, position:'absolute'});
-    $("#pdActivoMod").css({left: pos_switch_left + 140, position:'absolute'});
+    $("#pdActivoMod").css({top: pos_switch + 22, position:'absolute'});
+    $("#pdActivoMod").css({left: pos_switch_left + 105, position:'absolute'});
 
-    $("#pdInactivoMod").css({top: pos_switch - 24, position:'absolute'});
-    $("#pdInactivoMod").css({left: pos_switch_left + 140, position:'absolute'});
+    $("#pdInactivoMod").css({top: pos_switch + 22, position:'absolute'});
+    $("#pdInactivoMod").css({left: pos_switch_left + 105, position:'absolute'});
 }
 
 //Habilita y deshabilita los horarios para un día determinado.
@@ -1242,7 +1169,7 @@ function setEstadoMod(estado){
     }
 }
 
-function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id_punto, id_direccion){
+function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id_punto, id_direccion, demora){
     jQuery.noConflict();
     
     //Define que se debe mostrar y que se oculta.
@@ -1260,6 +1187,7 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id
     $("#pdActivoMod").hide();
     $("#loadingRowMod").hide();
     $(".lds-ring").hide();
+    $("#demoraPRerrorMod").hide();
 
     //Seteo de valores iniciales en inputs.
     $("#nombrePDMod").val(nombre);
@@ -1269,11 +1197,11 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id
     $("#callePDMod").val(calle);
     $("#alturaPDMod").val(altura);
     $("#paisPDMod").val(pais);
-    $("#idDireccionPD").val(id_direccion)
-    $("#idPDMod").val(id_punto)
+    $("#idDireccionPD").val(id_direccion);
+    $("#idPDMod").val(id_punto);
+    $("#demoraPRMod").val(demora)
     updateMap('mod');
     setHorariosModValues(id_punto);
-    setMaterialesPDvalues(id_punto);
 
     $("#primary-btn-mod").text("Confirmar 0 cambios");
     $('#primary-btn-mod').prop('disabled', true);
@@ -1286,12 +1214,14 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id
     ciudad_ant = ciudad;
     provincia_ant = provincia;
     pais_ant = pais;
+    demora_ant = demora;
     error_nombre = false;
     error_calle = false;
     error_provincia = false;
     error_altura = false;
     error_provincia = false;
     error_pais = false;
+    error_demora = false;
     setEstadoMod(estado);
     document.getElementById("db-tab").click();
     selectedOptionsMod = [];
@@ -1325,26 +1255,15 @@ function configureModalTab(mod_form_page){
         $("#subheader-mod").text("Dirección");
         goToTopOfPageMod();
      }
-     else if (mod_form_page == 3){
+     else{
         $("#modal-mod-p1").hide();
         $("#modal-mod-p2").hide();
         $("#modal-mod-p4").hide();
         $("#modal-mod-p3").show();
         $("#subheader-mod").text("Horarios");
         $(".margin-row").hide();
-        $("#bottomAltaModalTextModPD").css({"transform":"translateY(-30px)"});
         goToTopOfPageMod();
      } 
-     else{
-        closeMenu();
-        labelShowHideMod();
-        $("#modal-mod-p1").hide();
-        $("#modal-mod-p2").hide();
-        $("#modal-mod-p3").hide();
-        $("#modal-mod-p4").show();
-        $("#subheader-mod").text("Materiales");
-        goToTopOfPageMod();
-     }
 }
 
 $("#customSwitch2").click(function() {
@@ -1423,149 +1342,6 @@ function setHorariosModValues(id){
 }
 
 
-function openMenuMod() {
-    $("#menu-option-box-1-mod").fadeIn();
-    $(".dropdown-box").css("border","1px solid #95C22B");
-    $('#cards-row-materiales-mod').css({"transform":"translateY(200px)"});
-    $("#bottomAltaModalTextModPD").css({"transform":"translateY(200px)"});
-    $(".margin-row-mod").show();
-    $(".margin-row-mod").css({"transform":"translateY(190px)"});
-    $("#bottomAltaModalTextModPD").css({"margin-bottom":"10px"});
-};
-
-
-function closeMenuMod() {
-    $("#menu-option-box-1-mod").hide();
-    $(".dropdown-box").css("border","1px solid rgb(184, 184, 184)");
-    $('#cards-row-materiales-mod').css({"transform":"translateY(0px)"});
-    $("#bottomAltaModalTextModPD").css({"transform":"translateY(-25px)"});
-    $("#bottomAltaModalTextModPD").css({"margin-bottom":""});
-    $(".margin-row-mod").css({"transform":"translateY(0px)"});
-    $(".margin-row-mod").hide();
-};
-
-function dropdownOptionSelectMod(idOption, nameOption, color){
-    if (selectedOptionsMod.includes(idOption)){
-        const index = selectedOptionsMod.indexOf(idOption);
-        if (index > -1) {
-            selectedOptionsMod.splice(index, 1);
-        }
-        $("#" + String(idOption) + "-check-mod").hide().fadeOut();
-        $("#" + String(idOption) + "-card-mod").hide().fadeOut();
-    }
-    else{
-        console.log(idOption);
-        selectedOptionsMod.push(idOption);
-        $("#" + String(idOption) + "-check-mod").show().fadeIn();
-        setColorMod(idOption,color);
-        $("#" + String(idOption) + "-card-mod").show().fadeIn();
-    }
-    labelShowHideMod();
-    calc_cant_cambios();
-
-
-
-    $("#materiales-modPD").val("[" + selectedOptionsMod + "]");  
-     
-}
-
-//Deselecciona un material suspendido sin permitir que se vuelva a seleccionar.
-function dropdownOptionSuspendedSelectMod(idOption, nameOption){
-    if (selectedOptionsMod.includes(idOption)){
-        const index = selectedOptionsMod.indexOf(idOption);
-        if (index > -1) {
-            selectedOptionsMod.splice(index, 1);
-        }
-        $("#" + String(idOption) + "-check-mod").fadeOut();
-        $("#" + String(idOption) + "-card-mod").fadeOut();
-    }
-    labelShowHideMod();
-    calc_cant_cambios();
-    $("#materiales-modPD").val("[" + selectedOptionsMod + "]");  
-
-}
-
-//Manejo de carteles en la seleccion de materiales del dropdown.
-function labelShowHideMod(){
-    if (selectedOptionsMod.length == 0){
-        $(".indicator-label-2").hide();
-        $("#warning-label-modPD").fadeIn(1000);
-    }
-    else{
-        $(".indicator-label-2").show();
-        $("#warning-label-modPD").hide();
-    }
-}
-
-//Setea el color de las tarjetas de materiales.
-function setColorMod(nombre,color){
-    $("#"+String(nombre)+"-img-mod").css("background-color", String(color));
-}
-
-//Cierra el dropdown al clickear fuera de el y su
-$(document).on('click', function (e) {
-    if ($(e.target).closest("#dropdown-modPD").length === 0) {
-        if (menuShownMod == true){
-            closeMenuMod();
-            headingOptionLeave();
-            menuShownMod=false;
-        }
-    }
-});
-
-//Funcion principal de manejo del compartamiento el dropdown.
-function dropdownManagerMod(){
-    if (menuShownMod == false){
-        openMenuMod();
-        headingOptionHoverMod();
-        menuShownMod = true
-    }
-    else{
-        closeMenuMod();
-        headingOptionLeaveMod();
-        menuShownMod=false;
-    }
-
-}
-
-//Funciones específicas que manejan el dropdwon.
-function headingOptionHoverMod(){
-    $(".chevron").css({cursor: 'pointer', transform: 'rotate(180deg)'});
-}
-
-function headingOptionLeaveMod(){
-    $(".chevron").css({transform: 'rotate(0deg)'});
-}
-
-function setMaterialesPDvalues(id){
-    $.getJSON("/gestion-puntos-deposito/materiales/"+String(id),function (result){
-        materiales_PD = [];
-        $(".card-modPD").hide();
-        $(".mod-check").hide();
-        for (var i in result){
-            materiales_PD.push(String(result[i]["id"]));
-            $("#" + String(result[i]["id"]) + "-check-mod").show();
-            setColorMod(result[i]["id"],result[i]["color"]);
-            $("#" + String(result[i]["id"]) + "-card-mod").show();
-        }
-
-        if (result.length > 0){
-            $(".indicator-label-2").show();
-            $("#warning-label-modPD").hide();
-            for (var j in materiales_PD){
-                selectedOptionsMod.push(materiales_PD[j]);
-            }
-        }
-        else{
-            $(".card-modPD").hide();
-            $(".indicator-label-2").hide();
-            $("#warning-label-modPD").show();
-            $(".mod-check").hide();
-            selectedOptionsMod = [];
-        }
-    });
-}
-
 //Abre el modal de baja.
 function openBajaModal(nombre, id){
     jQuery.noConflict();
@@ -1574,7 +1350,6 @@ function openBajaModal(nombre, id){
     $("#bajaPDModal").modal("show");
     $("#baja-question").text("¿Está seguro que desea eliminar " + String(nombre) + "?");
     $("#idPuntoBaja").val(String(id));
-    
 
 }
 

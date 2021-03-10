@@ -687,6 +687,42 @@ def alta_pr():
             return error(e,"gestion-puntos-retiro")
     return redirect(url_for('gestion_pr'))
 
+@app.route('/gestion-puntos-retiro/modificacion', methods = ['GET','POST'])
+def mod_pr():
+    
+    dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    horarios = []
+    
+    if request.method == 'POST':
+        nombre = request.form['nombrePDMod']
+        nombre_ant = request.form['nombrePDModAnt']
+        demora = request.form['demoraPRMod']
+        estado = request.form['switch-value-mod']
+        calle = request.form['callePDMod']
+        altura = request.form['alturaPDMod']
+        ciudad = request.form['ciudadPDMod']
+        provincia = request.form['provinciaPDMod']
+        pais = request.form['paisPDMod']
+        id_direccion = request.form['idDireccionPD']
+        id_punto = request.form['idPDMod']
+        for dia in dias:
+            horaDesde = request.form[dia + '-horaDesde-mod']
+            horaHasta = request.form[dia + '-horaHasta-mod']
+            horarios.append([horaDesde,horaHasta, dia])
+        NegocioPuntoRetiro.mod_pr(nombre, estado, calle, altura, ciudad, provincia, pais, horarios,demora,id_direccion, id_punto, nombre_ant)
+        
+    return redirect(url_for('gestion_pr'))
+
+@app.route('/gestion-puntos-retiro/baja', methods = ['GET','POST'])
+def baja_pr():
+    
+    if request.method == 'POST':
+        id = request.form['idPuntoBaja']
+        NegocioPuntoRetiro.baja_pr(id)
+        
+    return redirect(url_for('gestion_pr'))
+
+
 ''' 
     -----------------
     Articulos

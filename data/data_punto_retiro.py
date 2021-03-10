@@ -126,3 +126,67 @@ class DatosPuntoRetiro(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data.alta_pr()",
                                                     msj=str(e),
                                                     msj_adicional="Error añadiendo un Punto de Retiro a la BD.")
+    
+    @classmethod
+    def mod_pr(cls, puntoRetiro, noClose = False):
+        """
+        Modifica un Punto de Retiro en la BD.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE puntosRetiro SET nombre = %s, estado = %s, demoraFija = %s where idPunto = %s")
+            values =  (puntoRetiro.nombre, puntoRetiro.estado,puntoRetiro.demoraFija, puntoRetiro.id)
+            cls.cursor.execute(sql, values)
+            cls.db.commit()
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.mod_pr()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error modificando un Punto de Retiro en la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
+
+
+    @classmethod
+    def baja_pr(cls,idPunto, noClose = False):
+        """
+        Realiza el borrado lógico un Punto de Retiro en base al ID que recibe como parámetro.
+        """
+        try:
+            cls.abrir_conexion()
+            #Elimina horarios del Punto
+            sql = ("DELETE from horariosPR where idPunto = %s")
+            values = (idPunto,)
+            cls.cursor.execute(sql,values)
+
+            #Obtengo el ID de la dirección del Punto
+            sql = ("SELECT idDireccion from puntosRetiro where idPunto = %s")
+            values = (idPunto,)
+            cls.cursor.execute(sql,values)
+            idDireccion = cls.cursor.fetchone()[0]
+
+            #Elimino Horarios
+            sql = ("DELETE from horariosPR where idPunto = %s")
+            values = (idPunto,)
+            cls.cursor.execute(sql, values)
+
+            #Elimino logicamente el Punto de Retiro
+            sql = ("UPDATE puntosRetiro SET estadoEliminacion ='eliminado', idDireccion = NULL where idPunto = %s")
+            values = (idPunto,)
+            cls.cursor.execute(sql, values)
+
+            #Elimino la dirección del Punto.
+            sql = ("DELETE from direcciones where idDireccion = %s")
+            values = (idDireccion,)
+            cls.cursor.execute(sql, values)
+
+            cls.db.commit()
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.baja_pr()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error realizando la baja de un Punto de Retiro en la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
