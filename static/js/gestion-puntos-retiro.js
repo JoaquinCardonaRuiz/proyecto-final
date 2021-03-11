@@ -263,66 +263,39 @@ function openModalHorarios(id, nombre, estado){
 }
 
 function openModalMateriales(id, nombre){
-    $.getJSON("/gestion-puntos-deposito/materiales/"+String(id),function (result){
-        
-        card = $("#material-card").clone();
-        $("#materiales-modal-body").children("#material-card").remove();
-        
-        // Borro contenido anterior
-        document.getElementById("modalTableBody"). innerHTML="";
-        document.getElementById("headerRow").innerHTML ="";
+    document.getElementById("open-loading-modal").click();
+    $.getJSON("/gestion-puntos-retiro/pedidos/"+String(id),function (result){
+
+        document.getElementById("close-loading-modal").click();
+        document.getElementById("open-modal-ped").click();
 
         // Establezco título
-        document.getElementById("headingModalMat").innerHTML = "Materiales aceptados por " + nombre;
-        document.getElementById("open-loading-modal").click();
-        document.getElementById("open-modal-mat").click();
-
-        row = document.getElementById("material-card");
+        document.getElementById("headingModalPedidos").innerHTML = "Pedidos de " + nombre;
         if (result.length > 0){
-            for(i=0; i < result.length ; i++){
-                clone = card.clone();
-                $("#no-mats").hide();
-                if (result[i]["estado"] == "suspendido"){
-                    clone.addClass("grey-card");
-                    clone.find("#nombre-material").removeClass("material-card-title").addClass("material-card-title-grey");
-                    clone.find("#unidad-medida").removeClass("material-card-title").addClass("material-card-title-grey");
-                    clone.find("#id-material").removeClass("material-card-title").addClass("material-card-title-grey");
-                    clone.find("#material-img").css('background-color',"rgb(165, 165, 165)");
-                    clone.attr("data-toggle", "tooltip");
-                    clone.attr("data-placement", "right");
-                    clone.attr("title", "Los depósitos de este material se encuentran suspendidos");
-                }
-                else{
-                    clone.removeClass("grey-card");
-                    clone.find("#material-img").removeClass("gray-mat-img");
-                    clone.find("#material-img").css('background-color',result[i]["color"]);
-                    clone.find("#nombre-material").removeClass("material-card-title-grey").addClass("material-card-title");
-                    clone.find("#unidad-medida").removeClass("material-card-title-grey").addClass("material-card-title");
-                    clone.find("#id-material").removeClass("material-card-title-grey").addClass("material-card-title");
-                    clone.removeAttr("data-toggle");
-                    clone.removeAttr("data-placement");
-                    clone.removeAttr("title");
-                    
-                }
-                clone.find("#nombre-material").text(result[i]["nombre"]);
-                clone.find("#unidad-medida").text(result[i]["unidadMedida"]); 
-                clone.find("#id-material").text(result[i]["id"]);
-                clone.find("#material-img").text(result[i]["nombre"][0]);
-                clone.show();
-                clone.appendTo("#materiales-modal-body");
-
-
-                
-            }
-        }
-        else{
-            clone = card.clone();
-            clone.hide();
-            $("#no-mats").show();
-            clone.appendTo("#materiales-modal-body");
-        }
+            for (var i in result){
+                start = '<tr>';
+                ending = '</tr>';
+                id = '<th>'+String(result[i]["id"]) + '</th>';
+                totalEP = '<td>'+String(result[i]["totalEP"]) + '</td>';
+                totalARS = '<td>'+String(result[i]["totalARS"]) + '</td>';
+                fechaEnc = '<td>'+String(result[i]["fechaEnc"]) + '</td>';
+                fechaRet = '<td>'+String(result[i]["fechaRet"]) + '</td>';
+                estado = '<td>'+String(result[i]["estado"]) + '</td>';
     
-    })
+                append = start + id + totalEP + totalARS + fechaEnc + fechaRet + estado;
+    
+                //TODO: Hacer if para asignar a cada tabla, según su estado.
+                $('#content-table-modal-pedidos-activos').append(append);
+                $('#content-table-modal-pedidos-cancelados').append(append);
+                $('#content-table-modal-pedidos-devueltos').append(append);
+            }
+            
+
+        }
+
+    });
+
+        
 }
 
 function cierraModal(idModal){

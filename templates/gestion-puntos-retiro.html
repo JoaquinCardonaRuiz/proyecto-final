@@ -88,7 +88,7 @@
                     <td class="modify-row" onclick="openModModal('{{punto.nombre}}','{{punto.estado}}', '{{punto.direccion.calle}}', '{{punto.direccion.altura}}', '{{punto.direccion.ciudad}}', '{{punto.direccion.provincia}}', '{{punto.direccion.pais}}', '{{punto.id}}', '{{punto.direccion.id}}','{{punto.demoraFija}}');"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
 
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true"></button>
-                    <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                    <button id="open-modal-ped" href='#'data-toggle="modal" data-target="#pedidosModal"hidden="true"></button>
                     <button id="close-loading-modal" href='#' onclick="cierraModal('loadingModal');" hidden="true"></button>
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
                 </tr>
@@ -184,53 +184,31 @@
     </div>
 </div>
 
-<!-- Materiales Modal -->
-<div class="modal fade modal-lg" id="materialesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+<!-- Pedidos Modal -->
+<div class="modal fade modal-lg" id="pedidosModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="headingModalMat"></h5>
+                <h5 class="modal-title" id="headingModalPedidos"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body modal-body-card" id="materiales-modal-body">
-                <div class="row margin-bottom-row" id="no-mats">
-                    <p id="" class="advert-icon-no-mats"><i class="fa fa-exclamation-triangle advert-icon-no-mats"></i></p>
-                    <p class="bottom-modal-text-baja">Este Punto de Retiro aún no acepta ningún material</p>
-                    <p class="bottom-modal-text less-margin-top">Para añadir materiales aceptados, ingrese a la opción "Modificar Punto".</p>
-                </div>
-                <div class="container modal-large-card-sm" id="material-card">
-                    <div class="row">
-                        <div class="modal-card-col-sm">
-                            <div class="circle materiales-large-card-img" id="material-img">M</div>
-                        </div>
-                        <div class="modal-card-col-sm" >
-                            <div class="row d-flex justify-content-center card-first-row-sm">
-                                <p class="material-card-title" id="nombre-material">Nombre</p>
-                            </div>
-                            <div class="row d-flex justify-content-center card-second-row">
-                                <p class="text-box material-card-subtitle">Nombre material</p>
-                            </div>
-                        </div>
-                        <div class="modal-card-col-sm">
-                            <div class="row d-flex justify-content-center card-first-row-sm">
-                                <p class="material-card-title" id="unidad-medida">-</p>
-                            </div>
-                            <div class="row d-flex justify-content-center card-second-row">
-                                <p class="text-box material-card-subtitle">Unidad de medida</p>
-                            </div>
-                        </div>
-                        <div class="modal-card-col-sm">
-                            <div class="row d-flex justify-content-center card-first-row-sm">
-                                <p class="material-card-title" id="id-material">-</p>
-                            </div>
-                            <div class="row d-flex justify-content-center card-second-row">
-                                <p class="text-box material-card-subtitle">ID material</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="container modal-large-card d-flex justify-content-center" id="modal-large-card-2">
+                <table class="table" id="content-table-modal-pedidos-activos">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">ID</th>
+                        <th scope="col" class="table-heading">Total EP</th>
+                        <th scope="col" class="table-heading">Total ARS</th>
+                        <th scope="col" class="table-heading">Fecha Encargo</th>
+                        <th scope="col" class="table-heading">Fecha Retiro</th>
+                        <th scope="col" class="table-heading">Estado</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>        
         <div class="modal-footer">
             <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>

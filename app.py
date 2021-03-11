@@ -635,12 +635,11 @@ def baja_pd():
 def gestion_pr():
     try:
         if valida_session(): return redirect(url_for('login'))
-        materiales = NegocioMaterial.get_all()
         puntos_retiro = NegocioPuntoRetiro.get_all()
         dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
     except Exception as e:
         return error(e,"gestion_pr") 
-    return render_template('gestion-puntos-retiro.html', puntos_retiro = puntos_retiro, dias = dias, materiales = materiales, usuario = session["usuario"])
+    return render_template('gestion-puntos-retiro.html', puntos_retiro = puntos_retiro, dias = dias, usuario = session["usuario"])
 
 @app.route('/gestion-puntos-retiro/horarios/<int:id>')
 def horarios_pr(id):
@@ -651,6 +650,18 @@ def horarios_pr(id):
     except Exception as e:
         return error(e,"gestion_pr")
 
+@app.route('/gestion-puntos-retiro/pedidos/<int:id>')
+def pedidos_pr(id):
+    try:
+        id = int(id)
+        pedidos = NegocioPedido.get_by_idPR(id)
+        pedidos_ = []
+        for pedido in pedidos:
+            ped = {"id":pedido.id,"estado":pedido.estado,"fechaEnc":pedido.fechaEncargo,"fechaRet":pedido.fechaRetiro,"totalARS":pedido.totalARS,"totalEP":pedido.totalEP}
+            pedidos_.append(ped)
+        return jsonify(pedidos_)
+    except Exception as e:
+        return error(e,"gestion_pr")
 
 @app.route('/gestion-puntos-retiro/nombres-pr')
 def nombres_pr():
