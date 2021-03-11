@@ -23,6 +23,14 @@
   border-top:2px solid white !important
 }
 
+#content-table-modal-pedidos{
+  position: relative;
+  width: 95%;
+  margin-top: 5%;
+  margin-bottom: 3%;
+  border-top:2px solid white !important
+}
+
 .table-heading{
     border-top: none !important;
 }
