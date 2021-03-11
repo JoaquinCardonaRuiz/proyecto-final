@@ -33,24 +33,32 @@
 
 
     <!-- Alta-->
-
     <div class="container" id="table-container">
         <p style="text-align:left;padding-top:2%;padding-left:2%;color:#666;font-size:20px">Registrar producción de Artículo<p>
         <div class="row d-flex justify-content-center" style="display:block !important">
             <div class="row" id="row-to-hide-alta"style="padding-top:5%;margin-left:10%">
+                {%set ids = []%}
+                {%set nombres = []%}
+                {%for art in articulos%}
+                    <!--{{ids.append(art.id)}}-->
+                    <!--{{nombres.append(art.nombre)}}-->
+                {%endfor%}
                 <div class="col">
                     <div class="group">
-                        <input style="left:-25px;" class="wide-input" type="text" id="codigoInput" name="codigo" >
+                        <select style="background:#fff;box-shadow:none;position: relative;border: none;width: 300px;border-bottom: 2px solid #cfec8c;" class="selectpicker wide-input" id="nombreArtInput" data-live-search="true" onclick="load_dd_articulos({{ids}},{{nombres}})">
+                            <option disabled selected>-- Por favor, elija un Artículo --</option>
+                          </select>
+                        <img src="/static/img/chevron.svg" style="left:-35px;position:relative;width:20px;display:inline;pointer-events: none;">
                         <span class="highlight"></span>
                         <span class="bar wide-bar"></span>
-                        <label>Nombre del Artículo</label>
+                        <label style="top:-20px;font-size:14px;color:#95C22B;">Nombre del Artículo</label>
                         <p id="codigoError" class="modalErrorMessage"></p>
                         <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">Seleccione el artículo producido.</p>
                     </div>
                 </div>
-                 <div class="col" style="">
+                 <div class="col">
                     <div class="group">
-                        <input style="left:-25px;" type="text" id="codigoInput" name="codigo" >
+                        <input style="left:-25px;" type="number" id="codigoInput" name="codigo" value=1 min=1 max=10000>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Cantidad</label>
@@ -73,7 +81,7 @@
 
     <hr style="width:50%">
 
-    <!-- Tabla Articulos-->
+    <!-- Tabla Producciones-->
 
     <div class="container" id="table-container">
     <p style="text-align:left;padding-top:2%;padding-left:2%;color:#666;font-size:20px">Historial de Producciones<p>
@@ -137,5 +145,5 @@
 </div>
 
 
-<script src="static/js/articulos.js"></script>
+<script src="/static/js/produccion.js"></script>
 {% endblock %}
