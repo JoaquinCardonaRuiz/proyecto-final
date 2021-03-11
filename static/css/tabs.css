@@ -27,7 +27,12 @@
   text-align: center;
 }
 
-.pd-tabs-item:hover{
+.pr-tabs-item{
+  width: 33.3%;
+  text-align: center;
+}
+
+.pd-tabs-item:hover,.pr-tabs-item:hover{
   cursor: pointer;
 }
 

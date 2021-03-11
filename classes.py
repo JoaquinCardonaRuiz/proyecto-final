@@ -659,13 +659,14 @@ class PuntoRetiro:
         demoraFija (Time): Cantidad de tiempo que tarda en prepararse un pedido.
     """
 
-    def __init__(self,id,direccion,nombre,estado,horarios,demoraFija):
+    def __init__(self,id,direccion,nombre,estadoEliminacion,horarios,demoraFija,estado):
         self.id = id
         self.direccion = direccion
         self.nombre = nombre 
         self.estado = estado 
         self.horarios = horarios 
         self.demoraFija = demoraFija
+        self.estado = estado
 
 class Pedido:
     """ Representa un pedido de artículos realizado por un cliente.
