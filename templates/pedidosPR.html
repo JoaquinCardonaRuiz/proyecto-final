@@ -156,6 +156,7 @@
             </table>
         </div>
     </div>
+    <hr style="width:70%">
 
 
     <!-- Tabla Pedidos Retirados -->
@@ -189,8 +190,6 @@
                                 {%endif%}
                             {%endfor%}
                             <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
-                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'retirado')">Marcar Retirado</button></td>                                                        
-                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -198,6 +197,7 @@
             </table>
         </div>
     </div>
+    <hr style="width:70%">
 
     <!-- Tabla Pedidos Cancelados -->
     <div class="container" id="table-container">
@@ -230,8 +230,6 @@
                                 {%endif%}
                             {%endfor%}
                             <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
-                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'retirado')">Marcar Retirado</button></td>                                                        
-                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -239,6 +237,7 @@
             </table>
         </div>
     </div>
+    <hr style="width:70%">
 
 
     <!-- Tabla Pedidos Devueltos -->
@@ -272,8 +271,6 @@
                                 {%endif%}
                             {%endfor%}
                             <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
-                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'retirado')">Marcar Retirado</button></td>                                                        
-                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
                         </tr>
                     {%endif%}
                 {%endfor%}
