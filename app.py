@@ -1065,7 +1065,7 @@ def pedidosPR(id):
 def pedidosUser():
     try:
         pedidos = NegocioPedido.get_by_user_id(session["usuario"].id)
-        orden = {"listo":0,"preparado":1,"pendiente":2,"cancelado":3}
+        orden = {"listo":0,"preparado":1,"pendiente":2,"retirado":3,"cancelado":4,"devuelto":5}
         pedidos_ordenados = sorted(pedidos, key=lambda x: orden[x.estado])
         puntosRetiro = NegocioPuntoRetiro.get_all()
         return render_template('pedidosUser.html',pedidos = pedidos_ordenados,puntosRetiro=puntosRetiro, usuario=session["usuario"])

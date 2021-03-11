@@ -161,6 +161,49 @@
     <hr style="width:70%">
 
 
+
+
+    <!-- Tabla Pedidos Retirados-->
+
+    <div class="container" id="table-container">
+        <h4 style="margin-left:4%;padding-top:3%;">Pedidos Retirados</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
+                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                    <th scope="col" class="table-heading">P. de Retiro</th>
+                    <th scope="col" class="table-heading">Articulos</th>
+                    <th class="table-heading"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for p in pedidos%}
+                    {%if p.estado == 'retirado'%}
+                        <tr>
+                            <th scope="row">{{p.id}}</th>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
+                            <td scope="row">{{p.fechaEncargo}}</td>
+                            {%for pr in puntosRetiro%}
+                                {%if pr.id == p.idPuntoRetiro%}
+                                    <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
+                                {%endif%}
+                            {%endfor%}
+                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Cancelar</button></td>
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr style="width:70%">
+
     <!-- Tabla Pedidos Cancelados-->
 
     <div class="container" id="table-container">
@@ -198,6 +241,46 @@
             </table>
         </div>
     </div>
+
+     <!-- Tabla Pedidos Devueltos-->
+
+     <div class="container" id="table-container">
+        <h4 style="margin-left:4%;padding-top:3%;">Pedidos Devueltos</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
+                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                    <th scope="col" class="table-heading">P. de Retiro</th>
+                    <th scope="col" class="table-heading">Articulos</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for p in pedidos%}
+                    {%if p.estado == 'devueltos'%}
+                        <tr>
+                            <th scope="row">{{p.id}}</th>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
+                            <td scope="row">{{p.fechaEncargo}}</td>
+                            {%for pr in puntosRetiro%}
+                                {%if pr.id == p.idPuntoRetiro%}
+                                    <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
+                                {%endif%}
+                            {%endfor%}
+                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
 </div>
 
 

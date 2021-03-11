@@ -127,6 +127,14 @@
                                             </div>
                                         </td>
                                     {%endif%}
+                                    {%if p.estado == "retirado"%}
+                                        <td>
+                                            <div>
+                                                <i class="fas fa-circle" style="color:#95C22B" id="estado-activo"></i>
+                                                Retirado
+                                            </div>
+                                        </td>
+                                    {%endif%}
                                     {%if p.estado == "cancelado"%}
                                         <td>
                                             <div>
