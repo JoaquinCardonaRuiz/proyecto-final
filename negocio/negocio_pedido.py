@@ -44,9 +44,9 @@ class NegocioPedido(Negocio):
             raise e
 
     @classmethod
-    def get_by_idPR(cls,id):
+    def get_by_idPR(cls,id,limit=False):
         try:
-            return DatosPedido.get_by_idPR(id)
+            return DatosPedido.get_by_idPR(id,limit)
         except Exception as e:
             raise e
 

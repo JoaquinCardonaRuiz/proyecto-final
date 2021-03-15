@@ -86,13 +86,24 @@ class DatosPedido(Datos):
 
 
     @classmethod
-    def get_by_idPR(cls,idPR,noClose=False):
+    def get_by_idPR(cls,idPR,limit=False,noClose=False):
         """
         Obtiene todos los pedidos de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT \
+            if limit == False:
+                sql = ("SELECT \
+                        idPedido, \
+                        fechaEnc, \
+                        fechaRet, \
+                        totalARS, \
+                        totalEP, \
+                        idPunto, \
+                        estado \
+                        FROM pedidos WHERE estado != \"eliminado\" AND idPunto={};").format(idPR)
+            else:
+                sql = ("SELECT \
                     idPedido, \
                     fechaEnc, \
                     fechaRet, \
@@ -100,7 +111,7 @@ class DatosPedido(Datos):
                     totalEP, \
                     idPunto, \
                     estado \
-                    FROM pedidos WHERE estado != \"eliminado\" AND idPunto={};").format(idPR)
+                    FROM pedidos WHERE estado != \"eliminado\" AND idPunto={} LIMIT {};").format(idPR,limit)
             cls.cursor.execute(sql)
             pedidos_ = cls.cursor.fetchall()
             pedidos = []

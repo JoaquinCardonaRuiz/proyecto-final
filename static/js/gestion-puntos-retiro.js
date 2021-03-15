@@ -277,17 +277,31 @@ function openModalMateriales(id, nombre){
                 ending = '</tr>';
                 id = '<th>'+String(result[i]["id"]) + '</th>';
                 totalEP = '<td>'+String(result[i]["totalEP"]) + '</td>';
-                totalARS = '<td>'+String(result[i]["totalARS"]) + '</td>';
+                totalARS = '<td>$'+String(result[i]["totalARS"]) + '</td>';
                 fechaEnc = '<td>'+String(result[i]["fechaEnc"]) + '</td>';
                 fechaRet = '<td>'+String(result[i]["fechaRet"]) + '</td>';
-                estado = '<td>'+String(result[i]["estado"]) + '</td>';
-    
+                if (result[i]["estado"] == "pendiente"){
+                    estado = '<td><div><i class="fas fa-circle" style="color:#3399ff" id="estado-activo"></i> En preparación</div>';
+                }
+                else if(result[i]["estado"] == "preparado"){
+                    estado = '<td><div><i class="fas fa-circle" style="color:#ddbb44" id="estado-activo"></i> Preparados</div>';
+                }
+                else if(result[i]["estado"] == "listo"){
+                    estado = '<td><div><i class="fas fa-circle" style="color:#00aa44" id="estado-activo"></i> Listo para retiro</div>';
+                }
+                else if(result[i]["estado"] == "cancelado"){
+                    estado = '<td><div><i class="fas fa-circle" style="color:#cc4444" id="estado-activo"></i> Cancelado</div>';
+                }
+                else if(result[i]["estado"] == "retirado"){
+                    estado = '<td><div><i class="fas fa-circle" style="color:#95C22B" id="estado-activo"></i> Retirado</div>';
+                }
+                else if(result[i]["estado"] == "devuelto"){
+                    estado = '<td><div><i class="fas fa-circle" style="color:#95C22B" id="estado-activo"></i> Reembolsado</div>';
+                }
                 append = start + id + totalEP + totalARS + fechaEnc + fechaRet + estado;
     
                 //TODO: Hacer if para asignar a cada tabla, según su estado.
-                $('#content-table-modal-pedidos-activos').append(append);
-                $('#content-table-modal-pedidos-cancelados').append(append);
-                $('#content-table-modal-pedidos-devueltos').append(append);
+                $('#content-table-modal-pedidos').append(append);
             }
             
 

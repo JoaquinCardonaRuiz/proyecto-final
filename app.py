@@ -654,7 +654,7 @@ def horarios_pr(id):
 def pedidos_pr(id):
     try:
         id = int(id)
-        pedidos = NegocioPedido.get_by_idPR(id)
+        pedidos = NegocioPedido.get_by_idPR(id,10)
         pedidos_ = []
         for pedido in pedidos:
             ped = {"id":pedido.id,"estado":pedido.estado,"fechaEnc":pedido.fechaEncargo,"fechaRet":pedido.fechaRetiro,"totalARS":pedido.totalARS,"totalEP":pedido.totalEP}
