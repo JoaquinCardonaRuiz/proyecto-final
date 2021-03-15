@@ -77,3 +77,4 @@ function closeLoadingRing(){
     $(".lds-ring").hide();
     $("#loadingRow").hide();
 }
+
