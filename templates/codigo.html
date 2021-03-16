@@ -40,8 +40,11 @@
                 <div class="col" style="display:inline">
                     <div class="group">
                         <input style="display:inline;left:-25px;" class="wide-input" type="text" id="codigoInput" name="codigo" >
-                        <button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;display:inline;left:25px;" onclick="validarCodigo()">Validar Código</button>
-                        <span class="highlight"></span>
+                        <div class="row d-flex justify-content-center">
+                            <button type="button" class="btn" id="ecoasistente-btn-code" data-mdb-ripple-color="dark" onclick="validarCodigo();" disabled>
+                                Validar código de depósito
+                            </button>
+                        </div>                        <span class="highlight"></span>
                         <span class="bar wide-bar"></span>
                         <label>Código de Descuento</label>
                         <p id="codigoError" class="modalErrorMessage"></p>

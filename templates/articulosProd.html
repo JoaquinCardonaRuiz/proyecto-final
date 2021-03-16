@@ -45,32 +45,34 @@
                 {%endfor%}
                 <div class="col">
                     <div class="group">
-                        <select style="background:#fff;box-shadow:none;position: relative;border: none;width: 300px;border-bottom: 2px solid #cfec8c;" class="selectpicker wide-input" id="nombreArtInput" data-live-search="true" onclick="load_dd_articulos({{ids}},{{nombres}})">
+                        <select style="background:#fff;box-shadow:none;position: relative;border: none;width: 300px;border-bottom: 2px solid #cfec8c;" class="selectpicker wide-input" id="nombreArtInput" data-live-search="true">
                             <option disabled selected>-- Por favor, elija un Artículo --</option>
                           </select>
                         <img src="/static/img/chevron.svg" style="left:-35px;position:relative;width:20px;display:inline;pointer-events: none;">
                         <span class="highlight"></span>
                         <span class="bar wide-bar"></span>
                         <label style="top:-20px;font-size:14px;color:#95C22B;">Nombre del Artículo</label>
-                        <p id="codigoError" class="modalErrorMessage"></p>
+                        <p id="nameError" class="modalErrorMessage"></p>
                         <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">Seleccione el artículo producido.</p>
                     </div>
                 </div>
                  <div class="col">
                     <div class="group">
-                        <input style="left:-25px;" type="number" id="codigoInput" name="codigo" value=1 min=1 max=10000>
+                        <input class="cant-input" style="left:-25px;" type="number" id="cantInput" name="cantidad" required value=1 min=1 max=10000 onkeypress='return (event.charCode > 48 && event.charCode <= 57) || event.charCode == 46' onclick='verificar_prod()' onkeyup='verificar_prod()'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Cantidad</label>
-                        <p id="codigoError" class="modalErrorMessage"></p>
+                        <p id="cantError" class="modalErrorMessage"></p>
                         <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">Ingrese la cantidad producida.</p>
                     </div>
                 </div>
             </div>
-            <div class="row" id="row-to-hide-alta"style="justify-content:right;display:grid;margin-right:13%;">
+            <div class="row" id="row-to-hide-alta"style="display:grid;margin-right:13%;">
                 <div class="col">
-                    <div class="group">
-                        <button class="btn btn-outline-primary" style="box-shadow:none;font-size:15px;border-radius:30px;left:25px;" onclick="validarCodigo()">Aceptar</button>
+                    <div class="row d-flex justify-content-center">
+                        <button style="margin-bottom: 3%;width: 75%;position: relative;left: 8%;background-color: #95C22B;color: white;" type="button" class="btn" id="alta-btn" data-mdb-ripple-color="dark" onclick="validarCodigo();" disabled>
+                            Confirmar Producción
+                        </button>
                     </div>
                 </div>
             </div>
@@ -138,12 +140,12 @@
         <br><br><br><br><br><br><br><br>
         <div class="row" id="loadingRow">
               <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-              </div>
+        </div>
         </div>
       </div>
   </div>
-</div>
 
 
 <script src="/static/js/produccion.js"></script>
+<script>load_dd_articulos({{ids|safe}},{{nombres|safe}})</script>
 {% endblock %}

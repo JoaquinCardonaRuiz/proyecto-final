@@ -16,3 +16,14 @@ function load_dd_articulos(ids,nombres){
         select.appendChild(new_op);
     }
 }
+
+function verificar_prod(){
+    var cant = document.getElementById("cantInput").value;
+    if(Number(cant) == NaN || Number(cant) <= 0){
+        document.getElementById("alta-btn").disabled = true;
+        document.getElementById("cantError").innerHTML = "* Error";
+    }else{
+        document.getElementById("cantError").innerHTML = "";
+        document.getElementById("alta-btn").disabled = false;
+    }
+}
