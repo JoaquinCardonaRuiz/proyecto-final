@@ -116,6 +116,33 @@ def logout(val):
     return render_template('login.html')
 
 ''' 
+    -----------------
+    Registro
+    -----------------
+'''
+
+@app.route('/register', methods = ['GET','POST'])
+def register():
+    try: 
+        session["usuario"]
+        return redirect(url_for('main'))
+    except:
+        return render_template('register.html')
+
+@app.route('/register/alta-usuario/<email>/<passwd>', methods = ['GET','POST'])
+def register_alta(email,passwd):
+    try: 
+        if not NegocioUsuario.check_email(email): 
+            return jsonify("Email")
+        elif not NegocioUsuario.check_password(passwd):
+            return jsonify("Password")
+        else:
+            return jsonify(True)
+    except:
+        return render_template('register.html')
+
+
+''' 
     ------------------
     Perfil de usuario
     ------------------
