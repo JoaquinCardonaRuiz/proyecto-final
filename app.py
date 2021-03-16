@@ -1163,6 +1163,7 @@ def canjear_codigo():
 @app.route('/codigo/<cod>')
 def verificar_codigo(cod):
     try:
+        #TODO: Registrar fecha de registro.
         response = NegocioDeposito.verificar_codigo(cod,session["usuario"])
         nuevos_ep = response + session["usuario"].totalEcopuntos
         NegocioUsuario.update_nivel(session["usuario"].id,nuevos_ep)
