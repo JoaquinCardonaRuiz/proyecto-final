@@ -3,11 +3,20 @@ import custom_exceptions
 from negocio.negocio_ecopuntos import NegocioEcoPuntos
 from negocio.negocio_nivel import NegocioNivel
 from data.data_usuario import DatosUsuario
-
+from utils import Utils
 import re
 
 class NegocioUsuario(Negocio):
     """Clase que representa la capa de negocio para la entidad Usuario. Hereda de Negocio."""                                           
+    
+    @classmethod
+    def alta(cls,email,password):
+        try:
+            if email not in DatosUsuario.get_all_emails():
+                return DatosUsuario.alta(email,password)
+        except Exception as e:
+            raise e
+        
 
     @classmethod
     def login(cls,email, password):
@@ -62,7 +71,6 @@ class NegocioUsuario(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.check_password()",
                                                     msj=str(e),
                                                     msj_adicional="Formato contraseña inválido.")
-
 
 
     @classmethod
@@ -171,9 +179,12 @@ class NegocioUsuario(Negocio):
             raise e
     
     @classmethod
-    def get_all_emails(cls,uid):
+    def get_all_emails(cls,uid=None):
         try:
-            return DatosUsuario.get_all_emails(uid)
+            if uid == None:
+                return DatosUsuario.get_all_emails()
+            else:
+                return DatosUsuario.get_all_emails(uid)
         except Exception as e:
             raise e
             

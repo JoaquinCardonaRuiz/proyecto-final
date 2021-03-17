@@ -10,6 +10,7 @@ from flask_session import Session
 from utils import Utils
 from werkzeug.utils import secure_filename
 from pathlib import Path
+from mail import send_mail
 import os
 
 
@@ -123,7 +124,7 @@ def logout(val):
 
 @app.route('/register', methods = ['GET','POST'])
 def register():
-    try: 
+    try:
         session["usuario"]
         return redirect(url_for('main'))
     except:
@@ -136,8 +137,18 @@ def register_alta(email,passwd):
             return jsonify("Email")
         elif not NegocioUsuario.check_password(passwd):
             return jsonify("Password")
-        else:
-            return jsonify(True)
+        id = NegocioUsuario.alta(email,passwd)
+        send_mail(email, passwd,id)
+        return jsonify(True)
+    except Exception as e:
+        return error(e,"register")
+    return redirect(url_for('register'))
+
+@app.route('/register/emails', methods = ['GET','POST'])
+def register_all_emails():
+    try: 
+        return jsonify(NegocioUsuario.get_all_emails())
+
     except:
         return render_template('register.html')
 

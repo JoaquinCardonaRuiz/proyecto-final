@@ -173,13 +173,16 @@ class DatosUsuario(Datos):
             cls.cerrar_conexion()
     
     @classmethod
-    def get_all_emails(cls,uid):
+    def get_all_emails(cls,uid=None):
         """
         Obtiene todos los emails registrados distintos al del usuario.
         """
         try:
             cls.abrir_conexion()
-            sql = ("select email from usuarios where idUsuario != {}").format(uid)
+            if uid == None:
+                sql = ("select email from usuarios")
+            else:
+                sql = ("select email from usuarios where idUsuario != {}").format(uid)
             cls.cursor.execute(sql)
             emails_ = cls.cursor.fetchall()
             emails = []
@@ -274,3 +277,30 @@ class DatosUsuario(Datos):
                                                     msj_adicional="Error obteniendo todos los usuarios.")
         finally:
             cls.cerrar_conexion()
+    
+    @classmethod
+    def alta(cls, email, password, noClose = False):
+        """
+        Da de alta un usuario en la BD.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'usuarios'")
+            cls.cursor.execute(sql)
+            id_asignado = cls.cursor.fetchone()[0]
+
+            sql = ("INSERT into usuarios (email,password,estado) values (%s,%s,%s)")
+            values = (email, password,"no-verificado")
+            cls.cursor.execute(sql, values)
+            cls.db.commit()
+
+            return id_asignado
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.alta()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error dando de lata un usuario en la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()

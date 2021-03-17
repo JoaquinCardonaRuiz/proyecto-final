@@ -5,6 +5,11 @@ var first_time = true;
 var first_time2 = true;
 var repeat_password = false;
 var domain = "";
+var emails = false;
+
+$.getJSON("/register/emails",function (result){
+    emails = result;
+});
 
 $( window ).resize(function() {
     reduceWindow();
@@ -125,7 +130,7 @@ function redirectBlank(){
 
 function validateEmail(elementValue){      
     var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (emailPattern.test(elementValue)){
+    if (emailPattern.test(elementValue) && !(emails.includes(elementValue))){
         email = true;
     }
     else{
@@ -136,6 +141,12 @@ function validateEmail(elementValue){
         $("#email-vacio").show();
     }
     else{
+        if ((emails.includes(elementValue))){
+            $("#email-error").text("* El email que ingresó ya ha sido utilizado.");
+        }
+        else{
+            $("#email-error").text("* Formato de email incorrecto.");
+        }
         $("#email-error").fadeIn();
         $("#email-vacio").hide();
     }
@@ -153,7 +164,7 @@ function validateEmail2(elementValue){
     
     if (first_time == false){
         var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        if (emailPattern.test(elementValue)){
+        if (emailPattern.test(elementValue) && !(emails.includes(elementValue))){
             email = true;
         }
         else{
@@ -164,6 +175,12 @@ function validateEmail2(elementValue){
             $("#email-vacio").show();
         }
         else{
+            if ((emails.includes(elementValue))){
+                $("#email-error").text("* El email que ingresó ya ha sido utilizado.");
+            }
+            else{
+                $("#email-error").text("* Formato de email incorrecto.");
+            }
             $("#email-error").fadeIn();
             $("#email-vacio").hide();
         }
