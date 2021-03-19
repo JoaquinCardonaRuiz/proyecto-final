@@ -169,7 +169,7 @@ def datos_personales():
 def verificacion(codigo):
     verificacion_res = NegocioUsuario.verificacion(codigo)
     if verificacion_res != False:
-        NegocioUsuario.login(verificacion_res["email"],verificacion_res["password"])
+        session["usuario"] = NegocioUsuario.login(verificacion_res["email"],verificacion_res["password"])
         return redirect(url_for('datos_personales'))
     else:
         return redirect(url_for('start'))
