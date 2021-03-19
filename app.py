@@ -842,16 +842,40 @@ def gestion_prod():
 
 @app.route('/produccion/insumos')
 def prod_insumos():
-    materiales = NegocioMaterial.get_all()
     insumos = NegocioInsumo.get_all()
-    return render_template('insumosProd.html',insumos=insumos,materiales=materiales,usuario=session["usuario"])
+    return render_template('insumosProd.html',insumos=insumos,usuario=session["usuario"])
 
 @app.route('/produccion/articulos')
 def prod_Articulos():
-    insumos = NegocioInsumo.get_all()
     articulos = NegocioArticulo.get_all()
-    return render_template('articulosProd.html', articulos=articulos,insumos=insumos,usuario=session["usuario"])
+    prods = NegocioProduccion.get_all_articulos()
+    return render_template('articulosProd.html', articulos=articulos,usuario=session["usuario"],prods=prods)
 
+@app.route('/produccion/articulos/<id>')
+def get_insumos(id):
+    art = NegocioArticulo.get_by_id(id)
+    ids = [i.idInsumo for i in art.insumos]
+    cants = [i.cantidad for i in art.insumos]
+    insumos = NegocioInsumo.get_by_id_array(ids)
+    insumos_dic =  [{"nombre":   i.nombre,
+                     "stock":    i.stock,
+                     "cant":     c}
+                     for i,c in list(zip(insumos,cants))]
+    insumos_dic.append({"nombre": art.nombre,"stock": art.stock})
+    return jsonify(insumos_dic)
+
+
+@app.route('/produccion/articulos/confirmar',methods=["POST","GET"])
+def confirmar_prod_art():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idArt"])
+            cant = float(request.form["cantidad"])
+            print(id," --- ",cant)
+            NegocioProduccion.confirmar_produccion(id,cant)
+        return redirect(url_for('prod_Articulos'))
+    except Exception as e:
+        return error(e,"produccion-art")
 
 
 if __name__ == '__main__':

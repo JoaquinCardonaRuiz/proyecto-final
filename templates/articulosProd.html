@@ -34,9 +34,9 @@
 
     <!-- Alta-->
     <div class="container" id="table-container">
-        <p style="text-align:left;padding-top:2%;padding-left:2%;color:#666;font-size:20px">Registrar producción de Artículo<p>
+        <p style="text-align:left;padding-top:2%;padding-left:2%;color:#666;font-size:22px">Registrar producción de Artículo<p>
         <div class="row d-flex justify-content-center" style="display:block !important">
-            <div class="row" id="row-to-hide-alta"style="padding-top:5%;margin-left:10%">
+            <form action="{{url_for('confirmar_prod_art')}}" method="POST" class="row" id="pag1-content"style="padding-top:5%;margin-left:10%">
                 {%set ids = []%}
                 {%set nombres = []%}
                 {%for art in articulos%}
@@ -45,8 +45,8 @@
                 {%endfor%}
                 <div class="col">
                     <div class="group">
-                        <select style="background:#fff;box-shadow:none;position: relative;border: none;width: 300px;border-bottom: 2px solid #cfec8c;" class="selectpicker wide-input" id="nombreArtInput" data-live-search="true">
-                            <option disabled selected>-- Por favor, elija un Artículo --</option>
+                        <select style="background:#fff;box-shadow:none;position: relative;border: none;width: 300px;border-bottom: 2px solid #cfec8c;" class="selectpicker wide-input" id="nombreArtInput" name="idArt" data-live-search="true" oninput="verificar_prod();">
+                            <option value=-1 disabled selected>-- Por favor, elija un Artículo --</option>
                           </select>
                         <img src="/static/img/chevron.svg" style="left:-35px;position:relative;width:20px;display:inline;pointer-events: none;">
                         <span class="highlight"></span>
@@ -66,16 +66,81 @@
                         <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">Ingrese la cantidad producida.</p>
                     </div>
                 </div>
-            </div>
-            <div class="row" id="row-to-hide-alta"style="display:grid;margin-right:13%;">
+            </form>
+            <div class="row" id="pag1-buttons"style="display:grid;margin-right:13%;">
                 <div class="col">
                     <div class="row d-flex justify-content-center">
-                        <button style="margin-bottom: 3%;width: 75%;position: relative;left: 8%;background-color: #95C22B;color: white;" type="button" class="btn" id="alta-btn" data-mdb-ripple-color="dark" onclick="validarCodigo();" disabled>
+                        <button style="margin-bottom: 3%;width: 75%;position: relative;left: 8%;background-color: #95C22B;color: white;" type="button" class="btn" id="siguiente-btn" data-mdb-ripple-color="dark" onclick="pasar_pagina(1);" disabled>
+                            Siguiente
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+
+
+            <!-- Page 2 -->
+            <div class="row" id="pag2-content"style="margin-left:2%;margin-right: 2%;" hidden>
+                <div class="col">
+                <p style="text-align:left;padding-top:2%;padding-left:5%;color:#666;font-size:18px">Insumos a utilizar<p>
+                    <div class="row d-flex justify-content-center">
+                        <table class="table" id="content-table" style="width:80% !important;margin-top:0% !important;">
+                            <thead style=" border-top:none">
+                                <tr>
+                                    <th scope="col" class="table-heading">Nombre</th>
+                                    <th scope="col" class="table-heading">Stock Actual</th>
+                                    <th scope="col" class="table-heading">Stock a Utilizar</th>
+                                    <th scope="col" class="table-heading">Stock restante</th>
+                                </tr>
+                            </thead>
+                            <tbody id="insumos-table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="pag3-content"style="margin-left:2%;margin-right: 2%;" hidden>
+                <div class="col">
+                <p style="text-align:left;padding-top:2%;padding-left:5%;color:#666;font-size:18px">Stock resultante<p>
+                    <div class="row d-flex justify-content-center">
+                        <table class="table" id="content-table" style="width:80% !important;margin-top:0% !important;">
+                            <thead style=" border-top:none">
+                                <tr>
+                                    <th scope="col" class="table-heading">Nombre</th>
+                                    <th scope="col" class="table-heading">Stock Actual</th>
+                                    <th scope="col" class="table-heading">Stock a Producir</th>
+                                    <th scope="col" class="table-heading">Stock Resultante</th>
+                                </tr>
+                            </thead>
+                            <tbody id="insumos-table">
+                                <tr>
+                                    <td scope="row" id="art-nombre"></td>
+                                    <td scope="row" id="art-stock"></td>
+                                    <td scope="row" id="art-cant"></td>
+                                    <td scope="row" id="art-result"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="pag2-buttons"style="display:grid;margin-right:13%;" hidden>
+                <div class="col">
+                    <div class="row d-flex justify-content-center">
+                        <button style="margin-bottom: 3%;width: 40%;position: relative;left: 8%;background-color: #979797;color: white; margin-right:2%;" type="button" class="btn" id="atras-btn" data-mdb-ripple-color="dark" onclick="pasar_pagina(-1);">
+                            Cancelar
+                        </button>
+                        <button style="margin-bottom: 3%;width: 40%;position: relative;left: 8%;background-color: #95C22B;color: white;" type="button" class="btn" id="alta-btn" data-mdb-ripple-color="dark" onclick="confirmarProd();" disabled>
                             Confirmar Producción
                         </button>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 
@@ -91,37 +156,29 @@
             <table class="table" id="content-table">
                 <thead style=" border-top:none">
                 <tr>
-                    <th scope="col" class="table-heading">Nombre</th>
-                    <th scope="col" class="table-heading">Costo</th>
-                    <th scope="col" class="table-heading">Margen</th>
-                    <th scope="col" class="table-heading">Precio</th>
-                    <th scope="col" class="table-heading">Stock</th>
-                    <th scope="col" class="table-heading">Unidad</th>
-                    <th scope="col" class="table-heading">Publico</th>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">Nombre Articulo</th>
+                    <th scope="col" class="table-heading">Unidad Medida</th>
+                    <th scope="col" class="table-heading">Cantidad</th>
+                    <th scope="col" class="table-heading">Fecha</th>
                 </tr>
                 </thead>
                 <tbody>
-                {%set nombres = []%}
-                {%for art in articulos%}
-                <!-- Jinja funciona en comentarios... sin esto imprime None en pantalla.-->
-                <!--{{nombres.append(art.nombre)}} -->
-                <tr>
-                    <th scope="row">{{art.nombre}}</th>
-                    <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
-                    <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
-                    <td scope="row">{{art.costoTotal}}</td>
-                    <td scope="row">{{art.margenGanancia * 100}}%</td>
-                    <td scope="row">{{art.valor}}</td>
-                    <td scope="row">{{art.stock}}</td>
-                    <td scope="row">{{art.unidadMedida}}</td>
-                    {% if art.ventaUsuario %}
-                        <td scope="row">Si</td>
-                    {% else %}
-                        <td scope="row">No</td>
-                    {% endif %}
-                    <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{art.id}}','{{art.nombre}}','{{art.costoProduccion}}','{{art.costoInsumos}}','{{art.costoTotal}}','{{art.valor}}','{{art.margenGanancia}}','{{art.unidadMedida}}','{{art.costoObtencionAlternativa}}','{{art.otrosCostos}}','{{art.imagen}}','{{art.ventaUsuario}}')"></i></td>
-                    <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{art.id}}','{{art.nombre}}')"></i></td>
-                </tr>
+                {%for prod in prods%}
+                    {%set art=[]%}
+                    {%for artic in articulos%}
+                        {%if artic.id == prod.articulos.idTipoArticulo%}
+                            <!--{{art.append(artic)}}-->
+                        {%endif%}
+                    {%endfor%}
+                    {%set art = art[0]%}
+                    <tr>
+                        <th scope="row">{{prod.id}}</th>
+                        <td scope="row">{{art.nombre}}</td>
+                        <td scope="row">{{art.unidadMedida}}</td>
+                        <td scope="row">{{prod.articulos.cantidad}}</td>
+                        <td scope="row">{{prod.fecha}}</td>
+                    </tr>
                 {%endfor%}
                 </tbody>
             </table>
