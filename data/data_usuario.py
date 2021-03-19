@@ -203,7 +203,10 @@ class DatosUsuario(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql = ("select nroDoc from usuarios where idUsuario != {}").format(uid)
+            if uid != False:
+                sql = ("select nroDoc from usuarios where idUsuario != {}").format(uid)
+            else:
+                sql = ("select nroDoc from usuarios where nroDoc is not NULL")
             cls.cursor.execute(sql)
             docs_ = cls.cursor.fetchall()
             docs = []

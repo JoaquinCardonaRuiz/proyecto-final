@@ -5,7 +5,7 @@ from utils import Utils
 
 debug = True
 
-def send_mail(email_address, passwd, id):
+def send_mail(email_address, passwd, id, html_string):
     global debug
 
     code = Utils.encripta_codigo(str(email_address) + str(passwd) + str(id))
@@ -28,8 +28,7 @@ def send_mail(email_address, passwd, id):
     message['Subject']  = "EcoAsistente - Activá tu cuenta"
 
     #Importo el archivo html.
-    with open('mail.html', 'r') as f:
-        html_string = f.read()
+    
 
     #Formateo del email.
     message.add_header('Content-Type','text/html')

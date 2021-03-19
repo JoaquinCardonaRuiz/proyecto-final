@@ -1,0 +1,254 @@
+@import url("forms.css");             /* Inputs, Botones, Dropdowns */
+
+
+.img-login{
+    height: 100%;
+    position: fixed;
+	top: 0;
+	left: 0;
+}
+
+.login-container{
+    width: calc(100%-5rem) !important;
+    margin-left: 5rem;
+    height: 100%;
+    margin-top: 2%;
+    transition: width 1s, height 1s, transform 1s;
+}
+
+/*Containers*/
+.content-container{
+    display: table;
+    margin: 0 auto;
+    transition: width 1s, height 1s, transform 1s;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 50%;
+}
+
+#email-input-group{
+    transition: width 1s, height 1s, transform 1s;
+    margin-top: 30px;
+    width: 95%;
+    margin-left: 2.5%;
+
+}
+
+#password-input-group{
+    transition: width 1s, height 1s, transform 1s;
+    margin-top: -30px;
+    width: 100%;
+
+}
+
+#repeat-password-input-group{
+    transition: width 1s, height 1s, transform 1s;
+    margin-top: 20px;
+}
+
+
+.ingresar-label{
+    font-family: 'Hind', sans-serif;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+    margin-top: 30px;
+    color: rgb(90, 90, 90);
+}
+
+.login-img{
+  height: 60px;
+  transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.password-input{
+    width: 100%;
+}
+
+.email-input{
+    width: 100%;
+}
+
+#register-label{
+    margin-top: 25px;
+    width: 96%;
+    text-align: right;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.register-hyperlink{
+    color: #95C22B;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.bottom-row{
+    margin-top: -30px;
+}
+
+.register-hyperlink:hover{
+    color: #87af28;
+    cursor: pointer;
+}
+
+.olvido-password{
+    color: #95C22B;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.olvido-password:hover{
+    color: #87af28;
+    cursor: pointer;
+}
+
+.heading{
+    font-size: 35px;
+    font-family: 'Hind', sans-serif;
+    margin-top: 5% !important;
+    font-weight: 300;
+}
+
+.subheading{
+    font-family: 'Hind', sans-serif;
+    margin-bottom: -1.5%;
+    font-weight: 300;
+}
+
+.cartel-error{
+   color: #f81919 !important;
+   font-size: 13px;
+   margin-top: 4px; 
+   display: none;
+   margin-bottom: 15px;
+}
+
+.cartel-checked{
+    color: #7c7c7c !important;
+    font-size: 13px;
+    margin-top: 4px !important; 
+    margin-bottom: 15px;
+ }
+
+.error-msg-login{
+    background-color: #ffecf2;
+    border: 1px solid #e81f37;
+    border-radius: 5px;
+    margin-top: 1%;
+    margin-bottom: -1%;
+    width: 400px;
+    height: 45px;
+    transition: width 1s, height 1s, transform 1s;
+    text-align: center;
+    display: none;
+
+}
+
+.error-msg-text{
+    padding-top: 10px;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    text-align: center;
+    color: rgb(63, 63, 63);
+}
+
+.loadingRowLogin{
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.row{
+    width: 400px;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.row-error{
+    width: 400px;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+    margin-left: -15px;
+}
+
+#start-button{
+    font-size: 17px;
+    font-weight: 450;
+    margin-top: 20px;
+    white-space: nowrap;
+    border-radius: 25px;
+    border: 1px solid #95C22B;
+    padding: 12px;
+    text-align: center;
+    width: 100%;
+    height: 48px;
+    background: #95C22B;
+    color: whitesmoke;
+  }
+  
+  #start-button:hover{
+      background-color: #aedd42;
+      border: 1px solid #aedd42;
+      cursor: pointer;
+  }
+
+  #check-label{
+      position: absolute;
+      font-family: 'Hind', sans-serif;
+      font-size: 15px;
+
+  }
+
+.passwd-reqs{
+    margin-top: -10px;
+    font-family: 'Hind', sans-serif;
+    font-weight: 500;
+    margin-left: 10%;
+    font-size: 12px;
+    width: 100%;
+}
+
+.email-icon{
+    margin-top: 20% !important;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.thanks-email-label{
+    font-family: 'Hind', sans-serif;
+    font-weight: 500;
+    font-size: 22px;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+    text-align: center;
+}
+
+.indications-email-label{
+    font-family: 'Hind', sans-serif;
+    font-size: 16px;
+    transition: width 0.5s, height 0.5s, transform 0.5s;
+    color: rgb(90, 90, 90);
+    text-align: center;
+}
+
+#email-button{
+    font-size: 17px;
+    font-weight: 450;
+    margin-top: 20px;
+    margin-left: 2%;
+    white-space: nowrap;
+    border-radius: 25px;
+    border: 1px solid #95C22B;
+    padding: 12px;
+    text-align: center;
+    width: 100%;
+    height: 48px;
+    background: #95C22B;
+    color: whitesmoke;
+}
+
+#email-button:hover{
+    background-color: #aedd42;
+    border: 1px solid #aedd42;
+    cursor: pointer;
+}
+
+#email-container{
+    display: none;
+}
+
+.row{
+    width: 100%;
+}

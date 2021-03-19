@@ -12,8 +12,10 @@ class NegocioUsuario(Negocio):
     @classmethod
     def alta(cls,email,password):
         try:
-            if email not in DatosUsuario.get_all_emails():
+            if str(email) not in DatosUsuario.get_all_emails():
                 return DatosUsuario.alta(email,password)
+            else:
+                return False
         except Exception as e:
             raise e
         
@@ -191,7 +193,7 @@ class NegocioUsuario(Negocio):
 
 
     @classmethod
-    def get_all_documentos(cls,uid):
+    def get_all_documentos(cls,uid=False):
         try:
             return DatosUsuario.get_all_documentos(uid)
         except Exception as e:

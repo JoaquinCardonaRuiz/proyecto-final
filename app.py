@@ -75,7 +75,6 @@ def main():
         materiales = NegocioMaterial.get_all()
         max_level = NegocioNivel.get_min_max_niveles()[1]
         tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
-
     return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
     nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales, max_level = max_level, tipoUsuario = tipoUsuario)
 
@@ -137,8 +136,13 @@ def register_alta(email,passwd):
             return jsonify("Email")
         elif not NegocioUsuario.check_password(passwd):
             return jsonify("Password")
-        id = NegocioUsuario.alta(email,passwd)
-        mail.send_mail(email, passwd, id)
+        alta_result = NegocioUsuario.alta(email,passwd) 
+        if not alta_result:
+            return jsonify("Email")
+        else:
+            id = alta_result
+        html_str = (render_template("mail.html"))
+        mail.send_mail(email, passwd, id, html_str)
         return jsonify(True)
     except Exception as e:
         raise e
@@ -151,6 +155,15 @@ def register_all_emails():
 
     except:
         return render_template('register.html')
+
+@app.route('/datos-personales', methods = ['GET','POST'])
+def datos_personales():
+    try: 
+        session["usuario"]
+        return redirect(url_for('main'))
+
+    except:
+        return render_template('datos-personales.html')
 
 ''' 
     ------------------
@@ -232,6 +245,8 @@ def perfil_listas(type):
             return jsonify(NegocioUsuario.get_all_emails(session["usuario"].id))
         if type == 'documentos':
             return jsonify(NegocioUsuario.get_all_documentos(session["usuario"].id))
+        if type == 'documentos_no_filter':
+            return jsonify(NegocioUsuario.get_all_documentos())
     except Exception as e:
         return error(e,"perfil")
     return render_template('login.html')
