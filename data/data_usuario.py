@@ -24,19 +24,23 @@ class DatosUsuario(Datos):
                 usuarios.idTipoDoc, \
                 usuarios.idDireccion, \
                 usuarios.idNivel, \
-                usuarios.img \
+                usuarios.img, \
+                usuarios.estado \
                 from usuarios where email = %s and password = %s")
             values = (email, password)
             cls.cursor.execute(sql,values)
             usuarios = cls.cursor.fetchall()
             if len(usuarios) > 0:
                 usu = usuarios[0]
-                direc = DatosDireccion.get_one_id(usu[8])
-                depositos = DatosDeposito.get_by_id_usuario(usu[0])
-                da = [d for d in depositos if d.isActivo()]
-                dv = [d for d in depositos if not(d.isActivo())]
-                ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10])
+                if usu[11] != "habilitado":
+                    usuario = Usuario(usu[0],None,None,None,None,usu[5],None,None,email=usu[4])
+                else:
+                    direc = DatosDireccion.get_one_id(usu[8])
+                    depositos = DatosDeposito.get_by_id_usuario(usu[0])
+                    da = [d for d in depositos if d.isActivo()]
+                    dv = [d for d in depositos if not(d.isActivo())]
+                    ped = DatosPedido.get_by_user_id(usu[0])
+                    usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10])
                 usuario.calcularTotalEcopuntos()
                 return usuario
             else:
@@ -72,7 +76,7 @@ class DatosUsuario(Datos):
                 usuarios.idDireccion, \
                 usuarios.idNivel, \
                 usuarios.img \
-                from usuarios where usuarios.idUsuario = {}").format(id)
+                from usuarios where usuarios.idUsuario = {} and estado = \"habilitado\"").format(id)
             cls.cursor.execute(sql)
             usuarios = cls.cursor.fetchall()
             if len(usuarios) > 0:
@@ -204,7 +208,7 @@ class DatosUsuario(Datos):
         try:
             cls.abrir_conexion()
             if uid != False:
-                sql = ("select nroDoc from usuarios where idUsuario != {}").format(uid)
+                sql = ("select nroDoc from usuarios where idUsuario != {} and estado = \"habilitado\"").format(uid)
             else:
                 sql = ("select nroDoc from usuarios where nroDoc is not NULL")
             cls.cursor.execute(sql)
@@ -258,7 +262,7 @@ class DatosUsuario(Datos):
                 usuarios.idDireccion, \
                 usuarios.idNivel, \
                 usuarios.img \
-                from usuarios")
+                from usuarios WHERE estado = \"habilitado\"")
             cls.cursor.execute(sql)
             usuarios = cls.cursor.fetchall()
             users = []
