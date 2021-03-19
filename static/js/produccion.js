@@ -50,8 +50,6 @@ function cargar_pagina(){
         fill_insumos_table();
         document.getElementById("pag1-content").hidden = true;
         document.getElementById("pag1-buttons").hidden = true;
-        document.getElementById("pag2-content").hidden = false;
-        document.getElementById("pag3-content").hidden = false;
         document.getElementById("pag2-buttons").hidden = false;
     }
 }
@@ -109,10 +107,30 @@ function fill_insumos_table(){
             }
         }
         document.getElementById("alta-btn").disabled = !permitir_prod;
+        hide_lring();
+        document.getElementById("pag2-content").hidden = false;
+        document.getElementById("pag3-content").hidden = false;
     });
 }
 
 
 function confirmarProd(){
+    show_lring();
+    document.getElementById("pag1-content").hidden = true;
+    document.getElementById("pag1-buttons").hidden = true;
+    document.getElementById("pag2-content").hidden = true;
+    document.getElementById("pag3-content").hidden = true;
+    document.getElementById("pag2-buttons").hidden = true;
     document.getElementById("pag1-content").submit();
+}
+
+
+function show_lring(){
+    $("#loadingRow").show();
+    $(".lds-ring").show();
+}
+
+function hide_lring(){
+    $("#loadingRow").hide();
+    $(".lds-ring").hide();
 }

@@ -45,7 +45,7 @@
                 {%endfor%}
                 <div class="col">
                     <div class="group">
-                        <select style="background:#fff;box-shadow:none;position: relative;border: none;width: 300px;border-bottom: 2px solid #cfec8c;" class="selectpicker wide-input" id="nombreArtInput" name="idArt" data-live-search="true" oninput="verificar_prod();">
+                        <select style="background:#fff;box-shadow:none;position: relative;border: none;width: 300px;border-bottom: 2px solid #cfec8c;" class="selectpicker selectpicker-nooutline wide-input" id="nombreArtInput" name="idArt" data-live-search="true" oninput="verificar_prod();">
                             <option value=-1 disabled selected>-- Por favor, elija un Artículo --</option>
                           </select>
                         <img src="/static/img/chevron.svg" style="left:-35px;position:relative;width:20px;display:inline;pointer-events: none;">
@@ -70,7 +70,7 @@
             <div class="row" id="pag1-buttons"style="display:grid;margin-right:13%;">
                 <div class="col">
                     <div class="row d-flex justify-content-center">
-                        <button style="margin-bottom: 3%;width: 75%;position: relative;left: 8%;background-color: #95C22B;color: white;" type="button" class="btn" id="siguiente-btn" data-mdb-ripple-color="dark" onclick="pasar_pagina(1);" disabled>
+                        <button style="margin-bottom: 3%;width: 75%;position: relative;left: 8%;background-color: #95C22B;color: white;" type="button" class="btn" id="siguiente-btn" data-mdb-ripple-color="dark" onclick="show_lring();pasar_pagina(1);" disabled>
                             Siguiente
                         </button>
                     </div>
@@ -78,7 +78,9 @@
             </div>
 
             <div class="row" id="loadingRow">
+                <br>
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                <br>
             </div>
 
 

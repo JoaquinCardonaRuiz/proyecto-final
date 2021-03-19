@@ -670,3 +670,6 @@ input:focus ~ .highlight {
   transition: width 0.4s, height 0.4s, transform 0.4s;
 }
 
+.selectpicker-nooutline{
+  outline:none !important;
+}
