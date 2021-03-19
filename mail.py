@@ -5,10 +5,9 @@ from utils import Utils
 
 debug = True
 
-def send_mail(email_address, passwd, id, html_string):
+def send_mail(email_address, passwd, html_string, code):
     global debug
 
-    code = Utils.encripta_codigo(str(email_address) + str(passwd) + str(id))
     if debug:
         url = "http://localhost:5000/verificacion/" + code
     else:

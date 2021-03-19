@@ -49,7 +49,7 @@
                 </div>
                 <div class="row d-flex">
                     <div class="group" id="email-input-group">  
-                        <input type="text"  onfocusout="validateEmail(value);" class="data-show-input email-input" readonly value="bruno98980@gmail.com">
+                        <input type="text"  onfocusout="validateEmail(value);" class="data-show-input email-input" readonly value="{{user.email}}">
                         <input type="text" id="idEntidadInput" name="id" hidden>
                         <label class="email-input">Email</label>
                         <p id="" class="cartel-checked"><i class="fa fa-check modal-info-img" style="color: #95C22B;"></i> Email validado correctamente.</p>
@@ -89,16 +89,18 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="group">
-                            <select style="background:#fff;box-shadow:none;position: relative;border: none;width: 300px;border-bottom: 2px solid #cfec8c;" class="selectpicker wide-input" id="nombreArtInput" name="idArt" data-live-search="true" oninput="verificar_prod();">
-                                <option value=-1 disabled selected>-- Por favor, elija un Artículo --</option>
-                              </select>
-                            <img src="/static/img/chevron.svg" style="left:-35px;position:relative;width:20px;display:inline;pointer-events: none;">
-                            <span class="highlight"></span>
-                            <span class="bar wide-bar"></span>
-                            <label style="top:-20px;font-size:14px;color:#95C22B;">Nombre del Artículo</label>
+                        <div class="group" id="password-input-group">
+                            <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="password-input" class="selectpicker selectpicker-nooutline" id="nombreArtInput" name="idArt" data-live-search="true" oninput="validaTipoDoc(value);">
+                                <option value=-1 disabled selected>&nbsp; Seleccione tipo</option>
+                                {%for tipo_doc in tipos_doc%}
+                                <option value={{tipo_doc.id}}>&nbsp; {{tipo_doc.nombre}}</option>
+                                {%endfor%}
+                            </select>
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight password-input"></span>
+                            <span class="bar password-input"s></span>
+                            <label class="password-input">Tipo de documento</label>
                             <p id="nameError" class="modalErrorMessage"></p>
-                            <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">Seleccione el artículo producido.</p>
                         </div>
                     </div>
                 </div>

@@ -680,3 +680,16 @@ input:focus ~ .highlight {
   transition: width 0.4s, height 0.4s, transform 0.4s;
 }
 
+.selectpicker-nooutline{
+  outline:none !important;
+  margin-top: 2px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Some browsers will not display the caret when using calc, so we put the fallback first */ 
+  background: url("/static/img/chevron.svg") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
+  background: url("/static/img/chevron.svg") white no-repeat calc(100% - 10px) !important; /* Better placement regardless of input width */
+  background-size: 20px !important;
+  width: 100%;
+}
+

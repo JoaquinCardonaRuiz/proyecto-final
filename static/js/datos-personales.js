@@ -6,6 +6,8 @@ var pais = true;
 var ciudad = true;
 var altura = false;
 var calle = false;
+var documento = false;
+var tipo_doc = false;
 var documentos = [];
 
 
@@ -94,6 +96,7 @@ function validaDireccion(modal_type, campoValidacion){
         else{
             $('#primary-btn-alta').prop('disabled', true);
         }
+        enable_disable_button();
     }
 }
 
@@ -101,18 +104,17 @@ function validaDoc(val){
     if (documentos.includes(String(val))){
         $("#error-doc").text("* El documento ya se encuentra registrado.");
         $("#error-doc").show();
-        doc = false;
+        documento = false;
     }
     else if (val == ""){
         $("#error-doc").text("* El documento no puede quedar vacío.");
         $("#error-doc").show();
-        doc = false;
+        documento = false;
     }
     else{
         $("#error-doc").hide();
-        doc = true;
+        documento = true;
     }
-    enable_disable_doc();
 }
 
 function reduceWindow(){
@@ -141,81 +143,6 @@ function reduceWindow(){
     } 
 }
 
-function submitLogin(){
-    if (email && password){
-        email_val = $("#email-input").val();
-        password_val = $("#password-input").val();
-        $("#error-msg-login").hide();
-
-        $("#loadingRowLogin").fadeIn();
-        $("#loading-text-login").fadeIn();
-        $("#olvido-password").hide();
-        $("#start-button").hide();
-        $("#email-input-group").hide();
-        $("#password-input-group").hide();
-        $("#pass-reqs-row").hide();
-        $("#repeat-password-input-group").hide();
-        $(".form-check").hide();
-        $.getJSON("/register/alta-usuario/"+String(email_val)+"/"+String(password_val),function (result){
-            if(result){
-                domain = "";
-                add = false;
-                for (var i in String(email_val)){
-                    if (add){
-                        domain += email_val[i];
-                    }
-                    else if (email_val[i] == "@"){
-                        add = true;
-                    }
-                }
-                $("#email-button").text("Ir a " + domain);
-                $(".register-form").fadeOut();
-                $("#email-container").fadeIn();
-                $("#email-direction-label").text(email_val);
-            }
-            else if (result == "Email"){
-                $(".error-msg-text").text("¡Ups! Hay un problema con tu dirección de email")
-                $("#loadingRowLogin").hide();
-                $("#loading-text-login").hide();
-                $("#error-msg-login").fadeIn();
-                $("#olvido-password").fadeIn();
-                $("#start-button").fadeIn();
-                $("#email-input-group").fadeIn();
-                $("#password-input-group").fadeIn();
-                $("#pass-reqs-row").fadeIn();
-                $("#repeat-password-input-group").fadeIn();
-                $(".form-check").fadeIn();
-            }
-            else if (result == "Password"){
-                $(".error-msg-text").text("¡Ups! Hay un problema con tu dirección de contraseña")
-                $("#loadingRowLogin").hide();
-                $("#loading-text-login").hide();
-                $("#error-msg-login").fadeIn();
-                $("#olvido-password").fadeIn();
-                $("#start-button").fadeIn();
-                $("#email-input-group").fadeIn();
-                $("#password-input-group").fadeIn();
-                $("#pass-reqs-row").fadeIn();
-                $("#repeat-password-input-group").fadeIn();
-                $(".form-check").fadeIn();
-            }
-            else{
-                $(".error-msg-text").text("¡Ups! Algo salió mal al crear tu cuenta")
-                $("#loadingRowLogin").hide();
-                $("#loading-text-login").hide();
-                $("#error-msg-login").fadeIn();
-                $("#olvido-password").fadeIn();
-                $("#start-button").fadeIn();
-                $("#email-input-group").fadeIn();
-                $("#password-input-group").fadeIn();
-                $("#pass-reqs-row").fadeIn();
-                $("#repeat-password-input-group").fadeIn();
-                $(".form-check").fadeIn();
-            }
-        });
-    }
-}
-
 function redirectBlank(){
     link = "https://" + domain;
     window.open(
@@ -233,6 +160,7 @@ function validaNombre(value){
         $("#name-error").fadeOut();
         nombre = true;
     }
+    enable_disable_button();
 }
 
 function validaApellido(value){
@@ -244,11 +172,21 @@ function validaApellido(value){
         $("#apellido-error").fadeOut();
         apellido = true;
     }
+    enable_disable_button();
+}
+
+function validaTipoDoc(value){
+    if (value != -1){
+        tipo_doc = true;
+    }
+    else{
+        tipo_doc = false;
+    }
+    enable_disable_button();
 }
 
 function enable_disable_button(){
-    terms_and_conditions = $("#exampleCheck1").is(":checked");
-    if (password && email && repeat_password && terms_and_conditions){
+    if (nombre && apellido && documento && tipo_doc && calle && altura && ciudad && provincia && pais){
         $("#start-button").css({"background-color":"#95C22B"});
         $("#start-button").css({"border":"1px solid #95C22B"});
     }

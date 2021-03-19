@@ -19,6 +19,16 @@ class NegocioUsuario(Negocio):
         except Exception as e:
             raise e
         
+    @classmethod
+    def verificacion(cls,code):
+        try:
+            if len(code) > 0:
+                return DatosUsuario.verificacion(code)
+            else:
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.verificacion()",
+                                                            msj_adicional = "Error al verificar el codigo") 
+        except Exception as e:
+            raise e
 
     @classmethod
     def login(cls,email, password):

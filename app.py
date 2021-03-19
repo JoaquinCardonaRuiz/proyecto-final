@@ -140,9 +140,9 @@ def register_alta(email,passwd):
         if not alta_result:
             return jsonify("Email")
         else:
-            id = alta_result
+            code = alta_result
         html_str = (render_template("mail.html"))
-        mail.send_mail(email, passwd, id, html_str)
+        mail.send_mail(email, passwd, html_str, code)
         return jsonify(True)
     except Exception as e:
         raise e
@@ -160,10 +160,19 @@ def register_all_emails():
 def datos_personales():
     try: 
         session["usuario"]
-        return redirect(url_for('main'))
-
+        tipos_doc = NegocioTipoDocumento.get_all()
+        return render_template('datos-personales.html', tipos_doc=tipos_doc,user=session["usuario"])
     except:
-        return render_template('datos-personales.html')
+        return redirect(url_for('login'))
+
+@app.route('/verificacion/<codigo>')
+def verificacion(codigo):
+    verificacion_res = NegocioUsuario.verificacion(codigo)
+    if verificacion_res != False:
+        NegocioUsuario.login(verificacion_res["email"],verificacion_res["password"])
+        return redirect(url_for('datos_personales'))
+    else:
+        return redirect(url_for('start'))
 
 ''' 
     ------------------

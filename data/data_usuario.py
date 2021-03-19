@@ -3,6 +3,7 @@ from data.data_direccion import DatosDireccion
 from data.data_deposito import DatosDeposito
 from data.data_pedido import DatosPedido
 from classes import Usuario
+from utils import Utils
 import custom_exceptions
 
 class DatosUsuario(Datos):
@@ -111,6 +112,39 @@ class DatosUsuario(Datos):
             cls.cursor.execute(sql)
             cls.db.commit()
             return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.update_nivel()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando un nivel de un usuario en la BD.")
+        finally:
+            cls.cerrar_conexion()
+    
+    @classmethod
+    def verificacion(cls,code):
+        """
+        Realiza la verificación del codigo del usuario.
+        """
+        try:
+            cls.abrir_conexion()
+
+            #Verifico si existe un usuario con este codigo
+            sql = ("SELECT idUsuario,email,password from usuarios where codigo_registro = %s")
+            values = (code,)
+            cls.cursor.execute(sql, values)
+            user = cls.cursor.fetchone()
+            print(user)
+            if len(user) >0:
+                #Una vez verificado, actualizo su estado
+                sql = ("UPDATE usuarios set estado = %s where idUsuario = %s")
+                values = ("no-activo",user[0])
+                cls.cursor.execute(sql, values)
+
+                cls.db.commit()
+
+                return {"email":user[1],"password":user[2]}
+            else:
+                #Si no existe ningun usuario con ese codigo, devuelvo False
+                return False
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_usuario.update_nivel()",
                                                     msj=str(e),
@@ -291,13 +325,13 @@ class DatosUsuario(Datos):
             sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'usuarios'")
             cls.cursor.execute(sql)
             id_asignado = cls.cursor.fetchone()[0]
-
-            sql = ("INSERT into usuarios (email,password,estado) values (%s,%s,%s)")
-            values = (email, password,"no-verificado")
+            code = str(Utils.encripta_codigo(str(email) + str(password) + str(id_asignado)))
+            sql = ("INSERT into usuarios (email,password,estado,codigo_registro) values (%s,%s,%s,%s)")
+            values = (email, password,"no-verificado",code)
             cls.cursor.execute(sql, values)
             cls.db.commit()
 
-            return id_asignado
+            return code
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
