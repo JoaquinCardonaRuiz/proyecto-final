@@ -227,7 +227,7 @@ function alta_articulo(){
     $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
     $(".lds-ring").show().fadeIn(500);
     $("#row-pag-3-1").hide();
-    $("#subheader-pag-3").hide();
+    $("#subheader-pag-4").hide();
     $('#alta-btn').prop('disabled', true);
     $('#atras-btn').prop('disabled', true);
     submitForm('altaArticuloForm');
