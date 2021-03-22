@@ -391,7 +391,7 @@ function openEditModal(id,nombre,costoProduccion,costoInsumos,costoTotalA,valor,
     $('#unidadInput-mod').val(String(unidadMedida));
     $('#coaInput-mod').val(String(costoObtencionAlternativa));
     $('#ocInput-mod').val(String(otrosCostos));
-    $('#imagenInput-mod').val(String(imagen));
+    $('#imagenInput-mod').val('');
     nombreOriginal = String(nombre);
     document.getElementById("usuariosCheck-mod").checked = Boolean(Number(ventaUsuario));
     $('#editModal').modal('show');
@@ -586,12 +586,7 @@ function check_venta_u(){
 }
 
 function check_imagen(){
-    valor = document.getElementById("imagenInput-mod").value;
-    if(valor == vars_or[2]){
-        mod_vars[2] = 0;
-    }else{
-        mod_vars[2] = 1;
-    }
+    mod_vars[2] = 1;
     check_edit();
 }
 
