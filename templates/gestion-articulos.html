@@ -214,7 +214,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{url_for('alta_articulo')}}" method="POST" class="modal-body modal-body-card" id="altaArticuloForm" autocomplete="off">
+        <form action="{{url_for('alta_articulo')}}" method="POST" class="modal-body modal-body-card" id="altaArticuloForm" autocomplete="off" enctype="multipart/form-data">
           <div class="row" id="loadingRow">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
@@ -261,7 +261,7 @@
             <div class="row" id="row-pag-1-2" style="display:none;">
                   <div class="col">
                     <div class="group" style="margin-left: 10%;">      
-                        <input type="text" id="imagenInput" name="imagen" >
+                        <input id="fileInputAlta" type="file" name="file"/>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Imagen</label>
@@ -464,7 +464,7 @@
             </li>
           </ul>
         </div>
-            <form action="{{url_for('edit_articulo')}}" method="POST" id="editArticuloForm" autocomplete="off" class="tab-content modal-body modal-body-card">
+            <form action="{{url_for('edit_articulo')}}" method="POST" id="editArticuloForm" autocomplete="off" class="tab-content modal-body modal-body-card" enctype="multipart/form-data">
                 <div class="row" id="loadingRow">
                     <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                 </div>
@@ -494,7 +494,7 @@
                     <div class="row" id="row-pag-1-2-mod">
                         <div class="col">
                             <div class="group" style="margin-left: 10%;">      
-                                <input type="text" id="imagenInput-mod" name="imagen" onkeyup='check_imagen();'>
+                                <input id="imagenInput-mod" type="file" name="file" oninput="check_imagen()"/>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Imagen</label>

@@ -52,7 +52,6 @@ def upload_user_img():
     return redirect(url_for('perfil'))
 
 
-
 @app.route('/', methods = ['GET','POST'])
 def start():
     return render_template('start-page.html')
@@ -850,7 +849,6 @@ def alta_articulo():
     if request.method == 'POST':
         nombre =                request.form['nombre']
         unidad =                request.form['unidad']
-        imagen =                request.form['imagen']
         ventaUsuario = None
         try: 
             request.form['ventaUsuario']
@@ -863,6 +861,9 @@ def alta_articulo():
         costoObtencionAlt =     request.form['costoObtencionAlt']
         margen =                request.form['margen']
         valor =                 request.form['valor']
+
+
+        #INSUMOS
         cants = []
         for key in request.form.keys():
             if "id-" in key:
@@ -872,7 +873,24 @@ def alta_articulo():
                     cants.append({"idIns":id,"cantidad":cant})
 
         try:
-            NegocioArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
+            idNuevoArt = NegocioArticulo.add(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
+        
+            #IMAGEN
+            imagen = ""
+            file = request.files['file']
+            if file.filename != '' and file:
+                p = Path('static') / 'img' / 'articulos' / str(idNuevoArt)
+                try:
+                    os.makedirs(p)
+                except:
+                    pass
+                filename = secure_filename(file.filename)
+                dir = os.path.join(p, filename)
+                file.save(dir)
+                imagen = dir
+            if imagen != "":
+                NegocioArticulo.update_img(idNuevoArt,imagen)
+
         except Exception as e:
             return error(e,"articulos")
         return redirect(url_for('gestion_articulos'))
@@ -884,7 +902,6 @@ def edit_articulo():
         idArt =                 request.form['idArticulo']
         nombre =                request.form['nombre']
         unidad =                request.form['unidad']
-        imagen =                request.form['imagen']
         ventaUsuario = None
         #Aparentemente cuando un input tipo checkbox está "no chequeado"
         #no se manda en el form, asi que chequeo si puedo leerlo, para
@@ -906,8 +923,24 @@ def edit_articulo():
                 id = request.form[key]
                 cant = float(request.form["cantidad-"+id])
                 cants.append(CantInsumo(cant,int(id)))
+
         try:
-            NegocioArticulo.update(idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
+            NegocioArticulo.update(idArt,nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
+            #IMAGEN
+            imagen = ""
+            file = request.files['file']
+            if file.filename != '' and file:
+                p = Path('static') / 'img' / 'articulos' / str(idArt)
+                try:
+                    os.makedirs(p)
+                except:
+                    pass
+                filename = secure_filename(file.filename)
+                dir = os.path.join(p, filename)
+                file.save(dir)
+                imagen = dir
+            if imagen != "":
+                NegocioArticulo.update_img(idArt,imagen)
         except Exception as e:
             return error(e,"articulos")
         return redirect(url_for('gestion_articulos'))
