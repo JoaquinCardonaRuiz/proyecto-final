@@ -60,22 +60,29 @@ def start():
 @app.route('/main', methods = ['GET','POST'])
 def main():
     if valida_session(): return redirect(url_for('login'))
-    else: 
-        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel, True)
-        if len(session["usuario"].pedidos) >= 5:
-            pedidos = session["usuario"].pedidos[:5]
-        else:
-            pedidos = session["usuario"].pedidos
-        puntosRetiro = NegocioPuntoRetiro.get_all()
-        if len(session["usuario"].depositosActivos) >= 5:
-            depositos = session["usuario"].depositosActivos[:5]
-        else:
-            depositos = session["usuario"].depositosActivos
-        puntosDep = NegocioPuntoDeposito.get_all()
-        materiales = NegocioMaterial.get_all()
-        max_level = NegocioNivel.get_min_max_niveles()[1]
-        tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
-    return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
+    else:
+        if session["usuario"].estado == "no-activo":
+            tipos_doc = NegocioTipoDocumento.get_all()
+            return render_template('datos-personales.html', tipos_doc=tipos_doc,user=session["usuario"])
+        
+        elif session["usuario"].estado == "no-verificado":
+            return render_template('email-sent.html',email=session["usuario"].email) 
+        else: 
+            nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel, True)
+            if len(session["usuario"].pedidos) >= 5:
+                pedidos = session["usuario"].pedidos[:5]
+            else:
+                pedidos = session["usuario"].pedidos
+            puntosRetiro = NegocioPuntoRetiro.get_all()
+            if len(session["usuario"].depositosActivos) >= 5:
+                depositos = session["usuario"].depositosActivos[:5]
+            else:
+                depositos = session["usuario"].depositosActivos
+            puntosDep = NegocioPuntoDeposito.get_all()
+            materiales = NegocioMaterial.get_all()
+            max_level = NegocioNivel.get_min_max_niveles()[1]
+            tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
+            return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
     nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales, max_level = max_level, tipoUsuario = tipoUsuario)
 
 
@@ -158,10 +165,18 @@ def register_all_emails():
 
 @app.route('/datos-personales', methods = ['GET','POST'])
 def datos_personales():
-    try: 
-        session["usuario"]
-        tipos_doc = NegocioTipoDocumento.get_all()
-        return render_template('datos-personales.html', tipos_doc=tipos_doc,user=session["usuario"])
+    try:
+        if valida_session(): return redirect(url_for('login'))
+        else:
+            if session["usuario"].estado == "no-activo":
+                tipos_doc = NegocioTipoDocumento.get_all()
+                return render_template('datos-personales.html', tipos_doc=tipos_doc,user=session["usuario"])
+            
+            elif session["usuario"].estado == "habilitado":
+                return redirect(url_for('main'))
+            
+            elif session["usuario"].estado == "no-verificado":
+                return render_template('email-sent.html',email=session["usuario"].email) 
     except:
         return redirect(url_for('login'))
 
@@ -173,6 +188,25 @@ def verificacion(codigo):
         return redirect(url_for('datos_personales'))
     else:
         return redirect(url_for('start'))
+
+@app.route('/datos-personales/activacion', methods = ['GET','POST'])
+def activacion():
+    if request.method == 'POST':
+        email = request.form['email']
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        ciudad = request.form['ciudad']
+        calle = request.form['calle']
+        altura = request.form['altura']
+        pais = request.form['pais']
+        provincia = request.form['provincia']
+        documento = request.form['documento']
+        tipo_doc = request.form['tipo_doc']
+        if NegocioUsuario.activacion(email,nombre,apellido,calle,altura,ciudad,provincia,pais,documento,tipo_doc):
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            return redirect(url_for('main'))
+        else:
+            return redirect(url_for('datos_personales'))
 
 ''' 
     ------------------

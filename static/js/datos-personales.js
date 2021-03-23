@@ -217,6 +217,15 @@ function validaPassRep(user_call=true){
 $("#start-button").css({"background-color":"#d8d9e2"});
 $("#start-button").css({"border":"1px solid #d8d9e2"});
 
+function activa_cuenta(){
+    $("#register-form").fadeOut();
+    $("#loadingRowLogin").fadeIn();
+    $("#loading-text-login").fadeIn();
+    $("#error-msg-login").hide();
+
+    $("#register-form").submit();
+}
+
 var pos_check = document.getElementById("exampleCheck1").offsetLeft;
 $("#check-label").css({left: pos_check + 10, position:'absolute'});
 

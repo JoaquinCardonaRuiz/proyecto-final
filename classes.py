@@ -51,6 +51,7 @@ class Usuario:
         estimacionesEnergia (Estimacion[]): Arreglo de estimaciones de consumo de energía
             recibidas por el usuario.
         img (String): ruta a imagen de perfil
+        estado(String): representa el estado de un usuario respecto a su registro, o bien, a su estado en la BD.
     """
 
     def __init__(self, 
@@ -70,7 +71,8 @@ class Usuario:
                 estimacionesCO2=[],
                 estimacionesEnergia=[],
                 email=None,
-                img = "/static/img/avatar.png"):
+                img = "/static/img/avatar.png",
+                estado = None):
         self.id = id
         self.nroDoc = nroDoc
         self.tipoDoc = tipoDoc
@@ -89,6 +91,7 @@ class Usuario:
         self.estimacionesEnergia = estimacionesEnergia
         self.email = email
         self.img = img
+        self.estado = estado
 
     def comprobarVencimientoDepositos(self,):
         """ """

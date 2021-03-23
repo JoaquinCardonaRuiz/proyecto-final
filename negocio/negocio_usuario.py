@@ -1,7 +1,9 @@
 from negocio.negocio import Negocio
 import custom_exceptions
 from negocio.negocio_ecopuntos import NegocioEcoPuntos
+from negocio.negocio_direccion import NegocioDireccion
 from negocio.negocio_nivel import NegocioNivel
+from negocio.negocio_tipo_documento import NegocioTipoDocumento
 from data.data_usuario import DatosUsuario
 from utils import Utils
 import re
@@ -16,6 +18,26 @@ class NegocioUsuario(Negocio):
                 return DatosUsuario.alta(email,password)
             else:
                 return False
+        except Exception as e:
+            raise e
+    
+    @classmethod
+    def activacion(cls,email,nombre,apellido,calle,altura,ciudad,provincia,pais,documento,tipo_doc):
+        try:
+            #Valida las RN de una direccion
+            if NegocioDireccion.valida_direccion(calle,altura,ciudad,provincia,pais):
+                print("1")
+                #Valida que el nombre, el apellido y el documento no sean vacios:
+                if nombre != "" and apellido != "" and documento != "":
+                    print("2")
+                    #Valida que el tipo de documento esté entre los tipos de docuemtno existentes.
+                    if [x for x in NegocioTipoDocumento.get_all() if str(x.id) == str(tipo_doc)]:
+                        #Hago el alta:
+                        idNivel = NegocioNivel.get_nivel_nombre(NegocioNivel.get_min_max_niveles()[0]).id
+                        idDireccion = NegocioDireccion.alta_direccion(calle,altura,ciudad,provincia,pais)
+                        if DatosUsuario.alta(email,None,documento,tipo_doc,nombre,apellido,1,idDireccion,idNivel,"/static/img/avatar.png","habilitado",True):
+                            return True
+            return False
         except Exception as e:
             raise e
         

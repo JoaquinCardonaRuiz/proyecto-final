@@ -37,7 +37,7 @@
                 <h3 id="email-button" onclick="redirectBlank()">Ir a gmail.com</h3>
             </div>
 
-            <div class="register-form">
+            <form class="register-form" id="register-form" action="{{url_for('activacion')}}" method="POST">
                 <div class="row d-flex">
                     <div class="container" id="heading-container" style="margin-bottom: 3%;">
                         <h1 class="heading">Datos Personales</h1>
@@ -49,16 +49,16 @@
                 </div>
                 <div class="row d-flex">
                     <div class="group" id="email-input-group">  
-                        <input type="text"  onfocusout="validateEmail(value);" class="data-show-input email-input" readonly value="{{user.email}}">
+                        <input type="text"  onfocusout="validateEmail(value);" class="data-show-input email-input" readonly value="{{user.email}}" name="email">
                         <input type="text" id="idEntidadInput" name="id" hidden>
                         <label class="email-input">Email</label>
                         <p id="" class="cartel-checked"><i class="fa fa-check modal-info-img" style="color: #95C22B;"></i> Email validado correctamente.</p>
                     </div>
                 </div>
-                <div class="row d-flex mt-3">
+                <div class="row d-flex mt-3" id="nombre-row">
                     <div class="col">
                         <div class="group" id="password-input-group">  
-                            <input required autocomplete="off" id="name-input" type="text" class="password-input" name="name-input" oninput="validaNombre(value)">
+                            <input required autocomplete="off" id="name-input" type="text" class="password-input" name="nombre" oninput="validaNombre(value)">
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight password-input"></span>
                             <span class="bar password-input"s></span>
@@ -68,7 +68,7 @@
                     </div>
                     <div class="col">
                         <div class="group" id="password-input-group">  
-                            <input required autocomplete="off" id="password-input" type="text" class="password-input" name="password" oninput="validaApellido(value)">
+                            <input required autocomplete="off" id="password-input" type="text" class="password-input" name="apellido" oninput="validaApellido(value)">
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight password-input"></span>
                             <span class="bar password-input"s></span>
@@ -77,10 +77,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row d-flex mt-3" style="margin-top: 7% !important;">
+                <div class="row d-flex mt-3" style="margin-top: 7% !important;" id="documento-row">
                     <div class="col">
                         <div class="group" id="password-input-group">  
-                            <input required autocomplete="off" id="password-input" type="text" class="password-input" name="password" oninput="validaDoc(value)">
+                            <input required autocomplete="off" id="password-input" type="text" class="password-input" name="documento" oninput="validaDoc(value)">
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight password-input"></span>
                             <span class="bar password-input"s></span>
@@ -90,7 +90,7 @@
                     </div>
                     <div class="col">
                         <div class="group" id="password-input-group">
-                            <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="password-input" class="selectpicker selectpicker-nooutline" id="nombreArtInput" name="idArt" data-live-search="true" oninput="validaTipoDoc(value);">
+                            <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="password-input" class="selectpicker selectpicker-nooutline" id="nombreArtInput" name="tipo_doc" data-live-search="true" oninput="validaTipoDoc(value);">
                                 <option value=-1 disabled selected>&nbsp; Seleccione tipo</option>
                                 {%for tipo_doc in tipos_doc%}
                                 <option value={{tipo_doc.id}}>&nbsp; {{tipo_doc.nombre}}</option>
@@ -104,10 +104,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row d-flex mt-3">
+                <div class="row d-flex mt-3" id="direccion-row-1">
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="callePD" onkeyup="updateMap('alta'); validaDireccion('alta','calle');" name="callePD" autocomplete="off" style="width: 215%;"> 
+                            <input type="text" required id="callePD" onkeyup="updateMap('alta'); validaDireccion('alta','calle');" name="calle" autocomplete="off" style="width: 215%;"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 215%;"></span>
                             <span class="bar" style="width: 215%;"></span>
@@ -118,7 +118,7 @@
                     </div>
                     <div class="col" style="margin-left: 33.3%;">
                         <div class="group" style=" margin-top: 2%;">
-                            <input type="text" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('alta'); validaDireccion('alta','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                            <input type="text" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('alta'); validaDireccion('alta','altura');" name="altura" autocomplete="off" style="width: 100%;" autocomplete="off"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
@@ -127,10 +127,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row d-flex mt-3">
+                <div class="row d-flex mt-3" id="direccion-row-2">
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="ciudadPD" onkeyup="updateMap('alta'); validaDireccion('alta','ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;" value="Rosario"> 
+                            <input type="text" required id="ciudadPD" onkeyup="updateMap('alta'); validaDireccion('alta','ciudad');" name="ciudad" autocomplete="off" style="width: 100%;" value="Rosario"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
@@ -140,7 +140,7 @@
                     </div>
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="provinciaPD" onkeyup="updateMap('alta'); validaDireccion('alta','provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="Santa Fe"> 
+                            <input type="text" required id="provinciaPD" onkeyup="updateMap('alta'); validaDireccion('alta','provincia');" name="provincia" autocomplete="off" style="width: 100%;" autocomplete="off" value="Santa Fe"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
@@ -151,7 +151,7 @@
                     </div>
                     <div class="col">
                         <div class="group" style="margin-top: 2%;">
-                            <input type="text" required id="paisPD" onkeyup="updateMap('alta'); validaDireccion('alta','pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off" value="Argentina"> 
+                            <input type="text" required id="paisPD" onkeyup="updateMap('alta'); validaDireccion('alta','pais');" name="pais" autocomplete="off" style="width: 100%;" autocomplete="off" value="Argentina"> 
                             <input type="text" id="idEntidadInput" name="id" hidden>
                             <span class="highlight" style="width: 100%;"></span>
                             <span class="bar" style="width: 100%;"></span>
@@ -168,13 +168,13 @@
                     </div>
                 </div>
                 <div class="row d-flex justify-content-center bottom-row">
-                    <h3 id="start-button" id="start-button" onclick="submitLogin()">Activar mi cuenta</h3>
-                    <div class="row" id="loadingRowLogin">
-                        <div class="lds-ring" style="display: block !important;"><div></div><div></div><div></div><div></div></div>
-                    </div>
-                    <p id="loading-text-login">Estamos creando tu cuenta...</p>   
+                    <h3 id="start-button" id="start-button" onclick="activa_cuenta();">Activar mi cuenta</h3>
                 </div>
+            </form>
+            <div class="row" id="loadingRowLogin" style="margin-left:0%; margin-top: 30%;">
+                <div class="lds-ring" style="display: block !important;"><div></div><div></div><div></div><div></div></div>
             </div>
+            <p id="loading-text-login" style="margin-top: 5% !important;">Estamos activando tu cuenta</p>   
             
         </div>
         
