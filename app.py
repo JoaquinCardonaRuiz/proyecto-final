@@ -827,6 +827,7 @@ def alta_articulo():
         costoObtencionAlt =     request.form['costoObtencionAlt']
         margen =                request.form['margen']
         valor =                 request.form['valor']
+        desc =                  request.form['desc']
 
 
         #INSUMOS
@@ -839,7 +840,7 @@ def alta_articulo():
                     cants.append({"idIns":id,"cantidad":cant})
 
         try:
-            idNuevoArt = NegocioArticulo.add(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
+            idNuevoArt = NegocioArticulo.add(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants,desc)
         
             #IMAGEN
             imagen = ""
@@ -921,7 +922,9 @@ def baja_articulo(id):
         return error(e,"articulos")
     return redirect(url_for('gestion_articulos'))
 
-
+@app.route('/articulos/editdesc')
+def edit_desc_articulo():
+    pass
 
 @app.route('/articulos/insumos/<ids>')
 def get_insumos(ids):

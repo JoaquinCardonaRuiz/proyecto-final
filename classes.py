@@ -362,6 +362,7 @@ class TipoArticulo:
         otrosCostos (float): costos miscelaneos adicionales
         imagen (string): url de imagen del articulo
         ventaUsuario (bool): verdadero si el articulo se vende a usuarios, falso si no
+        desc (string): descripción del tipo de artículo.
     """
     def __init__(self,
                 id,
@@ -377,7 +378,8 @@ class TipoArticulo:
                 stock,
                 otrosCostos,
                 imagen,
-                ventaUsuario):
+                ventaUsuario,
+                desc):
         self.id = id
         self.nombre = nombre
         self.insumos = insumos
@@ -392,6 +394,7 @@ class TipoArticulo:
         self.otrosCostos = otrosCostos
         self.imagen = imagen
         self.ventaUsuario = ventaUsuario
+        self.desc = desc
 
 class CantArticulo:
     """ Representa un conjunto de artículos del mismo tipo. Almacena el tipo y la cantidad.
