@@ -44,9 +44,11 @@
                         <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Para comenzar a usar tu cuenta de EcoAsistente, completá tus datos personales</span></h6>
                     </div>
                 </div>
+                {%if state == False%}
                 <div class="row-error justify-content-center error-msg-login" id="error-msg-login">
-                    <p class="error-msg-text">¡Ups! Algo salió mal al crear tu cuenta</p>
+                    <p class="error-msg-text">¡Ups! Algo salió mal al activar tu cuenta</p>
                 </div>
+                {%endif%}
                 <div class="row d-flex">
                     <div class="group" id="email-input-group">  
                         <input type="text"  onfocusout="validateEmail(value);" class="data-show-input email-input" readonly value="{{user.email}}" name="email">
