@@ -922,9 +922,14 @@ def baja_articulo(id):
         return error(e,"articulos")
     return redirect(url_for('gestion_articulos'))
 
-@app.route('/articulos/editdesc')
+@app.route('/articulos/editdesc',methods=["POST","GET"])
 def edit_desc_articulo():
-    pass
+    if request.method == "POST":
+        idArt = int(request.form["idArt"])
+        desc = request.form["desc"]
+        NegocioArticulo.update_desc(idArt,desc)
+        return redirect(url_for('gestion_articulos'))
+
 
 @app.route('/articulos/insumos/<ids>')
 def get_insumos(ids):

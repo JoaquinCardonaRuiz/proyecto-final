@@ -297,3 +297,21 @@ class DatosArticulo(Datos):
                                                     msj_adicional="Error actualizando la imagen de un articulo en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+    @classmethod
+    def update_desc(cls,aid,desc):
+        """
+        Asigna una nueva descripcion a un articulo
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE tiposArticulo SET descripcion=\"{}\" WHERE idTipoArticulo={}").format(desc,aid)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.update_desc()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando la descripcion de un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()

@@ -114,7 +114,7 @@
                     <td scope="row">{{art.valor}}</td>
                     <td scope="row">{{art.stock}}</td>
                     <td scope="row">{{art.unidadMedida}}</td>
-                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{art.nombre}}','{{art.desc}}');">Ver Descripción</a></td>
+                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{art.id}}','{{art.nombre}}','{{art.desc}}');">Ver Descripción</a></td>
                     <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalInsumos('{{art.nombre}}',{{ids_insumos}},{{cantidades}});">Ver insumos</a></td>
                     {% if art.ventaUsuario %}
                         <td scope="row">Si</td>
@@ -165,10 +165,14 @@
                     <div class="row" id="desc-row" style="display:none;justify-content: center;">
                         <p id="desc-label"></p>
                     </div>
+                    <div class="row" id="loadingRow">
+                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                    </div>
                     <div class="row" id="edit-row" style="display:none;display:grid;margin-top:-2%;">
                         <div class="col">
                           <div class="group">
                             <p>Editar Descripción:</p>
+                            <input hidden id="idDescInput" name="idArt">
                             <textarea type="text"  id="descEditInput" name="desc" style="width:100%"></textarea>
                               <span class="highlight"></span>
                               <span class="bar"></span>
@@ -182,7 +186,7 @@
             <div type="button" class="btn secondary-btn" id="edit-btn" style="display:none;" onclick="edit_desc();"><i class="fas fa-pen"></i> Editar</div>
             <div type="button" class="btn primary-btn" id="listo-desc-btn" style="display:none;" data-dismiss="modal">Listo</div>
             <div type="button" class="btn secondary-btn" id="cancel-btn" style="display:none;" onclick="cancel_edit_desc();">Cancelar</div>
-            <div type="button" class="btn primary-btn" id="confirm-btn" style="display:none;" onclick="confirmar_desc();">Confirmar</div>
+            <div type="button" class="btn primary-btn" id="confirm-btn" style="display:none;" onclick="confirmar_desc_load();confirmar_desc();">Confirmar</div>
         </div>
     </div>
 

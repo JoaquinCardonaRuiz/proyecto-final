@@ -162,3 +162,11 @@ class NegocioArticulo(Negocio):
             DatosArticulo.update_img(aid,img)
         except Exception as e:
             raise e
+
+
+    @classmethod
+    def update_desc(cls,aid,desc):
+        try:
+            DatosArticulo.update_desc(aid,desc)
+        except Exception as e:
+            raise e

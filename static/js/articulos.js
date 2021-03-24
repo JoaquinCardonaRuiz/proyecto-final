@@ -968,8 +968,9 @@ function truncateString(str, num) {
   }
 
 
-function openModalDesc(nom,desc){
+function openModalDesc(id,nom,desc){
     document.getElementById("headingModalDesc").innerHTML = "Descripción de " + nom;
+    document.getElementById("idDescInput").value = id;
     $("#desc-row").show();
     $("#edit-row").hide();
     $("#edit-btn").show();
@@ -990,7 +991,6 @@ function edit_desc(){
     $("#desc-row").hide();
     $("#edit-row").show();
     document.getElementById("descEditInput").value = document.getElementById("desc-label").innerHTML;
-
     $("#edit-btn").hide();
     $("#listo-desc-btn").hide();
     $("#cancel-btn").show();
@@ -1008,6 +1008,16 @@ function cancel_edit_desc(){
     $("#confirm-btn").hide();
 }
 
+function confirmar_desc_load(){
+    jQuery.noConflict();
+    $("#cancel-btn").attr("disabled", true);
+    $("#confirm-btn").attr("disabled", true);
+    $("#edit-row").hide();
+    $(".lds-ring").hide();
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show();
+    $("#loadingRow").show();
+}
 
 function confirmar_desc(){
     document.getElementById("desc-modal-body").submit();
