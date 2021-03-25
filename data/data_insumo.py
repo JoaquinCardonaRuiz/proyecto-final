@@ -21,12 +21,13 @@ class DatosInsumo(Datos):
                            cTotal, \
                            stock, \
                            otrosCostos, \
-                           color \
+                           color, \
+                           descripcion \
                            FROM insumos WHERE estado!=\"eliminado\" and idInsumo={};").format(id)
             cls.cursor.execute(sql)
             i = cls.cursor.fetchone()
             materiales = DatosCantMaterial.get_from_Insid(i[0],noClose=True)
-            insumo = Insumo(i[0],i[1],i[2],i[3],i[4],i[5],materiales,i[6],i[7],i[8])
+            insumo = Insumo(i[0],i[1],i[2],i[3],i[4],i[5],materiales,i[6],i[7],i[8],i[9])
             return insumo
             
         except Exception as e:
@@ -55,14 +56,15 @@ class DatosInsumo(Datos):
                            cTotal, \
                            stock, \
                            otrosCostos, \
-                           color \
+                           color, \
+                           descripcion \
                            FROM insumos WHERE estado!=\"eliminado\";")
             cls.cursor.execute(sql)
             insumos_ = cls.cursor.fetchall()
             insumos = []
             for i in insumos_:
                 materiales = DatosCantMaterial.get_from_Insid(i[0],noClose=True)
-                insumo_ = Insumo(i[0],i[1],i[2],i[3],i[4],i[5],materiales,i[6],i[7],i[8])
+                insumo_ = Insumo(i[0],i[1],i[2],i[3],i[4],i[5],materiales,i[6],i[7],i[8],i[9])
                 insumos.append(insumo_)
             return insumos
             
@@ -75,14 +77,14 @@ class DatosInsumo(Datos):
 
 
     @classmethod
-    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color):
+    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color,desc):
         """
         Agrega un articulo a la BD
         """
         try:
             cls.abrir_conexion()
-            sql= ("INSERT INTO insumos (nombre,unidadMedida,cMateriales,cProduccion,otrosCostos,cTotal,color,stock,estado) \
-                   VALUES (\"{}\",\"{}\",{},{},{},{},\"{}\",0,\"disponible\");".format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color))
+            sql= ("INSERT INTO insumos (nombre,unidadMedida,cMateriales,cProduccion,otrosCostos,cTotal,color,stock,estado,descripcion) \
+                   VALUES (\"{}\",\"{}\",{},{},{},{},\"{}\",0,\"disponible\",\"{}\");".format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color,desc))
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
@@ -101,7 +103,7 @@ class DatosInsumo(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql= ("UPDATE insumos SET nombre=\"{}\",unidadMedida=\"{}\",cMateriales={},cProduccion={},otrosCostos={},cTotal={},color=\"{}\",stock=0,estado=\"disponible\" WHERE idInsumo={};").format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color,idIns)
+            sql= ("UPDATE insumos SET nombre=\"{}\",unidadMedida=\"{}\",cMateriales={},cProduccion={},otrosCostos={},cTotal={},color=\"{}\",estado=\"disponible\" WHERE idInsumo={};").format(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color,idIns)
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
@@ -152,5 +154,24 @@ class DatosInsumo(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_insumo.get_nombres_by_idMat()",
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo los insumos desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def update_desc(cls,idIns,desc):
+        """
+        Actualiza la desc de un insumo en la BD
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE insumos SET descripcion=\"{}\" WHERE idInsumo={};").format(desc,idIns)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.update_desc()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando la desc de un insumo en la BD.")
         finally:
             cls.cerrar_conexion()

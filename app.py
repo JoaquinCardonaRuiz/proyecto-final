@@ -980,6 +980,7 @@ def alta_insumo():
         costoProduccion =       request.form['costoProduccion']
         otrosCostos =           request.form['otrosCostos']
         color =                 request.form['color']
+        desc =                  request.form['desc']
         cants = []
         for key in request.form.keys():
             if "id-" in key:
@@ -988,7 +989,7 @@ def alta_insumo():
                 if cant > 0:
                     cants.append({"idMat":id,"cantidad":cant})
         try:
-            NegocioInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants)
+            NegocioInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants,desc)
         except Exception as e:
             return error(e,"insumos")
         return redirect(url_for('gestion_insumos'))
@@ -1016,6 +1017,17 @@ def edit_insumo():
         except Exception as e:
             return error(e,"insumos")
         return redirect(url_for('gestion_insumos'))
+
+
+@app.route('/insumos/editdesc',methods=["POST","GET"])
+def edit_desc_insumo():
+    if request.method == "POST":
+        idIns = int(request.form["idIns"])
+        desc = request.form["desc"]
+        NegocioInsumo.update_desc(idIns,desc)
+        return redirect(url_for('gestion_insumos'))
+
+
 
 
 @app.route('/insumos/baja/<id>')

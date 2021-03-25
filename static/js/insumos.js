@@ -32,6 +32,7 @@ function pasar_pagina(n){
 function cargar_pagina(n){
     if(n==1){
         $("#row-to-hide-1").show().fadeIn(500);
+        $("#row-desc").show().fadeIn(500);
         $("#row-to-hide-2").hide();
         $("#row-to-hide-3").hide();
         $("#fieldsRow1Alta1").hide();
@@ -42,8 +43,10 @@ function cargar_pagina(n){
         document.getElementById('bottomAltaModalText').innerHTML="Complete los datos y presione \"Siguiente\"";
         $('#anterior-btn').hide();
         $('#ci-btn').hide();
+        permiteAlta();
     }else if(n==2){
         $("#row-to-hide-1").hide();
+        $("#row-desc").hide();
         $("#row-to-hide-2").hide();
         $("#row-to-hide-3").hide();
         $("#fieldsRow1Alta1").show().fadeIn(500);
@@ -60,6 +63,7 @@ function cargar_pagina(n){
         checkColorAlta();
         calcularCosto("");
         $("#row-to-hide-1").hide();
+        $("#row-desc").hide();
         $("#row-to-hide-2").show().fadeIn(500);
         $("#row-to-hide-3").show().fadeIn(500);
         $("#fieldsRow1Alta1").hide();
@@ -255,6 +259,7 @@ function alta_insumo(){
     $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
     $(".lds-ring").show().fadeIn(500);
     $("#row-to-hide-1").hide();
+    $("#row-desc").hide();
     $("#row-to-hide-2").hide();
     $("#row-to-hide-3").hide();
     $('#alta-btn').prop('disabled', true);
@@ -937,3 +942,63 @@ function truncateString(str, num) {
     // Return str truncated with '...' concatenated to the end of str.
     return str.slice(0, num) + '...'
   }
+
+
+
+
+
+
+  function openModalDesc(id,nom,desc){
+    document.getElementById("headingModalDesc").innerHTML = "Descripción de " + nom;
+    document.getElementById("idDescInput").value = id;
+    $("#desc-row").show();
+    $("#edit-row").hide();
+    $("#edit-btn").show();
+    $("#listo-desc-btn").show();
+    if(desc != ""){
+        document.getElementById("desc-label").style.color = "#000";
+        document.getElementById("desc-label").innerHTML = desc;
+    }else{
+        document.getElementById("desc-label").style.color = "#666";
+        document.getElementById("desc-label").innerHTML = "Este insumo no tiene descripción.";
+    }
+    
+    document.getElementById("open-modal-desc").click();
+}
+
+
+function edit_desc(){
+    $("#desc-row").hide();
+    $("#edit-row").show();
+    document.getElementById("descEditInput").value = document.getElementById("desc-label").innerHTML;
+    $("#edit-btn").hide();
+    $("#listo-desc-btn").hide();
+    $("#cancel-btn").show();
+    $("#confirm-btn").show();
+}
+
+function cancel_edit_desc(){
+    $("#desc-row").show();
+    $("#edit-row").hide();
+    document.getElementById("descEditInput").value = "";
+
+    $("#edit-btn").show();
+    $("#listo-desc-btn").show();
+    $("#cancel-btn").hide();
+    $("#confirm-btn").hide();
+}
+
+function confirmar_desc_load(){
+    jQuery.noConflict();
+    $("#cancel-btn").attr("disabled", true);
+    $("#confirm-btn").attr("disabled", true);
+    $("#edit-row").hide();
+    $(".lds-ring").hide();
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show();
+    $("#loadingRow").show();
+}
+
+function confirmar_desc(){
+    document.getElementById("desc-modal-body").submit();
+}

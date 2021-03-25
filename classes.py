@@ -454,6 +454,7 @@ class Insumo:
         stock (float): existencias del insumo
         color (string): color que representa al insumo
         otrosCostos (float): costos miscelaneos adicionales
+        desc (string): descripción del insumo
     """
     def __init__(self,
                  id,
@@ -465,7 +466,8 @@ class Insumo:
                  materiales,
                  stock,
                  otrosCostos,
-                 color):
+                 color,
+                 desc):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -476,6 +478,7 @@ class Insumo:
         self.stock = stock
         self.otrosCostos = otrosCostos
         self.color = color
+        self.desc = desc
 
 class CantInsumo:
     """
