@@ -14,7 +14,6 @@ import mail
 import os
 
 
-
 #app
 app = Flask(__name__)
 app.secret_key = 'SecretKeyForSigningCookies'
@@ -823,7 +822,8 @@ def baja_pr():
     
     if request.method == 'POST':
         id = request.form['idPuntoBaja']
-        NegocioPuntoRetiro.baja_pr(id)
+        print(id)
+        #NegocioPuntoRetiro.baja_pr(id)
         
     return redirect(url_for('gestion_pr'))
 

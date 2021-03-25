@@ -683,6 +683,15 @@ display: none;
   margin-left: -2%;
 }
 
+#no-deps{
+  text-align: center;
+  width: 100%;
+  margin-top:1%;
+  display: none;
+  margin-left: -2%;
+  margin-bottom: 2%;
+}
+
 .advert-icon-no-mats{
   font-size: 70px;
   margin-bottom: 1%;
@@ -710,4 +719,14 @@ display: none;
 
 .modal-title{
   font-family: 'Hind', sans-serif;
+}
+
+#ver-pedidos-btn{
+  width: 80%;
+  margin-top: 2%;
+  margin-bottom: 3%;
+  border-radius: 10px !important;
+  box-shadow: none;
+  border: 2px solid rgb(245, 245, 245) !important;
+  background-color: rgb(245, 245, 245);
 }
