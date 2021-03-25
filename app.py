@@ -1096,8 +1096,9 @@ def alta_material():
         costoRecoleccion =      request.form['costoRecoleccion']
         color =                 request.form['color']
         estado =                request.form['estado']
+        desc =                  request.form['desc']
         try:
-            NegocioMaterial.add(nombre,unidad,costoRecoleccion,color,estado)
+            NegocioMaterial.add(nombre,unidad,costoRecoleccion,color,estado,desc)
         except Exception as e:
             return error(e,"materiales")
         return redirect(url_for('gestion_materiales'))
@@ -1137,6 +1138,16 @@ def get_recetas_insumos(idMat):
         return jsonify(arr)
     except Exception as e:
         return error(e,"materiales")
+
+
+@app.route('/materiales/editdesc',methods=["POST","GET"])
+def edit_desc_material():
+    if request.method == "POST":
+        idMat = int(request.form["idMat"])
+        desc = request.form["desc"]
+        NegocioMaterial.update_desc(idMat,desc)
+        return redirect(url_for('gestion_materiales'))
+
   
   
 def valida_session():

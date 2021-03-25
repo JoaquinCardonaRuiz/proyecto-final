@@ -296,9 +296,9 @@ class Material:
         stock (float): Cantidad del material presente en inventario.
         color(string): Código hexadecimal del color con que se muestra un material.
         estado(string): Indica si los depositos del material estan habilitados
-        descripcion(string): Descripción del material.
+        desc(string): Descripción del material.
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color,estado="habilitado",descripcion="Este elemento no tiene descripción aún."):
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color,estado="habilitado",desc=""):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -306,7 +306,7 @@ class Material:
         self.stock = stock
         self.color = color
         self.estado = estado
-        self.descripcion = descripcion
+        self.desc = desc
 
 class CantMaterial:
     """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.
