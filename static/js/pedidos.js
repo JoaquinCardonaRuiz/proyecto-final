@@ -65,6 +65,7 @@ function openModalMateriales(materiales,cantidades){
 
 
 function openLoadingRing(){
+    jQuery.noConflict();
     document.getElementById("open-loading-modal").click();
     $(".lds-ring").hide();
     $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
@@ -76,5 +77,18 @@ function closeLoadingRing(){
     document.getElementById("open-loading-modal").click();
     $(".lds-ring").hide();
     $("#loadingRow").hide();
+}
+
+function cierraModal(idModal){
+    jQuery.noConflict();
+    $('#loadingModal').modal("hide");
+}
+
+function openInfoModal(){
+    openLoadingRing();
+    jQuery.noConflict();
+    closeLoadingRing();
+    
+    $("#infoModal").modal("show");
 }
 

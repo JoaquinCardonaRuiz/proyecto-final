@@ -730,3 +730,22 @@ display: none;
   border: 2px solid rgb(245, 245, 245) !important;
   background-color: rgb(245, 245, 245);
 }
+
+.modal-hr-separator{
+  border: 1px solid rgb(235, 235, 235);
+  width: 100% !important;
+}
+
+.subheader-info{
+  font-family: 'Hind', sans-serif;
+  font-size: 20px;
+  margin-top: 2%;
+  color: rgb(61, 61, 61);
+}
+
+.hr-row{
+  width:75% !important; 
+  margin-left: 10% !important; 
+  margin-top: -3% !important; 
+  margin-bottom: 5% !important;
+}

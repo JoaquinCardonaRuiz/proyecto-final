@@ -1175,7 +1175,7 @@ def elegirPR():
 def deposito():
     try:
         pedidos = NegocioPedido.get_all()
-        puntosRetiro = NegocioPuntoRetiro.get_all()
+        puntosRetiro = NegocioPuntoRetiro.get_all(True)
         return render_template('deposito.html',pedidos = pedidos,puntosRetiro=puntosRetiro, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
@@ -1236,6 +1236,14 @@ def update_estado_pedido():
     except Exception as e:
         return error(e,"pedidos")
 
+@app.route('/pedidos/info/<id>')
+def pedidos_info(id):
+    try:
+        NegocioPedido.get_one()
+        return jsonify(articulos_dic)
+    except Exception as e:
+        return error(e,"articulos")
+    return redirect(url_for('gestion_articulos'))
 
 '''
     -----------------------
