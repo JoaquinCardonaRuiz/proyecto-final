@@ -1,6 +1,6 @@
-from data.data import Datos
 from data.data_cant_articulo import DatosCantArticulo
-from classes import Pedido
+from classes import Pedido,Usuario
+from data.data import Datos
 import custom_exceptions
 
 class DatosPedido(Datos):
@@ -130,7 +130,7 @@ class DatosPedido(Datos):
                 cls.cerrar_conexion()
     
     @classmethod
-    def get_one(cls,idnoClose=False):
+    def get_one(cls,id,noClose=False):
         """
         Obtiene todos los pedidos de la BD.
         """
@@ -153,7 +153,8 @@ class DatosPedido(Datos):
                 articulos = DatosCantArticulo.get_from_Pid(p[0],noClose=True)
                 pedido_ =  Pedido(p[0],p[1].strftime("%d/%m/%Y"),p[2].strftime("%d/%m/%Y"),articulos,p[3],p[4],p[5],p[6])
                 pedidos.append(pedido_)
-            return pedidos
+            return [pedidos[0],p[7]]
+           
             
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_by_idPR()",

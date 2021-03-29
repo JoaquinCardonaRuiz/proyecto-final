@@ -749,3 +749,9 @@ display: none;
   margin-top: -3% !important; 
   margin-bottom: 5% !important;
 }
+
+#ep-logo-modal-info{
+  position: absolute;
+  width: 23px;
+}
+

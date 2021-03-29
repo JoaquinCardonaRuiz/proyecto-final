@@ -1239,11 +1239,18 @@ def update_estado_pedido():
 @app.route('/pedidos/info/<id>')
 def pedidos_info(id):
     try:
-        NegocioPedido.get_one()
-        return jsonify(articulos_dic)
+        res = NegocioPedido.get_one(id,True)
+        ped = res[0]
+        user = res[1]
+        pr = NegocioPuntoRetiro.get_by_id(ped.idPuntoRetiro)
+        td = NegocioTipoDocumento.get_by_id(user.tipoDoc)
+        pedido = {"id":ped.id,"totalEP":ped.totalEP,"totalARS":ped.totalARS,"estado":ped.estado,"fecha_enc":ped.fechaEncargo,"fecha_ret":ped.fechaRetiro}
+        usuario = {"id":user.id,"nombre":user.nombre,"apellido":user.apellido,"tipoDoc":td.nombre,"nroDoc":user.nroDoc,"email":user.email}
+        punto_retiro = {"id":pr.id,"nombre":pr.nombre,"calle":pr.direccion.calle,"altura":pr.direccion.altura,"ciudad":pr.direccion.ciudad,"provincia":pr.direccion.provincia,"pais":pr.direccion.pais}
+        return jsonify([pedido, usuario, punto_retiro])
     except Exception as e:
-        return error(e,"articulos")
-    return redirect(url_for('gestion_articulos'))
+        return error(e,"pedidos")
+    return redirect(url_for('pedidosUser'))
 
 '''
     -----------------------

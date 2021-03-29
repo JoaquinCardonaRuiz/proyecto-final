@@ -84,11 +84,46 @@ function cierraModal(idModal){
     $('#loadingModal').modal("hide");
 }
 
-function openInfoModal(){
-    openLoadingRing();
-    jQuery.noConflict();
-    closeLoadingRing();
+function openInfoModal(id_pedido){
+    $.getJSON("/pedidos/info/"+ String(id_pedido),function (result){
+        closeLoadingRing();
+        pedido = result[0];
+        usuario = result[1];
+        punto_retiro = result[2];
+        document.getElementById("open-loading-modal").click();
+        document.getElementById("open-modal-info").click();
+        
+        //Seteo valores de Pedido
+        $("#idPedidoModal").val(pedido["id"]);
+        $("#totalEPModal").val(pedido["totalEP"]);
+        $("#totalARSModal").val("$" + pedido["totalARS"]);
+        $("#estadoModal").val(pedido["estado"]);
+        $("#fecha_encModal").val(pedido["fecha_enc"]);
+        $("#fecha_retModal").val(pedido["fecha_ret"]);
+        set_ep_logo_pos(pedido["totalEP"]);
+
+        //Seteo valores Usuario
+        $("#IDusuarioModal").val(usuario["id"]);
+        $("#nombreCompletoModal").val(usuario["nombre"] + " " + usuario["apellido"]);
+        $("#tipoNroDocModal").val(usuario["nroDoc"] + " (" + usuario["tipoDoc"] + ")");
+        $("#emailModal").val(usuario["email"]);
+
+        //Seteo valores Punto de Retiro
+        $("#idPRModal").val(punto_retiro["id"]);
+        $("#nombrePRModal").val(punto_retiro["nombre"]);
+        $("#direccionPRModal").val(punto_retiro["calle"] + " " + punto_retiro["altura"]);
+        $("#direccionPRModal2").val(punto_retiro["ciudad"] + ", " + punto_retiro["provincia"] + ", " + punto_retiro["pais"]);
+
+
+    });
     
-    $("#infoModal").modal("show");
+}
+
+function set_ep_logo_pos(num){
+    left_factor = 12 * String(num).length;
+    var top_input = document.getElementById("totalEPModal").offsetTop;
+    var left_input = document.getElementById("totalEPModal").offsetLeft;
+    $("#ep-logo-modal-info").css({top: top_input + 11, position:'absolute'});
+    $("#ep-logo-modal-info").css({left: left_input + left_factor, position:'absolute'});
 }
 

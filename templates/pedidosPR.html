@@ -93,6 +93,7 @@
 
 
     <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+    <button id="open-modal-info" href='#'data-toggle="modal" data-target="#infoModal"hidden="true"></button>
     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true"></button>
 
 
@@ -113,6 +114,7 @@
                     <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">Articulos</th>
+                    <th scope="col" class="table-heading">Información</th>
                     <th class="table-heading"></th>
                 </tr>
                 </thead>
@@ -127,10 +129,11 @@
                         {%endfor%}                         
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">{{p.totalEP}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                             <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{p.id}});"><i class="fa fa-box custom-link-fa"></i> Ver información</a></td>   
                             <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
                         </tr>
                     {%endif%}
@@ -154,6 +157,7 @@
                     <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">Articulos</th>
+                    <th scope="col" class="table-heading">Información</th>
                     <th class="table-heading"></th>
                     <th class="table-heading"></th>
                 </tr>
@@ -169,10 +173,11 @@
                         {%endfor%} 
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">{{p.totalEP}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                             <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{p.id}});"><i class="fa fa-info custom-link-fa"></i> Ver información</a></td>   
                             <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'listo')">Marcar Recibido</button></td>                            
                             <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
                         </tr>
@@ -197,6 +202,7 @@
                     <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">Articulos</th>
+                    <th scope="col" class="table-heading">Información</th>
                     <th class="table-heading"></th>
                     <th class="table-heading"></th>
                 </tr>
@@ -212,10 +218,11 @@
                         {%endfor%} 
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">{{p.totalEP}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                             <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{p.id}});"><i class="fa fa-info custom-link-fa"></i> Ver información</a></td>   
                             <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'retirado')">Marcar Retirado</button></td>                                                        
                             <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Marcar Cancelado</button></td>
                         </tr>
@@ -240,6 +247,7 @@
                     <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">Articulos</th>
+                    <th scope="col" class="table-heading">Información</th>
                     <th class="table-heading"></th>
                     <th class="table-heading"></th>
                 </tr>
@@ -255,10 +263,11 @@
                         {%endfor%} 
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">{{p.totalEP}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                             <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{p.id}});"><i class="fa fa-info custom-link-fa"></i> Ver información</a></td>   
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -280,6 +289,7 @@
                     <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">Articulos</th>
+                    <th scope="col" class="table-heading">Información</th>
                     <th class="table-heading"></th>
                     <th class="table-heading"></th>
                 </tr>
@@ -295,10 +305,11 @@
                         {%endfor%} 
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">{{p.totalEP}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                             <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{p.id}});"><i class="fa fa-info custom-link-fa"></i> Ver información</a></td>   
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -321,6 +332,7 @@
                     <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
                     <th scope="col" class="table-heading">Articulos</th>
+                    <th scope="col" class="table-heading">Información</th>
                     <th class="table-heading"></th>
                     <th class="table-heading"></th>
                 </tr>
@@ -336,10 +348,11 @@
                         {%endfor%} 
                         <tr>
                             <th scope="row">{{p.id}}</th>
-                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">{{p.totalEP}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                             <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
-                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{p.id}});"><i class="fa fa-info custom-link-fa"></i> Ver información</a></td>   
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -347,10 +360,9 @@
             </table>
         </div>
     </div>
-    <button onclick="openInfoModal();">Test</button>
 </div>
 
-<!--Alta Modal -->
+<!--Info Modal -->
 <div class="modal fade modal-lg" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document" style="height: fit-content;"id="altaPDModalContent">
       <div class="modal-content">
@@ -372,34 +384,35 @@
             </div>
             <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%;display: inline-block;">
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="idPedidoModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">ID del pedido</label>
                 </div>
-                <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                <div class="group" style="width: 25%;">
+                    <input type="text" id="totalEPModal" class="data-show-input" readonly> 
+                    <img src="/static/img/econpuntos-logo.png" id="ep-logo-modal-info">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Total en EcoPuntos</label>
                 </div>
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="totalARSModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Total en Pesos</label>
                 </div>
             </div>
             <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="estadoModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Estado actual</label>
                 </div>
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_encModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Fecha de Encargo</label>
                 </div>
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_retModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Fecha de Retiro</label>
                 </div>
@@ -414,24 +427,24 @@
             </div>
             <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%;display: inline-block;">
                 <div class="group" style="width: 50%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="IDusuarioModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">ID del usuario</label>
                 </div>
                 <div class="group" style="width: 50%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="nombreCompletoModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Nombre completo</label>
                 </div>
             </div>
             <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
                 <div class="group" style="width: 50%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="tipoNroDocModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Tipo y número de documento</label>
                 </div>
                 <div class="group" style="width: 50%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="emailModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Email</label>
                 </div>
@@ -446,27 +459,31 @@
             </div>
             <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
                 <div class="group" style="width: 50%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="idPRModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">ID del Punto de Retiro</label>
                 </div>
                 <div class="group" style="width: 50%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="nombrePRModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Nombre</label>
                 </div>
             </div>
             <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
-                <div class="group" style="width: 100%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test">
+                <div class="group" style="width: 50%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="direccionPRModal">
                     <input type="text" id="" name="id" hidden>
-                    <label class="">Dirección completa</label>
+                    <label class="">Dirección</label>
+                </div>
+                <div class="group" style="width: 50%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="direccionPRModal2">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Ciudad, Provincia y País</label>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn secondary-btn" id="secondary-btn" data-dismiss="modal" onclick="cierraModal();">Cancelar</button>
-          <button type="button" class="btn primary-btn" onclick="next_page();" id="primary-btn-alta">Siguiente</button>
+          <button type="button" class="btn primary-btn" data-dismiss="modal" id="primary-btn-alta">Listo</button>
         </div>
       </div>
     </div>
