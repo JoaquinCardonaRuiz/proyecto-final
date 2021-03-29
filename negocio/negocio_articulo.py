@@ -68,22 +68,23 @@ class NegocioArticulo(Negocio):
                                                     msj_adicional="Error en la capa de Negocio obtieniendo tipos de articulo de la capa de Datos.")
 
     @classmethod
-    def add(cls,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants):
+    def add(cls,nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants):
         """
         Agrega un articulo a la BD
         """
         try:
             costoTotal = float(costoInsumos)+float(costoProduccion)+float(otrosCostos)
             margen=float(margen)/100
-            idArt = DatosArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal)
+            idArt = DatosArticulo.add(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal)
             DatosValor.add(idArt,datetime.now().strftime('%Y-%m-%d %H:%M:%S'),valor)
             for c in cants:
                 DatosCantInsumo.addComponente(c["idIns"],idArt,c["cantidad"])
+            return idArt
         except Exception as e:
             raise(e)
 
     @classmethod
-    def update(cls,idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,ins):
+    def update(cls,idArt,nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,ins):
         """
         Actualiza un articulo en la BD
         """
@@ -107,7 +108,7 @@ class NegocioArticulo(Negocio):
 
             costoTotal = float(costoInsumos)+float(costoProduccion)+float(otrosCostos)
             margen=float(margen)/100
-            DatosArticulo.update(idArt, nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal)
+            DatosArticulo.update(idArt, nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal)
             valor_anterior = DatosValor.get_from_TAid(idArt)
             if valor_anterior[2] != float(valor):
                 DatosValor.add(idArt,datetime.now().strftime('%Y-%m-%d %H:%M:%S'),valor)
@@ -151,5 +152,13 @@ class NegocioArticulo(Negocio):
     def get_nombres_by_idIns(cls,idIns):
         try:
             return DatosArticulo.get_nombres_by_idIns(idIns)
+        except Exception as e:
+            raise e
+
+
+    @classmethod
+    def update_img(cls,aid,img):
+        try:
+            DatosArticulo.update_img(aid,img)
         except Exception as e:
             raise e

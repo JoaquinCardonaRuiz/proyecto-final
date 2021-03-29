@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registrarse - EcoAsitente</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/register.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/loading-elements.css')}}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">   
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">   
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body style="background-color: #ffffff;">
+    <img src="/static/img/login-background.jfif" class="img-login">
+    <div class="login-container">
+        <p id="register-label">¿Ya tenés una cuenta? <a href="/login" class="register-hyperlink">Inicia sesión</a></p>
+        <div class="content-container">
+            <div class="row justify-content-center align-items-center" id="email-container">
+                <img src="/static/img/email-sent.png" class="email-icon" width="200px">
+                <p class="thanks-email-label" style="width: 100%;">¡Gracias por registrarse en EcoAsistente!</p>
+                <p class="indications-email-label">Te envíamos un email a <strong id="email-direction-label"></strong> para que puedas verificar tu correo electrónico y terminar el registro.</p>
+                <h3 id="email-button" onclick="redirectBlank()">Ir a gmail.com</h3>
+            </div>
+
+            <div class="register-form">
+                <div class="row d-flex justify-content-center">
+                    <img src="/static/img/logo-gris.png" class="login-img">
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <h5 class="ingresar-label">Registro</h5>
+                </div>
+                <div class="row-error justify-content-center error-msg-login" id="error-msg-login">
+                    <p class="error-msg-text">¡Ups! Algo salió mal al crear tu cuenta</p>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="group" id="email-input-group">  
+                        <input type="text"  onfocusout="validateEmail(value);" oninput="validateEmail2(value)" required autocomplete="off" id="email-input" class="email-input" name="email">
+                        <span class="highlight email-input"></span>
+                        <span class="bar email-input"></span>
+                        <label class="email-input">Email</label>
+                        <p style="font-size: 8px;" id="email-vacio">&nbsp</p>
+                        <p id="email-error" class="cartel-error">* Formato de email incorrecto.</p>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="group" id="password-input-group">  
+                        <input required autocomplete="off" id="password-input" type="password" class="password-input" name="password" oninput="validaPassword()">
+                        <span class="highlight password-input"></span>
+                        <span class="bar password-input"s></span>
+                        <label class="password-input">Contraseña</label>
+                        <p style="font-size: 13px;" id="pass-vacio">&nbsp</p>
+                        <p id="password-error" class="cartel-error" style="margin-bottom: 25px !important;">* La contraseña no cumple los requisitos.</p>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="row" id="pass-reqs-row" style="margin-top: -50px; height: auto; margin-left: -20%;">
+                        <p class="passwd-reqs">- La contraseña debe tener al menos un número.</p>
+                        <p class="passwd-reqs">- La contraseña debe tener al menos una mayúscula.</p>
+                        <p class="passwd-reqs">- La contraseña debe tener entre 8 y 20 caracteres.</p>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="group" id="repeat-password-input-group">  
+                        <input required autocomplete="off" id="repeat-password-input" type="password" class="password-input" name="password" oninput="validaPassRep()">
+                        <span class="highlight password-input"></span>
+                        <span class="bar password-input"s></span>
+                        <label class="password-input">Repetí la contraseña</label>
+                        <p style="font-size: 13px;" id="pass-vacio">&nbsp</p>
+                        <p id="repeat-password-error" class="cartel-error" style="margin-top:-30px;">* Las contraseñas no coinciden.</p>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center bottom-row">
+                    <div class="form-check flex-row" style="width: 100%; margin-left: -67%; margin-top: -5%;">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1" oninput="enable_disable_button()">
+                        <label class="form-check-label" for="exampleCheck1"></label>
+                        <p id="check-label" style="margin-left: 39%; width: 100%; margin-top: 0.3%;">Acepto los términos y condiciones.</p>
+                    </div>
+                    <h3 id="start-button" id="start-button" onclick="submitLogin()">Crear cuenta</h3>
+                    <div class="row" id="loadingRowLogin">
+                        <div class="lds-ring" style="display: block !important;"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <p id="loading-text-login">Estamos creando tu cuenta...</p>   
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</body>
+
+<script src="static/js/register.js"></script>
+<script></script>

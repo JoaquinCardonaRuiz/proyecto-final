@@ -14,13 +14,7 @@ Dependencias:
     MySQLdb
 
 TODO:
-    * DONE - Arreglar clase TipoUsuario
-    * DONE - Terminar clase Estimacion
-    * DONE - Recordar qué era el atributo "estado" en TipoDocumento
-    * Crear clase EcoAsistente que guarde todos los globales. (stocks, etc.)
-    * Recuperar valores de EcoPuntos al inicializar clase EcoAsistente
-    * Programar consulta de datos en clase EcoPuntos
-    * Completar descripcion de atributo "abierto" en clase Horario
+    * Calcular el vencimiento de los depósitos.
 """
 
 #Imports
@@ -57,6 +51,7 @@ class Usuario:
         estimacionesEnergia (Estimacion[]): Arreglo de estimaciones de consumo de energía
             recibidas por el usuario.
         img (String): ruta a imagen de perfil
+        estado(String): representa el estado de un usuario respecto a su registro, o bien, a su estado en la BD.
     """
 
     def __init__(self, 
@@ -76,7 +71,8 @@ class Usuario:
                 estimacionesCO2=[],
                 estimacionesEnergia=[],
                 email=None,
-                img = "/static/img/avatar.png"):
+                img = "/static/img/avatar.png",
+                estado = None):
         self.id = id
         self.nroDoc = nroDoc
         self.tipoDoc = tipoDoc
@@ -95,6 +91,7 @@ class Usuario:
         self.estimacionesEnergia = estimacionesEnergia
         self.email = email
         self.img = img
+        self.estado = estado
 
     def comprobarVencimientoDepositos(self,):
         """ """
@@ -302,8 +299,9 @@ class Material:
         stock (float): Cantidad del material presente en inventario.
         color(string): Código hexadecimal del color con que se muestra un material.
         estado(string): Indica si los depositos del material estan habilitados
+        descripcion(string): Descripción del material.
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color,estado="habilitado"):
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color,estado="habilitado",descripcion="Este elemento no tiene descripción aún."):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -311,6 +309,7 @@ class Material:
         self.stock = stock
         self.color = color
         self.estado = estado
+        self.descripcion = descripcion
 
 class CantMaterial:
     """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.
@@ -659,13 +658,14 @@ class PuntoRetiro:
         demoraFija (Time): Cantidad de tiempo que tarda en prepararse un pedido.
     """
 
-    def __init__(self,id,direccion,nombre,estado,horarios,demoraFija):
+    def __init__(self,id,direccion,nombre,estadoEliminacion,horarios,demoraFija,estado):
         self.id = id
         self.direccion = direccion
         self.nombre = nombre 
         self.estado = estado 
         self.horarios = horarios 
         self.demoraFija = demoraFija
+        self.estado = estado
 
 class Pedido:
     """ Representa un pedido de artículos realizado por un cliente.
@@ -699,40 +699,6 @@ class Pedido:
         self.idPuntoRetiro = idPuntoRetiro
         self.estado = estado
 
-class MovimientoStock:
-    """
-    Registra un movimiento de stock de un punto de retiro a otro.
-
-    Atributos:
-        id (string): identificador de la entidad
-        idOrigen (string): identificador del punto de retiro de origen
-        idDestino (string): identificador del punto de retiro destino
-        articulos (CantArticulos): articulos (de un solo tipo articulo) involucrado en el movimiento
-        fecha (Date): fecha en la que se realizó el movimiento
-    """
-    def __init__(self,id,idOrigen,idDestino,articulos,fecha):
-        self.id = id
-        self.idOrigen = idOrigen
-        self.idDestino = idDestino
-        self.articulos = articulos
-        self.fecha=fecha
-
-class MovimientoStockPrincipal:
-    """
-    Registra un movimiento de stock del stock principal a un punto de retiro.
-
-    Atributos:
-        id (string): identificador de la entidad
-        idDestino (string): identificador del punto de retiro destino
-        articulos (CantArticulos): articulos (de un solo tipo articulo) involucrado en el movimiento
-        fecha (Date): fecha en la que se realizó el movimiento
-    """
-    def __init__(self,id,idDestino,articulos,fecha):
-        self.id = id
-        self.idDestino = idDestino
-        self.articulos = articulos
-        self.fecha=fecha
-
 
 '''
 ENTIDADES DESTINO
@@ -762,11 +728,13 @@ class SalidaStock:
         id (string): Identificador de la entidad.
         articulos (CantArticulo): Lote de articulos que representa.
         fecha (Date): Fecha de la transacción.
+        concepto (string): Motivo por el cual se produce la salida.
     """
-    def __init__(self,id,articulos,fecha):
+    def __init__(self,id,articulos,fecha,concepto):
         self.id = id
         self.articulos = articulos
         self.fecha = fecha
+        self.concepto = concepto
 
 
 '''

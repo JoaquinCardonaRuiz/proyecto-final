@@ -218,7 +218,7 @@ class NegocioPuntoDeposito(Negocio):
         """
         #Conexión con el motor de BD.
         try:
-            #Valida RN23
+            #Valida que el nombre no esté vacío.
             if nombre == "":
                 raise custom_exceptions.ErrorDeNegocio(origen="neogocio_punto_deposito.alta_pd()",
                                                         msj_adicional = "Error al añadir el Punto de Depósito. El nombre no puede quedar vacío.")

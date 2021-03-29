@@ -31,6 +31,77 @@
     
 
 
+<!-- Loading Modal -->
+    <!-- Para mostrar mientras se carga un modal-->
+
+    <div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <br><br><br><br><br><br><br><br>
+            <div class="row" id="loadingRow">
+                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Articulos Modal -->
+    <div class="modal fade modal-lg" id="materialesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="headingModalMat"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-card" id="materiales-modal-body">
+                    <div class="container modal-large-card-sm" id="material-card">
+                        <div class="row">
+                            <div class="modal-card-col-sm">
+                                <div class="circle materiales-large-card-img" id="material-img">I</div>
+                            </div>
+                            <div class="modal-card-col-sm" >
+                                <div class="row d-flex justify-content-center card-first-row-sm">
+                                    <p class="material-card-title" id="nombre-material">Nombre</p>
+                                </div>
+                                <div class="row d-flex justify-content-center card-second-row">
+                                    <p class="text-box material-card-subtitle">Nombre artículo</p>
+                                </div>
+                            </div>
+                            <div class="modal-card-col-sm">
+                                <div class="row d-flex justify-content-center card-first-row-sm">
+                                    <p class="material-card-title" id="unidad-medida">-</p>
+                                </div>
+                                <div class="row d-flex justify-content-center card-second-row">
+                                    <p class="text-box material-card-subtitle">Unidad de medida</p>
+                                </div>
+                            </div>
+                            <div class="modal-card-col-sm">
+                                <div class="row d-flex justify-content-center card-first-row-sm">
+                                    <p class="material-card-title" id="cantidad">-</p>
+                                </div>
+                                <div class="row d-flex justify-content-center card-second-row">
+                                    <p class="text-box material-card-subtitle">Cantidad</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+                <div class="modal-footer">
+                    <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+                </div>
+            </div>      
+        </div>
+    </div>
+
+
+
+    <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+    <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true"></button>
+
+
     <!-- Tabla Pedidos Pendientes-->
     <form action="{{url_for('update_estado_pedido')}}" method="POST" id="modUpdateEstado" autocomplete="off" hidden>
         <input id ="idInput" name="idInput">
@@ -55,7 +126,13 @@
                 </thead>
                 <tbody>
                 {%for p in pedidos%}
-                    {%if p.estado == 'pendiente'%}                        
+                    {%if p.estado == 'pendiente'%}      
+                    {%set ids_articulos = []%}
+                        {%set cantidades = []%}
+                        {%for art in p.articulos%}
+                            <!--{{ids_articulos.append(art.idTipoArticulo)}} -->
+                            <!--{{cantidades.append(art.cantidad)}} -->
+                        {%endfor%}                  
                         <tr>
                             <th scope="row">{{p.id}}</th>
                             <td scope="row">{{p.totalEP}}</td>
@@ -66,7 +143,7 @@
                                     <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
                                 {%endif%}
                             {%endfor%}
-                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
                             <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'preparado')">Preparado</button></td>
                             <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Cancelar</button></td>
                         </tr>
@@ -98,6 +175,12 @@
                 <tbody>
                 {%for p in pedidos%}
                     {%if p.estado == 'preparado'%}
+                    {%set ids_articulos = []%}
+                        {%set cantidades = []%}
+                        {%for art in p.articulos%}
+                            <!--{{ids_articulos.append(art.idTipoArticulo)}} -->
+                            <!--{{cantidades.append(art.cantidad)}} -->
+                        {%endfor%}
                         <tr>
                             <th scope="row">{{p.id}}</th>
                             <td scope="row">{{p.totalEP}}</td>
@@ -108,7 +191,7 @@
                                     <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
                                 {%endif%}
                             {%endfor%}
-                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
                             <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Cancelar</button></td>
                         </tr>
                     {%endif%}
@@ -139,6 +222,12 @@
                 <tbody>
                 {%for p in pedidos%}
                     {%if p.estado == 'listo'%}
+                    {%set ids_articulos = []%}
+                        {%set cantidades = []%}
+                        {%for art in p.articulos%}
+                            <!--{{ids_articulos.append(art.idTipoArticulo)}} -->
+                            <!--{{cantidades.append(art.cantidad)}} -->
+                        {%endfor%}
                         <tr>
                             <th scope="row">{{p.id}}</th>
                             <td scope="row">{{p.totalEP}}</td>
@@ -149,7 +238,7 @@
                                     <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
                                 {%endif%}
                             {%endfor%}
-                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
                             <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'cancelado')">Cancelar</button></td>
                         </tr>
                     {%endif%}
@@ -160,6 +249,54 @@
     </div>
     <hr style="width:70%">
 
+
+
+
+    <!-- Tabla Pedidos Retirados-->
+
+    <div class="container" id="table-container">
+        <h4 style="margin-left:4%;padding-top:3%;">Pedidos Retirados</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
+                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                    <th scope="col" class="table-heading">P. de Retiro</th>
+                    <th scope="col" class="table-heading">Articulos</th>
+                    <th class="table-heading"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for p in pedidos%}
+                    {%if p.estado == 'retirado'%}
+                    {%set ids_articulos = []%}
+                        {%set cantidades = []%}
+                        {%for art in p.articulos%}
+                            <!--{{ids_articulos.append(art.idTipoArticulo)}} -->
+                            <!--{{cantidades.append(art.cantidad)}} -->
+                        {%endfor%}
+                        <tr>
+                            <th scope="row">{{p.id}}</th>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
+                            <td scope="row">{{p.fechaEncargo}}</td>
+                            {%for pr in puntosRetiro%}
+                                {%if pr.id == p.idPuntoRetiro%}
+                                    <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
+                                {%endif%}
+                            {%endfor%}
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr style="width:70%">
 
     <!-- Tabla Pedidos Cancelados-->
 
@@ -180,6 +317,12 @@
                 <tbody>
                 {%for p in pedidos%}
                     {%if p.estado == 'cancelado'%}
+                    {%set ids_articulos = []%}
+                        {%set cantidades = []%}
+                        {%for art in p.articulos%}
+                            <!--{{ids_articulos.append(art.idTipoArticulo)}} -->
+                            <!--{{cantidades.append(art.cantidad)}} -->
+                        {%endfor%}
                         <tr>
                             <th scope="row">{{p.id}}</th>
                             <td scope="row">{{p.totalEP}}</td>
@@ -190,7 +333,7 @@
                                     <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
                                 {%endif%}
                             {%endfor%}
-                            <td><a class="custom-link" href='#'><i class="fa fa-box custom-link-fa"></i> Ver Artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -198,6 +341,53 @@
             </table>
         </div>
     </div>
+    <hr style="width:70%">
+
+     <!-- Tabla Pedidos Devueltos-->
+
+     <div class="container" id="table-container">
+        <h4 style="margin-left:4%;padding-top:3%;">Pedidos Reembolsados</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">EP</th>
+                    <th scope="col" class="table-heading">ARS</th>
+                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                    <th scope="col" class="table-heading">P. de Retiro</th>
+                    <th scope="col" class="table-heading">Articulos</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for p in pedidos%}
+                    {%if p.estado == 'devueltos'%}
+                    {%set ids_articulos = []%}
+                        {%set cantidades = []%}
+                        {%for art in p.articulos%}
+                            <!--{{ids_articulos.append(art.idTipoArticulo)}} -->
+                            <!--{{cantidades.append(art.cantidad)}} -->
+                        {%endfor%}
+                        <tr>
+                            <th scope="row">{{p.id}}</th>
+                            <td scope="row">{{p.totalEP}}</td>
+                            <td scope="row">${{p.totalARS}}</td>
+                            <td scope="row">{{p.fechaEncargo}}</td>
+                            {%for pr in puntosRetiro%}
+                                {%if pr.id == p.idPuntoRetiro%}
+                                    <td scope="row">{{pr.nombre}} ({{p.idPuntoRetiro}})</td>
+                                {%endif%}
+                            {%endfor%}
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
 </div>
 
 

@@ -174,6 +174,13 @@ class Utils():
         h.update(code.encode('utf-8'))
         return h.hexdigest()
 
+
+    @classmethod
+    def get_files(cls):
+        from os import listdir
+        from os.path import isfile, join
+        onlyfiles = [f for f in listdir(".") if isfile(join(".", f))]
+        print(onlyfiles)
         
     
     

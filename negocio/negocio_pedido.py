@@ -44,9 +44,9 @@ class NegocioPedido(Negocio):
             raise e
 
     @classmethod
-    def get_by_idPR(cls,id):
+    def get_by_idPR(cls,id,limit=False):
         try:
-            return DatosPedido.get_by_idPR(id)
+            return DatosPedido.get_by_idPR(id,limit)
         except Exception as e:
             raise e
 
@@ -61,5 +61,19 @@ class NegocioPedido(Negocio):
     def get_by_user_id(cls,uid, limit=False):
         try:
             return DatosPedido.get_by_user_id(uid, limit)
+        except Exception as e:
+            raise e
+    
+    @classmethod
+    def get_one(cls,id,user=False):
+        try:
+            result = DatosPedido.get_one(id)
+            pedido = result[0]
+            id_usuario = result[1]
+            if user:
+                return [pedido,DatosUsuario.get_by_id(id_usuario)]
+            else:
+                return pedido
+            return 
         except Exception as e:
             raise e

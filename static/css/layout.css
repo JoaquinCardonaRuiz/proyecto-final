@@ -192,10 +192,9 @@ html {
 	color: #95C22B !important;
 }
 
-.vl {
+.vl-heading {
 	height: 30px;
 	color: rgb(241, 240, 240);
-	background-color: rgb(238, 238, 238);
 	margin-right: 15px;
 	margin-top: 0px;
   }

@@ -1,13 +1,56 @@
 from negocio.negocio import Negocio
 import custom_exceptions
 from negocio.negocio_ecopuntos import NegocioEcoPuntos
+from negocio.negocio_direccion import NegocioDireccion
 from negocio.negocio_nivel import NegocioNivel
+from negocio.negocio_tipo_documento import NegocioTipoDocumento
 from data.data_usuario import DatosUsuario
-
+from utils import Utils
 import re
 
 class NegocioUsuario(Negocio):
     """Clase que representa la capa de negocio para la entidad Usuario. Hereda de Negocio."""                                           
+    
+    @classmethod
+    def alta(cls,email,password):
+        try:
+            if str(email) not in DatosUsuario.get_all_emails():
+                return DatosUsuario.alta(email,password)
+            else:
+                return False
+        except Exception as e:
+            raise e
+    
+    @classmethod
+    def activacion(cls,email,nombre,apellido,calle,altura,ciudad,provincia,pais,documento,tipo_doc):
+        try:
+            #Valida las RN de una direccion
+            if NegocioDireccion.valida_direccion(calle,altura,ciudad,provincia,pais):
+                print("1")
+                #Valida que el nombre, el apellido y el documento no sean vacios:
+                if nombre != "" and apellido != "" and documento != "":
+                    print("2")
+                    #Valida que el tipo de documento esté entre los tipos de docuemtno existentes.
+                    if [x for x in NegocioTipoDocumento.get_all() if str(x.id) == str(tipo_doc)]:
+                        #Hago el alta:
+                        idNivel = NegocioNivel.get_nivel_nombre(NegocioNivel.get_min_max_niveles()[0]).id
+                        idDireccion = NegocioDireccion.alta_direccion(calle,altura,ciudad,provincia,pais)
+                        if DatosUsuario.alta(email,None,documento,tipo_doc,nombre,apellido,1,idDireccion,idNivel,"/static/img/avatar.png","habilitado",True):
+                            return True
+            return False
+        except Exception as e:
+            raise e
+        
+    @classmethod
+    def verificacion(cls,code):
+        try:
+            if len(code) > 0:
+                return DatosUsuario.verificacion(code)
+            else:
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.verificacion()",
+                                                            msj_adicional = "Error al verificar el codigo") 
+        except Exception as e:
+            raise e
 
     @classmethod
     def login(cls,email, password):
@@ -62,7 +105,6 @@ class NegocioUsuario(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.check_password()",
                                                     msj=str(e),
                                                     msj_adicional="Formato contraseña inválido.")
-
 
 
     @classmethod
@@ -171,14 +213,19 @@ class NegocioUsuario(Negocio):
             raise e
     
     @classmethod
-    def get_all_emails(cls,uid):
+    def get_all_emails(cls,uid=None):
         try:
-            return DatosUsuario.get_all_emails(uid)
+            if uid == None:
+                return DatosUsuario.get_all_emails()
+            else:
+                return DatosUsuario.get_all_emails(uid)
         except Exception as e:
             raise e
-    
+            
+
+
     @classmethod
-    def get_all_documentos(cls,uid):
+    def get_all_documentos(cls,uid=False):
         try:
             return DatosUsuario.get_all_documentos(uid)
         except Exception as e:
