@@ -511,7 +511,14 @@ def mod_nivel_request(id):
     except Exception as e:
         return error(e,"gestion_niveles")
 
-
+@app.route('/info-niveles')
+def info_niveles():
+    try:
+        if valida_session(): return redirect(url_for('login'))
+        niveles = NegocioNivel.get_niveles()
+    except Exception as e:
+        return error(e, "info_niveles")
+    return render_template('info-niveles.html', niveles = niveles)
 
 
 ''' 

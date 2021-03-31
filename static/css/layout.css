@@ -188,7 +188,7 @@ html {
 	scroll-behavior: smooth;
   }
 
-.fa-sign-out-alt,.fa-barcode,.fa-map-marked-alt{
+.fa-sign-out-alt,.fa-barcode,.fa-map-marked-alt, .fa-lightbulb{
 	color: #95C22B !important;
 }
 
