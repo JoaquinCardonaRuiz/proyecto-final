@@ -198,3 +198,8 @@ html {
 	margin-right: 15px;
 	margin-top: 0px;
   }
+
+#user-profile-img-navbar{
+	border-radius:50%;
+	width: 28px;
+}

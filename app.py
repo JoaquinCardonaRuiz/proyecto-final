@@ -86,7 +86,7 @@ def main():
 
 @app.route('/layout/datos-usuario')
 def get_datos_usuario():
-    return jsonify({"nombre":session["usuario"].nombre + " " + session["usuario"].apellido, "totalEP":session["usuario"].totalEcopuntos})
+    return jsonify({"nombre":session["usuario"].nombre + " " + session["usuario"].apellido, "totalEP":session["usuario"].totalEcopuntos, "img":session["usuario"].img})
 
 ''' 
     -----------------
@@ -1195,7 +1195,7 @@ def pedidosUser():
         pedidos = NegocioPedido.get_by_user_id(session["usuario"].id)
         orden = {"listo":0,"preparado":1,"pendiente":2,"retirado":3,"cancelado":4,"devuelto":5}
         pedidos_ordenados = sorted(pedidos, key=lambda x: orden[x.estado])
-        puntosRetiro = NegocioPuntoRetiro.get_all()
+        puntosRetiro = NegocioPuntoRetiro.get_all(True)
         return render_template('pedidosUser.html',pedidos = pedidos_ordenados,puntosRetiro=puntosRetiro, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
@@ -1314,6 +1314,16 @@ def verificar_codigo(cod):
         return jsonify(response)
     except Exception as e:
         return error(e,"codigo")
+
+'''
+    -----------------------
+    Quienes somos
+    -----------------------
+'''
+@app.route('/quienes-somos', methods = ['GET','POST'])
+def nosotros():
+    return render_template('quienes-somos.html')
+
 
 if __name__ == '__main__':
     app.debug = True

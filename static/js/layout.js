@@ -27,4 +27,5 @@ function navbarResize(){
 $.getJSON("/layout/datos-usuario",function (result){
     $("#nombreUsuarioNavBar").text(result["nombre"]);
     $("#cantEPNavBar").text(result["totalEP"]);
+    $("#user-profile-img-navbar").attr("src", result["img"]);
 });
