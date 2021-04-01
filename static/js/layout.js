@@ -28,4 +28,8 @@ $.getJSON("/layout/datos-usuario",function (result){
     $("#nombreUsuarioNavBar").text(result["nombre"]);
     $("#cantEPNavBar").text(result["totalEP"]);
     $("#user-profile-img-navbar").attr("src", result["img"]);
+    if (result["carrito"]== false){
+      $("#carrito-cant-items").text("0");
+    }
+    //TODO: obtener la cantidad de elementos del carrito (chequear en que formato se guarda, creo que es un dic), y mostrarla.
 });

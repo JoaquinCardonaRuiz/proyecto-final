@@ -86,7 +86,11 @@ def main():
 
 @app.route('/layout/datos-usuario')
 def get_datos_usuario():
-    return jsonify({"nombre":session["usuario"].nombre + " " + session["usuario"].apellido, "totalEP":session["usuario"].totalEcopuntos, "img":session["usuario"].img})
+    if "carrito" in session.keys():
+        carrito = session["carrito"]
+    else:
+        carrito = False
+    return jsonify({"nombre":session["usuario"].nombre + " " + session["usuario"].apellido, "totalEP":session["usuario"].totalEcopuntos, "img":session["usuario"].img,"carrito": carrito})
 
 ''' 
     -----------------
