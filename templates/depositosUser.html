@@ -43,6 +43,7 @@
                 </tr>
                 </thead>
                 <tbody>
+                <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
                 {%for dep in depositos%}
                     <tr>
                         <th scope="row">{{dep.id}}</th>
@@ -51,7 +52,7 @@
                         <td scope="row">{{dep.ecoPuntos.cantidad}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                         {%for mat in materiales%}
                             {%if mat.id|int == dep.material.idMaterial|int%}
-                                <td scope="row">{{mat.nombre|truncate(30,true,'...')}}</td>
+                                <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-box custom-link-fa"></i> Ver Materiales</a></td>
                             {%endif%}
                         {%endfor%} 
                         {%for pd in puntosDep%}
@@ -68,5 +69,58 @@
 </div>
 
 
-<script src="/static/js/pedidos.js"></script>
+<!-- Materiales Modal -->
+<div class="modal fade modal-lg" id="materialesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalMat"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-card" id="materiales-modal-body">
+                <div class="container modal-large-card-sm" id="material-card">
+                    <div class="row">
+                        <div class="modal-card-col-sm">
+                            <div class="circle materiales-large-card-img" id="material-img">M</div>
+                        </div>
+                        <div class="modal-card-col-sm" >
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="nombre-material">Nombre</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Nombre material</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="unidad-medida">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Unidad de medida</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="cant-material">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Cantidad</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        <div class="modal-footer">
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+
+
+<script src="/static/js/depositos.js"></script>
 {% endblock %}
