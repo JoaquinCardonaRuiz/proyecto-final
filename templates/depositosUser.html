@@ -52,7 +52,7 @@
                         <td scope="row">{{dep.ecoPuntos.cantidad}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                         {%for mat in materiales%}
                             {%if mat.id|int == dep.material.idMaterial|int%}
-                                <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-box custom-link-fa"></i> Ver Materiales</a></td>
+                                <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-box custom-link-fa"></i> Ver Material</a></td>
                             {%endif%}
                         {%endfor%} 
                         {%for pd in puntosDep%}
