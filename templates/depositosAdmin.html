@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<!-- Sidebar import -->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <!-- Heading -->
+
+    <div class="container" id="heading-container">
+        <h1 class="heading">Depósitos</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Visualice todos los depósitos realizados en EcoAsistente.</span></h6>
+    </div>
+    
+
+
+    <!-- Tabla Pedidos-->
+    <div class="container" id="table-container">
+        <h4 class="table-title">Depósitos Acreditados</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Código</th>
+                    <th scope="col" class="table-heading">Fecha depósito</th>
+                    <th scope="col" class="table-heading">Material</th>
+                    <th scope="col" class="table-heading">Info</th>
+                    <th scope="col" class="table-heading"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                {%for dep in depositos%}
+                    {%if dep.isAcreditado()}
+                        <tr>
+                            <th scope="row">{{dep.id}}</th>
+                            <td scope="row">{{dep.fechaDeposito}}</td>
+                            {%for mat in materiales%}
+                                {%if mat.id|int == dep.material.idMaterial|int%}
+                                    <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-box custom-link-fa"></i> Ver Material</a></td>
+                                {%endif%}
+                            {%endfor%} 
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-box custom-link-fa"></i> Ver info</a></td>    
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="cancelar({{dep.id}})">Cancelar</button></td>
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <!-- Tabla Pedidos-->
+    <div class="container" id="table-container">
+        <h4 class="table-title">Depósitos Sin Acreditar</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Código</th>
+                    <th scope="col" class="table-heading">Fecha depósito</th>
+                    <th scope="col" class="table-heading">Material</th>
+                    <th scope="col" class="table-heading">Info</th>
+                    <th scope="col" class="table-heading"></th>
+                    <th scope="col" class="table-heading"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                {%for dep in depositos%}
+                    {%if not dep.isAcreditado()%}
+                        <tr>
+                            <th scope="row">{{dep.id}}</th>
+                            <td scope="row">{{dep.fechaDeposito}}</td>
+                            {%for mat in materiales%}
+                                {%if mat.id|int == dep.material.idMaterial|int%}
+                                    <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-box custom-link-fa"></i> Ver Material</a></td>
+                                {%endif%}
+                            {%endfor%} 
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-box custom-link-fa"></i> Ver info</a></td>    
+                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="acreditar({{dep.id}})">Acreditar</button></td>
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="cancelar({{dep.id}})">Cancelar</button></td>
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+<!-- Materiales Modal -->
+<div class="modal fade modal-lg" id="materialesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalMat"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-card" id="materiales-modal-body">
+                <div class="container modal-large-card-sm" id="material-card">
+                    <div class="row">
+                        <div class="modal-card-col-sm">
+                            <div class="circle materiales-large-card-img" id="material-img">M</div>
+                        </div>
+                        <div class="modal-card-col-sm" >
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="nombre-material">Nombre</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Nombre material</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="unidad-medida">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Unidad de medida</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="cant-material">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Cantidad</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        <div class="modal-footer">
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+
+
+<script src="/static/js/depositos.js"></script>
+{% endblock %}
