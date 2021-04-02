@@ -157,24 +157,30 @@
   </div>
   <!-- End vertical navbar --> 
   <nav class="navbar navbar-expand-lg navbar-light" id="up-bar">
-    <div class="justify-content-end" id="navbarNav" style="width: 9%;">
+    <div class="justify-content-end" id="navbarNav">
       <ul class="navbar-nav justify-content-end">
-        <li class="justify-content-end">
-          <i class="fas fa-shopping-cart" style="float: right !important;"></i>
-        </li>
-        <li>
-          <div class="numberCircle"><span id="carrito-cant-items">5</span></div>
-        </li>
       </ul>
     </div>
     <form class="form-inline my-2 my-lg-0 justify-content-end" id="user-username">
+        <!-- Icono del carrito --> 
+        <div class="" id="carrito-navbar-container" style="margin-right: 0px;" onclick="redirect('/eco-tienda/carrito');">
+          <i class="fas fa-shopping-cart" id="carrito-navbar"></i>
+        </div>
+        <!-- Número del carrito --> 
+        <div class="numberCircle"><span id="carrito-cant-items" onclick="redirect('/eco-tienda/carrito');">5</span></div>
+        <!-- Separador --> 
+        <div class="vl vl-heading" style="margin-right: -6px;"></div>
+        <!-- Cant EP --> 
         <a class="nav-link disabled user-username-text" href="#" id="cantEPNavBar" style="margin-right: -10px;">
           3000
         </a>
+        <!-- Logo EP --> 
         <img src="/static/img/econpuntos-logo.png" class="" width="20px">
-
+        <!-- Separador --> 
         <div class="vl vl-heading"></div>
+        <!-- Imagen usuario --> 
         <img src="/static/img/avatar.png" width="28px" id="user-profile-img-navbar">
+        <!-- Nombre usuario --> 
         <a class="nav-link disabled user-username-text" href="#" id="nombreUsuarioNavBar"></a>
     </form>
 </nav>
