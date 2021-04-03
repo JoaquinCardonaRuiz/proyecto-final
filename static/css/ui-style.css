@@ -425,3 +425,36 @@ h2 		 {
     background-color: #87af28;
 }
 
+.horarios-container-ecnontrar-punto{
+    text-align: center;
+    margin: 0;
+    position: relative;
+    top: -81%;
+    margin-right: 0%;
+    width: 30%;
+    margin-right: -5%;
+}
+
+.horarios-img-ecnontrar-punto:hover{
+    cursor: pointer;
+}
+
+.horarios-img-ecnontrar-punto{
+    text-align: center;
+    margin: 0;
+    position: relative;
+    top: -80%;
+    margin-left: 2%;
+    font-size: 30px;
+    background-color: transparent;
+    color: rgb(192, 192, 192);   
+}
+
+.horarios-desc-ecnontrar-punto{
+    text-align: center;
+    margin: 0;
+    position: relative;
+    top: -70%;
+    margin-left: 2%;
+    color: rgb(132,117,167);
+}
