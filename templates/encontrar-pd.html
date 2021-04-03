@@ -15,10 +15,9 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
-    <script src="/static/js/encontrar-pd.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 
 
@@ -27,6 +26,7 @@
 {% extends 'layout.html' %}
 {% block body %}
 <div class="page-content" style="text-align: left;" id="content">
+       
     <div class="container" id="heading-container">
         <h1 class="heading">Encontrar Punto de Depósito</h1>
         <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Seleccione un punto de depósito para ver su ubicación.</span></h6>
@@ -49,8 +49,12 @@
                                 <p class="option-title-cards-pr">{{pd.nombre}}</p>
                                 <p class="option-description-pr">{{pd.direccion.calle + ' '}}{{pd.direccion.altura}}</p>
                                 <p class="option-description-pr text-muted"  style="margin-top: 0.2%;">{{pd.direccion.ciudad}}</p>
+                                <div style="float: right;" class="horarios-container-ecnontrar-punto">
+                                    <i class="far fa-clock horarios-img-ecnontrar-punto" id="{{pd.id}}-img" onmouseover="changeColor({{pd.id}});" onmouseout="restablishColor({{pd.id}});" onclick="openLoadingRing();openModalHorarios('{{pd.id}}', '{{pd.nombre}}', '{{pd.estado}}');"></i>
+                                    <p class="option-description-pr horarios-desc-ecnontrar-punto" id="{{pd.id}}-desc" onmouseover="changeColor({{pd.id}});" onmouseout="restablishColor({{pd.id}});" onclick="openLoadingRing();openModalHorarios('{{pd.id}}', '{{pd.nombre}}', '{{pd.estado}}');">Ver horarios</p>
+                                </div>
                             </div>
-                        {%endfor%}
+                            {%endfor%}
                         </div>
                         
                         <div class="col" style="float: right; min-width: 300px;">
@@ -61,9 +65,99 @@
                         
                 </div>
             </div>
-        <!--Grid column-->    
     </div>
+    <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal" hidden="true"></button>
+    <button id="close-loading-modal" href='#' onclick="cierraModal('loadingModal');" hidden="true"></button>
+    <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
 </div>
 
 
-  {% endblock %}
+
+<!-- Loading Modal -->
+<!-- Para mostrar mientras se carga un modal-->
+<div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+      <br><br><br><br><br><br><br><br>
+      <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- Horarios Modal -->
+<div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalHorarios"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-card">
+                <div class="container modal-large-card">
+                    <div class="row">
+                        <div class="modal-card-col" id="modal-card-col-1">
+                            <img src="/static/img/open-circle-icon.jpg" class="modal-large-card-img" id="open-img">
+                            <img src="/static/img/closed-circle-icon.png" class="modal-large-card-img" id="close-img">
+                            <img src="/static/img/inactive-circle-icon.png" class="modal-large-card-img" id="inactive-img">
+                        </div>
+                        <div class="modal-card-col" >
+                            <div class="row d-flex justify-content-center card-first-row">
+                                <p class="open-letter" id="estado-apertura-pos">Abierto</p>
+                                <p class="open-letter" id="estado-apertura-neg">Cerrado</p>
+                                <p class="open-letter" id="estado-apertura-inac">Inactivo</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box">Estado Actual</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col">
+                            <div class="row d-flex justify-content-center card-first-row">
+                                <p class="open-letter" id="cant-horas-cierre-pos">-</p>
+                                <p class="open-letter" id="cant-horas-cierre-neg">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box">Tiempo para cierre</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col">
+                            <div class="vl">
+                                <div class= "info-container-modal">
+                                    <span class="text-muted" id="toda-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-1-pos"></i>Abre de lunes a viernes<br></span>
+                                    <span class="text-muted" id="toda-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-1-neg"></i>No abre de lunes a viernes<br></span>
+
+                                    <span class="text-muted" id="fines-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-2-pos"></i>Abre fines de semana<br></span>
+                                    <span class="text-muted" id="fines-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-2-neg"></i>No abre fines de semana<br></span>
+
+                                    <i class="fa fa-clock modal-info-img" id="info-modal-3"></i><span class="text-muted" id="horarios-apertura">Hoy abre 08:00hs y cierra 20:00hs</span>                                                                        
+                                </div>
+                            </div>
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+                    <div class="container modal-large-card d-flex justify-content-center" id="modal-large-card-2">
+                        <table class="table" id="content-table-modal">
+                            <thead>
+                            <tr id=headerRow>
+                            </tr>
+                            </thead>
+                            <tbody id="modalTableBody">
+                            </tbody>
+                    
+                        </table>
+                    </div>
+            </div>        
+        <div class="modal-footer">
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<script src="/static/js/encontrar-pd.js"></script>
+
+{% endblock %}
