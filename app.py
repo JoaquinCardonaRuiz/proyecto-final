@@ -72,10 +72,10 @@ def main():
             else:
                 pedidos = session["usuario"].pedidos
             puntosRetiro = NegocioPuntoRetiro.get_all()
-            if len(session["usuario"].depositosActivos) >= 5:
-                depositos = session["usuario"].depositosActivos[:5]
+            if len(session["usuario"].depositos) >= 5:
+                depositos = session["usuario"].depositos[:5]
             else:
-                depositos = session["usuario"].depositosActivos
+                depositos = session["usuario"].depositos
             puntosDep = NegocioPuntoDeposito.get_all()
             materiales = NegocioMaterial.get_all()
             max_level = NegocioNivel.get_min_max_niveles()[1]
@@ -113,7 +113,7 @@ def authentication(email, password):
         session.modified = True
         return jsonify({"login-state":True})
     except Exception as e:
-        return jsonify({"login-state":False})
+        return error(e,"gestion-puntos-deposito")
     return render_template('login.html')
 
 @app.route('/logout/<val>', methods = ['GET','POST'])

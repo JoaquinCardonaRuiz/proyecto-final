@@ -38,10 +38,8 @@ class DatosUsuario(Datos):
                 else:
                     direc = DatosDireccion.get_one_id(usu[8])
                     depositos = DatosDeposito.get_by_id_usuario(usu[0])
-                    da = [d for d in depositos if d.isActivo()]
-                    dv = [d for d in depositos if not(d.isActivo())]
                     ped = DatosPedido.get_by_user_id(usu[0])
-                    usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10],usu[11])
+                    usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10],usu[11])
                 usuario.calcularTotalEcopuntos()
                 return usuario
             else:
@@ -84,10 +82,8 @@ class DatosUsuario(Datos):
                 usu = usuarios[0]
                 direc = DatosDireccion.get_one_id(usu[8])
                 depositos = DatosDeposito.get_by_id_usuario(usu[0])
-                da = [d for d in depositos if d.isActivo()]
-                dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10])
                 usuario.calcularTotalEcopuntos()
                 return usuario
             else:
@@ -303,10 +299,8 @@ class DatosUsuario(Datos):
             for usu in usuarios:
                 direc = DatosDireccion.get_one_id(usu[8])
                 depositos = DatosDeposito.get_by_id_usuario(usu[0])
-                da = [d for d in depositos if d.isActivo()]
-                dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10])
                 usuario.calcularTotalEcopuntos()
                 users.append(usuario)
             return users

@@ -39,8 +39,7 @@ class Usuario:
         IDTipoUsuario (string): Identificador de la instancia de TipoUsuario que corresponde
             a la entidad.
         direccion (Direccion): Dirección física del domicilio del usuario
-        despositosActivos (Deposito[]): Arreglo de depositos cuyos ecopuntos siguen vigentes.
-        depositosVencidos (Deposito[]): Arreglo de depositos cuyos ecopuntos se encuentran vencidos.
+        despositos (Deposito[]): Arreglo de depositos realizados por el usuario.
         pedidos (Pedidos[]): Arreglo de los pedidos realizados por el usuario.
         totalEcopuntos (int): Sumatoria de la cantidad de ecopuntos que el usuario posee.
         idNivel (string): Identificador del nivel que le corresponde al usuario.
@@ -63,8 +62,7 @@ class Usuario:
                 password, 
                 idTipoUsuario,
                 direccion,
-                depositosActivos=[],
-                depositosVencidos=[],
+                depositos=[],
                 pedidos=None,
                 idNivel=None,
                 recomendacionesPlantas=[],
@@ -81,8 +79,7 @@ class Usuario:
         self.password = password
         self.idTipoUsuario = idTipoUsuario
         self.direccion = direccion
-        self.depositosActivos = depositosActivos
-        self.depositosVencidos = depositosVencidos
+        self.depositos = depositos
         self.pedidos = pedidos
         self.totalEcopuntos = 0
         self.idNivel = idNivel
@@ -101,7 +98,7 @@ class Usuario:
         Calcula los EcoPuntos del Usuario en base a sus depositos
         """
         self.totalEcopuntos = 0
-        for dep in self.depositosActivos:
+        for dep in self.depositos:
             ep = dep.ecoPuntos
             self.totalEcopuntos += ep.cantidadRestante
 

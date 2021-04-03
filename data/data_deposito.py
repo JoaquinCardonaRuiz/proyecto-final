@@ -98,7 +98,7 @@ class DatosDeposito(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql = ("UPDATE depositos SET idUsuario = {}, fechaReg={} WHERE codigo=\"{}\"".format(uid,datetime.now(),cod))
+            sql = ("UPDATE depositos SET idUsuario = {}, fechaReg=\"{}\" WHERE codigo=\"{}\"".format(uid,datetime.now(),cod))
             cls.cursor.execute(sql)
             cls.db.commit()
             rwcount = int(cls.cursor.rowcount)
