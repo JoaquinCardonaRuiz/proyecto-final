@@ -21,51 +21,91 @@
     <!-- Heading -->
 
     <div class="container" id="heading-container">
-        <h1 class="heading">Mis depósitos</h1>
-        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Visualice un historial de sus depósitos realizados en EcoAsistente.</span></h6>
+        <h1 class="heading">Depósitos</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Visualice todos los depósitos realizados en EcoAsistente.</span></h6>
     </div>
     
 
 
     <!-- Tabla Pedidos-->
     <div class="container" id="table-container">
-        <h4 class="table-title">Historial de depósitos acreditados</h4>
+        <h4 class="table-title">Depósitos Acreditados</h4>
         <div class="row d-flex justify-content-center scrollable-table">
             <table class="table" id="content-table">
                 <thead style=" border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">Código</th>
-                    <th scope="col" class="table-heading">Código acreditación</th>
                     <th scope="col" class="table-heading">Fecha depósito</th>
-                    <th scope="col" class="table-heading">EcoPuntos</th>
                     <th scope="col" class="table-heading">Material</th>
-                    <th scope="col" class="table-heading">Punto</th>
+                    <th scope="col" class="table-heading">Info</th>
+                    <th scope="col" class="table-heading"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
                 {%for dep in depositos%}
-                    <tr>
-                        <th scope="row">{{dep.id}}</th>
-                        <td scope="row">{{dep.codigo}}</td>
-                        <td scope="row">{{dep.fechaDeposito}}</td>
-                        <td scope="row">{{dep.ecoPuntos.cantidad}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
-                        {%for mat in materiales%}
-                            {%if mat.id|int == dep.material.idMaterial|int%}
-                                <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-box custom-link-fa"></i> Ver Material</a></td>
-                            {%endif%}
-                        {%endfor%} 
-                        {%for pd in puntosDep%}
-                            {%if pd.id == dep.idPuntoDeposito%}
-                                <td scope="row">{{pd.nombre}}</td>
-                            {%endif%}
-                        {%endfor%}  
-                    </tr>
+                    {%if dep.isAcreditado()}
+                        <tr>
+                            <th scope="row">{{dep.id}}</th>
+                            <td scope="row">{{dep.fechaDeposito}}</td>
+                            {%for mat in materiales%}
+                                {%if mat.id|int == dep.material.idMaterial|int%}
+                                    <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-box custom-link-fa"></i> Ver Material</a></td>
+                                {%endif%}
+                            {%endfor%} 
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-box custom-link-fa"></i> Ver info</a></td>    
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="cancelar({{dep.id}})">Cancelar</button></td>
+                        </tr>
+                    {%endif%}
                 {%endfor%}
                 </tbody>
             </table>
         </div>
     </div>
+
+
+
+    <!-- Tabla Pedidos-->
+    <div class="container" id="table-container">
+        <h4 class="table-title">Depósitos Sin Acreditar</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Código</th>
+                    <th scope="col" class="table-heading">Fecha depósito</th>
+                    <th scope="col" class="table-heading">Material</th>
+                    <th scope="col" class="table-heading">Info</th>
+                    <th scope="col" class="table-heading"></th>
+                    <th scope="col" class="table-heading"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                {%for dep in depositos%}
+                    {%if not dep.isAcreditado()%}
+                        <tr>
+                            <th scope="row">{{dep.id}}</th>
+                            <td scope="row">{{dep.fechaDeposito}}</td>
+                            {%for mat in materiales%}
+                                {%if mat.id|int == dep.material.idMaterial|int%}
+                                    <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-box custom-link-fa"></i> Ver Material</a></td>
+                                {%endif%}
+                            {%endfor%} 
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-box custom-link-fa"></i> Ver info</a></td>    
+                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="acreditar({{dep.id}})">Acreditar</button></td>
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="cancelar({{dep.id}})">Cancelar</button></td>
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
 </div>
 
 

@@ -530,25 +530,9 @@ class Deposito:
         self.ecoPuntos = ecoPuntos
         self.fechaRegistro = fechaRegistro
 
-    def isActivo(self):
-        #TODO: Desarrollar este metodo
-        return True
+    def isAcreditado(self):
+        return self.fechaRegistro!=None
 
-    def comprobarCodigo(self, codigo):
-        return False
-
-class DepositosSinRegistrar:
-    """ Clase SINGLETON que guarda las instancias de depositos que fueron realizadas pero no 
-    se registraron a ningún usuario.
-    Atributos:
-        id (string): Identificador de la entidad.
-        depositos (Deposito[], opcional): Arreglo donde se guardan los depositos no 
-            registrados.
-    """
-
-    def __init__(self, id, depositos=[]):
-        self.id = id
-        self.depositos = depositos
 
 class EcoPuntos:
     """ Representa un conjunto de ecopuntos, correspondiente a un depósito, los mismos 
