@@ -20,5 +20,6 @@ function openModalMateriales(nom,uM,cant,color){
     document.getElementById("nombre-material").innerHTML = nom;
     document.getElementById("unidad-medida").innerHTML = uM;
     document.getElementById("cant-material").innerHTML = cant;
+
     document.getElementById("open-modal-mat").click();
 }

@@ -119,7 +119,6 @@
                     <th scope="col" class="table-heading">EP</th>
                     <th scope="col" class="table-heading">ARS</th>
                     <th scope="col" class="table-heading">Fecha Encargo</th>
-                    <th scope="col" class="table-heading">P. de Retiro</th>
                     <th scope="col" class="table-heading">Articulos</th>
                     <th scope="col" class="table-heading">Info</th>
                     <th class="table-heading"></th>
@@ -140,11 +139,6 @@
                             <td scope="row">{{p.totalEP}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                             <td scope="row">${{p.totalARS}}</td>
                             <td scope="row">{{p.fechaEncargo}}</td>
-                            {%for pr in puntosRetiro%}
-                                {%if pr.id == p.idPuntoRetiro%}
-                                    <td scope="row">{{pr.nombre}}</td>
-                                {%endif%}
-                            {%endfor%}
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{p.id}});"><i class="fa fa-box custom-link-fa"></i> Ver info</a></td>   
                             <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'preparado')">Preparado</button></td>
