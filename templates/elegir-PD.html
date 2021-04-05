@@ -16,24 +16,28 @@
 
 {% extends 'layout.html' %}
 {% block body %}
-
 <div class="page-content" style="text-align: left;" id="content">
     <div class="container" id="heading-container">
-        <h1 class="heading">¿Qué tipo de Puntos desea gestionar?</h1>
+        <h1 class="heading">Gestión de Depósitos</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Visualice y gestione los Depósitos de EcoAsistente.</span></h6>
     </div>
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container" id="option1" onclick="redirect('/gestion-puntos-deposito')">
-                <i class="fa fa-map-marker-alt fa-4x" style="float: left;" id="option-img-puntos"></i>
-                <p class="option-title-puntos">Puntos de Depósito</p>
-                <p class="option-description">Visualizar y gestionar los Puntos de Depósito registrados en EcoAsistente.</p>
-
+            <div class="container" id="option1" onclick="window.location.href = '/gestion-depositos/admin';">
+                <i class="fa fa-warehouse fa-4x" style="float: left;" id="option-img-puntos"></i>
+                <p class="option-title-puntos">Todos los depósitos</p>
+                <p class="option-description">Gestionar todos los depósitos de EcoAsistente.</p>
             </div>
-            <div class="container" id="option2" onclick="redirect('/gestion-puntos-retiro')">
-                <i class="fa fa-map-marker-alt fa-4x" style="float: left;" id="option-img-puntos"></i>
-                <p class="option-title-puntos">Puntos de Retiro</p>
-                <p class="option-description">Visualizar y gestionar los Puntos de Retiro registrados en EcoAsistente.</p>
+            <div class="container" style="margin-bottom: 3%">
+                <hr>
             </div>
+            {%for pd in puntosDeposito%}
+            <div class="container" id="option2" onclick="window.location.href = '/gestion-depositos/pd/{{pd.id}}';">
+                <i class="fa fa-map-marker-alt fa-4x" style="float: left;" id="option-img-puntos"></i>
+                <p class="option-title-puntos">{{pd.nombre}}</p>
+                <p class="option-description">Gestionar los depósitos de {{pd.nombre}}.</p>
+            </div>
+            {%endfor%}
         </div>
         <div class="row" id="loadingRowPuntos">
             <div id="lds-ring-big" class="lds-ring"><div></div><div></div><div></div><div></div></div>

@@ -38,7 +38,29 @@ class NegocioPuntoDeposito(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
                                                     msj=str(e),
                                                     msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
+
+
+
+    @classmethod
+    def get_by_id(cls,id):
+        """
+        Obtiene un Punto de Depósito de la BD.
+        """
+        try:
+            punto_deposito = DatosPuntoDeposito.get_by_id(id)
+            punto_deposito.estado = bool(punto_deposito.estado)
+            return punto_deposito
+        
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio.get_all()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error en la capa de Negocio obtieniendo los puntos de depósito de la capa de Datos.")
     
+
+
+
     @classmethod
     def get_horarios_id(cls, id):
         """

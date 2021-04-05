@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="//db.onlinewebfonts.com/c/1059ad38e2a3bd334504686a2901eedb?family=Cordia+New" rel="stylesheet" type="text/css"/>
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="heading-container">
+        <h1 class="heading">Tabla de niveles</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Visualizá los distintos niveles y la cantidad de EcoPuntos que se necesitan para alcanzar cada uno de ellos.</span></h6>
+    </div>
+    <div class="container" id="table-container">
+        <div class="row d-flex justify-content-center">
+            <table class="table" id="content-table">
+                <thead style="border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Nivel</th>
+                    <th scope="col" class="table-heading">EcoPuntos</th>
+                    <th scope="col" class="table-heading">Descuento</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for nivel in niveles%}
+                <tr>
+                    <th scope="row">{{nivel.nombre}}</th>
+                    {%if nivel.nombre|int != niveles|length%}
+                        <td>Desde los {{nivel.minimoEcoPuntos}} hasta los {{nivel.maximoEcoPuntos}} EcoPuntos.</td>
+                    {%else%}
+                        <td>Desde los {{nivel.minimoEcoPuntos}} EcoPuntos en adelante.</td>
+                    {%endif%}
+                    <td>{{nivel.descuento}}%</td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

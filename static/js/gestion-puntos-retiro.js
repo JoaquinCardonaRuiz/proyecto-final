@@ -287,7 +287,7 @@ function openModalMateriales(id, nombre){
                     estado = '<td><div><i class="fas fa-circle" style="color:#3399ff" id="estado-activo"></i> En preparación</div>';
                 }
                 else if(result[i]["estado"] == "preparado"){
-                    estado = '<td><div><i class="fas fa-circle" style="color:#ddbb44" id="estado-activo"></i> Preparados</div>';
+                    estado = '<td><div><i class="fas fa-circle" style="color:#ddbb44" id="estado-activo"></i> Preparado</div>';
                 }
                 else if(result[i]["estado"] == "listo"){
                     estado = '<td><div><i class="fas fa-circle" style="color:#00aa44" id="estado-activo"></i> Listo para retiro</div>';

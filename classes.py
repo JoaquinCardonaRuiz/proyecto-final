@@ -39,8 +39,7 @@ class Usuario:
         IDTipoUsuario (string): Identificador de la instancia de TipoUsuario que corresponde
             a la entidad.
         direccion (Direccion): Dirección física del domicilio del usuario
-        despositosActivos (Deposito[]): Arreglo de depositos cuyos ecopuntos siguen vigentes.
-        depositosVencidos (Deposito[]): Arreglo de depositos cuyos ecopuntos se encuentran vencidos.
+        despositos (Deposito[]): Arreglo de depositos realizados por el usuario.
         pedidos (Pedidos[]): Arreglo de los pedidos realizados por el usuario.
         totalEcopuntos (int): Sumatoria de la cantidad de ecopuntos que el usuario posee.
         idNivel (string): Identificador del nivel que le corresponde al usuario.
@@ -63,8 +62,7 @@ class Usuario:
                 password, 
                 idTipoUsuario,
                 direccion,
-                depositosActivos=[],
-                depositosVencidos=[],
+                depositos=[],
                 pedidos=None,
                 idNivel=None,
                 recomendacionesPlantas=[],
@@ -81,8 +79,7 @@ class Usuario:
         self.password = password
         self.idTipoUsuario = idTipoUsuario
         self.direccion = direccion
-        self.depositosActivos = depositosActivos
-        self.depositosVencidos = depositosVencidos
+        self.depositos = depositos
         self.pedidos = pedidos
         self.totalEcopuntos = 0
         self.idNivel = idNivel
@@ -101,7 +98,7 @@ class Usuario:
         Calcula los EcoPuntos del Usuario en base a sus depositos
         """
         self.totalEcopuntos = 0
-        for dep in self.depositosActivos:
+        for dep in self.depositos:
             ep = dep.ecoPuntos
             self.totalEcopuntos += ep.cantidadRestante
 
@@ -530,25 +527,9 @@ class Deposito:
         self.ecoPuntos = ecoPuntos
         self.fechaRegistro = fechaRegistro
 
-    def isActivo(self):
-        #TODO: Desarrollar este metodo
-        return True
+    def isAcreditado(self):
+        return self.fechaRegistro!=None
 
-    def comprobarCodigo(self, codigo):
-        return False
-
-class DepositosSinRegistrar:
-    """ Clase SINGLETON que guarda las instancias de depositos que fueron realizadas pero no 
-    se registraron a ningún usuario.
-    Atributos:
-        id (string): Identificador de la entidad.
-        depositos (Deposito[], opcional): Arreglo donde se guardan los depositos no 
-            registrados.
-    """
-
-    def __init__(self, id, depositos=[]):
-        self.id = id
-        self.depositos = depositos
 
 class EcoPuntos:
     """ Representa un conjunto de ecopuntos, correspondiente a un depósito, los mismos 
@@ -600,21 +581,9 @@ class EcoPuntos:
         self.id = id
         self.cantidad = cantidad
         self.cantidadRestante = cantidadRestante
-        self.fechaVencimiento = self.calcularFechaVenc()
         # Sería conveniente (pero no necesario) ejecutar la siguiente linea:
         # EcoPuntos.getEPdata()
         # A fin de proteger contra inconsistencias.
-        # Pero debe evaluarse el impacto a la performance.
-
-    def calcularFechaVenc(self):
-        """Esta función calcula la fecha de vencimiento, utilizando la fecha actual, y el
-        atributo de clase tiempoVencimiento.
-        """
-        # Algo así como
-        # return fecha_actual + EcoPuntos.tiempoVencimiento
-        return 0
-        # Devuelvo 0 porque devolver None hace que el linter piense que hay un error
-
 
 
 '''
