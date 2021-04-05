@@ -68,3 +68,25 @@ class NegocioDeposito(Negocio):
             DatosDeposito.update_estado(id,estado)
         except Exception as e:
             raise e
+
+
+    @classmethod
+    def get_by_id(cls,id):
+        """
+        Busca un depósito según su ID de la BD.
+        """
+        try:
+            return DatosDeposito.get_by_id(id)
+        except Exception as e:
+            raise e
+
+
+    @classmethod
+    def get_user_id(cls,id):
+        """
+        Busca el id del usuario de un deposito segun su id.
+        """
+        try:
+            return DatosDeposito.get_user_id(id)
+        except Exception as e:
+            raise e

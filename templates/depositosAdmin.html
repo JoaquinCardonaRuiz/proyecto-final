@@ -45,6 +45,7 @@
                 </thead>
                 <tbody>
                 <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true"></button>
                 {%for dep in depositos%}
                     {%if dep.isAcreditado()%}
                         <tr>
@@ -87,6 +88,7 @@
                 </thead>
                 <tbody>
                 <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                <button id="open-modal-info" href='#'data-toggle="modal" data-target="#infoModal"hidden="true"></button>
                 {%for dep in depositos%}
                     {%if not dep.isAcreditado()%}
                         <tr>
@@ -166,7 +168,17 @@
     </div>
 </div>
 
+    <!-- Loading Modal -->
+    <!-- Para mostrar mientras se carga un modal-->
 
+    <div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <br><br><br><br><br><br><br><br>
+            <div class="row" id="loadingRow">
+                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+        </div>
+    </div>
 
 <!--Info Modal -->
 <div class="modal fade modal-lg" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -190,18 +202,18 @@
             </div>
             <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%;display: inline-block;">
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="idPedidoModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="idDepositoModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">ID del Depósito</label>
                 </div>
                 <div class="group" style="width: 25%;">
-                    <input type="text" id="totalEPModal" class="data-show-input" readonly> 
+                    <input type="text" id="EPModal" class="data-show-input" readonly> 
                     <img src="/static/img/econpuntos-logo.png" id="ep-logo-modal-info">
                     <input type="text" id="" name="id" hidden>
                     <label class="">EcoPuntos</label>
                 </div>
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="totalARSModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="codigoModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Código Acreditación</label>
                 </div>
@@ -213,12 +225,12 @@
                     <label class="">Estado actual</label>
                 </div>
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_encModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_depModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Fecha de Depósito</label>
                 </div>
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_retModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_regModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Fecha de Registro</label>
                 </div>
@@ -265,24 +277,24 @@
             </div>
             <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
                 <div class="group" style="width: 50%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="idPRModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="idPDModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">ID del Punto de Depósito</label>
                 </div>
                 <div class="group" style="width: 50%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="nombrePRModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="nombrePDModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Nombre</label>
                 </div>
             </div>
             <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
                 <div class="group" style="width: 50%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="direccionPRModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="direccionPDModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Dirección</label>
                 </div>
                 <div class="group" style="width: 50%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="direccionPRModal2">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="direccionPDModal2">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Ciudad, Provincia y País</label>
                 </div>

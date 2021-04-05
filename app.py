@@ -1334,6 +1334,25 @@ def update_estado_deposito():
         return error(e,"pedidos")
 
 
+@app.route('/gestion-depositos/info/<id>')
+def deposito_info(id):
+    try:
+        dep = NegocioDeposito.get_by_id(id)
+
+        usuario = {}
+        if dep.isAcreditado():
+            user_id = NegocioDeposito.get_user_id(id)
+            user = NegocioUsuario.get_by_id(user_id)
+            td = NegocioTipoDocumento.get_by_id(user.tipoDoc)
+            usuario = {"id":user.id,"nombre":user.nombre,"apellido":user.apellido,"tipoDoc":td.nombre,"nroDoc":user.nroDoc,"email":user.email}
+        
+        pd = NegocioPuntoDeposito.get_by_id(dep.idPuntoDeposito)
+        deposito = {"id":dep.id,"codigo":dep.codigo,"fechaDeposito":dep.fechaDeposito,"fechaRegistro":dep.fechaRegistro,"ecoPuntos":dep.ecoPuntos.cantidad}
+        punto_deposito = {"id":pd.id,"nombre":pd.nombre,"calle":pd.direccion.calle,"altura":pd.direccion.altura,"ciudad":pd.direccion.ciudad,"provincia":pd.direccion.provincia,"pais":pd.direccion.pais}
+        return jsonify([deposito, usuario, punto_deposito])
+    except Exception as e:
+        return error(e,"pedidos")
+
 
 '''
     -----------------------

@@ -294,3 +294,58 @@ class DatosDeposito(Datos):
                                                     msj_adicional="Error actualizando un deposito en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def get_by_id(cls,id):
+        """
+        Obtiene el depósito correspondiente a un ID.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("Select idDeposito, codigo, fechaReg, fechaDep, idMaterial, idUsuario, idPunto, idEcoPuntos, cant from depositos where idDeposito = {}").format(id)
+            cls.cursor.execute(sql,)
+            dep = cls.cursor.fetchone()
+            if dep == None:
+                return False
+            else:
+                mat = CantMaterial(dep[8], dep[4])
+                ep = DatosEcoPuntos.get_by_id(dep[7])
+                ep.cantidad = int(ep.cantidad) 
+                try:
+                    fecha_reg = dep[2].strftime("%d/%m/%Y")
+                except:
+                    fecha_reg = None
+                return Deposito(dep[0], dep[1],mat, dep[6], dep[3].strftime("%d/%m/%Y"), ep, fecha_reg)
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_by_id()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo el depósito correspondiente a un ID.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    
+    @classmethod
+    def get_user_id(cls,id):
+        """
+        Busca el id del usuario de un deposito segun su id.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("Select idUsuario from depositos where idDeposito = {}").format(id)
+            cls.cursor.execute(sql,)
+            dep = cls.cursor.fetchone()
+            if dep == None:
+                return False
+            else:
+                return dep[0]
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_user_id()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo el user correspondiente a un deposito.")
+        finally:
+            cls.cerrar_conexion()

@@ -581,21 +581,9 @@ class EcoPuntos:
         self.id = id
         self.cantidad = cantidad
         self.cantidadRestante = cantidadRestante
-        self.fechaVencimiento = self.calcularFechaVenc()
         # Sería conveniente (pero no necesario) ejecutar la siguiente linea:
         # EcoPuntos.getEPdata()
         # A fin de proteger contra inconsistencias.
-        # Pero debe evaluarse el impacto a la performance.
-
-    def calcularFechaVenc(self):
-        """Esta función calcula la fecha de vencimiento, utilizando la fecha actual, y el
-        atributo de clase tiempoVencimiento.
-        """
-        # Algo así como
-        # return fecha_actual + EcoPuntos.tiempoVencimiento
-        return 0
-        # Devuelvo 0 porque devolver None hace que el linter piense que hay un error
-
 
 
 '''
