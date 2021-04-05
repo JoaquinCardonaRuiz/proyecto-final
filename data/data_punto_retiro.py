@@ -35,13 +35,13 @@ class DatosPuntoRetiro(Datos):
 
 
     @classmethod
-    def get_all(cls,noFilter=False):
+    def get_all(cls,noFilter, filterInactivos):
         """
         Obtiene todos los puntos de retiro de la BD.
         """
         try:
             cls.abrir_conexion()
-            if noFilter:
+            if noFilter and filterInactivos == False:
                 sql = ("SELECT idPunto, \
                             estadoEliminacion, \
                             demoraFija, \
@@ -49,7 +49,7 @@ class DatosPuntoRetiro(Datos):
                             idDireccion, \
                             estado \
                             FROM puntosRetiro order by nombre ASC;")
-            else:
+            elif noFilter == False and filterInactivos == False:
                 sql = ("SELECT idPunto, \
                             estadoEliminacion, \
                             demoraFija, \
@@ -57,6 +57,22 @@ class DatosPuntoRetiro(Datos):
                             idDireccion, \
                             estado \
                             FROM puntosRetiro WHERE estadoEliminacion != \"eliminado\" order by nombre ASC;")
+            elif noFilter and filterInactivos:
+                sql = ("SELECT idPunto, \
+                            estadoEliminacion, \
+                            demoraFija, \
+                            nombre, \
+                            idDireccion, \
+                            estado \
+                            FROM puntosRetiro where estado=1 order by nombre ASC;")
+            elif noFilter == False and filterInactivos:
+                sql = ("SELECT idPunto, \
+                            estadoEliminacion, \
+                            demoraFija, \
+                            nombre, \
+                            idDireccion, \
+                            estado \
+                            FROM puntosRetiro WHERE estadoEliminacion != \"eliminado\" and estado=1 order by nombre ASC;")
             cls.cursor.execute(sql)
             puntos = cls.cursor.fetchall()
             puntosRetiro = []

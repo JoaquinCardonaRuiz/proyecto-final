@@ -21,13 +21,13 @@ class NegocioPuntoDeposito(Negocio):
     """Clase que representa la capa de negocio para la entidad Punto de Depósito. Hereda de Negocio."""      
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls, filterInactivos=False):
         """
         Obtiene todos los Puntos de Depósito de la BD.
         """
         #Conexión con el motor de BD.
         try:
-            puntos_deposito = DatosPuntoDeposito.get_all()
+            puntos_deposito = DatosPuntoDeposito.get_all(filterInactivos)
             for punto_dep in puntos_deposito:
                 punto_dep.estado = bool(punto_dep.estado)
             return puntos_deposito

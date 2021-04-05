@@ -19,9 +19,9 @@ import numpy as np
 
 class NegocioPuntoRetiro(Negocio):
     @classmethod
-    def get_all(cls,noFilter=False):
+    def get_all(cls,noFilter=False,filterInactivos=False):
         try:
-            return DatosPuntoRetiro.get_all(noFilter)
+            return DatosPuntoRetiro.get_all(noFilter,filterInactivos)
         except Exception as e:
             raise e
 

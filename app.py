@@ -304,12 +304,12 @@ def perfil_listas(type):
 
 @app.route('/encontrar-punto-deposito', methods = ['GET','POST'])
 def encontrar_pd():
-    puntos_dep = NegocioPuntoDeposito.get_all()
+    puntos_dep = NegocioPuntoDeposito.get_all(filterInactivos=True)
     return render_template('encontrar-pd.html', puntos_dep = puntos_dep)
 
 @app.route('/encontrar-punto-retiro', methods = ['GET','POST'])
 def encontrar_pr():
-    puntos_ret = NegocioPuntoRetiro.get_all()
+    puntos_ret = NegocioPuntoRetiro.get_all(filterInactivos=True)
     return render_template('encontrar-pr.html', puntos_ret = puntos_ret)
 
 
@@ -417,7 +417,7 @@ def carrito():
             val_tot_ep = 1
         step = 100/(val_tot_ep)
         print(step)
-        puntos_retiro = NegocioPuntoRetiro.get_all()
+        puntos_retiro = NegocioPuntoRetiro.get_all(filterInactivos=True)
         
         return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, 
                                 valor_ep = valor_ep, demora_prom = demora_prom, valor = valor, nivel=nivel, 

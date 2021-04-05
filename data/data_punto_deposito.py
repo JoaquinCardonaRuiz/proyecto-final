@@ -9,13 +9,16 @@ import custom_exceptions
 class DatosPuntoDeposito(Datos):
 
     @classmethod
-    def get_all(cls, noClose = False):
+    def get_all(cls, filterInactivos, noClose = False):
         """
         Obtiene todos los Puntos de Depósito de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("select * from puntosDeposito where estadoEliminacion = 'disponible' order by nombre ASC")
+            if filterInactivos:
+                sql = ("select * from puntosDeposito where estadoEliminacion = 'disponible' and estado = 1 order by nombre ASC")
+            else:
+                sql = ("select * from puntosDeposito where estadoEliminacion = 'disponible' order by nombre ASC")
             cls.cursor.execute(sql)
             puntosDeposito = cls.cursor.fetchall()
             puntosDeposito_ = []
