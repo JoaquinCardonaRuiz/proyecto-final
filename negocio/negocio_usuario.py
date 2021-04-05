@@ -120,7 +120,7 @@ class NegocioUsuario(Negocio):
         user = DatosUsuario.get_by_id(id)
         nueva_cant_ep = user.totalEcopuntos - totalEP
         ep_restantes = totalEP
-        deps_ordenados = sorted(user.depositosActivos, key=lambda x: x.fechaDeposito)
+        deps_ordenados = sorted(user.depositos, key=lambda x: x.fechaDeposito)
         
         #para cada deposito
         for dep in deps_ordenados:

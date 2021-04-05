@@ -72,10 +72,10 @@ def main():
             else:
                 pedidos = session["usuario"].pedidos
             puntosRetiro = NegocioPuntoRetiro.get_all()
-            if len(session["usuario"].depositosActivos) >= 5:
-                depositos = session["usuario"].depositosActivos[:5]
+            if len(session["usuario"].depositos) >= 5:
+                depositos = session["usuario"].depositos[:5]
             else:
-                depositos = session["usuario"].depositosActivos
+                depositos = session["usuario"].depositos
             puntosDep = NegocioPuntoDeposito.get_all()
             materiales = NegocioMaterial.get_all()
             max_level = NegocioNivel.get_min_max_niveles()[1]
@@ -113,7 +113,7 @@ def authentication(email, password):
         session.modified = True
         return jsonify({"login-state":True})
     except Exception as e:
-        return jsonify({"login-state":False})
+        return error(e,"gestion-puntos-deposito")
     return render_template('login.html')
 
 @app.route('/logout/<val>', methods = ['GET','POST'])
@@ -1222,14 +1222,12 @@ def get_articulos_pedido(ids):
         ids = eval("["+ids+"]")
         print(ids)
         articulos = NegocioArticulo.get_by_id_array(ids)
-        print("tengo articulos")
         articulos_dic =  [{"nombre":          a.nombre,
                             "unidadmedida":    a.unidadMedida}
                             for a in articulos]
         return jsonify(articulos_dic)
     except Exception as e:
-        return error(e,"articulos")
-    return redirect(url_for('gestion_articulos'))
+        return error(e,"pedidos")
 
 
 @app.route('/gestion-pedidos/actualizar', methods = ['GET','POST'])
@@ -1261,7 +1259,100 @@ def pedidos_info(id):
         return jsonify([pedido, usuario, punto_retiro])
     except Exception as e:
         return error(e,"pedidos")
-    return redirect(url_for('pedidosUser'))
+
+
+
+
+
+
+
+'''
+    -----------------
+    Gestion de Depósitos
+    -----------------
+'''
+
+@app.route('/elegir-PD')
+def elegirPD():
+    try:
+        puntosDeposito = NegocioPuntoDeposito.get_all()
+        return render_template('elegir-PD.html',puntosDeposito = puntosDeposito, usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"depositos")
+
+@app.route('/gestion-depositos/admin')
+def allDepositos():
+    try:
+        materiales = NegocioMaterial.get_all()
+        depositos = NegocioDeposito.get_all()
+        puntosDeposito = NegocioPuntoDeposito.get_all()
+        return render_template('depositosAdmin.html',materiales=materiales,depositos = depositos,puntosDeposito=puntosDeposito, usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"pedidoss")
+
+@app.route('/gestion-depositos/pd/<id>')
+def pedidosPD(id):
+    try:
+        materiales = NegocioMaterial.get_all()
+        deposito = NegocioDeposito.get_by_id_PD(int(id))
+        puntoDeposito = NegocioPuntoDeposito.get_by_id(int(id))
+        return render_template('depositosPD.html',materiales=materiales,deposito = deposito,puntoDeposito=puntoDeposito, usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"depositos")
+
+@app.route('/gestion-depositos/materiales/<ids>')
+def get_materiales_deposito(ids):
+    # esto es probablemente lo mas inseguro que se puede hacer en un sistema web
+    # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
+    # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
+    #TODO: CAMBIAR ESTA LINEA:
+    try:
+        ids = eval("["+ids+"]")
+        print(ids)
+        materiales = NegocioMaterial.get_by_id_array(ids)
+        mat_dic =  [{"nombre":          m.nombre,
+                     "unidadmedida":    m.unidadMedida}
+                     for m in materiales]
+        return jsonify(mat_dic)
+    except Exception as e:
+        return error(e,"depositos")
+
+
+@app.route('/gestion-depositos/actualizar', methods = ['GET','POST'])
+def update_estado_deposito():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idInput"])
+            estado = request.form["estadoInput"]
+            pd = int(request.form["idPDInput"])
+            NegocioDeposito.update_estado(id,estado)
+            if pd == 0:
+                return redirect(url_for("allDepositos"))
+            else:
+                return redirect("/gestion-depositos/pd/"+str(pd))
+    except Exception as e:
+        return error(e,"pedidos")
+
+
+@app.route('/gestion-depositos/info/<id>')
+def deposito_info(id):
+    try:
+        dep = NegocioDeposito.get_by_id(id)
+
+        usuario = {}
+        if dep.isAcreditado():
+            user_id = NegocioDeposito.get_user_id(id)
+            user = NegocioUsuario.get_by_id(user_id)
+            td = NegocioTipoDocumento.get_by_id(user.tipoDoc)
+            usuario = {"id":user.id,"nombre":user.nombre,"apellido":user.apellido,"tipoDoc":td.nombre,"nroDoc":user.nroDoc,"email":user.email}
+        
+        pd = NegocioPuntoDeposito.get_by_id(dep.idPuntoDeposito)
+        deposito = {"id":dep.id,"codigo":dep.codigo,"fechaDeposito":dep.fechaDeposito,"fechaRegistro":dep.fechaRegistro,"ecoPuntos":dep.ecoPuntos.cantidad}
+        punto_deposito = {"id":pd.id,"nombre":pd.nombre,"calle":pd.direccion.calle,"altura":pd.direccion.altura,"ciudad":pd.direccion.ciudad,"provincia":pd.direccion.provincia,"pais":pd.direccion.pais}
+        return jsonify([deposito, usuario, punto_deposito])
+    except Exception as e:
+        return error(e,"pedidos")
+
 
 '''
     -----------------------

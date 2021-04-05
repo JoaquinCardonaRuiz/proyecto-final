@@ -40,6 +40,35 @@ class DatosPuntoDeposito(Datos):
             if not(noClose):
                 cls.cerrar_conexion()
 
+
+
+    @classmethod
+    def get_by_id(cls, id):
+        """
+        Obtiene un Punto de Depósito de la BD segun su ID.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("select * from puntosDeposito where estadoEliminacion = 'disponible' AND idPunto={} order by nombre ASC").format(id)
+            cls.cursor.execute(sql)
+            punto = cls.cursor.fetchall()[0]
+            #Se instancia sin los horarios ya que no se muestran, para no generar tráfico de datos innecesario.
+            direccion = DatosDireccion.get_one_id(punto[4])
+            materiales_ = DatosMaterial.get_all_byIdPuntoDep(punto[0],True)
+            materiales = []
+            for mat in materiales_:
+                materiales.append(mat.id)
+            pd = PuntoDeposito(punto[0],direccion,punto[1],punto[2], materiales, None)
+            return pd
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_by_id()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo un Punto de Depósito desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+    
+
     
     @classmethod
     def get_all_names(cls, noClose = False):

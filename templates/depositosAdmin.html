@@ -36,6 +36,8 @@
                 <tr>
                     <th scope="col" class="table-heading">Código</th>
                     <th scope="col" class="table-heading">Fecha depósito</th>
+                    <th scope="col" class="table-heading">Fecha registro</th>
+                    <th scope="col" class="table-heading">EcoPuntos</th>
                     <th scope="col" class="table-heading">Material</th>
                     <th scope="col" class="table-heading">Info</th>
                     <th scope="col" class="table-heading"></th>
@@ -43,17 +45,20 @@
                 </thead>
                 <tbody>
                 <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true"></button>
                 {%for dep in depositos%}
-                    {%if dep.isAcreditado()}
+                    {%if dep.isAcreditado()%}
                         <tr>
                             <th scope="row">{{dep.id}}</th>
                             <td scope="row">{{dep.fechaDeposito}}</td>
+                            <td scope="row">{{dep.fechaRegistro}}</td>
+                            <td scope="row">{{dep.ecoPuntos.cantidad}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                             {%for mat in materiales%}
                                 {%if mat.id|int == dep.material.idMaterial|int%}
-                                    <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-box custom-link-fa"></i> Ver Material</a></td>
+                                    <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-truck-loading custom-link-fa"></i> Ver Material</a></td>
                                 {%endif%}
                             {%endfor%} 
-                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-box custom-link-fa"></i> Ver info</a></td>    
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-info custom-link-fa"></i> Ver Info</a></td>    
                             <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="cancelar({{dep.id}})">Cancelar</button></td>
                         </tr>
                     {%endif%}
@@ -74,6 +79,7 @@
                 <tr>
                     <th scope="col" class="table-heading">Código</th>
                     <th scope="col" class="table-heading">Fecha depósito</th>
+                    <th scope="col" class="table-heading">EcoPuntos</th>
                     <th scope="col" class="table-heading">Material</th>
                     <th scope="col" class="table-heading">Info</th>
                     <th scope="col" class="table-heading"></th>
@@ -82,17 +88,19 @@
                 </thead>
                 <tbody>
                 <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                <button id="open-modal-info" href='#'data-toggle="modal" data-target="#infoModal"hidden="true"></button>
                 {%for dep in depositos%}
                     {%if not dep.isAcreditado()%}
                         <tr>
                             <th scope="row">{{dep.id}}</th>
                             <td scope="row">{{dep.fechaDeposito}}</td>
+                            <td scope="row">{{dep.ecoPuntos.cantidad}} <img src="/static/img/econpuntos-logo.png" class="depositos-ep-img"></td>
                             {%for mat in materiales%}
                                 {%if mat.id|int == dep.material.idMaterial|int%}
-                                    <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-box custom-link-fa"></i> Ver Material</a></td>
+                                    <td scope="row"><a class="custom-link" href='#' onclick="openModalMateriales('{{mat.nombre}}','{{mat.unidadMedida}}','{{dep.material.cantidad}}','{{mat.color}}');"><i class="fa fa-truck-loading custom-link-fa"></i> Ver Material</a></td>
                                 {%endif%}
                             {%endfor%} 
-                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-box custom-link-fa"></i> Ver info</a></td>    
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-info custom-link-fa"></i> Ver Info</a></td>    
                             <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="acreditar({{dep.id}})">Acreditar</button></td>
                             <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="cancelar({{dep.id}})">Cancelar</button></td>
                         </tr>
@@ -114,7 +122,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="headingModalMat"></h5>
+                <h5 class="modal-title" id="headingModalMat">Material del Depósito</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -157,6 +165,145 @@
         </div>
     </div>
 
+    </div>
+</div>
+
+    <!-- Loading Modal -->
+    <!-- Para mostrar mientras se carga un modal-->
+
+    <div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <br><br><br><br><br><br><br><br>
+            <div class="row" id="loadingRow">
+                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+        </div>
+    </div>
+
+<!--Info Modal -->
+<div class="modal fade modal-lg" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document" style="height: fit-content;"id="altaPDModalContent">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Información del Depósito</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modal-body-card" style="height: fit-content;overflow-x:hidden;" id="modalAltaPDBody">
+            <!--Loading Ring -->
+            <div class="row" id="loadingRow">
+                <div class="lds-ring loadingRingAlta"><div></div><div></div><div></div><div></div></div>
+            </div>            
+            <div class="row subheader-row" id="subheader-alta-pd">
+                <div class="col">
+                    <label class="subheader-info" id="subheader-alta">Datos del Depósito</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%;display: inline-block;">
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="idDepositoModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">ID del Depósito</label>
+                </div>
+                <div class="group" style="width: 25%;">
+                    <input type="text" id="EPModal" class="data-show-input" readonly> 
+                    <img src="/static/img/econpuntos-logo.png" id="ep-logo-modal-info">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">EcoPuntos</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="codigoModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Código Acreditación</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="estadoModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Estado actual</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_depModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Fecha de Depósito</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_regModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Fecha de Registro</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center hr-row">
+                <hr class="modal-hr-separator" style="width: 100%;">
+            </div>
+            <div class="row subheader-row" id="subheader-alta-pd" style="margin-top: -4% !important;">
+                <div class="col">
+                    <label class="subheader-info" id="subheader-alta">Datos del Usuario</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%;display: inline-block;">
+                <div class="group" style="width: 50%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="IDusuarioModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">ID del usuario</label>
+                </div>
+                <div class="group" style="width: 50%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="nombreCompletoModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Nombre completo</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
+                <div class="group" style="width: 50%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="tipoNroDocModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Tipo y número de documento</label>
+                </div>
+                <div class="group" style="width: 50%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="emailModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Email</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center hr-row">
+                <hr class="modal-hr-separator">
+            </div>
+            <div class="row subheader-row" id="subheader-alta-pd" style="margin-top: -4% !important;">
+                <div class="col">
+                    <label class="subheader-info" id="subheader-alta">Datos del Punto de Depósito</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
+                <div class="group" style="width: 50%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="idPDModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">ID del Punto de Depósito</label>
+                </div>
+                <div class="group" style="width: 50%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="nombrePDModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Nombre</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
+                <div class="group" style="width: 50%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="direccionPDModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Dirección</label>
+                </div>
+                <div class="group" style="width: 50%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="direccionPDModal2">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Ciudad, Provincia y País</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn primary-btn" data-dismiss="modal" id="primary-btn-alta">Listo</button>
+        </div>
+      </div>
     </div>
 </div>
 
