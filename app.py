@@ -1417,6 +1417,29 @@ def verificar_codigo(cod):
     except Exception as e:
         return error(e,"codigo")
 
+''' 
+    -----------------
+    Gestión de Stock
+    -----------------
+'''
+
+@app.route('/gestion-stock', methods = ['GET','POST'])
+def gestion_stock():
+    try:
+        return render_template('gestion-stock.html')  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
+@app.route('/gestion-stock/ver-stock', methods = ['GET','POST'])
+def ver_stock():
+    try:
+        materiales = NegocioMaterial.get_all()
+        insumos = NegocioInsumo.get_all()
+        articulos = NegocioArticulo.get_all()
+        return render_template('stock.html',materiales = materiales, insumos = insumos, articulos = articulos)  
+    except Exception as e:
+        return error(e,"ver_stock")
+
 '''
     -----------------------
     Quienes somos

@@ -1,0 +1,225 @@
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="heading-container">
+        <h1 class="heading">Gestión de Stock</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Registre entradas de materiales, salidas de artículos, y visualice los distintos niveles de stock.</span></h6>
+    </div>
+    <div class="container" id="top-container">
+        <div class="row">
+            <div class="container" id="option-left" onclick="redirect('/gestion-stock/ver-stock');" style="width: 49%;">
+                    <div class="option-text">
+                        <p class="option-title">Visualizar Niveles de Stock</p>
+                        <p class="text-box">Visualizar los niveles de Stock de los distintos materiales, insumos y artículos registrados en el sistema</p>
+                    </div>
+                    <i class="fas fa-boxes option-img" id="option-img-1"></i>
+            </div>
+            <div class="container" id="option-right" onclick="removerPunto()" style="width: 49%;">
+                <div class="option-text">
+                    <p class="option-title">Ver Movimientos de Stock</p>
+                    <p class="text-box">Ver un historial de las salidas de artículos a entidades de destino y al Municipio, y de las entradas de materiales</p>
+                </div>
+                <i class="fa fa-history option-img"  id="option-img-3"></i>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="top-container" style="margin-top: 2%;">
+        <div class="row">
+            <div class="container" id="option-left" onclick=";" style="width: 49%;">
+                    <div class="option-text">
+                        <p class="option-title">Registrar Entrada Material</p>
+                        <p class="text-box">Registrar una entrada externa de un material al stock del sistema</p>
+                    </div>
+                    <i class="fa fas fa-sign-in-alt option-img" id="option-img-1"></i>
+            </div>
+            <div class="container" id="option-right" onclick="removerPunto()" style="width: 49%;">
+                <div class="option-text">
+                    <p class="option-title">Registrar Salida Artículo</p>
+                    <p class="text-box">Registrar una salida externa de un artículo hacia el Municipio o una entidad de destino</p>
+                </div>
+                <i class="fa fas fa-sign-out-alt option-img"  id="option-img-3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tabla Pedidos Activos-->
+    <div class="container" id="table-container">
+        <h4 class="table-title">Últimos Movimientos de Stock</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Código</th>
+                    <th scope="col" class="table-heading">EcoPuntos</th>
+                    <th scope="col" class="table-heading">Pesos</th>
+                    <th scope="col" class="table-heading">Fecha Encargo</th>
+                    <th scope="col" class="table-heading">P. de Retiro</th>
+                    <th scope="col" class="table-heading">Artículos</th>
+                    <th scope="col" class="table-heading">Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<!-- Para mostrar mientras se carga un modal-->
+<div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+      <br><br><br><br><br><br><br><br>
+      <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- Horarios Modal -->
+<div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalHorarios"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-card">
+                <div class="container modal-large-card">
+                    <div class="row">
+                        <div class="modal-card-col" id="modal-card-col-1">
+                            <img src="/static/img/open-circle-icon.jpg" class="modal-large-card-img" id="open-img">
+                            <img src="/static/img/closed-circle-icon.png" class="modal-large-card-img" id="close-img">
+                            <img src="/static/img/inactive-circle-icon.png" class="modal-large-card-img" id="inactive-img">
+                        </div>
+                        <div class="modal-card-col" >
+                            <div class="row d-flex justify-content-center card-first-row">
+                                <p class="open-letter" id="estado-apertura-pos">Abierto</p>
+                                <p class="open-letter" id="estado-apertura-neg">Cerrado</p>
+                                <p class="open-letter" id="estado-apertura-inac">Inactivo</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box">Estado Actual</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col">
+                            <div class="row d-flex justify-content-center card-first-row">
+                                <p class="open-letter" id="cant-horas-cierre-pos">-</p>
+                                <p class="open-letter" id="cant-horas-cierre-neg">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box">Tiempo para cierre</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col">
+                            <div class="vl">
+                                <div class= "info-container-modal">
+                                    <span class="text-muted" id="toda-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-1-pos"></i>Abre de lunes a viernes<br></span>
+                                    <span class="text-muted" id="toda-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-1-neg"></i>No abre de lunes a viernes<br></span>
+
+                                    <span class="text-muted" id="fines-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-2-pos"></i>Abre fines de semana<br></span>
+                                    <span class="text-muted" id="fines-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-2-neg"></i>No abre fines de semana<br></span>
+
+                                    <i class="fa fa-clock modal-info-img" id="info-modal-3"></i><span class="text-muted" id="horarios-apertura">Hoy abre 08:00hs y cierra 20:00hs</span>                                                                        
+                                </div>
+                            </div>
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+                    <div class="container modal-large-card d-flex justify-content-center" id="modal-large-card-2">
+                        <table class="table" id="content-table-modal">
+                            <thead>
+                            <tr id=headerRow>
+                            </tr>
+                            </thead>
+                            <tbody id="modalTableBody">
+                            </tbody>
+                    
+                        </table>
+                    </div>
+            </div>        
+        <div class="modal-footer">
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<!-- Materiales Modal -->
+<div class="modal fade modal-lg" id="materialesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalMat"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-card" id="materiales-modal-body">
+                <div class="row margin-bottom-row" id="no-mats">
+                    <p id="" class="advert-icon-no-mats"><i class="fa fa-exclamation-triangle advert-icon-no-mats"></i></p>
+                    <p class="bottom-modal-text-baja">Este Punto de Depósito aún no acepta ningún material</p>
+                    <p class="bottom-modal-text less-margin-top">Para añadir materiales aceptados, ingrese a la opción "Modificar Punto".</p>
+                </div>
+                <div class="container modal-large-card-sm" id="material-card">
+                    <div class="row">
+                        <div class="modal-card-col-sm">
+                            <div class="circle materiales-large-card-img" id="material-img">M</div>
+                        </div>
+                        <div class="modal-card-col-sm" >
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="nombre-material">Nombre</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Nombre material</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="unidad-medida">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Unidad de medida</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="id-material">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">ID material</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        <div class="modal-footer">
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+
+<script src="static/js/gestion-stock.js"></script>
+
+{% endblock %}
