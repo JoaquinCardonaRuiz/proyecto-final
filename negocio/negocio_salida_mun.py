@@ -1,12 +1,12 @@
 from negocio.negocio import Negocio
 import custom_exceptions
-from data.data_salida_stock import DatosSalidaStock
+from data.data_salidas_mun import DatosSalidaStockMun
 
-class NegocioSalidaStock(Negocio):
+class NegocioSalidaMun(Negocio):
     
     @classmethod
     def get_all(cls):
         try:
-            return DatosSalidaStock.get_all()
+            return DatosSalidaStockMun.get_all()
         except Exception as e:
             raise e

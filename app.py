@@ -1436,9 +1436,21 @@ def ver_stock():
         materiales = NegocioMaterial.get_all()
         insumos = NegocioInsumo.get_all()
         articulos = NegocioArticulo.get_all()
-        return render_template('stock.html',materiales = materiales, insumos = insumos, articulos = articulos)  
+        return render_template('niveles-stock.html',materiales = materiales, insumos = insumos, articulos = articulos)  
     except Exception as e:
         return error(e,"ver_stock")
+
+@app.route('/gestion-stock/historial-movimientos', methods = ['GET','POST'])
+def historial_movimientos():
+    try:
+        salidasStock = NegocioSalidaStock.get_all()
+        salidasMun = NegocioSalidaMun.get_all()
+        articulos = NegocioArticulo.get_all(True)
+        depositos = NegocioDeposito.get_all()
+        materiales = NegocioMaterial.get_all()
+        return render_template('movimientos-stock.html', salidasStock=salidasStock, salidasMun = salidasMun, articulos = articulos, depositos = depositos, materiales = materiales)  
+    except Exception as e:
+        return error(e,"historial_movimientos")
 
 '''
     -----------------------

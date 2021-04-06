@@ -61,14 +61,58 @@ function modificarPunto(){
     }
 }
 
-function redirect(link){
+function redirectStock(link, type){
+    if (type == 'ns'){
+        $("#heading-container").hide();
+        $("#main-content").hide();
+        $(".lds-ring").fadeIn();
+        $('#loading-text').fadeIn();
+        nextMsgNiveles();
+    }
+    else if (type == 'ms'){
+        $("#heading-container").hide();
+        $("#main-content").hide();
+        $(".lds-ring").fadeIn();
+        $('#loading-text').fadeIn();
+        nextMsgHistorial();
+    }
     window.location.href = link;
-  }
+}
   
   //Redirige al url que recibe como parámetro en una nueva pestaña.
-  function redirectBlank(link){
-  window.open(
-    link,
-    '_blank' // <- This is what makes it open in a new window.
-  );
+  function redirectBlank(link,type){
+    window.open(
+        link,
+        '_blank' // <- This is what makes it open in a new window.
+    );
   }
+
+
+  function nextMsgNiveles() {
+    if (messagesNiveles.length == 1) {
+        $('#loading-text').html(messagesNiveles.pop()).fadeIn(500);
+
+    } else {
+        $('#loading-text').html(messagesNiveles.pop()).fadeIn(500).delay(5000).fadeOut(500, nextMsgNiveles);
+    }
+};
+
+function nextMsgHistorial() {
+    if (messagesHistorial.length == 1) {
+        $('#loading-text').html(messagesHistorial.pop()).fadeIn(500);
+
+    } else {
+        $('#loading-text').html(messagesHistorial.pop()).fadeIn(500).delay(5000).fadeOut(500, nextMsgHistorial);
+    }
+};
+
+var messagesNiveles = [
+    "Estamos cargando los Niveles de Stock",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+
+var messagesHistorial = [
+    "Estamos cargando todos los Movimientos",
+    "Ten paciencia, no es una tarea fácil",
+    "¡Casi listo! Últimos retoques"
+].reverse();

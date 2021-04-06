@@ -6,90 +6,140 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
 </head>
 
 {% extends 'layout.html' %}
 {% block body %}
 <div class="page-content" style="text-align: left;" id="content">
     <div class="container" id="heading-container">
-        <h1 class="heading">Gestión de Stock</h1>
-        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Registre entradas de materiales, salidas de artículos, y visualice los distintos niveles de stock.</span></h6>
+        <h1 class="heading">Historial de Movimientos de Stock</h1>
     </div>
-    <div id="main-content">
+    
+    <!-- Stock de Materiales -->
+    <div class="container" id="table-container">
+        <h4 class="table-title">Movimientos de Stock</h4>
+        <div class="row d-flex justify-content-center scrollable-table">
+           
+            <div class="row d-flex justify-content-center filert-row">
 
-        <div class="container" id="top-container">
-            <div class="row">
-                <div class="container" id="option-left" onclick="redirectStock('/gestion-stock/ver-stock','ns');" style="width: 49%;">
-                        <div class="option-text">
-                            <p class="option-title">Visualizar Niveles de Stock</p>
-                            <p class="text-box">Visualizar los niveles de stock de los distintos Materiales, Insumos y Artículos registrados en el sistema</p>
-                        </div>
-                        <i class="fas fa-boxes option-img" id="option-img-1"></i>
+                <div class="group" id="password-input-group" style="width: 20%; margin-left: 2%;">
+                    <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="type-input" class="selectpicker selectpicker-nooutline filter-input" id="nombreArtInput" name="tipo_doc" data-live-search="true">
+                        <option value=-1 selected>&nbsp; Sin filtro</option>
+                        
+                        <option value="Depósito">&nbsp; Depósito</option>
+                        <option value="Pedido">&nbsp; Pedido</option>
+                        <option value="Producción">&nbsp; Producción</option>
+                        <option value="Salida Entidad de Destino">&nbsp; Salida Entidad de Destino</option>
+                        <option value="Salida Municipio">&nbsp; Salida Municipio</option>
+                    </select>
+                    <input type="text" id="idEntidadInput" name="id" hidden>
+                    <span class="highlight password-input"></span>
+                    <span class="bar password-input"></span>
+                    <label class="password-input">Tipo de movimiento</label>
+                    <p id="nameError" class="modalErrorMessage"></p>
                 </div>
-                <div class="container" id="option-right" onclick="redirectStock('/gestion-stock/historial-movimientos','ms')" style="width: 49%;">
-                    <div class="option-text">
-                        <p class="option-title">Ver Movimientos de Stock</p>
-                        <p class="text-box">Ver un historial de las entradas y salidas de los Materiales, Insumos y Artículos registrados en el sistema</p>
-                    </div>
-                    <i class="fa fa-history option-img"  id="option-img-3"></i>
+
+                <div class="group" id="password-input-group" style="width: 15%; margin-left: 2%;">
+                    <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="in-out-input" class="selectpicker selectpicker-nooutline filter-input" id="nombreArtInput" name="tipo_doc" data-live-search="true">
+                        <option value=-1 selected>&nbsp; Sin filtro</option>
+                        <option value="Salida Entidad de Destino">&nbsp; Entrada</option>
+                        <option value="Salida Entidad de Destino">&nbsp; Salida</option>
+                        
+                    </select>
+                    <input type="text" id="idEntidadInput" name="id" hidden>
+                    <span class="highlight password-input"></span>
+                    <span class="bar password-input"></span>
+                    <label class="password-input">Entrada/Salida</label>
+                    <p id="nameError" class="modalErrorMessage"></p>
                 </div>
+
+                <div class="group" style="width: 18%; margin-left: 2%;">  
+                    <input type="text" hidden style="width: 100%; margin-right: 2%;">    
+                    <input type="date" required id="date-from-input" class="filter-input" autocomplete="off" style="width: 100%; margin-right: 2%;">
+                    <span class="highlight" style="width: 100%; margin-right: 2%;"></span>
+                    <span class="bar" style="width: 100%; margin-right: 2%;"></span>
+                    <label>Fecha Desde</label>
+                </div>
+
+                <div class="group" style="width: 18%; margin-left: 2%;">  
+                    <input type="text" hidden style="width: 100%; margin-right: 2%;">    
+                    <input type="date" required id="date-to-input" autocomplete="off" class="filter-input" style="width: 100%; margin-right: 2%;">
+                    <span class="highlight" style="width: 100%; margin-right: 2%;"></span>
+                    <span class="bar" style="width: 100%; margin-right: 2%;"></span>
+                    <label>Fecha Hasta</label>
+                </div>
+
+                <div class="group" style="width: 15%; margin-left: 2%;">  
+                    <button type="button" class="btn primary-btn" id="filter-btn" data-mdb-ripple-color="dark" onclick="active_filter();filter_table();">
+                        <i class="fas fa-filter mr-2 fa-fw" style="color: white;"></i>Filtrar
+                    </button>
+                </div>
+                
+                
             </div>
-        </div>
-
-        <div class="container" id="top-container" style="margin-top: 2%;">
-            <div class="row">
-                <div class="container" id="option-left" onclick=";" style="width: 49%;">
-                        <div class="option-text">
-                            <p class="option-title">Registrar Entrada Material</p>
-                            <p class="text-box">Registrar una entrada externa de un material al stock del sistema</p>
-                        </div>
-                        <i class="fa fas fa-sign-in-alt option-img" id="option-img-1"></i>
-                </div>
-                <div class="container" id="option-right" onclick="removerPunto()" style="width: 49%;">
-                    <div class="option-text">
-                        <p class="option-title">Registrar Salida Artículo</p>
-                        <p class="text-box">Registrar una salida externa de un artículo hacia el Municipio o una entidad de destino</p>
-                    </div>
-                    <i class="fa fas fa-sign-out-alt option-img"  id="option-img-3"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tabla Pedidos Activos-->
-        <div class="container" id="table-container">
-            <h4 class="table-title">Últimos Movimientos de Stock</h4>
-            <div class="row d-flex justify-content-center scrollable-table">
-                <table class="table" id="content-table">
-                    <thead style=" border-top:none">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Tipo</th>
+                    <th scope="col" class="table-heading">Nombre Elemento</th>
+                    <th scope="col" class="table-heading">Movimiento</th>
+                    <th scope="col" class="table-heading">Unidad de Medida</th>
+                    <th scope="col" class="table-heading">Fecha</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {%for ss in salidasStock%}
                     <tr>
-                        <th scope="col" class="table-heading">Código</th>
-                        <th scope="col" class="table-heading">EcoPuntos</th>
-                        <th scope="col" class="table-heading">Pesos</th>
-                        <th scope="col" class="table-heading">Fecha Encargo</th>
-                        <th scope="col" class="table-heading">P. de Retiro</th>
-                        <th scope="col" class="table-heading">Artículos</th>
-                        <th scope="col" class="table-heading">Estado</th>
+                        <th>Salida Entidad de Destino</th>
+
+                        {%for art in articulos%}
+                            {%if art.id == ss.articulos.idTipoArticulo%}
+                            <td>{{art.nombre}}</td>
+                            <td value="Entrada">-<span id="ss-{{ss.id + art.id}}"></span></td>
+                            <script>$("#ss-{{ss.id + art.id}}").text(parseFloat('{{ss.articulos.cantidad}}'));</script>
+                            <td>{{art.unidadMedida}}</td>
+                            {%endif%}
+                        {%endfor%}
+                        <td>{{ss.fecha}}</td>    
                     </tr>
-                    </thead>
-                    <tbody>
-                    
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    {%endfor%}
 
-    </div>
-    
+                    {%for sm in salidasMun%}
+                    <tr>
+                        <th>Salida Municipio</th>
 
-    <div class="container" id="top-container" style="padding-top: 2%;">
-        <div class="row" id="loadingRowPuntos">
-            <div id="lds-ring-big" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                        {%for art in articulos%}
+                            {%if art.id == sm.articulos.idTipoArticulo%}
+                            <td>{{art.nombre}}</td>
+                            <td value="Entrada">-<span id="sm-{{sm.id + art.id}}"></span></td>
+                            <script>$("#sm-{{sm.id + art.id}}").text(parseFloat('{{sm.articulos.cantidad}}'));</script>
+                            <td>{{art.unidadMedida}}</td>
+                            {%endif%}
+                        {%endfor%}
+                        <td>{{sm.fecha}}</td>    
+                    </tr>
+                    {%endfor%}
+
+                    {%for dep in depositos%}
+                    <tr>
+                        <th>Depósito</th>
+
+                        {%for mat in materiales%}
+                            {%if mat.id == dep.material.idMaterial%}
+                            <td>{{mat.nombre}}</td>
+                            <td value="Entrada">-<span id="dep-{{dep.id + mat.id}}"></span></td>
+                            <script>$("#dep-{{dep.id + mat.id}}").text(parseFloat('{{dep.material.cantidad}}'));</script>
+                            <td>{{mat.unidadMedida}}</td>
+                            {%endif%}
+                        {%endfor%}
+                        <td>{{dep.fechaDeposito}}</td>    
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
         </div>
-        <p id="loading-text"></p>
     </div>
-    
-    
-    
 </div>
 
 <!-- Loading Modal -->
@@ -233,7 +283,6 @@
     </div>
 </div>
 
-
-<script src="static/js/gestion-stock.js"></script>
+<script src="/static/js/movimiento-stock.js"></script>
 
 {% endblock %}
