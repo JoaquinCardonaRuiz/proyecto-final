@@ -11,7 +11,6 @@ var date_to_filter = false;
 var hide = false;
 
 
-
 function active_filter(){
     type_input_val = $("#type-input").val();
     in_out_input_val = $("#in-out-input").val();
@@ -72,11 +71,12 @@ function filter_table(filter){
 
         if (filter_by_date_from){
 
-            var dateString = $(this).find("td:nth-child(5)").text();
+            var dateString = $(this).find("td:nth-child(6)").text();
             var newData = dateString.replace(/(\d+[/])(\d+[/])/, '$2$1');
             var date = new Date(newData);
 
             date_from_filter = new Date(String(date_from_filter).replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3") + "GMT-0300");
+            
 
             if (date < date_from_filter){
                 hide = true;
@@ -84,7 +84,7 @@ function filter_table(filter){
         }
         if (filter_by_date_to){
             
-            var dateString = $(this).find("td:nth-child(5)").text();
+            var dateString = $(this).find("td:nth-child(6)").text();
             var newData = dateString.replace(/(\d+[/])(\d+[/])/, '$2$1');
             var date = new Date(newData);
 
@@ -105,6 +105,48 @@ function filter_table(filter){
 }
 
 
+function sortTable() {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("content-table");
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /* Loop through all table rows (except the
+      first, which contains table headers): */
+      for (i = 1; i < (rows.length - 1); i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Get the two elements you want to compare,
+        one from current row and one from the next: */
+        var x1 = String(rows[i].getElementsByTagName("TD")[3].innerHTML);
+        var y1 = String(rows[i + 1].getElementsByTagName("TD")[3].innerHTML);
 
+        // Check if the two rows should switch place:
+        x = x1.replace(/(\d+[/])(\d+[/])/, '$2$1');
+        y = y1.replace(/(\d+[/])(\d+[/])/, '$2$1');
 
+        x = new Date(x);
+        y = new Date(y);
 
+        
+        if (x < y) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+        and mark that a switch has been done: */
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+      }
+    }
+    $('#contentMovStock').fadeIn();
+}
+
+  sortTable();

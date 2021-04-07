@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
@@ -38,7 +39,7 @@
 
         <div class="container" id="top-container" style="margin-top: 2%;">
             <div class="row">
-                <div class="container" id="option-left" onclick=";" style="width: 49%;">
+                <div class="container" id="option-left" onclick="openEntradaModal();" style="width: 49%;">
                         <div class="option-text">
                             <p class="option-title">Registrar Entrada Material</p>
                             <p class="text-box">Registrar una entrada externa de un material al stock del sistema</p>
@@ -233,6 +234,70 @@
     </div>
 </div>
 
+<!--Entrada Modal -->
+<div class="modal fade modal-lg" id="entradaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Registrar entrada de un material</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body" id="altaNivelForm">
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row" id="fieldsRow1Alta1">
+                <div class="col" style="width: 65%;">
+                    <div class="group" id="password-input-group" style="margin-left: 10%; width: 95%;">
+                        <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="in-out-input" class="selectpicker selectpicker-nooutline" id="nombreArtInput" name="tipo_doc" data-live-search="true">
+                            <option value=-1 selected disabled>&nbsp; Seleccione un material</option>
+                            {%for mat in materiales%}
+                                <option value=-1>&nbsp; {{mat.nombre}}</option>
+                            {%endfor%}
+                            
+                        </select>
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight password-input"></span>
+                        <span class="bar password-input"></span>
+                        <label class="password-input">Seleccionar Material</label>
+                        <p id="nameError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+                <div class="col" style="width: 15%;">
+                    <div class="group" style="margin-left: 1%; width: 70%;">      
+                        <input type="text" id="descuento" style="width: 100%;" autocomplete="off">
+                        <span class="highlight" style="width: 100%;"></span>
+                        <span class="bar" style="width: 100%;"></span>
+                        <label>Cantidad</label>
+                        <p id="descuentoNivelError" class="modalErrorMessage">* El descuento debe estar entre 0 y 100.</p>
+                    </div>
+                </div>
+                <div class="col" style="width: 20%; margin-left: -8%;">
+                    <div class="group" style="margin-left: -8%; width: 95%; margin-right: 10%;">      
+                        <input class="data-show-input" type="text" id="" value= "{{dia}}" readonly style="width: 100%;">
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <label>Unidad de medida</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="fieldsRow1Alta2">
+                <div class="col">
+                    
+                </div>
+            </div>
+            <div class="row">
+                <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione "Registrar entrada" para añadir la entrada</p>
+            </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn">Registrar entrada</button>
+        </div>
+      </div>
+    </div>
+</div>
 
 <script src="static/js/gestion-stock.js"></script>
 

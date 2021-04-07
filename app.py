@@ -1426,7 +1426,8 @@ def verificar_codigo(cod):
 @app.route('/gestion-stock', methods = ['GET','POST'])
 def gestion_stock():
     try:
-        return render_template('gestion-stock.html')  
+        materiales = NegocioMaterial.get_all()
+        return render_template('gestion-stock.html', materiales = materiales)  
     except Exception as e:
         return error(e,"gestion_stock")
 
@@ -1448,7 +1449,8 @@ def historial_movimientos():
         articulos = NegocioArticulo.get_all(True)
         depositos = NegocioDeposito.get_all()
         materiales = NegocioMaterial.get_all()
-        return render_template('movimientos-stock.html', salidasStock=salidasStock, salidasMun = salidasMun, articulos = articulos, depositos = depositos, materiales = materiales)  
+        pedidos = NegocioPedido.get_all_historial_mov()
+        return render_template('movimientos-stock.html', salidasStock=salidasStock, salidasMun = salidasMun, articulos = articulos, depositos = depositos, materiales = materiales, pedidos = pedidos)  
     except Exception as e:
         return error(e,"historial_movimientos")
 

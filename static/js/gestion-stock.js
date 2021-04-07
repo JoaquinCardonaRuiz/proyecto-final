@@ -116,3 +116,8 @@ var messagesHistorial = [
     "Ten paciencia, no es una tarea fácil",
     "¡Casi listo! Últimos retoques"
 ].reverse();
+
+function openEntradaModal(){
+    jQuery.noConflict();
+    $("#entradaModal").modal('show');
+}

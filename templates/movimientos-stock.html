@@ -11,7 +11,7 @@
 
 {% extends 'layout.html' %}
 {% block body %}
-<div class="page-content" style="text-align: left;" id="content">
+<div class="page-content" style="text-align: left;" id="contentMovStock">
     <div class="container" id="heading-container">
         <h1 class="heading">Historial de Movimientos de Stock</h1>
     </div>
@@ -101,7 +101,7 @@
                             <td>{{art.unidadMedida}}</td>
                             {%endif%}
                         {%endfor%}
-                        <td>{{ss.fecha}}</td>    
+                        <td class="Fecha">{{ss.fecha}}</td>    
                     </tr>
                     {%endfor%}
 
@@ -117,7 +117,23 @@
                             <td>{{art.unidadMedida}}</td>
                             {%endif%}
                         {%endfor%}
-                        <td>{{sm.fecha}}</td>    
+                        <td class="Fecha">{{sm.fecha}}</td>    
+                    </tr>
+                    {%endfor%}
+
+                    {%for ped in pedidos%}
+                    <tr>
+                        <th>Pedido</th>
+
+                        {%for art in articulos%}
+                            {%if art.id == ped.articulos.idTipoArticulo%}
+                            <td>{{art.nombre}}</td>
+                            <td value="Entrada">-<span id="ped-{{ped.id + art.id}}"></span></td>
+                            <script>$("#ped-{{ped.id + art.id}}").text(parseFloat('{{ped.articulos.cantidad}}'));</script>
+                            <td>{{art.unidadMedida}}</td>
+                            {%endif%}
+                        {%endfor%}
+                        <td class="Fecha">{{ped.fechaEncargo}}</td>    
                     </tr>
                     {%endfor%}
 
@@ -128,12 +144,12 @@
                         {%for mat in materiales%}
                             {%if mat.id == dep.material.idMaterial%}
                             <td>{{mat.nombre}}</td>
-                            <td value="Entrada">-<span id="dep-{{dep.id + mat.id}}"></span></td>
+                            <td value="Entrada">+<span id="dep-{{dep.id + mat.id}}"></span></td>
                             <script>$("#dep-{{dep.id + mat.id}}").text(parseFloat('{{dep.material.cantidad}}'));</script>
                             <td>{{mat.unidadMedida}}</td>
                             {%endif%}
                         {%endfor%}
-                        <td>{{dep.fechaDeposito}}</td>    
+                        <td class="Fecha">{{dep.fechaDeposito}}</td>    
                     </tr>
                     {%endfor%}
                 </tbody>
@@ -282,6 +298,8 @@
 
     </div>
 </div>
+
+
 
 <script src="/static/js/movimiento-stock.js"></script>
 
