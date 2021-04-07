@@ -1,4 +1,5 @@
-
+var cantidad = false;
+var descripcion = false;
 
 //Efecto CSS el botón del medio de los botones principales del modulo.
 $("#option-middle").hover(function(){
@@ -119,5 +120,56 @@ var messagesHistorial = [
 
 function openEntradaModal(){
     jQuery.noConflict();
+    $("#unidadMedidaInput").val("-");
+    $(".modalErrorMessage").hide();
+    $("#primary-btn-re").prop('disabled',true);
     $("#entradaModal").modal('show');
+}
+
+function completeUnidadMedida(um){
+    $("#unidadMedidaInput").val(um);
+}
+
+function validaCant(val){
+    if (val == ""){
+        $("#cantError").fadeIn();
+        cantidad = false;
+    }
+    else{
+        $("#cantError").fadeOut();
+        cantidad = true;
+    }
+    enable_disable();
+}
+
+function validaDesc(val){
+    if (val == ""){
+        $("#descError").text("* La descripción no puede quedar vacía.")
+        $("#descError").fadeIn();
+        descripcion = false;
+    }
+    else if (val.length > 200){
+        $("#descError").text("* La descripción no puede tener más de 200 caracteres.");
+        $("#descError").fadeIn();
+        descripcion = false;
+    }
+    else if (val.length < 5){
+        $("#descError").text("* La descripción no puede tener menos de 5 caracteres.");
+        $("#descError").fadeIn();
+        descripcion = false;
+    }
+    else{
+        $("#descError").fadeOut();
+        descripcion = true;
+    }
+    enable_disable();
+}
+
+function enable_disable(){
+    if (cantidad && descripcion && $("#mat-select-picker-re").val() != null){
+        $("#primary-btn-re").prop('disabled',false);
+    }
+    else{
+        $("#primary-btn-re").prop('disabled',true);
+    }
 }

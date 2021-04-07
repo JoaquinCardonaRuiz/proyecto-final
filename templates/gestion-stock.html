@@ -244,17 +244,17 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body" id="altaNivelForm">
+        <form action="{{url_for('alta_nivel')}}" method="POST" class="modal-body modal-body-card" id="altaNivelForm">
             <div class="row" id="loadingRow">
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
-            <div class="row" id="fieldsRow1Alta1">
+            <div class="row d-flex justify-content-center" id="fieldsRow1Alta1" style="margin-top: 7%;">
                 <div class="col" style="width: 65%;">
                     <div class="group" id="password-input-group" style="margin-left: 10%; width: 95%;">
-                        <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="in-out-input" class="selectpicker selectpicker-nooutline" id="nombreArtInput" name="tipo_doc" data-live-search="true">
+                        <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="mat-select-picker-re" class="selectpicker selectpicker-nooutline" oninput="completeUnidadMedida(value);" data-live-search="true">
                             <option value=-1 selected disabled>&nbsp; Seleccione un material</option>
                             {%for mat in materiales%}
-                                <option value=-1>&nbsp; {{mat.nombre}}</option>
+                                <option value={{mat.unidadMedida}}>&nbsp; {{mat.nombre}}</option>
                             {%endfor%}
                             
                         </select>
@@ -262,38 +262,40 @@
                         <span class="highlight password-input"></span>
                         <span class="bar password-input"></span>
                         <label class="password-input">Seleccionar Material</label>
-                        <p id="nameError" class="modalErrorMessage"></p>
                     </div>
                 </div>
                 <div class="col" style="width: 15%;">
                     <div class="group" style="margin-left: 1%; width: 70%;">      
-                        <input type="text" id="descuento" style="width: 100%;" autocomplete="off">
+                        <input type="text" id="cantidadInput" onkeypress="return isNumberKey(this, event);" style="width: 100%;" oninput="validaCant(value);" autocomplete="off">
                         <span class="highlight" style="width: 100%;"></span>
                         <span class="bar" style="width: 100%;"></span>
                         <label>Cantidad</label>
-                        <p id="descuentoNivelError" class="modalErrorMessage">* El descuento debe estar entre 0 y 100.</p>
+                        <p id="cantError" class="modalErrorMessage">* Debe completarla.</p>
                     </div>
                 </div>
                 <div class="col" style="width: 20%; margin-left: -8%;">
                     <div class="group" style="margin-left: -8%; width: 95%; margin-right: 10%;">      
-                        <input class="data-show-input" type="text" id="" value= "{{dia}}" readonly style="width: 100%;">
+                        <input class="data-show-input" type="text" id="unidadMedidaInput" readonly style="width: 100%;">
                         <input type="text" id="idEntidadInput" name="id" hidden>
                         <label>Unidad de medida</label>
                     </div>
                 </div>
             </div>
-            <div class="row" id="fieldsRow1Alta2">
-                <div class="col">
-                    
+            <div class="row" id="fieldsRow1Alta1" style="width: 92%; margin-left: 4%;">
+                <div class="group" style="width: 100%;">
+                    <input type="text" id="idEntidadInput" name="id" hidden>
+                    <textarea class="form-control green-text-area mt-3" id="exampleFormControlTextarea1" rows="3" oninput="validaDesc(value);"></textarea>
+                    <p id="descError" class="modalErrorMessage" style="margin-bottom: -3%;">* La descripción no puede quedar vacía.</p>
+                    <label>Descripción</label>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-top: -1%; margin-bottom: -2%;">
                 <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione "Registrar entrada" para añadir la entrada</p>
             </div>
         </form>
         <div class="modal-footer">
           <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
-          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn">Registrar entrada</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-re">Registrar entrada</button>
         </div>
       </div>
     </div>

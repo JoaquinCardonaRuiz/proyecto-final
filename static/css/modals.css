@@ -23,6 +23,7 @@ margin-left:5.7%;
 .modalErrorMessage{
   font-size: 15px;
   color: tomato;
+  transition: width 0.3s, height 0.3s, transform 0.3s;
 }
 
 .bottom-modal-text{
@@ -754,4 +755,5 @@ display: none;
   position: absolute;
   width: 23px;
 }
+
 
