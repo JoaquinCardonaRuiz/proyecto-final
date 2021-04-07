@@ -1342,7 +1342,7 @@ def update_estado_deposito():
         return error(e,"pedidos")
 
 
-@app.route('gestion-depositos/cancelar/<id>')
+@app.route('/gestion-depositos/cancelar/<id>')
 def get_info_cancelar(id):
     return jsonify(NegocioDeposito.get_info_cancelar(id))
 

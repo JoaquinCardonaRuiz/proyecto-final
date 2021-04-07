@@ -45,7 +45,9 @@
                 </thead>
                 <tbody>
                 <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                <button id="open-modal-info" href='#'data-toggle="modal" data-target="#infoModal"hidden="true"></button>
                 <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true"></button>
+                <button id="open-modal-cancelar" href='#'data-toggle="modal" data-target="#cancelarModal"hidden="true"></button>
                 {%for dep in depositos%}
                     {%if dep.isAcreditado() and dep.estado!="cancelado"%}
                         <tr>
@@ -59,7 +61,7 @@
                                 {%endif%}
                             {%endfor%} 
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-info custom-link-fa"></i> Ver Info</a></td>    
-                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{dep.id}},'cancelado')">Cancelar</button></td>
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="openLoadingRing();open_cancelar_modal({{dep.id}})">Cancelar</button></td>
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -87,8 +89,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
-                <button id="open-modal-info" href='#'data-toggle="modal" data-target="#infoModal"hidden="true"></button>
                 {%for dep in depositos%}
                     {%if not dep.isAcreditado() and dep.estado!="cancelado"%}
                         <tr>
@@ -102,7 +102,7 @@
                             {%endfor%} 
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-info custom-link-fa"></i> Ver Info</a></td>    
                             <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{dep.id}},'acreditado')">Acreditar</button></td>
-                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{dep.id}},'cancelado')">Cancelar</button></td>
+                            <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="openLoadingRing();open_cancelar_modal({{dep.id}})">Cancelar</button></td>
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -127,8 +127,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
-                <button id="open-modal-info" href='#'data-toggle="modal" data-target="#infoModal"hidden="true"></button>
                 {%for dep in depositos%}
                     {%if dep.estado == "cancelado"%}
                         <tr>
@@ -150,6 +148,60 @@
     </div>
 
 
+</div>
+
+
+
+
+    <!-- Loading Modal -->
+    <!-- Para mostrar mientras se carga un modal-->
+
+    <div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <br><br><br><br><br><br><br><br>
+            <div class="row" id="loadingRow">
+                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+        </div>
+    </div>
+
+
+
+<!--Cancelar Modal -->
+
+<div class="modal fade modal-lg" id="cancelarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Cancelar Depósito</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body-baja" >
+            <div class="row">
+                <p class="b-modal-text-baja" id="baja-custom-text" style="font-size: 17px;"></p>
+                <br>
+                <p class="b-modal-text-baja" id="baja-custom-text2" style="font-size: 17px;position: relative;top:-35px;"></p>
+            </div>
+            <div class="row" style="margin-left: 10%;margin-right: 10%;top: -35px;position: relative;">
+            <ul>
+                <li id="cons-dep"></li>
+                <br>
+                <li id="cons-ep"></li>
+                <br id="br-hide">
+                <li id="cons-stock"></li>
+              </ul> 
+            </div>
+        </div>
+        <p class="bottom-modal-text" id="bottomBajaModalText"></p>
+        <input type="text" name="" id="idArticulo" hidden>
+        <div class="modal-footer">
+          <button type="button" class="btn" onClick="closeLoadingRing();" data-dismiss="modal" id="secondary-btn-baja">Atras</button>
+          <button type="button" class="btn" id="primary-btn-alert">Cancelar Depósito</button>
+        </div>
+      </div>
+    </div>
 </div>
 
 
@@ -204,17 +256,7 @@
     </div>
 </div>
 
-    <!-- Loading Modal -->
-    <!-- Para mostrar mientras se carga un modal-->
 
-    <div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <br><br><br><br><br><br><br><br>
-            <div class="row" id="loadingRow">
-                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-            </div>
-        </div>
-    </div>
 
 <!--Info Modal -->
 <div class="modal fade modal-lg" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -339,7 +381,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn primary-btn" data-dismiss="modal" id="primary-btn-alta">Listo</button>
+          <button type="button" class="btn primary-btn" onClick="closeLoadingRing();" data-dismiss="modal" id="primary-btn-alta">Listo</button>
         </div>
       </div>
     </div>

@@ -319,7 +319,7 @@ class DatosDeposito(Datos):
                 return Deposito(dep[0], dep[1],mat, dep[6], dep[3].strftime("%d/%m/%Y"), ep, fecha_reg,dep[9])
             
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_by_id()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_deposito.get_by_id()",
                                                     msj=str(e),
                                                     msj_adicional="Error obteniendo el depósito correspondiente a un ID.")
         finally:

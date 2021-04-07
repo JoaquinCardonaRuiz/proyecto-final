@@ -104,3 +104,33 @@ function update_estado(id,estado){
     }
     document.getElementById("estadoForm").submit();
 }
+
+
+function open_cancelar_modal(id){
+    document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea cancelar este Depósito?";
+    document.getElementById("baja-custom-text2").innerHTML = "Esta acción tendrá las siguientes consecuencias:";
+    document.getElementById("cons-dep").innerHTML = "El depósito se registrará como cancelado, y no podrá volver a restaurarse.";
+
+    $.getJSON("/gestion-depositos/cancelar/"+ String(id),function (result){
+        document.getElementById("cons-ep").hidden = false;
+        document.getElementById("br-hide").hidden = false;
+        if(result["EP"] == -1){
+            document.getElementById("cons-ep").hidden = true;
+            document.getElementById("br-hide").hidden = true;
+        }
+        else if(result["EP"] == 0){
+            document.getElementById("cons-ep").innerHTML = "Los EcoPuntos correspondientes al depósito serán restados de los EcoPuntos del usuario."
+        }else{
+            document.getElementById("cons-ep").innerHTML = "Al usuario le faltan "+result["EP"].toString()+" para poder restar la cantidad de EcoPuntos correspondientes al depósito. Se dejará su balance de EcoPuntos en 0."
+        }
+        if(result["Stock"] == 0){
+            document.getElementById("cons-stock").innerHTML = "El stock correspondiente al depósito será restados del stock del material."
+        }else{
+            document.getElementById("cons-stock").innerHTML = "Al stock le falta "+result["Stock"].toString()+" unidades para poder restar la cantidad de unidades correspondientes al depósito. Se dejará el stock del material en 0, y se creará una entrada de stock con la cantidad restante para compensar por el stock utilizado."
+        }
+    
+    });
+
+
+    document.getElementById("open-modal-cancelar").click();
+}

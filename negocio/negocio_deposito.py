@@ -92,9 +92,10 @@ class NegocioDeposito(Negocio):
 
     @classmethod
     def get_info_cancelar(cls, id):
-        errores = {"EP":0,"Stock":0}
+        errores = {"EP":-1,"Stock":0}
         dep = DatosDeposito.get_by_id(id)
         if dep.isAcreditado():
+            errores["EP"] = 0
             user_id = cls.get_user_id(id)
             user = NegocioUsuario.get_by_id(user_id)
             if user.totalEcopuntos < dep.ecoPuntos.cantidad:
