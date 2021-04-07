@@ -51,19 +51,12 @@ function openInfoModal(id){
             $("#tipoNroDocModal").val(usuario["nroDoc"] + " (" + usuario["tipoDoc"] + ")");
             $("#emailModal").val(usuario["email"]);
             
-            document.getElementById("IDusuarioModal").hidden = false;
-            document.getElementById("nombreCompletoModal").hidden = false;
-            document.getElementById("tipoNroDocModal").hidden = false;
-            document.getElementById("emailModal").hidden = false;
-
+            document.getElementById("user-section").hidden = false;
 
         }else{
             $("#fecha_regModal").val("-");
             $("#estadoModal").val("Sin Acreditar");
-            document.getElementById("IDusuarioModal").hidden = true;
-            document.getElementById("nombreCompletoModal").hidden = true;
-            document.getElementById("tipoNroDocModal").hidden = true;
-            document.getElementById("emailModal").hidden = true;
+            document.getElementById("user-section").hidden = true;
         }
         set_ep_logo_pos(deposito["ecoPuntos"]);
 
@@ -99,4 +92,15 @@ function set_ep_logo_pos(num){
     var left_input = document.getElementById("EPModal").offsetLeft;
     $("#ep-logo-modal-info").css({top: top_input + 11, position:'absolute'});
     $("#ep-logo-modal-info").css({left: left_input + left_factor, position:'absolute'});
+}
+
+
+
+function update_estado(id,estado){
+    if(estado=="cancelado"){
+        document.getElementById("idDepInput").value=id;
+        document.getElementById("estadoInput").value = estado;
+        document.getElementById("idPDInput").value = 0;    
+    }
+    document.getElementById("estadoForm").submit();
 }

@@ -2,6 +2,7 @@ from negocio.negocio import Negocio
 from data.data_material import DatosMaterial
 import custom_exceptions
 from data.data_deposito import DatosDeposito
+from negocio.negocio_usuario import NegocioUsuario
 
 class NegocioDeposito(Negocio):
     
@@ -63,12 +64,46 @@ class NegocioDeposito(Negocio):
 
 
     @classmethod
-    def update_estado(cls,id,estado):
+    def cancelar(cls,id):
+        """
+        Cancela un depósito. Si el depósito ha sido acreditado, los EP se le restan al
+        usuario. Si el usuario no tiene suficientes EP para restar, se lo deja en 0 EP.
+        Se descuenta, asimismo, el stock de materiales generado por el deposito. Si no
+        hay suficiente stock para restar, se genera una entrada correspondiente al
+        stock faltante
+        """
         try:
-            DatosDeposito.update_estado(id,estado)
+            dep = DatosDeposito.get_by_id(id)
+            DatosDeposito.update_estado(id,"cancelar")
+            if dep.isAcreditado():
+                user_id = cls.get_user_id(id)
+                NegocioUsuario.descontarEPDeposito(user_id,dep.ecoPuntos.cantidad)
+            
+            material = DatosMaterial.get_by_id(dep.material.idMaterial)
+            if material.stock >= dep.material.cantidad:
+                DatosMaterial.updateStock(material.id,material.stock - dep.material.cantidad)
+            else:
+                DatosMaterial.updateStock(material.id,0)
+                restante = dep.material.cantidad-material.stock
+                #TODO: CREAR ENTRADA DE STOCK con cantidad = restante            
         except Exception as e:
             raise e
 
+
+    @classmethod
+    def get_info_cancelar(cls, id):
+        errores = {"EP":0,"Stock":0}
+        dep = DatosDeposito.get_by_id(id)
+        if dep.isAcreditado():
+            user_id = cls.get_user_id(id)
+            user = NegocioUsuario.get_by_id(user_id)
+            if user.totalEcopuntos < dep.ecoPuntos.cantidad:
+                errores["EP"] = dep.ecoPuntos.cantidad-user.totalEcopuntos 
+        
+        material = DatosMaterial.get_by_id(dep.material.idMaterial)
+        if material.stock < dep.material.cantidad:
+            errores["Stock"] = dep.material.cantidad-material.stock
+        return errores
 
     @classmethod
     def get_by_id(cls,id):

@@ -5,38 +5,21 @@ import custom_exceptions
 class DatosEcoPuntos(Datos):
 
     @classmethod
-    def add(cls, fecha_vencimiento, cantidad):
+    def add(cls, cantidad):
         """
-        Obtiene valor actual de los EP.
+        Agrega un nuevo EP a la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("INSERT into ecoPuntos (fechaVencimiento, cantidad, cantidadRestante) values ('{}',{},{})").format(fecha_vencimiento, cantidad, cantidad)
+            sql = ("INSERT into ecoPuntos (cantidad, cantidadRestante) values ({},{})").format(cantidad, cantidad)
             cls.cursor.execute(sql)
             cls.db.commit()
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_valor_EP()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.add()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obtieniendo el valor de los EP de la BD.")
+                                                    msj_adicional="Error agregando un EP a la BD.")
         finally:
             cls.cerrar_conexion()
-
-    @classmethod
-    def get_tiempo_vigencia(cls):
-        try:
-            cls.abrir_conexion()
-            sql = "SELECT tiempoVigencia,fecha,valor FROM datosEcoPuntos;"
-            cls.cursor.execute(sql)
-            valores = cls.cursor.fetchall()
-            max_date = valores[0]
-            for v in valores:
-                if v[1] > max_date[1]:
-                    max_date = v
-            return max_date[0]
-        except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_tiempo_vigencia()",
-                                                    msj=str(e),
-                                                    msj_adicional="Error obtieniendo el valor de los EP de la BD.") 
 
     @classmethod
     def get_valor_EP(cls):

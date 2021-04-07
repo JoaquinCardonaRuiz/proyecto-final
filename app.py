@@ -1322,10 +1322,18 @@ def get_materiales_deposito(ids):
 def update_estado_deposito():
     try:
         if request.method == 'POST':
-            id = int(request.form["idInput"])
-            estado = request.form["estadoInput"]
-            pd = int(request.form["idPDInput"])
-            NegocioDeposito.update_estado(id,estado)
+            id = int(request.form["idDep"])
+            estado = request.form["estado"]
+            pd = int(request.form["idPD"])
+
+            if estado == "cancelado":
+                NegocioDeposito.cancelar(id)
+                
+
+            elif estado == "acreditado":
+                uid = int(request.form["idUser"])
+                #NegocioDeposito.acreditar(id,uid)
+
             if pd == 0:
                 return redirect(url_for("allDepositos"))
             else:
@@ -1333,6 +1341,10 @@ def update_estado_deposito():
     except Exception as e:
         return error(e,"pedidos")
 
+
+@app.route('gestion-depositos/cancelar/<id>')
+def get_info_cancelar(id):
+    return jsonify(NegocioDeposito.get_info_cancelar(id))
 
 @app.route('/gestion-depositos/info/<id>')
 def deposito_info(id):
@@ -1354,11 +1366,6 @@ def deposito_info(id):
         return error(e,"pedidos")
 
 
-'''
-    -----------------------
-    Depósitos (Usuario)
-    -----------------------
-'''
 @app.route('/depositos/usuario', methods = ['GET','POST'])
 def depositos():
     try:

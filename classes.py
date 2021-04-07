@@ -517,8 +517,9 @@ class Deposito:
             asignados al usuario al registrar el depósito. 
         fechaRegistro (Date, optional): Fecha en la que el depósito fue registrado por el usuario.
         fechaDeposito (Date): Fecha en la que el depósito fue realizado.
+        estado (String): Estado de la entidad
     """
-    def __init__(self, id, codigo, material, idPuntoDeposito, fechaDeposito, ecoPuntos=None, fechaRegistro=None):
+    def __init__(self, id, codigo, material, idPuntoDeposito, fechaDeposito, ecoPuntos=None, fechaRegistro=None, estado=""):
         self.id = id
         self.codigo = codigo
         self.material = material
@@ -526,10 +527,10 @@ class Deposito:
         self.fechaDeposito = fechaDeposito
         self.ecoPuntos = ecoPuntos
         self.fechaRegistro = fechaRegistro
+        self.estado = estado
 
     def isAcreditado(self):
-        return self.fechaRegistro!=None
-
+        return bool(self.fechaRegistro)
 
 class EcoPuntos:
     """ Representa un conjunto de ecopuntos, correspondiente a un depósito, los mismos 
