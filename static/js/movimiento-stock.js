@@ -30,6 +30,7 @@ function active_filter(){
     if (in_out_input_val != -1){
         filter_by_in_out = true;
         in_out_filter = in_out_input_val;
+        
     }
     else{
         filter_by_in_out = false;
@@ -63,7 +64,11 @@ function filter_table(filter){
             }
         }
         if (filter_by_in_out){
-            if ($(this).find("td:second").val() != in_out_filter){
+            mov = parseFloat($(this).find("td:nth-child(3)").text());
+            if (in_out_filter == "Entrada" && mov < 0){
+                hide = true;
+            }
+            else if (in_out_filter == "Salida" && mov >= 0){
                 hide = true;
             }
         }

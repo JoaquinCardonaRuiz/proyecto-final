@@ -756,4 +756,16 @@ display: none;
   width: 23px;
 }
 
+#submenu-modal-btn{
+  font-size: 14px;
+  margin-top: 2%;
+  margin-left: 20%;
+  width: 60%;
+}
+
+#heading-submenu-modal{
+  font-family: 'Hind', sans-serif;
+  width: 100%;
+  text-align: center;
+}
 

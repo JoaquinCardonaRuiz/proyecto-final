@@ -698,5 +698,12 @@ input:focus ~ .highlight {
   color: rgb(105, 105, 105);
 }
 
+#modal-form-sm{
+  display: none;
+}
+
+#primary-btn-sal{
+  display: none;
+}
 
 

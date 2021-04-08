@@ -46,7 +46,7 @@
                         </div>
                         <i class="fa fas fa-sign-in-alt option-img" id="option-img-1"></i>
                 </div>
-                <div class="container" id="option-right" onclick="removerPunto()" style="width: 49%;">
+                <div class="container" id="option-right" onclick="openSalidadaModal()" style="width: 49%;">
                     <div class="option-text">
                         <p class="option-title">Registrar Salida Artículo</p>
                         <p class="text-box">Registrar una salida externa de un artículo hacia el Municipio o una entidad de destino</p>
@@ -104,142 +104,12 @@
     </div>
 </div>
 
-<!-- Horarios Modal -->
-<div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="headingModalHorarios"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body modal-body-card">
-                <div class="container modal-large-card">
-                    <div class="row">
-                        <div class="modal-card-col" id="modal-card-col-1">
-                            <img src="/static/img/open-circle-icon.jpg" class="modal-large-card-img" id="open-img">
-                            <img src="/static/img/closed-circle-icon.png" class="modal-large-card-img" id="close-img">
-                            <img src="/static/img/inactive-circle-icon.png" class="modal-large-card-img" id="inactive-img">
-                        </div>
-                        <div class="modal-card-col" >
-                            <div class="row d-flex justify-content-center card-first-row">
-                                <p class="open-letter" id="estado-apertura-pos">Abierto</p>
-                                <p class="open-letter" id="estado-apertura-neg">Cerrado</p>
-                                <p class="open-letter" id="estado-apertura-inac">Inactivo</p>
-                            </div>
-                            <div class="row d-flex justify-content-center card-second-row">
-                                <p class="text-box">Estado Actual</p>
-                            </div>
-                        </div>
-                        <div class="modal-card-col">
-                            <div class="row d-flex justify-content-center card-first-row">
-                                <p class="open-letter" id="cant-horas-cierre-pos">-</p>
-                                <p class="open-letter" id="cant-horas-cierre-neg">-</p>
-                            </div>
-                            <div class="row d-flex justify-content-center card-second-row">
-                                <p class="text-box">Tiempo para cierre</p>
-                            </div>
-                        </div>
-                        <div class="modal-card-col">
-                            <div class="vl">
-                                <div class= "info-container-modal">
-                                    <span class="text-muted" id="toda-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-1-pos"></i>Abre de lunes a viernes<br></span>
-                                    <span class="text-muted" id="toda-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-1-neg"></i>No abre de lunes a viernes<br></span>
-
-                                    <span class="text-muted" id="fines-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-2-pos"></i>Abre fines de semana<br></span>
-                                    <span class="text-muted" id="fines-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-2-neg"></i>No abre fines de semana<br></span>
-
-                                    <i class="fa fa-clock modal-info-img" id="info-modal-3"></i><span class="text-muted" id="horarios-apertura">Hoy abre 08:00hs y cierra 20:00hs</span>                                                                        
-                                </div>
-                            </div>
-                            
-                           
-                        </div>
-                    </div>
-                </div>
-                    <div class="container modal-large-card d-flex justify-content-center" id="modal-large-card-2">
-                        <table class="table" id="content-table-modal">
-                            <thead>
-                            <tr id=headerRow>
-                            </tr>
-                            </thead>
-                            <tbody id="modalTableBody">
-                            </tbody>
-                    
-                        </table>
-                    </div>
-            </div>        
-        <div class="modal-footer">
-            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
-        </div>
-    </div>
-
-    </div>
-</div>
-
-<!-- Materiales Modal -->
-<div class="modal fade modal-lg" id="materialesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="headingModalMat"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body modal-body-card" id="materiales-modal-body">
-                <div class="row margin-bottom-row" id="no-mats">
-                    <p id="" class="advert-icon-no-mats"><i class="fa fa-exclamation-triangle advert-icon-no-mats"></i></p>
-                    <p class="bottom-modal-text-baja">Este Punto de Depósito aún no acepta ningún material</p>
-                    <p class="bottom-modal-text less-margin-top">Para añadir materiales aceptados, ingrese a la opción "Modificar Punto".</p>
-                </div>
-                <div class="container modal-large-card-sm" id="material-card">
-                    <div class="row">
-                        <div class="modal-card-col-sm">
-                            <div class="circle materiales-large-card-img" id="material-img">M</div>
-                        </div>
-                        <div class="modal-card-col-sm" >
-                            <div class="row d-flex justify-content-center card-first-row-sm">
-                                <p class="material-card-title" id="nombre-material">Nombre</p>
-                            </div>
-                            <div class="row d-flex justify-content-center card-second-row">
-                                <p class="text-box material-card-subtitle">Nombre material</p>
-                            </div>
-                        </div>
-                        <div class="modal-card-col-sm">
-                            <div class="row d-flex justify-content-center card-first-row-sm">
-                                <p class="material-card-title" id="unidad-medida">-</p>
-                            </div>
-                            <div class="row d-flex justify-content-center card-second-row">
-                                <p class="text-box material-card-subtitle">Unidad de medida</p>
-                            </div>
-                        </div>
-                        <div class="modal-card-col-sm">
-                            <div class="row d-flex justify-content-center card-first-row-sm">
-                                <p class="material-card-title" id="id-material">-</p>
-                            </div>
-                            <div class="row d-flex justify-content-center card-second-row">
-                                <p class="text-box material-card-subtitle">ID material</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>        
-        <div class="modal-footer">
-            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
-        </div>
-    </div>
-
-    </div>
-</div>
-
 <!--Entrada Modal -->
 <div class="modal fade modal-lg" id="entradaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="headingModal">Registrar entrada de un material</h5>
+          <h5 class="modal-title" id="headingModal">Registrar entrada de un Material</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -314,6 +184,106 @@
         <div class="modal-footer">
           <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn-re">Cancelar</button>
           <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-re">Registrar entrada</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Salida Modal -->
+<div class="modal fade modal-lg" id="salidaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Registrar salida de Artículos</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modal-body-card">
+            <div class="row mt-4" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row" style="margin-top: -1%; margin-bottom: -2%;">
+                <p class="bottom-modal-text" id="loading-row-text-sm"></p>
+            </div>
+
+            <!--Submenu-->
+            <div class="row" id="submenu-modal">
+                <h5 id="heading-submenu-modal">¿Qué tipo de salida desea registrar?</h5>
+                <button type="button" class="btn primary-btn" id="submenu-modal-btn" data-mdb-ripple-color="dark" onclick="changeForm('sm')">
+                    Salida de stock del Municipio
+                </button>
+                <button type="button" class="btn primary-btn" id="submenu-modal-btn" data-mdb-ripple-color="dark" onclick="changeForm('sed')">
+                    Salida de stock hacia una Entidad de Destino
+                </button>
+            </div>
+
+            <!--Salida stock municipio-->
+            <form class="" id="modal-form-sm" action="{{url_for('alta_entrada_mat')}}" method="POST" id="salidaMunicipioForm">
+                <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="margin-top: 5%;">
+                    <div class="col" style="width: 65%;">
+                        <div class="group" id="password-input-group" style="margin-left: 20%; width: 95%;">
+                            <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="art-select-picker-sm" class="selectpicker selectpicker-nooutline" oninput="completeUnidadMedidaSM(value);" data-live-search="true">
+                                <option value=-1 selected disabled>&nbsp; Seleccione un artículo</option>
+                                {%for art in articulos%}
+                                    <option value={{art.unidadMedida}},{{art.id}}>&nbsp; {{art.nombre}}</option>
+                                {%endfor%}
+                                
+                            </select>
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight password-input"></span>
+                            <span class="bar password-input"></span>
+                            <label class="password-input">Seleccionar Artículo</label>
+                        </div>
+                    </div>
+                    <div class="col" style="width: 10%;">
+                        <div class="group" style="margin-left: 17.5%; width: 50%;">      
+                            <input type="text" id="cantidadInputSM" name="cantidadSM" onkeypress="return isNumberKey(this, event);" style="width: 100%;" oninput="validaCantSM(value);" autocomplete="off">
+                            <span class="highlight" style="width: 100%;"></span>
+                            <span class="bar" style="width: 100%;"></span>
+                            <label>Cantidad</label>
+                            <p id="cantErrorSM" class="modalErrorMessage">* Completar.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er">
+                    <div class="col" style="width: 65%;">
+                        <div class="group" style="margin-left: 20%; width: 95%;">
+                            <input type="text" id="idEntidadInput" name="id" hidden>      
+                            <input type="date" id="dateInputSM" name="fechaSM" style="width: 100%;" autocomplete="off" oninput="validaFechaSM(value);">
+                            <span class="highlight" style="width: 100%;"></span>
+                            <span class="bar" style="width: 100%;"></span>
+                            <label>Fecha</label>
+                            <p id="fechaErrorSM" class="modalErrorMessage">* Formato de fecha incorrecto.</p>
+                        </div>
+                    </div>            
+                    <div class="col" style="width: 10%;">
+                        <div class="group" style="margin-left: 17.5%; width: 50%;">      
+                            <input class="data-show-input" type="text" id="unidadMedidaInputSM" readonly style="width: 100%;">
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <label>Unidad de medida</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="fieldsRow1Alta2-er" style="width: 81%; margin-left: 9.5%;">
+                    <div class="group" style="width: 100%;">
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <textarea class="form-control green-text-area mt-3" id="exampleFormControlTextarea1" rows="3" name="descripcionSM" oninput="validaDescSM(value);"></textarea>
+                        <p id="descErrorSM" class="modalErrorMessage" style="margin-bottom: -3%;">* La descripción no puede quedar vacía.</p>
+                        <label>Descripción/Concepto</label>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: -1%; margin-bottom: -2%;">
+                    <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione "Registrar salida" para añadir la salida</p>
+                </div>
+                <input type="text" id="idArtSM" name="idArtSM" hidden>
+            </form>
+
+            <div></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn-sal">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitFormSM()" id="primary-btn-sal">Registrar salida</button>
         </div>
       </div>
     </div>

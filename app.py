@@ -1426,8 +1426,9 @@ def verificar_codigo(cod):
 @app.route('/gestion-stock', methods = ['GET','POST'])
 def gestion_stock():
     try:
+        articulos = NegocioArticulo.get_all()
         materiales = NegocioMaterial.get_all()
-        return render_template('gestion-stock.html', materiales = materiales)  
+        return render_template('gestion-stock.html', materiales = materiales, articulos=articulos)  
     except Exception as e:
         return error(e,"gestion_stock")
 
