@@ -97,11 +97,6 @@ function set_ep_logo_pos(num){
 
 
 function update_estado(id,estado){
-    if(estado=="cancelado"){
-        document.getElementById("idDepInput").value=id;
-        document.getElementById("estadoInput").value = estado;
-        document.getElementById("idPDInput").value = 0;    
-    }
     document.getElementById("estadoForm").submit();
 }
 
@@ -131,6 +126,8 @@ function open_cancelar_modal(id){
     
     });
 
-
+    document.getElementById("idDepInput").value=id;
+    document.getElementById("estadoInput").value = "cancelado";
+    document.getElementById("idPDInput").value = 0;
     document.getElementById("open-modal-cancelar").click();
 }

@@ -1,8 +1,10 @@
 from negocio.negocio import Negocio
 from data.data_material import DatosMaterial
 import custom_exceptions
+from datetime import datetime
 from data.data_deposito import DatosDeposito
 from negocio.negocio_usuario import NegocioUsuario
+from data.data_entrada_externa import DatosEntradaExterna
 
 class NegocioDeposito(Negocio):
     
@@ -85,7 +87,7 @@ class NegocioDeposito(Negocio):
             else:
                 DatosMaterial.updateStock(material.id,0)
                 restante = dep.material.cantidad-material.stock
-                #TODO: CREAR ENTRADA DE STOCK con cantidad = restante            
+                DatosEntradaExterna.add_one(material.id,restante,"Compensación por cancelación de depósito número "+str(id)+".",datetime.now())         
         except Exception as e:
             raise e
 

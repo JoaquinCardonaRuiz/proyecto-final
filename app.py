@@ -1328,6 +1328,8 @@ def update_estado_deposito():
 
             if estado == "cancelado":
                 NegocioDeposito.cancelar(id)
+                session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+                session.modified = True
                 
 
             elif estado == "acreditado":
