@@ -694,5 +694,9 @@ input:focus ~ .highlight {
   width: 100%;
 }
 
+.switch-label-re{
+  color: rgb(105, 105, 105);
+}
+
 
 

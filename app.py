@@ -1454,6 +1454,19 @@ def historial_movimientos():
     except Exception as e:
         return error(e,"historial_movimientos")
 
+@app.route('/gestion-stock/alta-entrada-mat', methods = ['GET','POST'])
+def alta_entrada_mat():
+    try:
+        if request.method == 'POST':
+            idMat = request.form["idMat"]
+            cant = request.form["cantidad"]
+            concepto = request.form["descripcion"]
+            fecha = request.form["fecha"]
+            NegocioEntradaExterna.add_one(idMat,cant,concepto, fecha)
+        return redirect(url_for('gestion_stock'))  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
 '''
     -----------------------
     Quienes somos

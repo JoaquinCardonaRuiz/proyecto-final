@@ -1,5 +1,6 @@
 var cantidad = false;
 var descripcion = false;
+var fecha = true;
 
 //Efecto CSS el botón del medio de los botones principales del modulo.
 $("#option-middle").hover(function(){
@@ -123,11 +124,15 @@ function openEntradaModal(){
     $("#unidadMedidaInput").val("-");
     $(".modalErrorMessage").hide();
     $("#primary-btn-re").prop('disabled',true);
+    document.getElementById('dateInput').valueAsDate = new Date();
     $("#entradaModal").modal('show');
 }
 
 function completeUnidadMedida(um){
-    $("#unidadMedidaInput").val(um);
+    var array = um.split(",");
+    $("#unidadMedidaInput").val(array[0]);
+    $("#idMat").val(array[1]);
+    enable_disable();
 }
 
 function validaCant(val){
@@ -138,6 +143,18 @@ function validaCant(val){
     else{
         $("#cantError").fadeOut();
         cantidad = true;
+    }
+    enable_disable();
+}
+
+function validaFecha(val){
+    if (val != ''){
+        fecha = true;
+        $("#fechaError").fadeOut();
+    }
+    else{
+        fecha = false;
+        $("#fechaError").fadeIn();
     }
     enable_disable();
 }
@@ -166,10 +183,41 @@ function validaDesc(val){
 }
 
 function enable_disable(){
-    if (cantidad && descripcion && $("#mat-select-picker-re").val() != null){
+    if (cantidad && descripcion && fecha && $("#mat-select-picker-re").val() != null){
         $("#primary-btn-re").prop('disabled',false);
     }
     else{
         $("#primary-btn-re").prop('disabled',true);
     }
 }
+
+function submitForm(idForm){
+    //Manejo de elementos de carga
+    $("#modal-form-er").hide();
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show().fadeIn(500);
+    $('#primary-btn-re').prop('disabled', true);
+    $('#secondary-btn-re').prop('disabled', true);
+
+    //Manejo de datos
+    $( "#altaEntradaExternaForm").submit();
+
+    //Funcion que va cambiando los mensajes de carga.
+    nextMsgAlta();
+
+}
+
+function nextMsgAlta() {
+    if (messagesAlta.length == 1) {
+        $('#loading-row-text').html(messagesAlta.pop()).fadeIn(500);
+
+    } else {
+        $('#loading-row-text').html(messagesAlta.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgAlta);
+    }
+};
+
+var messagesAlta = [
+    "Estamos registrando la entrada...",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+
