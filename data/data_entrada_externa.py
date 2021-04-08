@@ -1,7 +1,6 @@
 from data.data import Datos
 import custom_exceptions
 from datetime import datetime
-from data.data_material import DatosMaterial
 
 class DatosEntradaExterna(Datos):
     
@@ -15,7 +14,6 @@ class DatosEntradaExterna(Datos):
             values = (idMaterial, cant, fecha ,concepto)
             cls.cursor.execute(sql, values)
             cls.db.commit()
-            DatosMaterial.addStock(idMaterial,float(cant))
             return True
         
         except Exception as e:
