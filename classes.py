@@ -537,7 +537,6 @@ class EcoPuntos:
     comparten una fecha de vencimiento.
     Atributos:
         id (string): Identificador de la entidad.
-        fechaVencimiento (Date): fecha en la cual los ecopuntos vencen.
         cantidad (float): cantidad de ecopuntos que este conjunto representa.
         cantidadRestante (float): cantidad de ecopuntos de este conjunto que no han sido
             utilizados.
@@ -547,7 +546,6 @@ class EcoPuntos:
     """
 
     valorMonetario = None
-    tiempoVencimiento = None
 
     @classmethod
     def getEPData(cls):

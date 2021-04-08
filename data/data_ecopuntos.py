@@ -28,14 +28,14 @@ class DatosEcoPuntos(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql = "SELECT tiempoVigencia,fecha,valor FROM datosEcoPuntos;"
+            sql = "SELECT fecha,valor FROM datosEcoPuntos;"
             cls.cursor.execute(sql)
             valores = cls.cursor.fetchall()
             max_date = valores[0]
             for v in valores:
-                if v[1] > max_date[1]:
+                if v[0] > max_date[0]:
                     max_date = v
-            return max_date[2]
+            return max_date[1]
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_valor_EP()",
                                                     msj=str(e),
@@ -50,14 +50,14 @@ class DatosEcoPuntos(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql = "SELECT tiempoVigencia,fecha,valor, porc_rec_EP FROM datosEcoPuntos;"
+            sql = "SELECT fecha,valor, porc_rec_EP FROM datosEcoPuntos;"
             cls.cursor.execute(sql)
             valores = cls.cursor.fetchall()
             max_date = valores[0]
             for v in valores:
-                if v[1] > max_date[1]:
+                if v[0] > max_date[0]:
                     max_date = v
-            return max_date[3]
+            return max_date[2]
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_porcentaje_rec_EP()",
                                                     msj=str(e),

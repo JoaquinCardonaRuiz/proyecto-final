@@ -76,7 +76,7 @@ class NegocioDeposito(Negocio):
         """
         try:
             dep = DatosDeposito.get_by_id(id)
-            DatosDeposito.update_estado(id,"cancelar")
+            DatosDeposito.update_estado(id,"cancelado")
             if dep.isAcreditado():
                 user_id = cls.get_user_id(id)
                 NegocioUsuario.descontarEPDeposito(user_id,dep.ecoPuntos.cantidad)

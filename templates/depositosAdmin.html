@@ -101,7 +101,7 @@
                                 {%endif%}
                             {%endfor%} 
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-info custom-link-fa"></i> Ver Info</a></td>    
-                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{dep.id}},'acreditado')">Acreditar</button></td>
+                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="openLoadingRing();open_acreditar_modal({{dep.id}})">Acreditar</button></td>
                             <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="openLoadingRing();open_cancelar_modal({{dep.id}})">Cancelar</button></td>
                         </tr>
                     {%endif%}
@@ -164,6 +164,54 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+<!--Acreditar Modal -->
+
+<div class="modal fade modal-lg" id="acreditarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Cancelar Depósito</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body-baja" >
+            <div class="row">
+                <p class="b-modal-text-baja" id="baja-custom-text" style="font-size: 17px;"></p>
+                <br>
+                <p class="b-modal-text-baja" id="baja-custom-text2" style="font-size: 17px;position: relative;top:-35px;"></p>
+            </div>
+            <div class="row" style="margin-left: 10%;margin-right: 10%;top: -35px;position: relative;">
+            <ul>
+                <li id="cons-dep"></li>
+                <br>
+                <li id="cons-ep"></li>
+                <br id="br-hide">
+                <li id="cons-stock"></li>
+              </ul> 
+            </div>
+        </div>
+        <p class="bottom-modal-text" id="bottomBajaModalText"></p>
+        <input type="text" name="" id="idArticulo" hidden>
+        <div class="modal-footer">
+          <button type="button" class="btn" onClick="closeLoadingRing();" data-dismiss="modal" id="secondary-btn-baja">Atras</button>
+          <button type="button" class="btn" id="conf-cancelar-btn" onclick= "update_estado()" style="background-color: #f14e4e;box-shadow: none !important;color: #fff;">Cancelar Depósito</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
 
 
 

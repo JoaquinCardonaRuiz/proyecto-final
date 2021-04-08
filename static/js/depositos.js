@@ -102,11 +102,11 @@ function update_estado(id,estado){
 
 
 function open_cancelar_modal(id){
-    document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea cancelar este Depósito?";
-    document.getElementById("baja-custom-text2").innerHTML = "Esta acción tendrá las siguientes consecuencias:";
-    document.getElementById("cons-dep").innerHTML = "El depósito se registrará como cancelado, y no podrá volver a restaurarse.";
-
     $.getJSON("/gestion-depositos/cancelar/"+ String(id),function (result){
+        document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea cancelar este Depósito?";
+        document.getElementById("baja-custom-text2").innerHTML = "Esta acción tendrá las siguientes consecuencias:";
+        document.getElementById("cons-dep").innerHTML = "El depósito se registrará como cancelado, y no podrá volver a restaurarse.";
+    
         document.getElementById("cons-ep").hidden = false;
         document.getElementById("br-hide").hidden = false;
         if(result["EP"] == -1){
@@ -123,11 +123,11 @@ function open_cancelar_modal(id){
         }else{
             document.getElementById("cons-stock").innerHTML = "Al stock le falta "+result["Stock"].toString()+" unidades para poder restar la cantidad de unidades correspondientes al depósito. Se dejará el stock del material en 0, y se creará una entrada de stock con la cantidad restante para compensar por el stock utilizado."
         }
-    
+        document.getElementById("idDepInput").value=id;
+        document.getElementById("estadoInput").value = "cancelado";
+        document.getElementById("idPDInput").value = 0;
+        document.getElementById("open-modal-cancelar").click();
     });
 
-    document.getElementById("idDepInput").value=id;
-    document.getElementById("estadoInput").value = "cancelado";
-    document.getElementById("idPDInput").value = 0;
-    document.getElementById("open-modal-cancelar").click();
+
 }
