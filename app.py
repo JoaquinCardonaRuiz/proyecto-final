@@ -1464,7 +1464,7 @@ def get_materiales_prod(id):
 
 
 @app.route('/produccion/articulos/<id>')
-def get_insumos(id):
+def get_insumos_prod(id):
     art = NegocioArticulo.get_by_id(id)
     ids = [i.idInsumo for i in art.insumos]
     cants = [i.cantidad for i in art.insumos]
