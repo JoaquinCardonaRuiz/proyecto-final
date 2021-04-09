@@ -25,15 +25,15 @@ function openModalMateriales(nom,uM,cant,color){
 }
 
 
-
+function open_acreditar_modal(id){
+    document.getElementById("open-modal-acreditar").click();
+}
 
 function openInfoModal(id){
     $.getJSON("/gestion-depositos/info/"+ String(id),function (result){
-        closeLoadingRing();
         deposito = result[0];
         usuario = result[1];
         punto_deposito = result[2];
-        document.getElementById("open-loading-modal").click();
         document.getElementById("open-modal-info").click();
         
         //Seteo valores de Pedido
@@ -79,6 +79,7 @@ function openInfoModal(id){
 }
 
 function closeLoadingRing(){
+    jQuery.noConflict();
     document.getElementById("open-loading-modal").click();
     $(".lds-ring").hide();
     $("#loadingRow").hide();
@@ -103,6 +104,8 @@ function update_estado(id,estado){
 
 function open_cancelar_modal(id){
     $.getJSON("/gestion-depositos/cancelar/"+ String(id),function (result){
+
+        console.log(result);
         document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea cancelar este Depósito?";
         document.getElementById("baja-custom-text2").innerHTML = "Esta acción tendrá las siguientes consecuencias:";
         document.getElementById("cons-dep").innerHTML = "El depósito se registrará como cancelado, y no podrá volver a restaurarse.";
@@ -130,4 +133,12 @@ function open_cancelar_modal(id){
     });
 
 
+}
+
+
+function buscar_user(){
+    value = document.getElementById("buscarInput").value;
+    $.getJSON("/gestion-depositos/buscar-info-user/"+ value,function (result){
+        console.log(result);
+    });
 }

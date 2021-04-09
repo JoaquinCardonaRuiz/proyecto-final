@@ -46,6 +46,7 @@
                 <tbody>
                 <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
                 <button id="open-modal-info" href='#'data-toggle="modal" data-target="#infoModal"hidden="true"></button>
+                <button id="open-modal-acreditar" href='#'data-toggle="modal" data-target="#acreditarModal"hidden="true"></button>
                 <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true"></button>
                 <button id="open-modal-cancelar" href='#'data-toggle="modal" data-target="#cancelarModal"hidden="true"></button>
                 {%for dep in depositos%}
@@ -101,7 +102,7 @@
                                 {%endif%}
                             {%endfor%} 
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{dep.id}});"><i class="fa fa-info custom-link-fa"></i> Ver Info</a></td>    
-                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="openLoadingRing();open_acreditar_modal({{dep.id}})">Acreditar</button></td>
+                            <td scope="row"><button class="btn btn-outline-primary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="open_acreditar_modal({{dep.id}})">Acreditar</button></td>
                             <td scope="row"><button class="btn btn-outline-danger" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="openLoadingRing();open_cancelar_modal({{dep.id}})">Cancelar</button></td>
                         </tr>
                     {%endif%}
@@ -178,32 +179,73 @@
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="headingModal">Cancelar Depósito</h5>
+          <h5 class="modal-title" id="headingModal">Acreditar Depósito</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body-baja" >
-            <div class="row">
-                <p class="b-modal-text-baja" id="baja-custom-text" style="font-size: 17px;"></p>
-                <br>
-                <p class="b-modal-text-baja" id="baja-custom-text2" style="font-size: 17px;position: relative;top:-35px;"></p>
+            <div class="row subheader-row" id="subheader-alta-pd" style="margin-top: -4% !important;">
+                <div class="col">
+                    <label class="subheader-info" id="subheader-alta">Buscar Usuario</label>
+                </div>
             </div>
-            <div class="row" style="margin-left: 10%;margin-right: 10%;top: -35px;position: relative;">
-            <ul>
-                <li id="cons-dep"></li>
-                <br>
-                <li id="cons-ep"></li>
-                <br id="br-hide">
-                <li id="cons-stock"></li>
-              </ul> 
+            <div class="row">
+                <div class="col">
+                    <div class="group" style="margin-left:10%;">      
+                        <input style="width:83%" type="text" id="buscarInput" placeholder="Ingrese un ID, Nombre Completo, Documento, o Email para buscar un Usuario">
+                        <span class="highlight" style="width:83%"></span>
+                        <span class="bar" style="width:83%"></span>
+                        <label >Buscar por ID, Nombre Completo, Documento, o Correo Electrónico</label>
+                        <p id="nombreEntidadError" class="modalErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <button type="button" class="btn" id="buscar-btn" onclick= "this.disabled=true;buscar_user();this.disabled=false" style="background-color: #95C22B;box-shadow: none !important;color: #fff;width:72.3%;position: relative;left:11.5%;top:-20px;margin-bottom: 15px;">Buscar</button>
+            </div>
+            <div id="user-section">
+                <div class="row d-flex justify-content-center hr-row">
+                    <hr class="modal-hr-separator" style="width: 100%;">
+                </div>
+                <div class="row subheader-row" id="subheader-alta-pd" style="margin-top: -4% !important;">
+                    <div class="col">
+                        <label class="subheader-info" id="subheader-alta">Resultados</label>
+                    </div>
+                </div>
+                <div class="container" id="table-container">
+                    <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%;display: inline-block;">
+                        <div class="group" style="width: 50%;">  
+                            <input type="text" class="data-show-input" width="25%" readonly value="-" id="IDusuarioModal">
+                            <input type="text" id="" name="id" hidden>
+                            <label class="">ID del usuario</label>
+                        </div>
+                        <div class="group" style="width: 50%;">  
+                            <input type="text" class="data-show-input" width="25%" readonly value="-" id="nombreCompletoModal">
+                            <input type="text" id="" name="id" hidden>
+                            <label class="">Nombre completo</label>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
+                        <div class="group" style="width: 50%;">  
+                            <input type="text" class="data-show-input" width="25%" readonly value="-" id="tipoNroDocModal">
+                            <input type="text" id="" name="id" hidden>
+                            <label class="">Tipo y número de documento</label>
+                        </div>
+                        <div class="group" style="width: 50%;">  
+                            <input type="text" class="data-show-input" width="25%" readonly value="-" id="emailModal">
+                            <input type="text" id="" name="id" hidden>
+                            <label class="">Email</label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <p class="bottom-modal-text" id="bottomBajaModalText"></p>
         <input type="text" name="" id="idArticulo" hidden>
         <div class="modal-footer">
-          <button type="button" class="btn" onClick="closeLoadingRing();" data-dismiss="modal" id="secondary-btn-baja">Atras</button>
-          <button type="button" class="btn" id="conf-cancelar-btn" onclick= "update_estado()" style="background-color: #f14e4e;box-shadow: none !important;color: #fff;">Cancelar Depósito</button>
+          <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
+          <button type="button" class="btn" id="conf-cancelar-btn" onclick= "update_estado()" style="background-color: #95C22B;box-shadow: none !important;color: #fff;">Acreditar</button>
         </div>
       </div>
     </div>
@@ -316,11 +358,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body modal-body-card" style="height: fit-content;overflow-x:hidden;" id="modalAltaPDBody">
-            <!--Loading Ring -->
-            <div class="row" id="loadingRow">
-                <div class="lds-ring loadingRingAlta"><div></div><div></div><div></div><div></div></div>
-            </div>            
+        <div class="modal-body modal-body-card" style="height: fit-content;overflow-x:hidden;" id="modalAltaPDBody">           
             <div class="row subheader-row" id="subheader-alta-pd">
                 <div class="col">
                     <label class="subheader-info" id="subheader-alta">Datos del Depósito</label>

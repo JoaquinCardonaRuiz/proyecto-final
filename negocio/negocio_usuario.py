@@ -245,3 +245,11 @@ class NegocioUsuario(Negocio):
             return DatosUsuario.get_all_documentos(uid)
         except Exception as e:
             raise e
+
+
+    @classmethod
+    def buscar_info_user(cls,busqueda):
+        try:
+            return DatosUsuario.buscar_info_user(busqueda)
+        except Exception as e:
+            raise e

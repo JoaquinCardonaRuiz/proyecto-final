@@ -1368,6 +1368,21 @@ def deposito_info(id):
         return error(e,"pedidos")
 
 
+@app.route('/gestion-depositos/buscar-info-user/<busqueda>')
+def buscar_info_user(busqueda):
+    try:
+        users = NegocioUsuario.buscar_info_user(busqueda)
+        users_dic =  [{"id":      u.id,
+                     "nombre":    u.nombre+" "+u.apellido,
+                     "nro_doc":   u.nroDoc,
+                     "tipo_doc":  u.tipoDoc.nombre,
+                     "email":     u.email}
+                     for u in users]
+        return jsonify(users_dic)
+    except Exception as e:
+        return jsonify(str(e))
+
+
 @app.route('/depositos/usuario', methods = ['GET','POST'])
 def depositos():
     try:
