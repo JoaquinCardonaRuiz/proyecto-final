@@ -54,12 +54,8 @@ class DatosDeposito(Datos):
             cls.cursor.execute(sql)
             id_ep = cls.cursor.fetchone()[0]
 
-            tiempo_vigencia = DatosEcoPuntos.get_tiempo_vigencia()
-            fecha_vencimiento = datetime.now() + timedelta(days=int(tiempo_vigencia))
-            fecha_vencimiento = fecha_vencimiento.strftime('%Y-%m-%d %H:%M:%S')
-
             #Guardo los EP
-            DatosEcoPuntos.add(fecha_vencimiento,cant_ep)
+            DatosEcoPuntos.add(cant_ep)
 
             #Obtengo id Deposito para calcular el codigo
             sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'depositos'")

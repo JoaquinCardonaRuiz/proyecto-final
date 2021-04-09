@@ -1,6 +1,9 @@
 from data.data import Datos
+from classes import ProduccionInsumo
 from classes import ProduccionArticulo
+from classes import CantInsumo
 from classes import CantArticulo
+
 import custom_exceptions
 
 class DatosProduccion(Datos):
@@ -34,15 +37,51 @@ class DatosProduccion(Datos):
             cls.cerrar_conexion()
 
 
+
     @classmethod
-    def add(cls,idArt,fecha,cant):
+    def get_all_insumos(cls):
         """
-        Da de alta una nueva producción de un articulo en el sistema.
+        Obtiene todas las producciones de insumos de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("INSERT INTO prodTipArt (idTipoArticulo, fecha, cantidad,estado) \
-                    VALUES ({},\"{}\",{},'disponible');".format(idArt,fecha,cant))
+            sql = ("SELECT \
+                    idProdInsumo, \
+                    idInsumo, \
+                    fecha, \
+                    cantidad \
+                    FROM prodInsumos WHERE estado != \"eliminado\";")
+            cls.cursor.execute(sql)
+            prods_ = cls.cursor.fetchall()
+            producciones = []
+            for p in prods_:
+                ins = CantInsumo(p[3],p[1])
+                prod = ProduccionInsumo(p[0],ins,p[2].strftime("%d/%m/%Y"))
+                producciones.append(prod)
+            return producciones
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_produccion.get_all_insumos()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo las producciones desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def add(cls,id,fecha,cant,kind):
+        """
+        Da de alta una nueva producción  en el sistema.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ""
+            if kind == "art":
+                sql = ("INSERT INTO prodTipArt (idTipoArticulo, fecha, cantidad,estado) \
+                        VALUES ({},\"{}\",{},'disponible');".format(id,fecha,cant))
+            elif kind == "ins":
+                sql = ("INSERT INTO prodInsumos (idInsumo, fecha, cantidad,estado) \
+                        VALUES ({},\"{}\",{},'disponible');".format(id,fecha,cant))
             cls.cursor.execute(sql)
             cls.db.commit()
             return True

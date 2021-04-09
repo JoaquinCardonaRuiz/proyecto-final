@@ -39,10 +39,11 @@ class Datos():
         """
         
         try:
+                        
             cls.db = mysql.connector.connect(host="sql10.freemysqlhosting.net", # Host de la BD.
-                        user="sql10385459", # Usuario de la BD
-                        passwd="ccxjxzECiQ", # Contraseña de la BD
-                        db="sql10385459")  # Nombre de la DB
+                        user="sql10404333", # Usuario de la BD
+                        passwd="nBUhZ1gSar", # Contraseña de la BD
+                        db="sql10404333")  # Nombre de la DB
             cls.cursor = cls.db.cursor()
                 
         except Exception as e:
