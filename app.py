@@ -1426,6 +1426,81 @@ def verificar_codigo(cod):
     except Exception as e:
         return error(e,"codigo")
 
+
+''' 
+    ----------
+    PRODUCCION
+    ----------
+'''
+@app.route('/produccion')
+def gestion_prod():
+    return render_template('elegirProd.html',usuario=session["usuario"])
+
+@app.route('/produccion/insumos')
+def prod_Insumos():
+    insumos = NegocioInsumo.get_all()
+    prods = NegocioProduccion.get_all_insumos()
+    return render_template('insumosProd.html',insumos=insumos,prods=prods,usuario=session["usuario"])
+
+@app.route('/produccion/articulos')
+def prod_Articulos():
+    articulos = NegocioArticulo.get_all()
+    prods = NegocioProduccion.get_all_articulos()
+    return render_template('articulosProd.html', articulos=articulos,usuario=session["usuario"],prods=prods)
+
+
+@app.route('/produccion/insumos/<id>')
+def get_materiales_prod(id):
+    ins = NegocioInsumo.get_by_id(id)
+    ids = [i.idMaterial for i in ins.materiales]
+    cants = [i.cantidad for i in ins.materiales]
+    materiales = NegocioMaterial.get_by_id_array(ids)
+    materiales_dic =  [{"nombre":   m.nombre,
+                        "stock":    m.stock,
+                        "cant":     c}
+                        for m,c in list(zip(materiales,cants))]
+    materiales_dic.append({"nombre": ins.nombre,"stock": ins.stock})
+    return jsonify(materiales_dic)
+
+
+@app.route('/produccion/articulos/<id>')
+def get_insumos(id):
+    art = NegocioArticulo.get_by_id(id)
+    ids = [i.idInsumo for i in art.insumos]
+    cants = [i.cantidad for i in art.insumos]
+    insumos = NegocioInsumo.get_by_id_array(ids)
+    insumos_dic =  [{"nombre":   i.nombre,
+                     "stock":    i.stock,
+                     "cant":     c}
+                     for i,c in list(zip(insumos,cants))]
+    insumos_dic.append({"nombre": art.nombre,"stock": art.stock})
+    return jsonify(insumos_dic)
+
+
+
+@app.route('/produccion/insumos/confirmar',methods=["POST","GET"])
+def confirmar_prod_ins():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idIns"])
+            cant = float(request.form["cantidad"])
+            NegocioProduccion.confirmar_produccion(id,cant,"ins")
+        return redirect(url_for('prod_Insumos'))
+    except Exception as e:
+        return error(e,"produccion-ins")
+
+
+@app.route('/produccion/articulos/confirmar',methods=["POST","GET"])
+def confirmar_prod_art():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idArt"])
+            cant = float(request.form["cantidad"])
+            NegocioProduccion.confirmar_produccion(id,cant,"art")
+        return redirect(url_for('prod_Articulos'))
+    except Exception as e:
+        return error(e,"produccion-art")
+
 '''
     -----------------------
     Quienes somos

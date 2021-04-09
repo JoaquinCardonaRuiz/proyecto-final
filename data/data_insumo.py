@@ -154,3 +154,44 @@ class DatosInsumo(Datos):
                                                     msj_adicional="Error obtieniendo los insumos desde la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+
+
+    @classmethod
+    def addStock(cls,idIns,cant):
+        """
+        Suma la cantidad especificada al stock de un insumo
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE insumos SET stock=stock+{} WHERE idInsumo={};").format(cant,idIns)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.addStock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def removeStock(cls,idIns,cant):
+        """
+        Resta la cantidad especificada al stock de un insumo
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE insumos SET stock=stock-{} WHERE idInsumo={};").format(cant,idIns)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.removeStock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()
