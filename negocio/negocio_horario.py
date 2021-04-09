@@ -43,7 +43,7 @@ class NegocioHorario(Negocio):
                                                     msj_adicional="Error en la capa de Negocio validando las RN de un horario.")
 
     @classmethod
-    def alta_horarios(cls, horarios, idPuntoDep, validar=False):
+    def alta_horarios(cls, horarios, idPuntoDep, pd=True, validar=False):
         """
         Añade los horarios de un PD o un PR a la BD.
         """
@@ -64,17 +64,20 @@ class NegocioHorario(Negocio):
                         else:
                             horario = Horario(None,datetime.strptime(horaDesde, '%H:%M').time(),datetime.strptime(horaHasta, '%H:%M').time(),dia)
 
-                    DatosHorario.alta_horario_PD(horario, idPuntoDep)
+                    if pd:
+                        DatosHorario.alta_horario_PD(horario, idPuntoDep)
+                    else:
+                        DatosHorario.alta_horario_PR(horario, idPuntoDep)
 
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_direccion.alta_horarios()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio dando de alta los horarios de un Punto de Depósito.")
+                                                    msj_adicional="Error en la capa de Negocio dando de alta los horarios de un Punto de Depósito o Retiro.")
 
     @classmethod
-    def mod_horarios(cls, horarios, idPuntoDep, validar=False):
+    def mod_horarios(cls, horarios, idPuntoDep, pd=True, validar=False):
         """
         Modifica los horarios de un PD o un PR a la BD.
         """
@@ -95,11 +98,14 @@ class NegocioHorario(Negocio):
                         else:
                             horario = Horario(None,datetime.strptime(horaDesde, '%H:%M').time(),datetime.strptime(horaHasta, '%H:%M').time(),dia)
 
-                    DatosHorario.mod_horario_PD(horario, idPuntoDep)
+                    if pd:
+                        DatosHorario.mod_horario_PD(horario, idPuntoDep)
+                    else:
+                        DatosHorario.mod_horario_PR(horario, idPuntoDep)
 
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_direccion.mod_horarios()",
                                                     msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio modificando los horarios de un Punto de Depósito.")
+                                                    msj_adicional="Error en la capa de Negocio modificando los horarios de un Punto de Depósito o Retiro.")

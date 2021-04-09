@@ -14,13 +14,7 @@ Dependencias:
     MySQLdb
 
 TODO:
-    * DONE - Arreglar clase TipoUsuario
-    * DONE - Terminar clase Estimacion
-    * DONE - Recordar qué era el atributo "estado" en TipoDocumento
-    * Crear clase EcoAsistente que guarde todos los globales. (stocks, etc.)
-    * Recuperar valores de EcoPuntos al inicializar clase EcoAsistente
-    * Programar consulta de datos en clase EcoPuntos
-    * Completar descripcion de atributo "abierto" en clase Horario
+    * Calcular el vencimiento de los depósitos.
 """
 
 #Imports
@@ -45,8 +39,7 @@ class Usuario:
         IDTipoUsuario (string): Identificador de la instancia de TipoUsuario que corresponde
             a la entidad.
         direccion (Direccion): Dirección física del domicilio del usuario
-        despositosActivos (Deposito[]): Arreglo de depositos cuyos ecopuntos siguen vigentes.
-        depositosVencidos (Deposito[]): Arreglo de depositos cuyos ecopuntos se encuentran vencidos.
+        despositos (Deposito[]): Arreglo de depositos realizados por el usuario.
         pedidos (Pedidos[]): Arreglo de los pedidos realizados por el usuario.
         totalEcopuntos (int): Sumatoria de la cantidad de ecopuntos que el usuario posee.
         idNivel (string): Identificador del nivel que le corresponde al usuario.
@@ -56,6 +49,8 @@ class Usuario:
             el usuario.
         estimacionesEnergia (Estimacion[]): Arreglo de estimaciones de consumo de energía
             recibidas por el usuario.
+        img (String): ruta a imagen de perfil
+        estado(String): representa el estado de un usuario respecto a su registro, o bien, a su estado en la BD.
     """
 
     def __init__(self, 
@@ -67,13 +62,15 @@ class Usuario:
                 password, 
                 idTipoUsuario,
                 direccion,
-                depositosActivos=[],
-                depositosVencidos=[],
+                depositos=[],
                 pedidos=None,
                 idNivel=None,
                 recomendacionesPlantas=[],
                 estimacionesCO2=[],
-                estimacionesEnergia=[]):
+                estimacionesEnergia=[],
+                email=None,
+                img = "/static/img/avatar.png",
+                estado = None):
         self.id = id
         self.nroDoc = nroDoc
         self.tipoDoc = tipoDoc
@@ -82,14 +79,16 @@ class Usuario:
         self.password = password
         self.idTipoUsuario = idTipoUsuario
         self.direccion = direccion
-        self.depositosActivos = depositosActivos
-        self.depositosVencidos = depositosVencidos
+        self.depositos = depositos
         self.pedidos = pedidos
         self.totalEcopuntos = 0
         self.idNivel = idNivel
         self.recomendacionesPlantas = recomendacionesPlantas
         self.estimacionesCO2 = estimacionesCO2
         self.estimacionesEnergia = estimacionesEnergia
+        self.email = email
+        self.img = img
+        self.estado = estado
 
     def comprobarVencimientoDepositos(self,):
         """ """
@@ -99,7 +98,7 @@ class Usuario:
         Calcula los EcoPuntos del Usuario en base a sus depositos
         """
         self.totalEcopuntos = 0
-        for dep in self.depositosActivos:
+        for dep in self.depositos:
             ep = dep.ecoPuntos
             self.totalEcopuntos += ep.cantidadRestante
 
@@ -297,8 +296,9 @@ class Material:
         stock (float): Cantidad del material presente en inventario.
         color(string): Código hexadecimal del color con que se muestra un material.
         estado(string): Indica si los depositos del material estan habilitados
+        descripcion(string): Descripción del material.
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color,estado="habilitado"):
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color,estado="habilitado",descripcion="Este elemento no tiene descripción aún."):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -306,6 +306,7 @@ class Material:
         self.stock = stock
         self.color = color
         self.estado = estado
+        self.descripcion = descripcion
 
 class CantMaterial:
     """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.
@@ -516,8 +517,9 @@ class Deposito:
             asignados al usuario al registrar el depósito. 
         fechaRegistro (Date, optional): Fecha en la que el depósito fue registrado por el usuario.
         fechaDeposito (Date): Fecha en la que el depósito fue realizado.
+        estado (String): Estado de la entidad
     """
-    def __init__(self, id, codigo, material, idPuntoDeposito, fechaDeposito, ecoPuntos=None, fechaRegistro=None):
+    def __init__(self, id, codigo, material, idPuntoDeposito, fechaDeposito, ecoPuntos=None, fechaRegistro=None, estado=""):
         self.id = id
         self.codigo = codigo
         self.material = material
@@ -525,33 +527,16 @@ class Deposito:
         self.fechaDeposito = fechaDeposito
         self.ecoPuntos = ecoPuntos
         self.fechaRegistro = fechaRegistro
+        self.estado = estado
 
-    def isActivo(self):
-        #TODO: Desarrollar este metodo
-        return True
-
-    def comprobarCodigo(self, codigo):
-        return False
-
-class DepositosSinRegistrar:
-    """ Clase SINGLETON que guarda las instancias de depositos que fueron realizadas pero no 
-    se registraron a ningún usuario.
-    Atributos:
-        id (string): Identificador de la entidad.
-        depositos (Deposito[], opcional): Arreglo donde se guardan los depositos no 
-            registrados.
-    """
-
-    def __init__(self, id, depositos=[]):
-        self.id = id
-        self.depositos = depositos
+    def isAcreditado(self):
+        return bool(self.fechaRegistro)
 
 class EcoPuntos:
     """ Representa un conjunto de ecopuntos, correspondiente a un depósito, los mismos 
     comparten una fecha de vencimiento.
     Atributos:
         id (string): Identificador de la entidad.
-        fechaVencimiento (Date): fecha en la cual los ecopuntos vencen.
         cantidad (float): cantidad de ecopuntos que este conjunto representa.
         cantidadRestante (float): cantidad de ecopuntos de este conjunto que no han sido
             utilizados.
@@ -561,7 +546,6 @@ class EcoPuntos:
     """
 
     valorMonetario = None
-    tiempoVencimiento = None
 
     @classmethod
     def getEPData(cls):
@@ -596,21 +580,9 @@ class EcoPuntos:
         self.id = id
         self.cantidad = cantidad
         self.cantidadRestante = cantidadRestante
-        self.fechaVencimiento = self.calcularFechaVenc()
         # Sería conveniente (pero no necesario) ejecutar la siguiente linea:
         # EcoPuntos.getEPdata()
         # A fin de proteger contra inconsistencias.
-        # Pero debe evaluarse el impacto a la performance.
-
-    def calcularFechaVenc(self):
-        """Esta función calcula la fecha de vencimiento, utilizando la fecha actual, y el
-        atributo de clase tiempoVencimiento.
-        """
-        # Algo así como
-        # return fecha_actual + EcoPuntos.tiempoVencimiento
-        return 0
-        # Devuelvo 0 porque devolver None hace que el linter piense que hay un error
-
 
 
 '''
@@ -654,13 +626,14 @@ class PuntoRetiro:
         demoraFija (Time): Cantidad de tiempo que tarda en prepararse un pedido.
     """
 
-    def __init__(self,id,direccion,nombre,estado,horarios,demoraFija):
+    def __init__(self,id,direccion,nombre,estadoEliminacion,horarios,demoraFija,estado):
         self.id = id
         self.direccion = direccion
         self.nombre = nombre 
         self.estado = estado 
         self.horarios = horarios 
         self.demoraFija = demoraFija
+        self.estado = estado
 
 class Pedido:
     """ Representa un pedido de artículos realizado por un cliente.
@@ -694,40 +667,6 @@ class Pedido:
         self.idPuntoRetiro = idPuntoRetiro
         self.estado = estado
 
-class MovimientoStock:
-    """
-    Registra un movimiento de stock de un punto de retiro a otro.
-
-    Atributos:
-        id (string): identificador de la entidad
-        idOrigen (string): identificador del punto de retiro de origen
-        idDestino (string): identificador del punto de retiro destino
-        articulos (CantArticulos): articulos (de un solo tipo articulo) involucrado en el movimiento
-        fecha (Date): fecha en la que se realizó el movimiento
-    """
-    def __init__(self,id,idOrigen,idDestino,articulos,fecha):
-        self.id = id
-        self.idOrigen = idOrigen
-        self.idDestino = idDestino
-        self.articulos = articulos
-        self.fecha=fecha
-
-class MovimientoStockPrincipal:
-    """
-    Registra un movimiento de stock del stock principal a un punto de retiro.
-
-    Atributos:
-        id (string): identificador de la entidad
-        idDestino (string): identificador del punto de retiro destino
-        articulos (CantArticulos): articulos (de un solo tipo articulo) involucrado en el movimiento
-        fecha (Date): fecha en la que se realizó el movimiento
-    """
-    def __init__(self,id,idDestino,articulos,fecha):
-        self.id = id
-        self.idDestino = idDestino
-        self.articulos = articulos
-        self.fecha=fecha
-
 
 '''
 ENTIDADES DESTINO
@@ -757,11 +696,13 @@ class SalidaStock:
         id (string): Identificador de la entidad.
         articulos (CantArticulo): Lote de articulos que representa.
         fecha (Date): Fecha de la transacción.
+        concepto (string): Motivo por el cual se produce la salida.
     """
-    def __init__(self,id,articulos,fecha):
+    def __init__(self,id,articulos,fecha,concepto):
         self.id = id
         self.articulos = articulos
         self.fecha = fecha
+        self.concepto = concepto
 
 
 '''

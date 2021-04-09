@@ -79,3 +79,24 @@
   margin-left: -11.5%;
   margin-top: 100px;
 }
+
+#loading-text-codigo{
+  margin-top: 2.5%;
+  margin-left: -0.5%;
+  font-family: 'Roboto', sans-serif;
+  display: none;
+  font-size: 18px;
+}
+
+#loadingRowCodigo{
+  display: none;
+  margin-top:15%;
+  width: calc(100% - 15.5rem);
+	margin-left: 15.5rem;
+}
+
+#loading-text-row{
+  display: none;
+  width: calc(100% - 15.5rem);
+	margin-left: 15.5rem;
+}

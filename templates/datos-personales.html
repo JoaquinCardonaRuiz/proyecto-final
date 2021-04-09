@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registrarse - EcoAsitente</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/datos-personales.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/loading-elements.css')}}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">   
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">   
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body style="background-color: #ffffff;">
+    <img src="/static/img/login-background.jfif" class="img-login">
+    <div class="login-container">
+        <div class="content-container">
+            <div class="row justify-content-center align-items-center" id="email-container">
+                <img src="/static/img/email-sent.png" class="email-icon" width="200px">
+                <p class="thanks-email-label" style="width: 100%;">¡Gracias por registrarse en EcoAsistente!</p>
+                <p class="indications-email-label">Te envíamos un email a <strong id="email-direction-label"></strong> para que puedas verificar tu correo electrónico y terminar el registro.</p>
+                <h3 id="email-button" onclick="redirectBlank()">Ir a gmail.com</h3>
+            </div>
+
+            <form class="register-form" id="register-form" action="{{url_for('activacion')}}" method="POST">
+                <div class="row d-flex">
+                    <div class="container" id="heading-container" style="margin-bottom: 3%;">
+                        <h1 class="heading">Datos Personales</h1>
+                        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Para comenzar a usar tu cuenta de EcoAsistente, completá tus datos personales</span></h6>
+                    </div>
+                </div>
+                {%if state == False%}
+                <div class="row-error justify-content-center error-msg-login" id="error-msg-login">
+                    <p class="error-msg-text">¡Ups! Algo salió mal al activar tu cuenta</p>
+                </div>
+                {%endif%}
+                <div class="row d-flex">
+                    <div class="group" id="email-input-group">  
+                        <input type="text"  onfocusout="validateEmail(value);" class="data-show-input email-input" readonly value="{{user.email}}" name="email">
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <label class="email-input">Email</label>
+                        <p id="" class="cartel-checked"><i class="fa fa-check modal-info-img" style="color: #95C22B;"></i> Email validado correctamente.</p>
+                    </div>
+                </div>
+                <div class="row d-flex mt-3" id="nombre-row">
+                    <div class="col">
+                        <div class="group" id="password-input-group">  
+                            <input required autocomplete="off" id="name-input" type="text" class="password-input" name="nombre" oninput="validaNombre(value)">
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight password-input"></span>
+                            <span class="bar password-input"></span>
+                            <label class="password-input">Nombre</label>
+                            <p id="name-error" class="cartel-error" style="margin-bottom: 25px !important;">* El nombre no puede quedar vacío.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="group" id="password-input-group">  
+                            <input required autocomplete="off" id="password-input" type="text" class="password-input" name="apellido" oninput="validaApellido(value)">
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight password-input"></span>
+                            <span class="bar password-input"s></span>
+                            <label class="password-input">Apellido</label>
+                            <p id="apellido-error" class="cartel-error" style="margin-bottom: 25px !important;">* El apellido no puede quedar vacío.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex mt-3" style="margin-top: 7% !important;" id="documento-row">
+                    <div class="col">
+                        <div class="group" id="password-input-group">  
+                            <input required autocomplete="off" id="password-input" type="text" class="password-input" name="documento" oninput="validaDoc(value)">
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight password-input"></span>
+                            <span class="bar password-input"s></span>
+                            <label class="password-input">Número de documento</label>
+                            <p id="error-doc" class="cartel-error" style="margin-bottom: 25px !important;">* La contraseña no cumple los requisitos.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="group" id="password-input-group">
+                            <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="password-input" class="selectpicker selectpicker-nooutline" id="nombreArtInput" name="tipo_doc" data-live-search="true" oninput="validaTipoDoc(value);">
+                                <option value=-1 disabled selected>&nbsp; Seleccione tipo</option>
+                                {%for tipo_doc in tipos_doc%}
+                                <option value={{tipo_doc.id}}>&nbsp; {{tipo_doc.nombre}}</option>
+                                {%endfor%}
+                            </select>
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight password-input"></span>
+                            <span class="bar password-input"s></span>
+                            <label class="password-input">Tipo de documento</label>
+                            <p id="nameError" class="modalErrorMessage"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex mt-3" id="direccion-row-1">
+                    <div class="col">
+                        <div class="group" style="margin-top: 2%;">
+                            <input type="text" required id="callePD" onkeyup="updateMap('alta'); validaDireccion('alta','calle');" name="calle" autocomplete="off" style="width: 215%;"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 215%;"></span>
+                            <span class="bar" style="width: 215%;"></span>
+                            <label>Calle</label>
+                            <p id="error-calle" class="cartel-error" style="display: none; width: 215%;">* La calle no puede quedar vacía.</p>
+
+                        </div>
+                    </div>
+                    <div class="col" style="margin-left: 33.3%;">
+                        <div class="group" style=" margin-top: 2%;">
+                            <input type="text" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('alta'); validaDireccion('alta','altura');" name="altura" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 100%;"></span>
+                            <span class="bar" style="width: 100%;"></span>
+                            <label>Altura</label>
+                            <p id="error-altura" class="cartel-error" style="display: none;">* Complete la altura.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex mt-3" id="direccion-row-2">
+                    <div class="col">
+                        <div class="group" style="margin-top: 2%;">
+                            <input type="text" required id="ciudadPD" onkeyup="updateMap('alta'); validaDireccion('alta','ciudad');" name="ciudad" autocomplete="off" style="width: 100%;" value="Rosario"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 100%;"></span>
+                            <span class="bar" style="width: 100%;"></span>
+                            <label>Ciudad</label>
+                            <p id="error-ciudad" class="cartel-error" style="display: none;">* Complete la ciudad.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="group" style="margin-top: 2%;">
+                            <input type="text" required id="provinciaPD" onkeyup="updateMap('alta'); validaDireccion('alta','provincia');" name="provincia" autocomplete="off" style="width: 100%;" autocomplete="off" value="Santa Fe"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 100%;"></span>
+                            <span class="bar" style="width: 100%;"></span>
+                            <label>Provincia</label>
+                            <p id="error-provincia" class="cartel-error" style="display: none;">* Complete la provincia.</p>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="group" style="margin-top: 2%;">
+                            <input type="text" required id="paisPD" onkeyup="updateMap('alta'); validaDireccion('alta','pais');" name="pais" autocomplete="off" style="width: 100%;" autocomplete="off" value="Argentina"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 100%;"></span>
+                            <span class="bar" style="width: 100%;"></span>
+                            <label>País</label>
+                            <p id="error-pais" class="cartel-error" style="display: none;">* Complete el país.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex mt-1">
+                    <div class="mapouter" style="margin-left: 2%; margin-bottom: 5%;">
+                        <div class="gmap_canvas">
+                            <iframe width="603" height="280" id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0"></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center bottom-row">
+                    <h3 id="start-button" id="start-button" onclick="activa_cuenta();">Activar mi cuenta</h3>
+                </div>
+            </form>
+            <div class="row" id="loadingRowLogin" style="margin-left:0%; margin-top: 30%;">
+                <div class="lds-ring" style="display: block !important;"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <p id="loading-text-login" style="margin-top: 5% !important;">Estamos activando tu cuenta</p>   
+            
+        </div>
+        
+    </div>
+</body>
+
+<script src="static/js/datos-personales.js"></script>
+<script></script>

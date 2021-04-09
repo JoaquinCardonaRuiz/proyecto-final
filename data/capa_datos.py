@@ -3,7 +3,7 @@
 
 from data.data_articulo               import DatosArticulo
 from data.data_cant_articulo          import DatosCantArticulo
-from data.data_cant_insumo          import DatosCantInsumo
+from data.data_cant_insumo            import DatosCantInsumo
 from data.data_cant_material          import DatosCantMaterial
 from data.data_deposito               import DatosDeposito
 from data.data_ecopuntos              import DatosEcoPuntos

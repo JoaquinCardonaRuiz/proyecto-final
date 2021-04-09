@@ -15,6 +15,7 @@ border-bottom: none !important;
 box-shadow:rgb(100, 100, 100) !important;
 }
 
+
 .btn {
   text-transform: none !important;
 }
@@ -100,6 +101,7 @@ width: 230px;
 .primary-btn{
 background-color: #95C22B !important;
 color: #fff !important;
+box-shadow: none !important;
 }
 
 .primary-btn:hover{
@@ -108,6 +110,7 @@ background-color: #87af28 !important;
 
 .primary-btn-mod{
 background-color: #95C22B;
+box-shadow: none !important;
 color: #fff;
 }
 
@@ -117,6 +120,7 @@ background-color: #87af28;
 
 .primary-btn-alert{
 background-color: #f14e4e;
+box-shadow: none !important;
 color: #fff;
 }
 
@@ -127,6 +131,7 @@ color: #fff;
 
 .primary-btn{
   background-color: #95C22B !important;
+  box-shadow: none !important;
   color: #fff !important;
 }
 
@@ -135,6 +140,7 @@ background-color: #87af28 !important;
 }
 
 .primary-btn-mod{
+box-shadow: none !important;
 background-color: #95C22B;
 color: #fff;
 }
@@ -144,11 +150,13 @@ background-color: #87af28;
 }
 
 .primary-btn-alert{
+box-shadow: none !important;
 background-color: #f14e4e;
 color: #fff;
 }
 
 .primary-btn-alert:hover{
+box-shadow: none !important;
 background-color: #cf4545;
 color: #fff;
 }
@@ -187,6 +195,7 @@ background-color: #ebebeb;
 
 #primary-btn{
   background-color: #95C22B;
+  box-shadow: none !important;
   color: #fff;
 }
 
@@ -196,6 +205,7 @@ background-color: #87af28;
 
 #primary-btn-mod{
 background-color: #95C22B;
+box-shadow: none !important;
 color: #fff;
 }
 
@@ -205,6 +215,7 @@ background-color: #87af28;
 
 #primary-btn-alert{
 background-color: #f14e4e;
+box-shadow: none !important;
 color: #fff;
 }
 
@@ -672,4 +683,13 @@ input:focus ~ .highlight {
 
 .selectpicker-nooutline{
   outline:none !important;
+  margin-top: 2px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Some browsers will not display the caret when using calc, so we put the fallback first */ 
+  background: url("/static/img/chevron.svg") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
+  background: url("/static/img/chevron.svg") white no-repeat calc(100% - 10px) !important; /* Better placement regardless of input width */
+  background-size: 20px !important;
+  width: 100%;
 }

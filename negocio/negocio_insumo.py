@@ -110,3 +110,11 @@ class NegocioInsumo(Negocio):
             return DatosInsumo.get_nombres_by_idMat(idMat)
         except Exception as e:
             raise e
+
+
+    @classmethod
+    def get_by_id_array(cls,ids):
+        insumos = []
+        for id in ids:
+            insumos.append(cls.get_by_id(id))
+        return insumos

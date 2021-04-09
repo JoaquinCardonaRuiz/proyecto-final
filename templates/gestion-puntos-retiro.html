@@ -1,0 +1,655 @@
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="heading-container">
+        <h1 class="heading">Gestión de Puntos de Retiro</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Cree, elimine, modifique y configure los Puntos de Retiro de EcoAsistente.</span></h6>
+    </div>
+    <div class="container" id="top-container">
+        <div class="row">
+            <div class="container" id="option-left" onclick="openAltaModal();">
+                    <div class="option-text">
+                        <p class="option-title">Añadir Punto</p>
+                        <p class="text-box">Añadir un nuevo Punto de Retiro al sistema</p>
+                    </div>
+                    <i class="fa fa-plus option-img" id="option-img-1"></i>
+            </div>
+            <div class="container" id="option-middle" onclick="modificarPunto()">
+                <div class="option-text">
+                    <p class="option-title">Modificar Punto</p>
+                    <p class="text-box">Modificar la configuración de un Punto de Retiro</p>
+                </div>
+                <i class="fa fa-edit option-img" id="option-img-2"></i>
+            </div>
+            <div class="container" id="option-right" onclick="removerPunto()">
+                <div class="option-text">
+                    <p class="option-title">Eliminar Punto</p>
+                    <p class="text-box">Eliminar un Punto de Retiro ya registrado en el sistema</p>
+                </div>
+                <i class="fa fa-trash option-img"  id="option-img-3"></i>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="table-container">
+        <div class="row d-flex justify-content-center">
+            <table class="table" id="content-table">
+                <thead style="border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">Nombre</th>
+                    <th scope="col" class="table-heading">Dirección</th>
+                    <th scope="col" class="table-heading">Activo</th>
+                    <th scope="col" class="table-heading">Demora</th>
+                    <th scope="col" class="table-heading">Horarios</th>
+                    <th scope="col" class="table-heading">Pedidos</th>
+                    <th class="table-heading delete-th"></th>
+                    <th class="table-heading modify-th"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for punto in puntos_retiro%}
+                <tr>
+                    <th scope="row">{{punto.nombre}}</th>
+                    <td>{{punto.direccion.calle}} {{punto.direccion.altura}}, {{punto.direccion.ciudad}}</td>
+                    {%if punto.estado == True%}
+                        <td>
+                            <div>
+                                <i class="fas fa-circle color-activo" id="estado-activo"></i>
+                                Activo
+                            </div>
+                        </td>
+                    {%else%}
+                        <td>
+                            <div>
+                                <i class="fas fa-circle color-inactivo" id="estado-inactivo"></i>
+                                Inactivo
+                            </div>
+                        </td>
+                    {%endif%}
+                    {%if punto.demoraFija == 1%}
+                        <td>{{punto.demoraFija}} día</td>
+                    {%else%}
+                        <td>{{punto.demoraFija}} días</td>
+                    {%endif%}
+                    <td><a class="custom-link" onclick="openLoadingRing();openModalHorarios('{{punto.id}}', '{{punto.nombre}}', '{{punto.estado}}');"><i class="far fa-clock"></i> Ver horarios</a></td>
+                    <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{punto.id}}', '{{punto.nombre}}');"><i class="fa fa-paper-plane custom-link-fa"></i> Ver pedidos</a></td>
+                    <td class="delete-row" onclick="openBajaModal('{{punto.nombre}}','{{punto.id}}');"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon"></i></td>
+                    <td class="modify-row" onclick="openModModal('{{punto.nombre}}','{{punto.estado}}', '{{punto.direccion.calle}}', '{{punto.direccion.altura}}', '{{punto.direccion.ciudad}}', '{{punto.direccion.provincia}}', '{{punto.direccion.pais}}', '{{punto.id}}', '{{punto.direccion.id}}','{{punto.demoraFija}}');"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
+
+                    <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true"></button>
+                    <button id="open-modal-ped" href='#'data-toggle="modal" data-target="#pedidosModal"hidden="true"></button>
+                    <button id="close-loading-modal" href='#' onclick="cierraModal('loadingModal');" hidden="true"></button>
+                    <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<!-- Para mostrar mientras se carga un modal-->
+<div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+      <br><br><br><br><br><br><br><br>
+      <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- Horarios Modal -->
+<div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalHorarios"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-card">
+                <div class="container modal-large-card">
+                    <div class="row">
+                        <div class="modal-card-col" id="modal-card-col-1">
+                            <img src="/static/img/open-circle-icon.jpg" class="modal-large-card-img" id="open-img">
+                            <img src="/static/img/closed-circle-icon.png" class="modal-large-card-img" id="close-img">
+                            <img src="/static/img/inactive-circle-icon.png" class="modal-large-card-img" id="inactive-img">
+                        </div>
+                        <div class="modal-card-col" >
+                            <div class="row d-flex justify-content-center card-first-row">
+                                <p class="open-letter" id="estado-apertura-pos">Abierto</p>
+                                <p class="open-letter" id="estado-apertura-neg">Cerrado</p>
+                                <p class="open-letter" id="estado-apertura-inac">Inactivo</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box">Estado Actual</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col">
+                            <div class="row d-flex justify-content-center card-first-row">
+                                <p class="open-letter" id="cant-horas-cierre-pos">-</p>
+                                <p class="open-letter" id="cant-horas-cierre-neg">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box">Tiempo para cierre</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col">
+                            <div class="vl">
+                                <div class= "info-container-modal">
+                                    <span class="text-muted" id="toda-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-1-pos"></i>Abre de lunes a viernes<br></span>
+                                    <span class="text-muted" id="toda-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-1-neg"></i>No abre de lunes a viernes<br></span>
+
+                                    <span class="text-muted" id="fines-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-2-pos"></i>Abre fines de semana<br></span>
+                                    <span class="text-muted" id="fines-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-2-neg"></i>No abre fines de semana<br></span>
+
+                                    <i class="fa fa-clock modal-info-img" id="info-modal-3"></i><span class="text-muted" id="horarios-apertura">Hoy abre 08:00hs y cierra 20:00hs</span>                                                                        
+                                </div>
+                            </div>
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+                    <div class="container modal-large-card d-flex justify-content-center" id="modal-large-card-2">
+                        <table class="table" id="content-table-modal">
+                            <thead>
+                            <tr id=headerRow>
+                            </tr>
+                            </thead>
+                            <tbody id="modalTableBody">
+                            </tbody>
+                    
+                        </table>
+                    </div>
+            </div>        
+        <div class="modal-footer">
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<!-- Pedidos Modal -->
+<div class="modal fade modal-lg" id="pedidosModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalPedidos"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="container modal-body d-flex justify-content-center" id="">
+                <div class="row justify-content-center" id="no-deps">
+                    <p id="" class="advert-icon-no-mats"><i class="fa fa-exclamation-triangle advert-icon-no-mats"></i></p>
+                    <p class="bottom-modal-text-baja">Este Punto de Retiro aún no tiene pedidos asignados</p>
+                    <p class="bottom-modal-text less-margin-top">En cuanto algún usuario realice un pedido, podrá visualizarlo aquí.</p>
+                </div>
+                <table class="table" id="content-table-modal-pedidos" style="margin-left: 5%; margin-right: 5%; margin-top: -4.5%; margin-bottom: 0%;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">ID</th>
+                        <th scope="col" class="table-heading">Total EP</th>
+                        <th scope="col" class="table-heading">Total ARS</th>
+                        <th scope="col" class="table-heading">Fecha Encargo</th>
+                        <th scope="col" class="table-heading">Fecha Retiro</th>
+                        <th scope="col" class="table-heading">Estado</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>      
+            <div class="row justify-content-center" id="btn-ped-row">
+                <button type="button" class="btn secondary-btn" id="ver-pedidos-btn" data-mdb-ripple-color="dark" onclick="redirect('/codigo')">
+                    Ver todos los pedidos para este punto
+                </button>
+            </div>  
+        <div class="modal-footer">
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<!--Alta Modal -->
+<div class="modal fade modal-lg" id="altaPDModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document" style="height: fit-content;"id="altaPDModalContent">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Añadir un Punto de Retiro</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modal-body-card" style="height: fit-content;" id="modalAltaPDBody">
+            <!--Loading Ring -->
+            <div class="row " id="loadingRow">
+                <div class="lds-ring loadingRingAlta"><div></div><div></div><div></div><div></div></div>
+            </div>            
+            <form action="{{url_for('alta_pr')}}" method="POST" id="altaPrForm">
+                <div class="row subheader-row" id="subheader-alta-pd">
+                    <div class="col">
+                        <label class="subheader" id="subheader-alta">Datos Básicos</label>
+                    </div>
+                </div>
+                <!--Página 1 Alta -->
+                <div id="modal-alta-p1">
+                    <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px;">
+                        <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
+                            <input type="text" required id="nombrePD" onkeyup="validaNombrePD('alta');" name="nombrePD" autocomplete="off" style="width: 90%;"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 90%;"></span>
+                            <span class="bar" style="width: 90%;"></span>
+                            <label>Nombre Punto de Retiro</label>
+                            <p id="nombrePDError" class="modalErrorMessage">* Este nombre ya ha sido utilizado en otro Punto de Retiro.</p>
+                        </div>
+                    </div>
+                    <div class="row" id="fieldsRow1AltaPD2">
+                        <div class="col" style="margin-left: 5.5%;">
+                            <div class="group" style="margin-top: 0%; margin-left: 8%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <label>Estado inicial</label> 
+                            </div>
+                            <div class="group" style="margin-left: 19.5%; margin-top: 42px;">  
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch1" name="customSwitch1" checked>
+                                    <label class="custom-control-label" for="customSwitch1"></label>
+                                </div>
+                                <input type="text" id="switch-value" name = "switch-value" hidden>
+                            </div>
+                            <p class="color-activo" id="pdActivo">Punto de Retiro Activo</p>
+                            <p class="color-inactivo" id="pdInactivo">Punto de Retiro Inactivo</p>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="width: 80%;">
+                                <input type="text" required id="demoraPR"  onkeypress="return isNumberKey(this, event);" onkeyup="validaDemoraPR('alta');" name="demoraPR" autocomplete="off" style="width: 90%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 90%;"></span>
+                                <span class="bar" style="width: 90%;"></span>
+                                <label>Demora promedio (días)</label>
+                                <p id="demoraPRerror" class="modalErrorMessage">* No puede quedar vacía.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Página 2 Alta -->
+                <div id="modal-alta-p2" style="display: none;">
+                    <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="text" required id="callePD" onkeyup="updateMap('alta'); validaDireccion('alta','calle');" name="callePD" autocomplete="off" style="width: 215%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 215%;"></span>
+                                <span class="bar" style="width: 215%;"></span>
+                                <label>Calle</label>
+                                <p id="error-calle" class="modalErrorMessage" style="display: none; width: 215%;">* La calle no puede quedar vacía.</p>
+
+                            </div>
+                        </div>
+                        <div class="col" style="margin-left: 33.3%;">
+                            <div class="group" style=" margin-top: 2%;">
+                                <input type="text" required id="alturaPD" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('alta'); validaDireccion('alta','altura');" name="alturaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;"></span>
+                                <span class="bar" style="width: 100%;"></span>
+                                <label>Altura</label>
+                                <p id="error-altura" class="modalErrorMessage" style="display: none;">* Complete la altura.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="fieldsRow1AltaPD2" style="margin-left: 6.5%; margin-right: 8%;">
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="text" required id="ciudadPD" onkeyup="updateMap('alta'); validaDireccion('alta','ciudad');" name="ciudadPD" autocomplete="off" style="width: 100%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;"></span>
+                                <span class="bar" style="width: 100%;"></span>
+                                <label>Ciudad</label>
+                                <p id="error-ciudad" class="modalErrorMessage" style="display: none;">* Complete la ciudad.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="text" required id="provinciaPD" onkeyup="updateMap('alta'); validaDireccion('alta','provincia');" name="provinciaPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;"></span>
+                                <span class="bar" style="width: 100%;"></span>
+                                <label>Provincia</label>
+                                <p id="error-provincia" class="modalErrorMessage" style="display: none;">* Complete la provincia.</p>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="text" required id="paisPD" onkeyup="updateMap('alta'); validaDireccion('alta','pais');" name="paisPD" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;"></span>
+                                <span class="bar" style="width: 100%;"></span>
+                                <label>País</label>
+                                <p id="error-pais" class="modalErrorMessage" style="display: none;">* Complete el país.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="fieldsRow1AltaPD2" style="margin-bottom: -30px;">
+                        <div class="mapouter" style="margin-left: 10%;">
+                            <div class="gmap_canvas">
+                                <iframe width="603" height="280" id="gmap_canvas" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Página 3 Alta -->
+                <div id="modal-alta-p3" style="display: none;">
+                    {%for dia in dias%}
+                    <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input class="data-show-input" type="text" id="" value= "{{dia}}" readonly style="width: 100%;">
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <label>Día</label>
+                            </div>
+                        </div>
+                        <div class="col" style="margin-left: -40px; margin-right: -40px;">
+                            <div class="group" style="margin-top: 2%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <label>Abierto</label> 
+                            </div>
+                            <div class="custom-control custom-switch" style="margin-top: -8px !important; margin-left: 40px;">
+                                <input type="checkbox" class="custom-control-input" id="{{dia + '-switch'}}" name="{{dia + '-switch'}}" checked onclick="habilitaHorario('{{dia}}');">
+                                <label class="custom-control-label" for="{{dia + '-switch'}}"></label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="time" required id="{{dia + '-horaDesde'}}"autocomplete="off" name="{{dia + '-horaDesde'}}" style="width: 100%;" autocomplete="off" onkeyup="validaHorarioPD();" value="08:00"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;" id="{{dia + '-span-horaDesde'}}"></span>
+                                <span class="bar" style="width: 100%;" id="{{dia + '-bar-horaDesde'}}"></span>
+                                <label>Horario apertura</label>
+                                <p id="{{dia + '-error-horaDesde'}}" class="modalErrorMessage" style="display: none;">* Horario inválido.</p>
+                                <p id="{{dia + '-error'}}" class="modalErrorMessage" style="width: 250%; display: none;">* El horario de apertura debe ser menor al de cierre.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="time" required id="{{dia + '-horaHasta'}}" autocomplete="off" name="{{dia + '-horaHasta'}}" style="width: 100%;" autocomplete="off" onkeyup="validaHorarioPD();" value="20:00"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;" id="{{dia + '-span-horaHasta'}}"></span>
+                                <span class="bar" style="width: 100%;" id="{{dia + '-span-horaHasta'}}"></span>
+                                <label>Horario cierre</label>
+                                <p id="{{dia + '-error-horaHasta'}}" class="modalErrorMessage" style="display: none;">* Horario inválido.</p>
+                            </div>
+                        </div>
+                    </div> 
+                    {%endfor%}
+                </div>
+            </form>
+            <div class="row">
+                <p class="bottom-modal-text" id="bottomAltaModalTextAltaPD">Una vez completados todos los datos, presione el "Siguiente".</p>
+                <p class="bottom-modal-text" id="bottomAltaModalText"></p>
+            </div>
+            <div class="row margin-row" style="display: none;"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" id="secondary-btn" onclick="previous_page();">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="next_page();" id="primary-btn-alta">Siguiente</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Modify Modal -->
+<div class="modal fade modal-lg" id="modPDModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document" id="modPDModalDialog">
+      <div class="modal-content">
+        <div id="edit-modal-header" class="modal-header" style="border-bottom:none;"> 
+
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs pd-tabs" id="myTab" role="tablist" style="width: 100%;">
+            <li class="nav-item pr-tabs-item">
+              <a class="nav-link pd-link active" id="db-tab" onClick="configureModalTab(1);" data-toggle="tab" role="tab" aria-selected="true">Datos Básicos<span class="error-tab" id="db-error-tab"> *</span></span></a>
+            </li>
+            <li class="nav-item pr-tabs-item">
+              <a class="nav-link pd-link " onClick="configureModalTab(2);" data-toggle="tab" role="tab" aria-selected="false">Dirección<span class="error-tab" id="dir-error-tab"> *</span></span></a>
+            </li>
+            <li class="nav-item pr-tabs-item">
+              <a class="nav-link pd-link " onClick="configureModalTab(3);" data-toggle="tab" role="tab" aria-selected="false">Horarios<span class="error-tab" id="hor-error-tab"> *</span></span></a>
+            </li>
+          </ul>
+        </div>
+
+        
+        <!-- Tab panes -->
+        <!-- Contenido de las pestanas -->
+        <div class="modal-body modal-body-card" style="height: fit-content;" id="modalModPDBody">
+            <!--Loading Ring -->
+            <div class="row " id="loadingRowMod">
+                <div class="lds-ring loadingRingAlta"><div></div><div></div><div></div><div></div></div>
+            </div>  
+            <form action="{{url_for('mod_pr')}}" method="POST" id="modPdForm">
+                <div class="row subheader-row" id="subheader-alta-pd">
+                    <div class="col">
+                        <label class="subheader" id="subheader-mod">Datos Básicos</label>
+                    </div>
+                </div>
+                <!--Pestaña 1 - Datos Básicos-->
+                <div id="modal-mod-p1">
+                    <div class="row" id="fieldsRow1Alta1" style="margin-top: 0px;">
+                        <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
+                            <input type="text" required id="nombrePDMod" onkeyup="validaNombrePD('mod');" name="nombrePDMod" autocomplete="off" style="width: 90%;"> 
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight" style="width: 90%;"></span>
+                            <span class="bar" style="width: 90%;"></span>
+                            <label>Nombre Punto de Retiro</label>
+                            <p id="nombrePDErrorMod" class="modalErrorMessage">* Este nombre ya ha sido utilizado en otro Punto de Retiro.</p>
+                        </div>
+                    </div>
+                    <div class="row" id="fieldsRow1AltaPD2">
+                        <div class="col" style="margin-left: 5.5%;">
+                            <div class="group" style="margin-top: 0%; margin-left: 8%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <label>Estado inicial</label> 
+                            </div>
+                            <div class="group" style="margin-left: 19.5%; margin-top: 42px;">  
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch2" name="customSwitch2" checked>
+                                    <label class="custom-control-label" for="customSwitch2"></label>
+                                </div>
+                                <input type="text" id="switch-value-mod" name = "switch-value-mod" hidden>
+                            </div>
+                            <p class="color-activo" id="pdActivoMod">Punto de Retiro Activo</p>
+                            <p class="color-inactivo" id="pdInactivoMod">Punto de Retiro Inactivo</p>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="width: 80%;">
+                                <input type="text" required id="demoraPRMod"  onkeypress="return isNumberKey(this, event);" onkeyup="validaDemoraPR('mod');" name="demoraPRMod" autocomplete="off" style="width: 90%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 90%;"></span>
+                                <span class="bar" style="width: 90%;"></span>
+                                <label>Demora promedio (días)</label>
+                                <p id="demoraPRerrorMod" class="modalErrorMessage">* No puede quedar vacía.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="text" id="nombrePDModAnt" name = "nombrePDModAnt" hidden>
+                <input type="text" id="idPDMod" name="idPDMod" hidden>
+                <!--Pestaña 2 - Dirección-->
+                <div id="modal-mod-p2" style="display: none;">
+                    <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="text" required id="callePDMod" onkeyup="updateMap('mod'); validaDireccion('mod','calle');" name="callePDMod" autocomplete="off" style="width: 215%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 215%;"></span>
+                                <span class="bar" style="width: 215%;"></span>
+                                <label>Calle</label>
+                                <p id="error-calle-mod" class="modalErrorMessage" style="display: none; width: 215%;">* La calle no puede quedar vacía.</p>
+
+                            </div>
+                        </div>
+                        <div class="col" style="margin-left: 33.3%;">
+                            <div class="group" style=" margin-top: 2%;">
+                                <input type="text" required id="alturaPDMod" onkeypress="return isNumberKey(this, event);" onkeyup="updateMap('mod'); validaDireccion('mod','altura');" name="alturaPDMod" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;"></span>
+                                <span class="bar" style="width: 100%;"></span>
+                                <label>Altura</label>
+                                <p id="error-altura-mod" class="modalErrorMessage" style="display: none;">* Complete la altura.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="fieldsRow1AltaPD2" style="margin-left: 6.5%; margin-right: 8%;">
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="text" required id="ciudadPDMod" onkeyup="updateMap('mod'); validaDireccion('mod','ciudad');" name="ciudadPDMod" autocomplete="off" style="width: 100%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;"></span>
+                                <span class="bar" style="width: 100%;"></span>
+                                <label>Ciudad</label>
+                                <p id="error-ciudad-mod" class="modalErrorMessage" style="display: none;">* Complete la ciudad.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="text" required id="provinciaPDMod" onkeyup="updateMap('mod'); validaDireccion('mod','provincia');" name="provinciaPDMod" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;"></span>
+                                <span class="bar" style="width: 100%;"></span>
+                                <label>Provincia</label>
+                                <p id="error-provincia-mod" class="modalErrorMessage" style="display: none;">* Complete la provincia.</p>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="text" required id="paisPDMod" onkeyup="updateMap('mod'); validaDireccion('mod','pais');" name="paisPDMod" autocomplete="off" style="width: 100%;" autocomplete="off"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;"></span>
+                                <span class="bar" style="width: 100%;"></span>
+                                <label>País</label>
+                                <p id="error-pais-mod" class="modalErrorMessage" style="display: none;">* Complete el país.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="fieldsRow1AltaPD2" style="margin-bottom: -30px;">
+                        <div class="mapouter" style="margin-left: 10%;">
+                            <div class="gmap_canvas">
+                                <iframe width="603" height="280" id="gmap_canvas_mod" src="https://maps.google.com/maps?q=Rosario&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="text" id="idDireccionPD" name="idDireccionPD" hidden>
+                <!--Pestaña 3 - Horarios-->
+                <div id="modal-mod-p3" style="display: none;">
+                    {%for dia in dias%}
+                    <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input class="data-show-input" type="text" id="" value= "{{dia}}" readonly style="width: 100%;">
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <label>Día</label>
+                            </div>
+                        </div>
+                        <div class="col" style="margin-left: -40px; margin-right: -40px;">
+                            <div class="group" style="margin-top: 2%;"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <label>Abierto</label> 
+                            </div>
+                            <div class="custom-control custom-switch" style="margin-top: -8px !important; margin-left: 40px;">
+                                <input type="checkbox" class="custom-control-input" id="{{dia + '-switch-mod'}}" name="{{dia + '-switch-mod'}}" checked onclick="habilitaHorarioMod('{{dia}}');">
+                                <label class="custom-control-label" for="{{dia + '-switch-mod'}}"></label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="time" required id="{{dia + '-horaDesde-mod'}}"autocomplete="off" name="{{dia + '-horaDesde-mod'}}" style="width: 100%;" autocomplete="off" onkeyup="validaHorarioPDMod();" value="08:00"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;" id="{{dia + '-span-horaDesde-mod'}}"></span>
+                                <span class="bar" style="width: 100%;" id="{{dia + '-bar-horaDesde-mod'}}"></span>
+                                <label>Horario apertura</label>
+                                <p id="{{dia + '-error-horaDesde-mod'}}" class="modalErrorMessage" style="display: none;">* Horario inválido.</p>
+                                <p id="{{dia + '-error-mod'}}" class="modalErrorMessage" style="width: 250%; display: none;">* El horario de apertura debe ser menor al de cierre.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="group" style="margin-top: 2%;">
+                                <input type="time" required id="{{dia + '-horaHasta-mod'}}" autocomplete="off" name="{{dia + '-horaHasta-mod'}}" style="width: 100%;" autocomplete="off" onkeyup="validaHorarioPDMod();" value="20:00"> 
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight" style="width: 100%;" id="{{dia + '-span-horaHasta-mod'}}"></span>
+                                <span class="bar" style="width: 100%;" id="{{dia + '-span-horaHasta-mod'}}"></span>
+                                <label>Horario cierre</label>
+                                <p id="{{dia + '-error-horaHasta-mod'}}" class="modalErrorMessage" style="display: none;">* Horario inválido.</p>
+                            </div>
+                        </div>
+                    </div> 
+                    {%endfor%}
+                </div>
+            </form>
+            <div class="row">
+                <p class="bottom-modal-text" id="bottomAltaModalTextModPD">Una vez finalizadas las modificaciones, presione "Guardar Cambios".</p>
+                <p class="bottom-modal-text" id="bottomModModalText"></p>
+            </div>
+            <div class="row margin-row-mod" style="display: none;"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn secondary-btn" id="secondary-btn-mod" onclick="closeModModal();">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitFormMod();" id="primary-btn-mod"></button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<!--Baja Modal -->
+<div class="modal fade modal-lg" id="bajaPDModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Eliminar un Punto de Retiro</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body-baja" id="altaNivelForm">
+            <div class="row" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <form action="{{url_for('baja_pr')}}" method="POST" id="bajaPDform">
+                <div class="row margin-bottom-row" id="fieldsRowBaja">
+                    <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark">
+                    <p class="bottom-modal-text-baja" id="baja-question">¿Está seguro que desea eliminar el Punto? </p>
+                    <p class="bottom-modal-text less-margin-top"> Una vez eliminado, el Punto de Retiro no se podrá recuperar.</p>
+                    <input type="text" id="idPuntoBaja" name="idPuntoBaja" hidden>
+                </div>
+            </form>
+            <p class="bottom-modal-text" id="bottomBajaModalText"></p>
+        </div>
+        <input type="text" name="" id="numNivel" hidden>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
+          <button type="button" class="btn primary-btn-alert" onclick="baja_PD();" id="primary-btn-alert">Eliminar Punto de Retiro</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script src="static/js/gestion-puntos-retiro.js"></script>
+
+{% endblock %}

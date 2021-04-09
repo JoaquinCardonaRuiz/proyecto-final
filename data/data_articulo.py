@@ -177,14 +177,14 @@ class DatosArticulo(Datos):
 
 
     @classmethod
-    def add(cls,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal):
+    def add(cls,nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal):
         """
         Agrega un articulo a la BD
         """
         try:
             cls.abrir_conexion()
             sql= ("INSERT INTO tiposArticulo (nombre,unidadMedida,img,vUsuario,cInsumos,cProduccion,otrosCostos,cObtencionAlt,cTotal,margenGanancia,stock,estado) \
-                   VALUES (\"{}\",\"{}\",\"{}\",{},{},{},{},{},{},{},0,\"disponible\");".format(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen))
+                   VALUES (\"{}\",\"{}\",\"\",{},{},{},{},{},{},{},0,\"disponible\");".format(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen))
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
@@ -218,13 +218,13 @@ class DatosArticulo(Datos):
 
 
     @classmethod
-    def update(cls,idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal):
+    def update(cls,idArt,nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal):
         """
         Actualiza un articulo en la BD
         """
         try:
             cls.abrir_conexion()
-            sql= ("UPDATE tiposArticulo SET nombre=\"{}\",unidadMedida=\"{}\",img=\"{}\",vUsuario={},cInsumos={},cProduccion={},otrosCostos={},cObtencionAlt={},cTotal={},margenGanancia={},stock=0,estado=\"disponible\" WHERE idTipoArticulo={};").format(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen,idArt)
+            sql= ("UPDATE tiposArticulo SET nombre=\"{}\",unidadMedida=\"{}\",vUsuario={},cInsumos={},cProduccion={},otrosCostos={},cObtencionAlt={},cTotal={},margenGanancia={},estado=\"disponible\" WHERE idTipoArticulo={};").format(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen,idArt)
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
@@ -295,5 +295,23 @@ class DatosArticulo(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_nombres_by_idIns()",
                                                     msj=str(e),
                                                     msj_adicional="Error obtieniendo los articulos desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def update_img(cls,aid,img):
+        """
+        Asigna una nueva imagen a un articulo
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE tiposArticulo SET img=\"{}\" WHERE idTipoArticulo={}").format(img,aid)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.update_img()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando la imagen de un articulo en la BD.")
         finally:
             cls.cerrar_conexion()

@@ -3,11 +3,15 @@ from flask.json import JSONEncoder
 from classes import Horario, CantArticulo
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, redirect, session
 from negocio.capa_negocio import *
-from custom_exceptions import ErrorDePago
-from classes import CantMaterial
+import custom_exceptions
+from classes import CantMaterial, CantInsumo
 import traceback
 from flask_session import Session 
 from utils import Utils
+from werkzeug.utils import secure_filename
+from pathlib import Path
+import mail
+import os
 
 
 #app
@@ -19,6 +23,34 @@ app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = 'myscretkey'
 Session(app)
 
+@app.route('/perfil/usrimg',methods=["GET","POST"])
+def upload_user_img():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file:
+            p = Path('static') / 'img' / 'users' / str(session["usuario"].id) / "profile"
+            try:
+                os.makedirs(p)
+            except:
+                pass
+            filename = secure_filename(file.filename)
+            dir = os.path.join(p, filename)
+            file.save(dir)
+            NegocioUsuario.update_img(session["usuario"].id,dir)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
+    return redirect(url_for('perfil'))
+
+
 @app.route('/', methods = ['GET','POST'])
 def start():
     return render_template('start-page.html')
@@ -26,16 +58,39 @@ def start():
 @app.route('/main', methods = ['GET','POST'])
 def main():
     if valida_session(): return redirect(url_for('login'))
-    else: 
-        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
-        pedidos = NegocioPedido.get_by_user_id(session["usuario"].id, 3)
-        puntosRetiro = NegocioPuntoRetiro.get_all()
-        depositos = NegocioDeposito.get_by_id_usuario(session["usuario"].id, 3)
-        puntosDep = NegocioPuntoDeposito.get_all()
-        materiales = NegocioMaterial.get_all()
-        max_level = NegocioNivel.get_min_max_niveles()[1]
-    return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
-    nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales, max_level = max_level)
+    else:
+        if session["usuario"].estado == "no-activo":
+            tipos_doc = NegocioTipoDocumento.get_all()
+            return render_template('datos-personales.html', tipos_doc=tipos_doc,user=session["usuario"])
+        
+        elif session["usuario"].estado == "no-verificado":
+            return render_template('email-sent.html',email=session["usuario"].email) 
+        else: 
+            nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel, True)
+            if len(session["usuario"].pedidos) >= 5:
+                pedidos = session["usuario"].pedidos[:5]
+            else:
+                pedidos = session["usuario"].pedidos
+            puntosRetiro = NegocioPuntoRetiro.get_all()
+            if len(session["usuario"].depositos) >= 5:
+                depositos = session["usuario"].depositos[:5]
+            else:
+                depositos = session["usuario"].depositos
+            puntosDep = NegocioPuntoDeposito.get_all()
+            materiales = NegocioMaterial.get_all()
+            max_level = NegocioNivel.get_min_max_niveles()[1]
+            tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
+            return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
+    nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales, max_level = max_level, tipoUsuario = tipoUsuario)
+
+
+@app.route('/layout/datos-usuario')
+def get_datos_usuario():
+    if "carrito" in session.keys():
+        carrito = session["carrito"]
+    else:
+        carrito = False
+    return jsonify({"nombre":session["usuario"].nombre + " " + session["usuario"].apellido, "totalEP":session["usuario"].totalEcopuntos, "img":session["usuario"].img,"carrito": carrito})
 
 ''' 
     -----------------
@@ -55,10 +110,10 @@ def login():
 def authentication(email, password):
     try:
         session["usuario"] = NegocioUsuario.login(email, password)
+        session.modified = True
         return jsonify({"login-state":True})
     except Exception as e:
-        return jsonify({"login-state":False})
-
+        return error(e,"gestion-puntos-deposito")
     return render_template('login.html')
 
 @app.route('/logout/<val>', methods = ['GET','POST'])
@@ -68,6 +123,197 @@ def logout(val):
         del session["usuario"]
         return redirect(url_for('login'))
     return render_template('login.html')
+
+''' 
+    -----------------
+    Registro
+    -----------------
+'''
+
+@app.route('/register', methods = ['GET','POST'])
+def register():
+    try:
+        session["usuario"]
+        return redirect(url_for('main'))
+    except:
+        return render_template('register.html')
+
+@app.route('/register/alta-usuario/<email>/<passwd>', methods = ['GET','POST'])
+def register_alta(email,passwd):
+    try: 
+        if not NegocioUsuario.check_email(email): 
+            return jsonify("Email")
+        elif not NegocioUsuario.check_password(passwd):
+            return jsonify("Password")
+        alta_result = NegocioUsuario.alta(email,passwd) 
+        if not alta_result:
+            return jsonify("Email")
+        else:
+            code = alta_result
+        html_str = (render_template("mail.html"))
+        mail.send_mail(email, passwd, html_str, code)
+        return jsonify(True)
+    except Exception as e:
+        raise e
+    return redirect(url_for('register'))
+
+@app.route('/register/emails', methods = ['GET','POST'])
+def register_all_emails():
+    try: 
+        return jsonify(NegocioUsuario.get_all_emails())
+
+    except:
+        return render_template('register.html')
+
+@app.route('/datos-personales', methods = ['GET','POST'])
+def datos_personales():
+    try:
+        if valida_session(): return redirect(url_for('login'))
+        else:
+            if session["usuario"].estado == "no-activo":
+                tipos_doc = NegocioTipoDocumento.get_all()
+                return render_template('datos-personales.html', tipos_doc=tipos_doc,user=session["usuario"])
+            
+            elif session["usuario"].estado == "habilitado":
+                return redirect(url_for('main'))
+            
+            elif session["usuario"].estado == "no-verificado":
+                return render_template('email-sent.html',email=session["usuario"].email) 
+    except:
+        return redirect(url_for('login'))
+
+@app.route('/verificacion/<codigo>')
+def verificacion(codigo):
+    verificacion_res = NegocioUsuario.verificacion(codigo)
+    if verificacion_res != False:
+        session["usuario"] = NegocioUsuario.login(verificacion_res["email"],verificacion_res["password"])
+        return redirect(url_for('datos_personales'))
+    else:
+        return redirect(url_for('start'))
+
+@app.route('/datos-personales/activacion', methods = ['GET','POST'])
+def activacion():
+    if request.method == 'POST':
+        email = request.form['email']
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        ciudad = request.form['ciudad']
+        calle = request.form['calle']
+        altura = request.form['altura']
+        pais = request.form['pais']
+        provincia = request.form['provincia']
+        documento = request.form['documento']
+        tipo_doc = request.form['tipo_doc']
+        if NegocioUsuario.activacion(email,nombre,apellido,calle,altura,ciudad,provincia,pais,documento,tipo_doc):
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            return redirect(url_for('main'))
+        else:
+            return redirect(url_for('datos_personales'))
+
+''' 
+    ------------------
+    Perfil de usuario
+    ------------------
+'''
+
+@app.route('/perfil', methods = ['GET','POST'])
+def perfil():
+    if valida_session(): return redirect(url_for('login'))
+    nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
+    tipoDoc = NegocioTipoDocumento.get_by_id(session["usuario"].tipoDoc)
+    password = '*' * len(session["usuario"].password)
+    tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
+    tiposDoc = NegocioTipoDocumento.get_all()
+    emails = NegocioUsuario.get_all_emails(session["usuario"].id)
+    return render_template('perfil.html',usuario = session["usuario"], nivel = nivel, tipoDoc = tipoDoc, 
+    password = password, tipoUsuario = tipoUsuario, tiposDoc = tiposDoc, emails = emails)
+
+
+@app.route('/perfil/actualizar-direccion', methods = ['GET','POST'])
+def actualizar_direccion():
+    if request.method == 'POST':
+        try:
+            calle = request.form['callePD']
+            altura = request.form['alturaPD']
+            ciudad = request.form['ciudadPD']
+            provincia = request.form['provinciaPD']
+            pais = request.form['paisPD']
+            NegocioDireccion.mod_direccion(session["usuario"].direccion.id, calle,altura,ciudad,provincia,pais,True)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
+
+@app.route('/perfil/actualizar-documento', methods = ['GET','POST'])
+def actualizar_documento():
+    if request.method == 'POST':
+        try:
+            nro = request.form['documentoInput']
+            tipo = request.form['tipoDocSelect']
+            NegocioUsuario.update_documento(nro,tipo,session["usuario"].id)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
+
+@app.route('/perfil/actualizar-email', methods = ['GET','POST'])
+def actualizar_email():
+    if request.method == 'POST':
+        try:
+            email = request.form['email']
+            NegocioUsuario.update_email(email,session["usuario"].id)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
+
+@app.route('/perfil/actualizar-password', methods = ['GET','POST'])
+def actualizar_password():
+    if request.method == 'POST':
+        try:
+            psswd1 = request.form['newPassword1']
+            psswd2 = request.form['newPassword2']
+            NegocioUsuario.update_password(psswd1,psswd2,session["usuario"].id)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
+        except Exception as e:
+            return error(e,"perfil")
+    return redirect(url_for('perfil'))
+
+@app.route('/perfil/get-list/<type>', methods = ['GET','POST'])
+def perfil_listas(type):
+    try:
+        if type == 'emails':
+            return jsonify(NegocioUsuario.get_all_emails(session["usuario"].id))
+        if type == 'documentos':
+            return jsonify(NegocioUsuario.get_all_documentos(session["usuario"].id))
+        if type == 'documentos_no_filter':
+            return jsonify(NegocioUsuario.get_all_documentos())
+    except Exception as e:
+        return error(e,"perfil")
+    return render_template('login.html')
+
+''' 
+    -----------------
+    Encontrar Puntos de Depósito y Puntos de Retiro
+    -----------------
+'''
+
+@app.route('/encontrar-punto-deposito', methods = ['GET','POST'])
+def encontrar_pd():
+    puntos_dep = NegocioPuntoDeposito.get_all(filterInactivos=True)
+    return render_template('encontrar-pd.html', puntos_dep = puntos_dep)
+
+@app.route('/encontrar-punto-retiro', methods = ['GET','POST'])
+def encontrar_pr():
+    puntos_ret = NegocioPuntoRetiro.get_all(filterInactivos=True)
+    return render_template('encontrar-pr.html', puntos_ret = puntos_ret)
+
+
+
 
 ''' 
     -------
@@ -152,6 +398,13 @@ def carrito():
         if "carrito" not in session.keys():
             session["carrito"] = {}
         articulos = NegocioArticulo.get_by_id_array(session["carrito"].keys())
+        articulos_erroneos = []
+        for i in range(len(articulos)):
+            if articulos[i] == False:
+                del session["carrito"][list(session["carrito"].keys())[i]]
+                articulos_erroneos.append(i)
+        for ae in articulos_erroneos:
+            del articulos[ae]
         valor = 0
         for articulo in articulos:
               valor += int(session["carrito"][str(articulo.id)]) * articulo.valor
@@ -162,8 +415,9 @@ def carrito():
         val_tot_ep = round(valor * valor_ep * (1-nivel.descuento/100))
         if val_tot_ep == 0: 
             val_tot_ep = 1
-        step = 100/val_tot_ep
-        puntos_retiro = NegocioPuntoRetiro.get_all()
+        step = 100/(val_tot_ep)
+        print(step)
+        puntos_retiro = NegocioPuntoRetiro.get_all(filterInactivos=True)
         
         return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, 
                                 valor_ep = valor_ep, demora_prom = demora_prom, valor = valor, nivel=nivel, 
@@ -174,15 +428,22 @@ def carrito():
 
 @app.route('/eco-tienda/checkout/confirmar/<idPR>/<totalEP>/<totalARS>')
 def confirmar_checkout(idPR, totalEP, totalARS):
+    dic = {"estado": "ok", "codigo": None,"demora": None}
     try:
         if "carrito" in session.keys() and session["carrito"] != {}:
-            NegocioPedido.add(Utils.carrito_to_list(session["carrito"]),session["usuario"],idPR,float(totalEP),float(totalARS))
+            dic["codigo"] = NegocioPedido.add(Utils.carrito_to_list(session["carrito"]),session["usuario"],idPR,float(totalEP),float(totalARS))
+            dic["demora"] = NegocioPuntoRetiro.get_by_id(int(idPR)).demoraFija
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
-            return jsonify("exito")
+            session["carrito"] = {}
+            session.modified = True
+            return dic
         else:
             raise Exception("Carrito vacio")
+    except custom_exceptions.ErrorDeNegocio as e:
+        dic["estado"] = e.msj
+        return dic
     except Exception as e:
-        return error(e, "eco-tienda")
+        return dic
 
 
 ''' 
@@ -212,6 +473,8 @@ def alta_nivel():
             minEcoPuntos = request.form['minEcoPuntos']
             maxEcoPuntos = request.form['maxEcoPuntos']
             NegocioNivel.alta_nivel(numeroNivel, descuento, minEcoPuntos, maxEcoPuntos)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
         except Exception as e:
             return error(e,"gestion_niveles")
     return redirect(url_for('gestion_niveles'))
@@ -224,6 +487,10 @@ def mod_nivel(id, desc, min, max):
         minEP = float(min)
         maxEP = float(max)
         NegocioNivel.modifica_nivel(numero,desc,minEP,maxEP)
+        print(session["usuario"].idNivel)
+        session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        session.modified = True
+        print(session["usuario"].idNivel)
     except Exception as e:
         return error(e,"gestion_niveles")
     return redirect(url_for('gestion_niveles'))
@@ -233,6 +500,8 @@ def baja_nivel(id):
     try:
         id = int(id)
         NegocioNivel.baja_nivel(id)
+        session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        session.modified = True
     except Exception as e:
         return error(e,"gestion_niveles")
     return redirect(url_for('gestion_niveles'))
@@ -246,7 +515,14 @@ def mod_nivel_request(id):
     except Exception as e:
         return error(e,"gestion_niveles")
 
-
+@app.route('/info-niveles')
+def info_niveles():
+    try:
+        if valida_session(): return redirect(url_for('login'))
+        niveles = NegocioNivel.get_niveles()
+    except Exception as e:
+        return error(e, "info_niveles")
+    return render_template('info-niveles.html', niveles = niveles)
 
 
 ''' 
@@ -344,7 +620,7 @@ def error(err="", url_redirect="/main"):
 
 ''' 
     ---------------------------
-    Puntos de Deposito y Retiro
+    Puntos de Deposito
     ---------------------------
 '''
 
@@ -456,6 +732,115 @@ def baja_pd():
 
 ''' 
     -----------------
+    Puntos de Retiro
+    -----------------
+'''
+@app.route('/gestion-puntos-retiro', methods = ['GET','POST'])
+def gestion_pr():
+    try:
+        if valida_session(): return redirect(url_for('login'))
+        puntos_retiro = NegocioPuntoRetiro.get_all()
+        dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    except Exception as e:
+        return error(e,"gestion_pr") 
+    return render_template('gestion-puntos-retiro.html', puntos_retiro = puntos_retiro, dias = dias, usuario = session["usuario"])
+
+@app.route('/gestion-puntos-retiro/horarios/<int:id>')
+def horarios_pr(id):
+    try:
+        id = int(id)
+        horarios = NegocioPuntoRetiro.get_horarios_id(id)
+        return jsonify(horarios)
+    except Exception as e:
+        return error(e,"gestion_pr")
+
+@app.route('/gestion-puntos-retiro/pedidos/<int:id>')
+def pedidos_pr(id):
+    try:
+        id = int(id)
+        pedidos = NegocioPedido.get_by_idPR(id,10)
+        pedidos_ = []
+        for pedido in pedidos:
+            ped = {"id":pedido.id,"estado":pedido.estado,"fechaEnc":pedido.fechaEncargo,"fechaRet":pedido.fechaRetiro,"totalARS":pedido.totalARS,"totalEP":pedido.totalEP}
+            pedidos_.append(ped)
+        return jsonify(pedidos_)
+    except Exception as e:
+        return error(e,"gestion_pr")
+
+@app.route('/gestion-puntos-retiro/nombres-pr')
+def nombres_pr():
+    try:
+        nombres = NegocioPuntoRetiro.get_all_names()
+        demora_prom = NegocioPuntoRetiro.get_demora_promedio()
+        return jsonify([nombres,demora_prom])
+    except Exception as e:
+        return error(e,"gestion_pr")
+
+@app.route('/gestion-puntos-retiro/alta', methods = ['GET','POST'])
+def alta_pr():
+    
+    dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    horarios = []
+    
+    if request.method == 'POST':
+        try:
+            nombre = request.form['nombrePD']
+            estado = request.form['switch-value']
+            demora = request.form['demoraPR']
+            calle = request.form['callePD']
+            altura = request.form['alturaPD']
+            ciudad = request.form['ciudadPD']
+            provincia = request.form['provinciaPD']
+            pais = request.form['paisPD']
+            for dia in dias:
+                horaDesde = request.form[dia + '-horaDesde']
+                horaHasta = request.form[dia + '-horaHasta']
+                horarios.append([horaDesde,horaHasta, dia])
+            
+            NegocioPuntoRetiro.alta_pr(nombre, estado, calle, altura, ciudad, provincia, pais, horarios, demora)
+        except Exception as e:
+            return error(e,"gestion-puntos-retiro")
+    return redirect(url_for('gestion_pr'))
+
+@app.route('/gestion-puntos-retiro/modificacion', methods = ['GET','POST'])
+def mod_pr():
+    
+    dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    horarios = []
+    
+    if request.method == 'POST':
+        nombre = request.form['nombrePDMod']
+        nombre_ant = request.form['nombrePDModAnt']
+        demora = request.form['demoraPRMod']
+        estado = request.form['switch-value-mod']
+        calle = request.form['callePDMod']
+        altura = request.form['alturaPDMod']
+        ciudad = request.form['ciudadPDMod']
+        provincia = request.form['provinciaPDMod']
+        pais = request.form['paisPDMod']
+        id_direccion = request.form['idDireccionPD']
+        id_punto = request.form['idPDMod']
+        for dia in dias:
+            horaDesde = request.form[dia + '-horaDesde-mod']
+            horaHasta = request.form[dia + '-horaHasta-mod']
+            horarios.append([horaDesde,horaHasta, dia])
+        NegocioPuntoRetiro.mod_pr(nombre, estado, calle, altura, ciudad, provincia, pais, horarios,demora,id_direccion, id_punto, nombre_ant)
+        
+    return redirect(url_for('gestion_pr'))
+
+@app.route('/gestion-puntos-retiro/baja', methods = ['GET','POST'])
+def baja_pr():
+    
+    if request.method == 'POST':
+        id = request.form['idPuntoBaja']
+        print(id)
+        #NegocioPuntoRetiro.baja_pr(id)
+        
+    return redirect(url_for('gestion_pr'))
+
+
+''' 
+    -----------------
     Articulos
     -----------------
 '''
@@ -465,7 +850,8 @@ def gestion_articulos():
     try:
         if valida_session(): return redirect(url_for('login'))
         articulos = NegocioArticulo.get_all()
-        return render_template('gestion-articulos.html',articulos=articulos, usuario = session["usuario"])
+        insumos = NegocioInsumo.get_all()
+        return render_template('gestion-articulos.html',articulos=articulos, usuario = session["usuario"],insumos=insumos)
     except Exception as e:
         return error(e,"articulos")
 
@@ -474,7 +860,6 @@ def alta_articulo():
     if request.method == 'POST':
         nombre =                request.form['nombre']
         unidad =                request.form['unidad']
-        imagen =                request.form['imagen']
         ventaUsuario = None
         try: 
             request.form['ventaUsuario']
@@ -488,8 +873,35 @@ def alta_articulo():
         margen =                request.form['margen']
         valor =                 request.form['valor']
 
+
+        #INSUMOS
+        cants = []
+        for key in request.form.keys():
+            if "id-" in key:
+                id = request.form[key]
+                cant = float(request.form["cantidad-"+id])
+                if cant > 0:
+                    cants.append({"idIns":id,"cantidad":cant})
+
         try:
-            NegocioArticulo.add(nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor)
+            idNuevoArt = NegocioArticulo.add(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
+        
+            #IMAGEN
+            imagen = ""
+            file = request.files['file']
+            if file.filename != '' and file:
+                p = Path('static') / 'img' / 'articulos' / str(idNuevoArt)
+                try:
+                    os.makedirs(p)
+                except:
+                    pass
+                filename = secure_filename(file.filename)
+                dir = os.path.join(p, filename)
+                file.save(dir)
+                imagen = dir
+            if imagen != "":
+                NegocioArticulo.update_img(idNuevoArt,imagen)
+
         except Exception as e:
             return error(e,"articulos")
         return redirect(url_for('gestion_articulos'))
@@ -501,7 +913,6 @@ def edit_articulo():
         idArt =                 request.form['idArticulo']
         nombre =                request.form['nombre']
         unidad =                request.form['unidad']
-        imagen =                request.form['imagen']
         ventaUsuario = None
         #Aparentemente cuando un input tipo checkbox está "no chequeado"
         #no se manda en el form, asi que chequeo si puedo leerlo, para
@@ -517,9 +928,30 @@ def edit_articulo():
         costoObtencionAlt =     request.form['costoObtencionAlt']
         margen =                request.form['margen']
         valor =                 request.form['valor']
+        cants = []
+        for key in request.form.keys():
+            if "id-" in key:
+                id = request.form[key]
+                cant = float(request.form["cantidad-"+id])
+                cants.append(CantInsumo(cant,int(id)))
 
         try:
-            NegocioArticulo.update(idArt,nombre,unidad,imagen,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor)
+            NegocioArticulo.update(idArt,nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
+            #IMAGEN
+            imagen = ""
+            file = request.files['file']
+            if file.filename != '' and file:
+                p = Path('static') / 'img' / 'articulos' / str(idArt)
+                try:
+                    os.makedirs(p)
+                except:
+                    pass
+                filename = secure_filename(file.filename)
+                dir = os.path.join(p, filename)
+                file.save(dir)
+                imagen = dir
+            if imagen != "":
+                NegocioArticulo.update_img(idArt,imagen)
         except Exception as e:
             return error(e,"articulos")
         return redirect(url_for('gestion_articulos'))
@@ -533,6 +965,30 @@ def baja_articulo(id):
     except Exception as e:
         return error(e,"articulos")
     return redirect(url_for('gestion_articulos'))
+
+
+
+@app.route('/articulos/insumos/<ids>')
+def get_insumos(ids):
+    # esto es probablemente lo mas inseguro que se puede hacer en un sistema web
+    # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
+    # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
+    #TODO: CAMBIAR ESTA LINEA:
+    ids = eval("["+ids+"]")
+    print(ids)
+    if ids == [-1]:
+        return jsonify(False)
+    try:
+        insumos = NegocioInsumo.get_by_id_array(ids)
+        insumos_dic =     [{"nombre":          i.nombre,
+                            "unidadmedida":    i.unidadMedida,
+                            "color":           i.color}
+                            for i in insumos]
+        return jsonify(insumos_dic)
+    except Exception as e:
+        return error(e,"insumos")
+    return redirect(url_for('gestion_articulos'))
+
 
 
 
@@ -618,7 +1074,7 @@ def get_materiales(ids):
     #TODO: CAMBIAR ESTA LINEA:
     ids = eval("["+ids+"]")
     print(ids)
-    if ids == -1:
+    if ids == [-1]:
         return jsonify(False)
     try:
         materiales = NegocioMaterial.get_by_id_array(ids)
@@ -730,7 +1186,7 @@ def elegirPR():
 def deposito():
     try:
         pedidos = NegocioPedido.get_all()
-        puntosRetiro = NegocioPuntoRetiro.get_all()
+        puntosRetiro = NegocioPuntoRetiro.get_all(True)
         return render_template('deposito.html',pedidos = pedidos,puntosRetiro=puntosRetiro, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
@@ -748,8 +1204,28 @@ def pedidosPR(id):
 def pedidosUser():
     try:
         pedidos = NegocioPedido.get_by_user_id(session["usuario"].id)
-        puntosRetiro = NegocioPuntoRetiro.get_all()
-        return render_template('pedidosUser.html',pedidos = pedidos,puntosRetiro=puntosRetiro, usuario=session["usuario"])
+        orden = {"listo":0,"preparado":1,"pendiente":2,"retirado":3,"cancelado":4,"devuelto":5}
+        pedidos_ordenados = sorted(pedidos, key=lambda x: orden[x.estado])
+        puntosRetiro = NegocioPuntoRetiro.get_all(True)
+        return render_template('pedidosUser.html',pedidos = pedidos_ordenados,puntosRetiro=puntosRetiro, usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"pedidos")
+
+
+@app.route('/pedidos/articulos/<ids>')
+def get_articulos_pedido(ids):
+    # esto es probablemente lo mas inseguro que se puede hacer en un sistema web
+    # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
+    # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
+    #TODO: CAMBIAR ESTA LINEA:
+    try:
+        ids = eval("["+ids+"]")
+        print(ids)
+        articulos = NegocioArticulo.get_by_id_array(ids)
+        articulos_dic =  [{"nombre":          a.nombre,
+                            "unidadmedida":    a.unidadMedida}
+                            for a in articulos]
+        return jsonify(articulos_dic)
     except Exception as e:
         return error(e,"pedidos")
 
@@ -769,12 +1245,129 @@ def update_estado_pedido():
     except Exception as e:
         return error(e,"pedidos")
 
+@app.route('/pedidos/info/<id>')
+def pedidos_info(id):
+    try:
+        res = NegocioPedido.get_one(id,True)
+        ped = res[0]
+        user = res[1]
+        pr = NegocioPuntoRetiro.get_by_id(ped.idPuntoRetiro)
+        td = NegocioTipoDocumento.get_by_id(user.tipoDoc)
+        pedido = {"id":ped.id,"totalEP":ped.totalEP,"totalARS":ped.totalARS,"estado":ped.estado,"fecha_enc":ped.fechaEncargo,"fecha_ret":ped.fechaRetiro}
+        usuario = {"id":user.id,"nombre":user.nombre,"apellido":user.apellido,"tipoDoc":td.nombre,"nroDoc":user.nroDoc,"email":user.email}
+        punto_retiro = {"id":pr.id,"nombre":pr.nombre,"calle":pr.direccion.calle,"altura":pr.direccion.altura,"ciudad":pr.direccion.ciudad,"provincia":pr.direccion.provincia,"pais":pr.direccion.pais}
+        return jsonify([pedido, usuario, punto_retiro])
+    except Exception as e:
+        return error(e,"pedidos")
+
+
+
+
+
+
 
 '''
-    -----------------------
-    Depósitos (Usuario)
-    -----------------------
+    -----------------
+    Gestion de Depósitos
+    -----------------
 '''
+
+@app.route('/elegir-PD')
+def elegirPD():
+    try:
+        puntosDeposito = NegocioPuntoDeposito.get_all()
+        return render_template('elegir-PD.html',puntosDeposito = puntosDeposito, usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"depositos")
+
+@app.route('/gestion-depositos/admin')
+def allDepositos():
+    try:
+        materiales = NegocioMaterial.get_all()
+        depositos = NegocioDeposito.get_all()
+        puntosDeposito = NegocioPuntoDeposito.get_all()
+        return render_template('depositosAdmin.html',materiales=materiales,depositos = depositos,puntosDeposito=puntosDeposito, usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"pedidoss")
+
+@app.route('/gestion-depositos/pd/<id>')
+def pedidosPD(id):
+    try:
+        materiales = NegocioMaterial.get_all()
+        deposito = NegocioDeposito.get_by_id_PD(int(id))
+        puntoDeposito = NegocioPuntoDeposito.get_by_id(int(id))
+        return render_template('depositosPD.html',materiales=materiales,deposito = deposito,puntoDeposito=puntoDeposito, usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"depositos")
+
+@app.route('/gestion-depositos/materiales/<ids>')
+def get_materiales_deposito(ids):
+    # esto es probablemente lo mas inseguro que se puede hacer en un sistema web
+    # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
+    # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
+    #TODO: CAMBIAR ESTA LINEA:
+    try:
+        ids = eval("["+ids+"]")
+        print(ids)
+        materiales = NegocioMaterial.get_by_id_array(ids)
+        mat_dic =  [{"nombre":          m.nombre,
+                     "unidadmedida":    m.unidadMedida}
+                     for m in materiales]
+        return jsonify(mat_dic)
+    except Exception as e:
+        return error(e,"depositos")
+
+
+@app.route('/gestion-depositos/actualizar', methods = ['GET','POST'])
+def update_estado_deposito():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idDep"])
+            estado = request.form["estado"]
+            pd = int(request.form["idPD"])
+
+            if estado == "cancelado":
+                NegocioDeposito.cancelar(id)
+                session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+                session.modified = True
+                
+
+            elif estado == "acreditado":
+                uid = int(request.form["idUser"])
+                #NegocioDeposito.acreditar(id,uid)
+
+            if pd == 0:
+                return redirect(url_for("allDepositos"))
+            else:
+                return redirect("/gestion-depositos/pd/"+str(pd))
+    except Exception as e:
+        return error(e,"pedidos")
+
+
+@app.route('/gestion-depositos/cancelar/<id>')
+def get_info_cancelar(id):
+    return jsonify(NegocioDeposito.get_info_cancelar(id))
+
+@app.route('/gestion-depositos/info/<id>')
+def deposito_info(id):
+    try:
+        dep = NegocioDeposito.get_by_id(id)
+
+        usuario = {}
+        if dep.isAcreditado():
+            user_id = NegocioDeposito.get_user_id(id)
+            user = NegocioUsuario.get_by_id(user_id)
+            td = NegocioTipoDocumento.get_by_id(user.tipoDoc)
+            usuario = {"id":user.id,"nombre":user.nombre,"apellido":user.apellido,"tipoDoc":td.nombre,"nroDoc":user.nroDoc,"email":user.email}
+        
+        pd = NegocioPuntoDeposito.get_by_id(dep.idPuntoDeposito)
+        deposito = {"id":dep.id,"codigo":dep.codigo,"fechaDeposito":dep.fechaDeposito,"fechaRegistro":dep.fechaRegistro,"ecoPuntos":dep.ecoPuntos.cantidad}
+        punto_deposito = {"id":pd.id,"nombre":pd.nombre,"calle":pd.direccion.calle,"altura":pd.direccion.altura,"ciudad":pd.direccion.ciudad,"provincia":pd.direccion.provincia,"pais":pd.direccion.pais}
+        return jsonify([deposito, usuario, punto_deposito])
+    except Exception as e:
+        return error(e,"pedidos")
+
+
 @app.route('/depositos/usuario', methods = ['GET','POST'])
 def depositos():
     try:
@@ -828,6 +1421,7 @@ def verificar_codigo(cod):
         nuevos_ep = response + session["usuario"].totalEcopuntos
         NegocioUsuario.update_nivel(session["usuario"].id,nuevos_ep)
         session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+        session.modified = True
         return jsonify(response)
     except Exception as e:
         return error(e,"codigo")
@@ -906,6 +1500,15 @@ def confirmar_prod_art():
         return redirect(url_for('prod_Articulos'))
     except Exception as e:
         return error(e,"produccion-art")
+
+'''
+    -----------------------
+    Quienes somos
+    -----------------------
+'''
+@app.route('/quienes-somos', methods = ['GET','POST'])
+def nosotros():
+    return render_template('quienes-somos.html')
 
 
 if __name__ == '__main__':
