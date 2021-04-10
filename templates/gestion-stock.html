@@ -145,7 +145,7 @@
                     </div>
                     <div class="col" style="width: 10%; margin-left: 12%;">
                         <div class="group">      
-                            <input type="text" id="cantidadInput" name="cantidad" onkeypress="return isNumberKey(this, event);" style="width: 70%;" oninput="validaCant(value);" autocomplete="off">
+                            <input type="number" id="cantidadInput" name="cantidad" onkeypress="return isNumberKey(this, event);" min="1" style="width: 70%;" oninput="validaCant(value);" autocomplete="off">
                             <span class="highlight" style="width: 70%;"></span>
                             <span class="bar" style="width: 70%;"></span>
                             <label>Cantidad</label>
@@ -273,7 +273,7 @@
                         <div class="row">
                             <div class="col" style="width: 50%;">
                                 <div class="group">      
-                                    <input type="text" id="cantidadInputSM" name="cantidadSM" onkeypress="return isNumberKey(this, event);" style="width: 70%;" oninput="activate_validations();validaCantSM(value);" autocomplete="off">
+                                    <input type="number" id="cantidadInputSM" name="cantidadSM" onkeypress="return isNumberKey(this, event);" min="1" style="width: 70%;" oninput="activate_validations();validaCantSM(value);" autocomplete="off">
                                     <span class="highlight" style="width: 70%;"></span>
                                     <span class="bar" style="width: 70%;"></span>
                                     <label style="width: 70%;">Cantidad</label>
@@ -347,7 +347,7 @@
                                     <option value=-1 selected disabled>&nbsp; Seleccione un artículo</option>
                                     {%for art in articulos%}
                                         {%if art.stock|float > 0%}
-                                            <option value={{art.unidadMedida}},{{art.id}},{{art.stock}}>&nbsp; {{art.nombre}}</option>
+                                            <option value={{art.unidadMedida}},{{art.id}},{{art.stock}},{{art.valor}}>&nbsp; {{art.nombre}}</option>
                                         {%else%}
                                             <option value={{art.unidadMedida}},{{art.id}},{{art.stock}} disabled data-toggle="tooltip" data-placement="right" title="Este artículo se encuentra sin stock">&nbsp; {{art.nombre}}</option>
                                         {%endif%}
@@ -383,7 +383,7 @@
                             <div class="row">
                                 <div class="col" style="width: 50%;">
                                     <div class="group">      
-                                        <input type="text" id="cantidadInputSE" name="cantidadSE" onkeypress="return isNumberKey(this, event);" style="width: 70%;" oninput="activate_validations_se();validaCantSE(value);" autocomplete="off">
+                                        <input type="number" id="cantidadInputSE" name="cantidadSE" onkeypress="return isNumberKey(this, event);" min="1" style="width: 70%;" oninput="activate_validations_se();validaCantSE(value);" autocomplete="off">
                                         <span class="highlight" style="width: 70%;"></span>
                                         <span class="bar" style="width: 70%;"></span>
                                         <label style="width: 70%;">Cantidad</label>
@@ -399,6 +399,28 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="margin-top: 2% !important;">
+                        <div class="col" style="width: 65%; margin-left: 9%;">
+                            <div class="group">
+                                <input type="text" id="idEntidadInput" name="id" hidden style="width: 90%;">      
+                                <input type="number" id="unitValSE" name="fechaSE" style="width: 90%;" autocomplete="off" oninput="inputUnitVal(value);">
+                                <span class="highlight" style="width: 90%;"></span>
+                                <span class="bar" style="width: 90%;"></span>
+                                <label>Precio Unitatio en ARS</label>
+                                <p id="valorUnitarioErrorSE" class="modalErrorMessage">* Formato de fecha incorrecto.</p>
+                            </div>
+                        </div>
+                        <div class="col" style="width: 5%; margin-left: -3.5%;">
+                            <div class="group">
+                                <input type="text" id="idEntidadInput" name="id" hidden style="width: 77%;">      
+                                <input type="number" id="totalValSE" name="fechaSE" style="width: 77%;" autocomplete="off" oninput="inputTotalVal(value);">
+                                <span class="highlight" style="width: 77%;"></span>
+                                <span class="bar" style="width: 77%;"></span>
+                                <label>Precio Total en ARS</label>
+                                <p id="valorTotalErrorSE" class="modalErrorMessage">* Formato de fecha incorrecto.</p>
+                            </div>
+                        </div>        
                     </div>
                     <div class="row" id="fieldsRow1Alta2-er" style="width: 81%; margin-left: 9.2%;">
                         <div class="group" style="width: 100%;">

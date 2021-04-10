@@ -19,6 +19,13 @@ var pantalla = 1;
 
 var tipo_salida = false;
 
+var valor_unitario = false;
+var valor_original = false;
+
+
+var valorUnidad = false;
+var valorTotal = false;
+
 //Efecto CSS el botón del medio de los botones principales del modulo.
 $("#option-middle").hover(function(){
     $(this).css("border", "2px solid #95C22B");
@@ -227,17 +234,23 @@ function completeUnidadMedidaSM(um){
     $("#idArtSM").val(array[1]);
     unidadMedida = array[0];
     stock_disp = parseFloat(array[2]);
-    $("#stockDisponibleSM").val(stock_disp + " " + array[0] + " disponibles en stock.");
+    $("#stockDisponibleSM").val(stock_disp + " " + array[0] + " disponibles en stock");
     validaCantSM($("#cantidadInputSM").val());
     enable_disable_sm();
 }
 
 function completeUnidadMedidaSE(um){
     var array = um.split(",");
-    $("#idArtSE").val(array[1]);
     unidadMedida = array[0];
     stock_disp = parseFloat(array[2]);
-    $("#stockDisponibleSE").val(stock_disp + " " + array[0] + " disponibles en stock.");
+    valor_unitario = parseFloat(array[3]);
+    valor_original = parseFloat(array[3]);
+    
+    $("#idArtSE").val(array[1]);
+    $("#stockDisponibleSE").val(stock_disp + " " + array[0] + " disponibles en stock");
+    
+    $("#unitValSE").val(valor_unitario);
+    
     validaCantSE($("#cantidadInputSE").val());
     enable_disable_se();
 }
@@ -299,10 +312,20 @@ function validaCantSE(val){
                 $("#cantErrorSE").text("* No hay stock.")
                 $("#cantErrorSE").fadeIn();
                 cantidadSE = false;
+                if ($("#unitValSE").val() == ""){
+                    $("#unitValSE").val(valor_original);
+                    valor_unitario = valor_original;
+                }
+                $("#totalValSE").val(parseFloat(val) * valor_unitario);
             }
             else{
                 $("#cantErrorSE").fadeOut();
                 cantidadSE = true;
+                if ($("#unitValSE").val() == ""){
+                    $("#unitValSE").val(valor_original);
+                    valor_unitario = valor_original;
+                }
+                $("#totalValSE").val(parseFloat(val) * valor_unitario);
             }
         }
         else if (val == ""){
@@ -313,6 +336,12 @@ function validaCantSE(val){
         else{
             $("#cantErrorSE").fadeOut();
             cantidadSE = true;
+
+            if ($("#unitValSE").val() == ""){
+                $("#unitValSE").val(valor_original);
+                valor_unitario = valor_original;
+            }
+            $("#totalValSE").val(parseFloat(val) * valor_unitario);
         }
         enable_disable_se();
     }
@@ -444,7 +473,7 @@ function enable_disable_sm(){
 }
 
 function enable_disable_se(){
-    if (cantidadSE && descripcionSE && fechaSE && $("#art-select-picker-sed").val() != null){
+    if (cantidadSE && descripcionSE && fechaSE && valorUnidad && valorTotal && $("#art-select-picker-sed").val() != null){
         $("#primary-btn-sal").prop('disabled',false);
     }
     else{
@@ -486,8 +515,10 @@ function submitFormSM(type){
         if(pantalla == 1){
             $("#pantalla-1").hide();
             $("#pantalla-2").fadeIn();
+            $('#primary-btn-sal').prop('disabled', true);
             $("#primary-btn-sal").text("Registrar salida");
             $("#secondary-btn-sal").text("Anterior");
+            enable_disable_se();
             pantalla = 2;
         }
         else if (pantalla == 2){
@@ -562,6 +593,7 @@ function cierraModal(){
     if (pantalla == 2){
         $("#pantalla-2").hide();
         $("#pantalla-1").fadeIn();
+        $("#primary-btn-sal").text("Siguiente");
         $("#secondary-btn-sal").text("Cancelar");
         validaEntidad($("#ent-select-picker-sm").val());
         pantalla = 1;
@@ -569,4 +601,34 @@ function cierraModal(){
     else{
         $("#salidaModal").modal('hide');
     }
+}
+
+function inputUnitVal(val){
+    if (val == ""){
+        $("#valorUnitarioErrorSE").fadeIn();
+        valorUnidad = false;
+    }
+    else{
+        valor_unitario = val;
+        valorUnidad = true;
+        $("#valorUnitarioErrorSE").fadeOut();
+        $("#totalValSE").val($("#cantidadInputSE").val() * val);
+    }
+    enable_disable_se();
+    
+}
+
+function inputTotalVal(val){
+    if (val == ""){
+        $("#valorTotalErrorSE").fadeIn();
+        valorTotal = false;
+    }
+    else{
+        valor_unitario = val/$("#cantidadInputSE").val();
+        valorTotal = true;
+        $("#valorTotalErrorSE").fadeOut();
+        $("#unitValSE").val(valor_unitario);
+    }
+    enable_disable_se();
+    
 }
