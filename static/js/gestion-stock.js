@@ -6,8 +6,15 @@ var cantidadSM = false;
 var descripcionSM = false;
 var fechaSM = true;
 
+var cantidadSE = false;
+var descripcionSE = false;
+var fechaSE = true;
+
 var stock_disp = false;
+
 var valida_cant_sm = false;
+var valida_cant_se = false;
+
 var pantalla = 1;
 
 var tipo_salida = false;
@@ -131,15 +138,32 @@ var messagesHistorial = [
 
 function openEntradaModal(){
     jQuery.noConflict();
+
+    //Manejo de ocultamiento de lementos y botones.
     $("#unidadMedidaInput").val("-");
     $(".modalErrorMessage").hide();
     $("#primary-btn-re").prop('disabled',true);
+    $("cantError").hide();
+    $("#fechaError").hide();
+    $("#descError").hide();
+    $("#mat-select-picker-re").val(-1);
+
+    //Seteo de valores iniciales
     document.getElementById('dateInput').valueAsDate = new Date();
+    $("#stockDisponible").val("");
+    $("#descEnt").val("");
+    $("#cantidadInput").val("");
+    cantidad = false;
+    descripcion = false;
+    fecha = true;
+
     $("#entradaModal").modal('show');
 }
 
 function openSalidadaModal(){
     jQuery.noConflict();
+
+    //Manejo de ocultamiento de elementos y botones.
     $("#primary-btn-sal").text('Registrar salida');
     $("#submenu-modal").show();
     $("#primary-btn-sal").hide();
@@ -150,10 +174,44 @@ function openSalidadaModal(){
     $(".modalErrorMessage").hide();
     $("#primary-btn-sal").prop('disabled',true);
     $("#secondary-btn-sal").text("Cancelar");
+    $("cantErrorSM").hide();
+    $("cantErrorSE").hide();
+    $("#fechaErrorSM").hide();
+    $("#fechaErrorSE").hide();
+    $("#descErrorSM").hide();
+    $("#descErrorSE").hide();
+    
+    //Seteo de valores iniciales.
+    $("#art-select-picker-sm").val(-1);
+    $("#art-select-picker-sed").val(-1);
     $('#ent-select-picker-sm').val(-1);
-
+    $('#ent-select-picker-sed').val(-1);
     document.getElementById('dateInputSM').valueAsDate = new Date();
+    document.getElementById('dateInputSE').valueAsDate = new Date();
+    $("#stockDisponibleSM").val("");
+    $("#stockDisponibleSE").val("");
+    $("#descSM").val("");
+    $("#descSE").val("");
+    $("#cantidadInputSM").val("");
+    $("#cantidadInputSE").val("");
+    
+    cantidadSM = false;
+    descripcionSM = false;
+    fechaSM = true;
+
+    cantidadSE = false;
+    descripcionSE = false;
+    fechaSE = true;
+
+    stock_disp = false;
+
+    valida_cant_sm = false;
+    valida_cant_se = false;
+    
     pantalla = 1;
+
+    tipo_salida = false;
+
     $("#salidaModal").modal('show');
 }
 
@@ -172,6 +230,16 @@ function completeUnidadMedidaSM(um){
     $("#stockDisponibleSM").val(stock_disp + " " + array[0] + " disponibles en stock.");
     validaCantSM($("#cantidadInputSM").val());
     enable_disable_sm();
+}
+
+function completeUnidadMedidaSE(um){
+    var array = um.split(",");
+    $("#idArtSE").val(array[1]);
+    unidadMedida = array[0];
+    stock_disp = parseFloat(array[2]);
+    $("#stockDisponibleSE").val(stock_disp + " " + array[0] + " disponibles en stock.");
+    validaCantSE($("#cantidadInputSE").val());
+    enable_disable_se();
 }
 
 
@@ -219,6 +287,38 @@ function validaCantSM(val){
     
 }
 
+function validaCantSE(val){
+    if (valida_cant_se){
+        if (stock_disp != false){
+            if (val == ""){
+                $("#cantErrorSE").text("* Completar.")
+                $("#cantErrorSE").fadeIn();
+                cantidadSE = false;
+            }
+            else if (val > stock_disp){
+                $("#cantErrorSE").text("* No hay stock.")
+                $("#cantErrorSE").fadeIn();
+                cantidadSE = false;
+            }
+            else{
+                $("#cantErrorSE").fadeOut();
+                cantidadSE = true;
+            }
+        }
+        else if (val == ""){
+            $("#cantErrorSE").text("* Completar.")
+            $("#cantErrorSE").fadeIn();
+            cantidadSE = false;
+        }
+        else{
+            $("#cantErrorSE").fadeOut();
+            cantidadSE = true;
+        }
+        enable_disable_se();
+    }
+    
+}
+
 function validaFecha(val){
     if (val != ''){
         fecha = true;
@@ -241,6 +341,18 @@ function validaFechaSM(val){
         $("#fechaErrorSM").fadeIn();
     }
     enable_disable_sm();
+}
+
+function validaFechaSE(val){
+    if (val != ''){
+        fechaSE = true;
+        $("#fechaErrorSE").fadeOut();
+    }
+    else{
+        fechaSM = false;
+        $("#fechaErrorSE").fadeIn();
+    }
+    enable_disable_se();
 }
 
 function validaDesc(val){
@@ -289,6 +401,30 @@ function validaDescSM(val){
     enable_disable_sm();
 }
 
+function validaDescSE(val){
+    if (val == ""){
+        $("#descErrorSE").text("* La descripción no puede quedar vacía.")
+        $("#descErrorSE").fadeIn();
+        descripcionSE = false;
+    }
+    else if (val.length > 200){
+        $("#descErrorSE").text("* La descripción no puede tener más de 200 caracteres.");
+        $("#descErrorSE").fadeIn();
+        descripcionSE = false;
+    }
+    else if (val.length < 5){
+        $("#descErrorSE").text("* La descripción no puede tener menos de 5 caracteres.");
+        $("#descErrorSE").fadeIn();
+        descripcionSE = false;
+    }
+    else{
+        $("#descErrorSE").fadeOut();
+        descripcionSE = true;
+    }
+    enable_disable_se();
+}
+
+
 function enable_disable(){
     if (cantidad && descripcion && fecha && $("#mat-select-picker-re").val() != null){
         $("#primary-btn-re").prop('disabled',false);
@@ -300,6 +436,15 @@ function enable_disable(){
 
 function enable_disable_sm(){
     if (cantidadSM && descripcionSM && fechaSM && $("#art-select-picker-sm").val() != null){
+        $("#primary-btn-sal").prop('disabled',false);
+    }
+    else{
+        $("#primary-btn-sal").prop('disabled',true);
+    }
+}
+
+function enable_disable_se(){
+    if (cantidadSE && descripcionSE && fechaSE && $("#art-select-picker-sed").val() != null){
         $("#primary-btn-sal").prop('disabled',false);
     }
     else{
@@ -341,8 +486,12 @@ function submitFormSM(type){
         if(pantalla == 1){
             $("#pantalla-1").hide();
             $("#pantalla-2").fadeIn();
+            $("#primary-btn-sal").text("Registrar salida");
             $("#secondary-btn-sal").text("Anterior");
             pantalla = 2;
+        }
+        else if (pantalla == 2){
+            $( "#modal-form-sed").submit();
         }
         
     }
@@ -396,6 +545,10 @@ function changeForm(val){
 
 function activate_validations(){
     valida_cant_sm = true;
+}
+
+function activate_validations_se(){
+    valida_cant_se = true;
 }
 
 function validaEntidad(val){

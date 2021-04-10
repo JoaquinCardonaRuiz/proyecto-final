@@ -1488,6 +1488,21 @@ def alta_salida_mun():
     except Exception as e:
         return error(e,"gestion_stock")
 
+@app.route('/gestion-stock/alta-salida-ed', methods = ['GET','POST'])
+def alta_salida_ed():
+    try:
+        if request.method == 'POST':
+            idArt = request.form["idArtSE"]
+            cant = request.form["cantidadSE"]
+            concepto = request.form["descripcionSE"]
+            fecha = request.form["fechaSE"]
+            idEntidad = request.form["idEntidad"]
+            valorTotal = request.form["valorTotal"]
+            NegocioSalidaStock.add_one(idEntidad,idArt,cant,concepto,fecha,valorTotal)
+        return redirect(url_for('gestion_stock'))  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
 
 '''
     -----------------------

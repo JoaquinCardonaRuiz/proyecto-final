@@ -175,7 +175,7 @@
                 <div class="row" id="fieldsRow1Alta2-er" style="width: 81%; margin-left: 9.5%;">
                     <div class="group" style="width: 100%;">
                         <input type="text" id="idEntidadInput" name="id" hidden>
-                        <textarea class="form-control green-text-area mt-3" id="exampleFormControlTextarea1" rows="3" name="descripcion" oninput="validaDesc(value);"></textarea>
+                        <textarea class="form-control green-text-area mt-3" id="descEnt" rows="3" name="descripcion" oninput="validaDesc(value);"></textarea>
                         <p id="descError" class="modalErrorMessage" style="margin-bottom: -3%;">* La descripción no puede quedar vacía.</p>
                         <label>Descripción/Concepto</label>
                     </div>
@@ -293,7 +293,7 @@
                 <div class="row" id="fieldsRow1Alta2-er" style="width: 81%; margin-left: 9.2%;">
                     <div class="group" style="width: 100%;">
                         <input type="text" id="idEntidadInput" name="id" hidden>
-                        <textarea class="form-control green-text-area mt-3" id="exampleFormControlTextarea1" rows="3" name="descripcionSM" oninput="validaDescSM(value);"></textarea>
+                        <textarea class="form-control green-text-area mt-3" id="descSM" rows="3" name="descripcionSM" oninput="validaDescSM(value);"></textarea>
                         <p id="descErrorSM" class="modalErrorMessage" style="margin-bottom: -3%;">* La descripción no puede quedar vacía.</p>
                         <label>Descripción/Concepto</label>
                     </div>
@@ -305,7 +305,7 @@
             </form>
 
             <!--Salida stock Entidades de Destino-->
-            <form class="" id="modal-form-sed" action="{{url_for('alta_salida_mun')}}" method="POST">
+            <form class="" id="modal-form-sed" action="{{url_for('alta_salida_ed')}}" method="POST">
                 <!--Selección de Entidad de Destino-->
                 <div id="pantalla-1">
                     <div class="row subheader-row" id="subheader-alta-pd">
@@ -315,7 +315,7 @@
                     </div>
                     <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="width: 100%;" hidden>
                         <div class="group" id="password-input-group" style="width: 81%; margin-left: 3%;">
-                            <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="ent-select-picker-sm" class="selectpicker selectpicker-nooutline" oninput="validaEntidad(value);" data-live-search="true">
+                            <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="ent-select-picker-sm" class="selectpicker selectpicker-nooutline" name="idEntidad" oninput="validaEntidad(value);" data-live-search="true">
                                 <option value=-1 selected disabled>&nbsp; Seleccione una entidad de destino</option>
                                 {%for ent in entidades%}
                                         <option value={{ent.id}} >&nbsp; {{ent.nombre}}</option>
@@ -337,13 +337,13 @@
                 <div id="pantalla-2">
                     <div class="row subheader-row" id="subheader-alta-pd">
                         <div class="col" style="margin-left: 1%;">
-                            <label class="subheader" id="subheader-alta-salida">Entidad de Destino</label>
+                            <label class="subheader" id="subheader-alta-salida">Datos de la Salida</label>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="width: 100%;">
                         <div class="col" style="width: 65%; margin-left: 9%;">
                             <div class="group" id="password-input-group">
-                                <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="art-select-picker-sm" class="selectpicker selectpicker-nooutline" oninput="completeUnidadMedidaSM(value);" data-live-search="true">
+                                <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="art-select-picker-sed" class="selectpicker selectpicker-nooutline" oninput="completeUnidadMedidaSE(value);" data-live-search="true">
                                     <option value=-1 selected disabled>&nbsp; Seleccione un artículo</option>
                                     {%for art in articulos%}
                                         {%if art.stock|float > 0%}
@@ -362,7 +362,7 @@
                         </div>
                         <div class="col" style="width: 10%;">
                             <div class="group">
-                                <input class="data-show-input" type="text" id="stockDisponibleSM" readonly style="width: 100%;">
+                                <input class="data-show-input" type="text" id="stockDisponibleSE" readonly style="width: 100%;">
                                 <input type="text" id="idEntidadInput" name="id" hidden>
                                 <label>Stock Disponible</label>      
                             </div>
@@ -372,22 +372,22 @@
                         <div class="col" style="width: 65%; margin-left: 9%;">
                             <div class="group">
                                 <input type="text" id="idEntidadInput" name="id" hidden style="width: 89%;">      
-                                <input type="date" id="dateInputSM" name="fechaSM" style="width: 89%;" autocomplete="off" oninput="validaFechaSM(value);">
+                                <input type="date" id="dateInputSE" name="fechaSE" style="width: 89%;" autocomplete="off" oninput="validaFechaSE(value);">
                                 <span class="highlight" style="width: 89%;"></span>
                                 <span class="bar" style="width: 89%;"></span>
                                 <label>Fecha</label>
-                                <p id="fechaErrorSM" class="modalErrorMessage">* Formato de fecha incorrecto.</p>
+                                <p id="fechaErrorSE" class="modalErrorMessage">* Formato de fecha incorrecto.</p>
                             </div>
                         </div>            
                         <div class="col" style="width:20%; margin-left: -4%;">
                             <div class="row">
                                 <div class="col" style="width: 50%;">
                                     <div class="group">      
-                                        <input type="text" id="cantidadInputSM" name="cantidadSM" onkeypress="return isNumberKey(this, event);" style="width: 70%;" oninput="activate_validations();validaCantSM(value);" autocomplete="off">
+                                        <input type="text" id="cantidadInputSE" name="cantidadSE" onkeypress="return isNumberKey(this, event);" style="width: 70%;" oninput="activate_validations_se();validaCantSE(value);" autocomplete="off">
                                         <span class="highlight" style="width: 70%;"></span>
                                         <span class="bar" style="width: 70%;"></span>
                                         <label style="width: 70%;">Cantidad</label>
-                                        <p id="cantErrorSM" class="modalErrorMessage" style="width: 70%;">* Completar.</p>
+                                        <p id="cantErrorSE" class="modalErrorMessage" style="width: 70%;">* Completar.</p>
                                     </div>
                                 </div>
                                 <div class="col mt-2" style="width: 50%; margin-left: -20% !important;">
@@ -403,8 +403,8 @@
                     <div class="row" id="fieldsRow1Alta2-er" style="width: 81%; margin-left: 9.2%;">
                         <div class="group" style="width: 100%;">
                             <input type="text" id="idEntidadInput" name="id" hidden>
-                            <textarea class="form-control green-text-area mt-3" id="exampleFormControlTextarea1" rows="3" name="descripcionSM" oninput="validaDescSM(value);"></textarea>
-                            <p id="descErrorSM" class="modalErrorMessage" style="margin-bottom: -3%;">* La descripción no puede quedar vacía.</p>
+                            <textarea class="form-control green-text-area mt-3" id="descSE" rows="3" name="descripcionSE" oninput="validaDescSE(value);"></textarea>
+                            <p id="descErrorSE" class="modalErrorMessage" style="margin-bottom: -3%;">* La descripción no puede quedar vacía.</p>
                             <label>Descripción/Concepto</label>
                         </div>
                     </div>
@@ -412,7 +412,7 @@
                         <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione "Registrar salida" para añadir la salida</p>
                     </div>
                 </div>
-                <input type="text" id="idArtSM" name="idArtSM" hidden>
+                <input type="text" id="idArtSM" name="idArtSE" hidden>
             </form>
         </div>
         <div class="modal-footer">

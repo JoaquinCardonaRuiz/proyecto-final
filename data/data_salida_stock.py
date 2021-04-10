@@ -59,3 +59,20 @@ class DatosSalidaStock(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_salida_stock_get_all()",
                                                     msj=str(e),
                                                     msj_adicional="Error obteniendo todas las salidas de la BD.")
+
+    @classmethod
+    def add_one(cls,idArt, cant, concepto, fecha, idEntidad, valorTotal, noClose = False):
+        """Registra una salida de stock en la BD en base a los parámetros recibidos.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("INSERT into salidasStock (idEntidad, idTipoArticulo, cantSalida, fecha, concepto, valorTotal) values (%s,%s,%s,%s,%s,%s)")
+            values = (idEntidad,idArt, cant, fecha ,concepto, valorTotal)
+            cls.cursor.execute(sql, values)
+            cls.db.commit()
+            return True
+        
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_salidas_stock.add_one()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error registrando una salida de stock en la BD.")
