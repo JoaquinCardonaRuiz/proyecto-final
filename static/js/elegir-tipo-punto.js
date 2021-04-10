@@ -1,4 +1,4 @@
-function redirect(tipoPunto) {
+function redirectMessage(tipoPunto) {
     $("#option1").hide();
     $("#option2").hide();
     $('.heading').hide();

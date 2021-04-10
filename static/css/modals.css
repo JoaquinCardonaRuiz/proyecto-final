@@ -275,10 +275,14 @@ margin-left: 5% !important;
 }
 
 #subheader-alta-pd{
-margin-left: 8% !important;
+margin-left: 7% !important;
 margin-top: 1% !important;
 }
 
+#subheader-alta-salida{
+  margin-top: -2% !important;
+  margin-bottom: -2% !important;
+}
 
 #bottomAltaModalTextAltaPD{
 margin-bottom: 2% !important;
@@ -769,3 +773,22 @@ display: none;
   text-align: center;
 }
 
+#fieldsRow1Alta1-er{
+  margin-top: -2% !important;
+}
+
+#fieldsRow1Alta2-er{
+  margin-top: 1%;
+}
+
+#modal-form-sed{
+  display: none;
+}
+
+#pantalla-1, #pantalla-2{
+  display: none;
+}
+
+#ent-select-picker-sm{
+  font-size: 15px;
+}

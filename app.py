@@ -989,7 +989,13 @@ def get_insumos(ids):
         return error(e,"insumos")
     return redirect(url_for('gestion_articulos'))
 
-
+@app.route('/articulos/get-stock/<id>', methods = ['GET','POST'])
+def get_stock_art(id):
+    try:
+        art = NegocioArticulo.get_by_id(id)
+        return jsonify(art.stock)
+    except:
+        return jsonify(False)
 
 
 ''' 
@@ -1428,7 +1434,8 @@ def gestion_stock():
     try:
         articulos = NegocioArticulo.get_all()
         materiales = NegocioMaterial.get_all()
-        return render_template('gestion-stock.html', materiales = materiales, articulos=articulos)  
+        entidades = NegocioEntidadDestino.get_all()
+        return render_template('gestion-stock.html', materiales = materiales, articulos=articulos, entidades = entidades)  
     except Exception as e:
         return error(e,"gestion_stock")
 
@@ -1467,6 +1474,20 @@ def alta_entrada_mat():
         return redirect(url_for('gestion_stock'))  
     except Exception as e:
         return error(e,"gestion_stock")
+
+@app.route('/gestion-stock/alta-salida-mun', methods = ['GET','POST'])
+def alta_salida_mun():
+    try:
+        if request.method == 'POST':
+            idArt = request.form["idArtSM"]
+            cant = request.form["cantidadSM"]
+            concepto = request.form["descripcionSM"]
+            fecha = request.form["fechaSM"]
+            NegocioSalidaMun.add_one(idArt,cant,concepto, fecha)
+        return redirect(url_for('gestion_stock'))  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
 
 '''
     -----------------------

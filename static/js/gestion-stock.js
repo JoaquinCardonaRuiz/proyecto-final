@@ -6,6 +6,12 @@ var cantidadSM = false;
 var descripcionSM = false;
 var fechaSM = true;
 
+var stock_disp = false;
+var valida_cant_sm = false;
+var pantalla = 1;
+
+var tipo_salida = false;
+
 //Efecto CSS el botón del medio de los botones principales del modulo.
 $("#option-middle").hover(function(){
     $(this).css("border", "2px solid #95C22B");
@@ -134,13 +140,20 @@ function openEntradaModal(){
 
 function openSalidadaModal(){
     jQuery.noConflict();
+    $("#primary-btn-sal").text('Registrar salida');
     $("#submenu-modal").show();
     $("#primary-btn-sal").hide();
     $("#modal-form-sm").hide();
-    $("#unidadMedidaInput").val("-");
+    $("#modal-form-sed").hide();
+    $("#pantalla-1").hide();
+    $("#pantalla-2").hide();
     $(".modalErrorMessage").hide();
     $("#primary-btn-sal").prop('disabled',true);
+    $("#secondary-btn-sal").text("Cancelar");
+    $('#ent-select-picker-sm').val(-1);
+
     document.getElementById('dateInputSM').valueAsDate = new Date();
+    pantalla = 1;
     $("#salidaModal").modal('show');
 }
 
@@ -153,8 +166,11 @@ function completeUnidadMedida(um){
 
 function completeUnidadMedidaSM(um){
     var array = um.split(",");
-    $("#unidadMedidaInputSM").val(array[0]);
     $("#idArtSM").val(array[1]);
+    unidadMedida = array[0];
+    stock_disp = parseFloat(array[2]);
+    $("#stockDisponibleSM").val(stock_disp + " " + array[0] + " disponibles en stock.");
+    validaCantSM($("#cantidadInputSM").val());
     enable_disable_sm();
 }
 
@@ -172,15 +188,35 @@ function validaCant(val){
 }
 
 function validaCantSM(val){
-    if (val == ""){
-        $("#cantErrorSM").fadeIn();
-        cantidadSM = false;
+    if (valida_cant_sm){
+        if (stock_disp != false){
+            if (val == ""){
+                $("#cantErrorSM").text("* Completar.")
+                $("#cantErrorSM").fadeIn();
+                cantidadSM = false;
+            }
+            else if (val > stock_disp){
+                $("#cantErrorSM").text("* No hay stock.")
+                $("#cantErrorSM").fadeIn();
+                cantidadSM = false;
+            }
+            else{
+                $("#cantErrorSM").fadeOut();
+                cantidadSM = true;
+            }
+        }
+        else if (val == ""){
+            $("#cantErrorSM").text("* Completar.")
+            $("#cantErrorSM").fadeIn();
+            cantidadSM = false;
+        }
+        else{
+            $("#cantErrorSM").fadeOut();
+            cantidadSM = true;
+        }
+        enable_disable_sm();
     }
-    else{
-        $("#cantErrorSM").fadeOut();
-        cantidadSM = true;
-    }
-    enable_disable_sm();
+    
 }
 
 function validaFecha(val){
@@ -286,19 +322,31 @@ function submitForm(idForm){
     nextMsgAlta();
 }
 
-function submitFormSM(idForm){
-    //Manejo de elementos de carga
-    $("#modal-form-sm").hide();
-    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
-    $(".lds-ring").show().fadeIn(500);
-    $('#primary-btn-sal').prop('disabled', true);
-    $('#secondary-btn-sal').prop('disabled', true);
+function submitFormSM(type){
+    if (tipo_salida == 'sm'){
+        //Manejo de elementos de carga
+        $("#modal-form-sm").hide();
+        $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+        $(".lds-ring").show().fadeIn(500);
+        $('#primary-btn-sal').prop('disabled', true);
+        $('#secondary-btn-sal').prop('disabled', true);
 
-    //Manejo de datos
-    $( "#salidaMunicipioForm").submit();
+        //Manejo de datos
+        $( "#modal-form-sm").submit();
 
-    //Funcion que va cambiando los mensajes de carga.
-    nextMsgAltSM();
+        //Funcion que va cambiando los mensajes de carga.
+        nextMsgAltSM();
+    }
+    else if(tipo_salida == 'sed'){
+        if(pantalla == 1){
+            $("#pantalla-1").hide();
+            $("#pantalla-2").fadeIn();
+            $("#secondary-btn-sal").text("Anterior");
+            pantalla = 2;
+        }
+        
+    }
+    
 }
 
 function nextMsgAltSM() {
@@ -334,8 +382,38 @@ function changeForm(val){
         $("#submenu-modal").hide();
         $("#primary-btn-sal").fadeIn();
         $("#modal-form-sm").fadeIn();
+        tipo_salida = val;
     }
-    else if (value=='sed'){
+    else if (val=='sed'){
+        $("#submenu-modal").hide();
+        $("#primary-btn-sal").text('Siguiente');
+        $("#primary-btn-sal").fadeIn();
+        $("#modal-form-sed").fadeIn();
+        $("#pantalla-1").fadeIn();
+        tipo_salida = val;
+    }
+}
 
+function activate_validations(){
+    valida_cant_sm = true;
+}
+
+function validaEntidad(val){
+    if (val != null){
+        $("#primary-btn-sal").prop('disabled',false);  
+        pantalla = 1;    
+    }
+}
+
+function cierraModal(){
+    if (pantalla == 2){
+        $("#pantalla-2").hide();
+        $("#pantalla-1").fadeIn();
+        $("#secondary-btn-sal").text("Cancelar");
+        validaEntidad($("#ent-select-picker-sm").val());
+        pantalla = 1;
+    }
+    else{
+        $("#salidaModal").modal('hide');
     }
 }

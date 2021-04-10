@@ -6,7 +6,7 @@ class DatosEntradaExterna(Datos):
     
     @classmethod
     def add_one(cls,idMaterial, cant, concepto, fecha, noClose = False):
-        """Obtiene todas las salidas de la municipalidad de la BD.
+        """Registra una entrada externa de stock en la BD en base a los parámetros recibidos.
         """
         try:
             cls.abrir_conexion()
@@ -17,9 +17,9 @@ class DatosEntradaExterna(Datos):
             return True
         
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data_material.get_by_id()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_entrada_externa.add_one()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obteniendo todas las salidas de la municipalidad de la BD.")
+                                                    msj_adicional="Error registrando una entrada externa de stock en la BD.")
 
     
     #TODO: Hacer get_all() e incluír en listado.

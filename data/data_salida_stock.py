@@ -12,7 +12,8 @@ class DatosSalidaStock(Datos):
             sql = ("SELECT idSalida, \
                            idTipoArticulo, \
                            fecha, \
-                           cantidadSalida \
+                           cantidadSalida, \
+                           concepto \
                            FROM salidasStock WHERE idEntidad = {};".format(id))
             cls.cursor.execute(sql)
             salidas = cls.cursor.fetchall()
