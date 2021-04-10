@@ -26,6 +26,8 @@ function openModalMateriales(nom,uM,cant,color){
 
 
 function open_acreditar_modal(id){
+    document.getElementById("idDepInput").value=id;
+    document.getElementById("estadoInput").value = "acreditado";
     document.getElementById("open-modal-acreditar").click();
 }
 
@@ -41,22 +43,22 @@ function openInfoModal(id){
         $("#EPModal").val(deposito["ecoPuntos"]);
         $("#codigoModal").val(deposito["codigo"]);
         $("#fecha_depModal").val(deposito["fechaDeposito"]);
-
+        console.log(deposito["fechaRegistro"]);
         if(deposito["fechaRegistro"]){
             $("#fecha_regModal").val(deposito["fechaRegistro"]);
             $("#estadoModal").val("Acreditado");
             //Seteo valores Usuario
-            $("#IDusuarioModal").val(usuario["id"]);
-            $("#nombreCompletoModal").val(usuario["nombre"] + " " + usuario["apellido"]);
-            $("#tipoNroDocModal").val(usuario["nroDoc"] + " (" + usuario["tipoDoc"] + ")");
-            $("#emailModal").val(usuario["email"]);
+            $("#IDusuarioModalInfo").val(usuario["id"]);
+            $("#nombreCompletoModalInfo").val(usuario["nombre"] + " " + usuario["apellido"]);
+            $("#tipoNroDocModalInfo").val(usuario["nroDoc"] + " (" + usuario["tipoDoc"] + ")");
+            $("#emailModalInfo").val(usuario["email"]);
             
-            document.getElementById("user-section").hidden = false;
+            document.getElementById("user-section-info").hidden = false;
 
         }else{
             $("#fecha_regModal").val("-");
             $("#estadoModal").val("Sin Acreditar");
-            document.getElementById("user-section").hidden = true;
+            document.getElementById("user-section-info").hidden = true;
         }
         set_ep_logo_pos(deposito["ecoPuntos"]);
 
@@ -98,6 +100,8 @@ function set_ep_logo_pos(num){
 
 
 function update_estado(id,estado){
+    document.getElementById("conf-acreditar-btn").disabled = true;
+    document.getElementById("conf-cancelar-btn").disabled = true;
     document.getElementById("estadoForm").submit();
 }
 
@@ -128,7 +132,6 @@ function open_cancelar_modal(id){
         }
         document.getElementById("idDepInput").value=id;
         document.getElementById("estadoInput").value = "cancelado";
-        document.getElementById("idPDInput").value = 0;
         document.getElementById("open-modal-cancelar").click();
     });
 
@@ -140,5 +143,33 @@ function buscar_user(){
     value = document.getElementById("buscarInput").value;
     $.getJSON("/gestion-depositos/buscar-info-user/"+ value,function (result){
         console.log(result);
+        if(result.length >= 1){
+            user = result[0];
+            document.getElementById("conf-acreditar-btn").disabled = false;
+            document.getElementById("IDusuarioModal").value = user["id"];
+            document.getElementById("nombreCompletoModal").value = user["nombre"];
+            document.getElementById("emailModal").value = user["email"];
+            document.getElementById("tipoNroDocModal").value = user["tiponroDoc"];
+            document.getElementById("idUserInput").value = user["id"];
+        }else{
+            document.getElementById("IDusuarioModal").value = "-";
+            document.getElementById("nombreCompletoModal").value = "-";
+            document.getElementById("emailModal").value = "-";
+            document.getElementById("tipoNroDocModal").value = "-";
+        }
+        document.getElementById("buscar-btn").disabled = false;
+        $("#loadingRow2").hide();
+        $(".lds-ring").hide();
+        $("#resultados").show();
     });
+}
+
+function disable_btn(){
+    document.getElementById("buscar-btn").disabled = true;
+    $("#resultados").hide();
+    $(".lds-ring").show();
+    $("#loadingRow2").show();
+    $("#hr-row").show();
+    document.getElementById("conf-acreditar-btn").disabled = true;
+    $("#subheader-alta-pd-2").show();
 }

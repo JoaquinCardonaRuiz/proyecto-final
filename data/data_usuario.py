@@ -370,7 +370,7 @@ class DatosUsuario(Datos):
                 usuarios.idDireccion, \
                 usuarios.idNivel, \
                 usuarios.img \
-                from usuarios WHERE estado = \"habilitado\" AND (idUsuario=\"{}\" OR email=\"{}\" OR nroDOC=\"{}\" OR nombre+\" \" +apellido=\"{}\")").format(busqueda,busqueda,busqueda,busqueda)
+                from usuarios WHERE estado = \"habilitado\" AND (idUsuario=\"{}\" OR email=\"{}\" OR nroDOC=\"{}\")").format(busqueda,busqueda,busqueda,busqueda)
             cls.cursor.execute(sql)
             usuarios = cls.cursor.fetchall()
             users = []

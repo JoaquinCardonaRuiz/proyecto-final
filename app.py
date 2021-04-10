@@ -1285,8 +1285,7 @@ def allDepositos():
     try:
         materiales = NegocioMaterial.get_all()
         depositos = NegocioDeposito.get_all()
-        puntosDeposito = NegocioPuntoDeposito.get_all()
-        return render_template('depositosAdmin.html',materiales=materiales,depositos = depositos,puntosDeposito=puntosDeposito, usuario=session["usuario"])
+        return render_template('depositosAdmin.html',materiales=materiales,depositos = depositos, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidoss")
 
@@ -1294,9 +1293,9 @@ def allDepositos():
 def pedidosPD(id):
     try:
         materiales = NegocioMaterial.get_all()
-        deposito = NegocioDeposito.get_by_id_PD(int(id))
+        depositos = NegocioDeposito.get_by_id_PD(int(id))
         puntoDeposito = NegocioPuntoDeposito.get_by_id(int(id))
-        return render_template('depositosPD.html',materiales=materiales,deposito = deposito,puntoDeposito=puntoDeposito, usuario=session["usuario"])
+        return render_template('depositosPD.html',materiales=materiales,depositos = depositos,puntoDeposito=puntoDeposito, usuario=session["usuario"])
     except Exception as e:
         return error(e,"depositos")
 
@@ -1328,13 +1327,17 @@ def update_estado_deposito():
 
             if estado == "cancelado":
                 NegocioDeposito.cancelar(id)
+                NegocioNivel.actualiza_nivel_all()
                 session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
                 session.modified = True
                 
 
             elif estado == "acreditado":
                 uid = int(request.form["idUser"])
-                #NegocioDeposito.acreditar(id,uid)
+                NegocioDeposito.acreditar(id,uid)
+                NegocioNivel.actualiza_nivel_all()
+                session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+                session.modified = True
 
             if pd == 0:
                 return redirect(url_for("allDepositos"))
@@ -1374,8 +1377,7 @@ def buscar_info_user(busqueda):
         users = NegocioUsuario.buscar_info_user(busqueda)
         users_dic =  [{"id":      u.id,
                      "nombre":    u.nombre+" "+u.apellido,
-                     "nro_doc":   u.nroDoc,
-                     "tipo_doc":  u.tipoDoc.nombre,
+                     "tiponroDoc":   u.nroDoc + " ("+u.tipoDoc.nombre+")",
                      "email":     u.email}
                      for u in users]
         return jsonify(users_dic)

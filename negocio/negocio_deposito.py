@@ -33,6 +33,14 @@ class NegocioDeposito(Negocio):
             raise e
     
     @classmethod
+    def acreditar(cls,dip,uid):
+        try:
+            dep = cls.get_by_id(dip)
+            return DatosDeposito.verificar_codigo(dep.codigo,uid)
+        except Exception as e:
+            raise e
+
+    @classmethod
     def get_by_id_usuario(cls,uid, limit=False):
         """
         Busca los depósitos que correspondan a un usuario en base a su ID.
