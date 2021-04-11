@@ -416,7 +416,6 @@ def carrito():
         if val_tot_ep == 0: 
             val_tot_ep = 1
         step = 100/(val_tot_ep)
-        print(step)
         puntos_retiro = NegocioPuntoRetiro.get_all(filterInactivos=True)
         
         return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, 
