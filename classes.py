@@ -326,13 +326,15 @@ class EntradaStock:
 
     Atributos:
         id (string): identificador de la entidad
-        materiales (CantMaterial): materiales involucrados en la entrada
+        material (CantMaterial): material involucrado en la entrada
         fecha (Date): fecha de la entrada
+        concepto (string): motivo por el que se produce la entrada
     """
-    def __init__(self,id,materiales,fecha):
+    def __init__(self,id,material,fecha,concepto):
         self.id = id
-        self.materiales = materiales
+        self.material = material
         self.fecha = fecha
+        self.concepto = concepto
 
 '''
 ARTICULOS

@@ -26,4 +26,6 @@ from data.data_tipo_usuario           import DatosTipoUsuario
 from data.data_usuario                import DatosUsuario
 from data.data_valor                  import DatosValor
 from data.data_direccion              import DatosDireccion
+from data.data_entrada_externa        import DatosEntradaExterna
 from data.data_produccion             import DatosProduccion
+

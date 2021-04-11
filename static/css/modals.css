@@ -23,6 +23,7 @@ margin-left:5.7%;
 .modalErrorMessage{
   font-size: 15px;
   color: tomato;
+  transition: width 0.3s, height 0.3s, transform 0.3s;
 }
 
 .bottom-modal-text{
@@ -274,10 +275,14 @@ margin-left: 5% !important;
 }
 
 #subheader-alta-pd{
-margin-left: 8% !important;
+margin-left: 7% !important;
 margin-top: 1% !important;
 }
 
+#subheader-alta-salida{
+  margin-top: -2% !important;
+  margin-bottom: -2% !important;
+}
 
 #bottomAltaModalTextAltaPD{
 margin-bottom: 2% !important;
@@ -755,3 +760,35 @@ display: none;
   width: 23px;
 }
 
+#submenu-modal-btn{
+  font-size: 14px;
+  margin-top: 2%;
+  margin-left: 20%;
+  width: 60%;
+}
+
+#heading-submenu-modal{
+  font-family: 'Hind', sans-serif;
+  width: 100%;
+  text-align: center;
+}
+
+#fieldsRow1Alta1-er{
+  margin-top: -2% !important;
+}
+
+#fieldsRow1Alta2-er{
+  margin-top: 1%;
+}
+
+#modal-form-sed{
+  display: none;
+}
+
+#pantalla-1, #pantalla-2{
+  display: none;
+}
+
+#ent-select-picker-sm{
+  font-size: 15px;
+}

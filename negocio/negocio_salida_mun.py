@@ -1,26 +1,27 @@
 from negocio.negocio import Negocio
 import custom_exceptions
-from data.data_salida_stock import DatosSalidaStock
+from data.data_salidas_mun import DatosSalidaStockMun
+from data.data_articulo import DatosArticulo
 from negocio.negocio_articulo import NegocioArticulo
 from datetime import datetime
 
-class NegocioSalidaStock(Negocio):
+class NegocioSalidaMun(Negocio):
     
     @classmethod
     def get_all(cls):
         try:
-            return DatosSalidaStock.get_all()
+            return DatosSalidaStockMun.get_all()
         except Exception as e:
             raise e
     
     @classmethod
-    def add_one(cls,idEntidad, idArt, cant, concepto, fecha, valorTotal):
+    def add_one(cls,idArt, cant, concepto, fecha):
         try:
             cant = float(cant)
             format_str = '%Y-%m-%d' # Formato de la fecha
             fecha = datetime.strptime(fecha, format_str)
             NegocioArticulo.checkStock(idArt,cant)
-            if DatosSalidaStock.add_one(idArt,cant,concepto,fecha,idEntidad, valorTotal):
+            if DatosSalidaStockMun.add_one(idArt,cant,concepto,fecha):
                 NegocioArticulo.disminuirStock(idArt,cant)
         except Exception as e:
             raise e

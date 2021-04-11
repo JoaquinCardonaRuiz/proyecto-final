@@ -6,6 +6,7 @@ from data.data_cant_articulo import DatosCantArticulo
 from negocio.negocio_articulo import NegocioArticulo
 from negocio.negocio_usuario import NegocioUsuario
 from datetime import datetime, timedelta
+from classes import Pedido
 import custom_exceptions
 
 class NegocioPedido(Negocio):
@@ -40,6 +41,19 @@ class NegocioPedido(Negocio):
     def get_all(cls):
         try:
             return DatosPedido.get_all()
+        except Exception as e:
+            raise e
+
+    @classmethod
+    def get_all_historial_mov(cls):
+        try:
+            pedidos_ = DatosPedido.get_all()
+            pedidos = []
+            for pedido in pedidos_:
+                for art in pedido.articulos:
+                    pedidos.append(Pedido(pedido.id,pedido.fechaEncargo,pedido.fechaRetiro,art,pedido.totalARS,pedido.totalEP,pedido.idPuntoRetiro,pedido.estado))
+            return pedidos
+                
         except Exception as e:
             raise e
 

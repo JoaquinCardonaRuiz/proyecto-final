@@ -6,26 +6,41 @@ from classes import TipoArticulo
 
 class DatosArticulo(Datos):
     @classmethod
-    def get_all(cls):
+    def get_all(cls,noFilter):
         """
         Obtiene todos los articulos de la BD.
         """
         
         try:
             cls.abrir_conexion()
-            sql = ("SELECT idTipoArticulo, \
-                           nombre, \
-                           cProduccion, \
-                           cInsumos, \
-                           cTotal, \
-                           margenGanancia, \
-                           unidadMedida, \
-                           cObtencionAlt, \
-                           stock, \
-                           otrosCostos, \
-                           img, \
-                           vUsuario \
-                           FROM tiposArticulo WHERE estado!=\"eliminado\";")
+            if noFilter == False:
+                sql = ("SELECT idTipoArticulo, \
+                            nombre, \
+                            cProduccion, \
+                            cInsumos, \
+                            cTotal, \
+                            margenGanancia, \
+                            unidadMedida, \
+                            cObtencionAlt, \
+                            stock, \
+                            otrosCostos, \
+                            img, \
+                            vUsuario \
+                            FROM tiposArticulo WHERE estado!=\"eliminado\";")
+            else:
+                sql = ("SELECT idTipoArticulo, \
+                            nombre, \
+                            cProduccion, \
+                            cInsumos, \
+                            cTotal, \
+                            margenGanancia, \
+                            unidadMedida, \
+                            cObtencionAlt, \
+                            stock, \
+                            otrosCostos, \
+                            img, \
+                            vUsuario \
+                            FROM tiposArticulo;")
             cls.cursor.execute(sql)
             articulos_ = cls.cursor.fetchall()
             articulos = []

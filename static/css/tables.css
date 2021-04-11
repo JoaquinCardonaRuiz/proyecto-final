@@ -6,6 +6,50 @@
     border-top:2px solid white !important
 }
 
+.filert-row-button{
+  position: relative;
+  width: 90%;
+  margin-bottom: -3%;
+  margin-top: 2%;
+}
+
+.filert-row{
+  position: relative;
+  width: 100%;
+  padding-left: 2.5%;
+  margin-bottom: -5%;
+  margin-top: 4%;
+}
+
+.filter-label{
+  font-family: 'Hind', sans-serif;
+  font-size: 15px;
+  color: grey;
+  margin-bottom: 4%;
+}
+
+#filter-btn{
+  font-size: 14px;
+  margin-top: 6%;
+  margin-left: 3%;
+}
+
+.filter-label-2{
+  font-family: 'Hind', sans-serif;
+  font-size: 16px;
+  color: rgb(39, 39, 39);
+  margin-top: 1.6%;
+}
+
+.filter-label:hover{
+  cursor: pointer;
+  color: #95C22B;
+}
+
+.filter-input{
+  font-size: 14px !important;
+}
+
 .content-table-main{
   position: relative;
   width: 85%;
@@ -75,4 +119,12 @@
   padding-top: -4px;
   margin-top: -1.9%;
   margin-right: 5px;
+}
+
+.caret-up{
+  font-size: 20px;
+}
+
+.color-negativo{
+  color: #ca2222;
 }

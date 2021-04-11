@@ -989,7 +989,13 @@ def get_insumos(ids):
         return error(e,"insumos")
     return redirect(url_for('gestion_articulos'))
 
-
+@app.route('/articulos/get-stock/<id>', methods = ['GET','POST'])
+def get_stock_art(id):
+    try:
+        art = NegocioArticulo.get_by_id(id)
+        return jsonify(art.stock)
+    except:
+        return jsonify(False)
 
 
 ''' 
@@ -1443,6 +1449,87 @@ def verificar_codigo(cod):
     except Exception as e:
         return error(e,"codigo")
 
+''' 
+    -----------------
+    Gestión de Stock
+    -----------------
+'''
+
+@app.route('/gestion-stock', methods = ['GET','POST'])
+def gestion_stock():
+    try:
+        articulos = NegocioArticulo.get_all()
+        materiales = NegocioMaterial.get_all()
+        entidades = NegocioEntidadDestino.get_all()
+        
+        return render_template('gestion-stock.html', materiales = materiales, articulos=articulos, entidades = entidades)  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
+@app.route('/gestion-stock/ver-stock', methods = ['GET','POST'])
+def ver_stock():
+    try:
+        materiales = NegocioMaterial.get_all()
+        insumos = NegocioInsumo.get_all()
+        articulos = NegocioArticulo.get_all()
+        return render_template('niveles-stock.html',materiales = materiales, insumos = insumos, articulos = articulos)  
+    except Exception as e:
+        return error(e,"ver_stock")
+
+@app.route('/gestion-stock/historial-movimientos', methods = ['GET','POST'])
+def historial_movimientos():
+    try:
+        salidasStock = NegocioSalidaStock.get_all()
+        salidasMun = NegocioSalidaMun.get_all()
+        articulos = NegocioArticulo.get_all(True)
+        depositos = NegocioDeposito.get_all()
+        materiales = NegocioMaterial.get_all()
+        pedidos = NegocioPedido.get_all_historial_mov()
+        entradas = NegocioEntradaExterna.get_all()
+        return render_template('movimientos-stock.html', salidasStock=salidasStock, salidasMun = salidasMun, articulos = articulos, depositos = depositos, materiales = materiales, pedidos = pedidos, entradas = entradas)  
+    except Exception as e:
+        return error(e,"historial_movimientos")
+
+@app.route('/gestion-stock/alta-entrada-mat', methods = ['GET','POST'])
+def alta_entrada_mat():
+    try:
+        if request.method == 'POST':
+            idMat = request.form["idMat"]
+            cant = request.form["cantidad"]
+            concepto = request.form["descripcion"]
+            fecha = request.form["fecha"]
+            NegocioEntradaExterna.add_one(idMat,cant,concepto, fecha)
+        return redirect(url_for('gestion_stock'))  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
+@app.route('/gestion-stock/alta-salida-mun', methods = ['GET','POST'])
+def alta_salida_mun():
+    try:
+        if request.method == 'POST':
+            idArt = request.form["idArtSM"]
+            cant = request.form["cantidadSM"]
+            concepto = request.form["descripcionSM"]
+            fecha = request.form["fechaSM"]
+            NegocioSalidaMun.add_one(idArt,cant,concepto, fecha)
+        return redirect(url_for('gestion_stock'))  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
+@app.route('/gestion-stock/alta-salida-ed', methods = ['GET','POST'])
+def alta_salida_ed():
+    try:
+        if request.method == 'POST':
+            idArt = request.form["idArtSE"]
+            cant = request.form["cantidadSE"]
+            concepto = request.form["descripcionSE"]
+            fecha = request.form["fechaSE"]
+            idEntidad = request.form["idEntidad"]
+            valorTotal = request.form["totalValSE"]
+            NegocioSalidaStock.add_one(idEntidad,idArt,cant,concepto,fecha,valorTotal)
+        return redirect(url_for('gestion_stock'))  
+    except Exception as e:
+        return error(e,"gestion_stock")
 
 ''' 
     ----------
@@ -1517,6 +1604,7 @@ def confirmar_prod_art():
         return redirect(url_for('prod_Articulos'))
     except Exception as e:
         return error(e,"produccion-art")
+
 
 '''
     -----------------------
