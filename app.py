@@ -1291,8 +1291,7 @@ def allDepositos():
     try:
         materiales = NegocioMaterial.get_all()
         depositos = NegocioDeposito.get_all()
-        puntosDeposito = NegocioPuntoDeposito.get_all()
-        return render_template('depositosAdmin.html',materiales=materiales,depositos = depositos,puntosDeposito=puntosDeposito, usuario=session["usuario"])
+        return render_template('depositosAdmin.html',materiales=materiales,depositos = depositos, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidoss")
 
@@ -1300,9 +1299,9 @@ def allDepositos():
 def pedidosPD(id):
     try:
         materiales = NegocioMaterial.get_all()
-        deposito = NegocioDeposito.get_by_id_PD(int(id))
+        depositos = NegocioDeposito.get_by_id_PD(int(id))
         puntoDeposito = NegocioPuntoDeposito.get_by_id(int(id))
-        return render_template('depositosPD.html',materiales=materiales,deposito = deposito,puntoDeposito=puntoDeposito, usuario=session["usuario"])
+        return render_template('depositosPD.html',materiales=materiales,depositos = depositos,puntoDeposito=puntoDeposito, usuario=session["usuario"])
     except Exception as e:
         return error(e,"depositos")
 
@@ -1328,10 +1327,24 @@ def get_materiales_deposito(ids):
 def update_estado_deposito():
     try:
         if request.method == 'POST':
-            id = int(request.form["idInput"])
-            estado = request.form["estadoInput"]
-            pd = int(request.form["idPDInput"])
-            NegocioDeposito.update_estado(id,estado)
+            id = int(request.form["idDep"])
+            estado = request.form["estado"]
+            pd = int(request.form["idPD"])
+
+            if estado == "cancelado":
+                NegocioDeposito.cancelar(id)
+                NegocioNivel.actualiza_nivel_all()
+                session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+                session.modified = True
+                
+
+            elif estado == "acreditado":
+                uid = int(request.form["idUser"])
+                NegocioDeposito.acreditar(id,uid)
+                NegocioNivel.actualiza_nivel_all()
+                session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+                session.modified = True
+
             if pd == 0:
                 return redirect(url_for("allDepositos"))
             else:
@@ -1339,6 +1352,10 @@ def update_estado_deposito():
     except Exception as e:
         return error(e,"pedidos")
 
+
+@app.route('/gestion-depositos/cancelar/<id>')
+def get_info_cancelar(id):
+    return jsonify(NegocioDeposito.get_info_cancelar(id))
 
 @app.route('/gestion-depositos/info/<id>')
 def deposito_info(id):
@@ -1360,11 +1377,20 @@ def deposito_info(id):
         return error(e,"pedidos")
 
 
-'''
-    -----------------------
-    Depósitos (Usuario)
-    -----------------------
-'''
+@app.route('/gestion-depositos/buscar-info-user/<busqueda>')
+def buscar_info_user(busqueda):
+    try:
+        users = NegocioUsuario.buscar_info_user(busqueda)
+        users_dic =  [{"id":      u.id,
+                     "nombre":    u.nombre+" "+u.apellido,
+                     "tiponroDoc":   u.nroDoc + " ("+u.tipoDoc.nombre+")",
+                     "email":     u.email}
+                     for u in users]
+        return jsonify(users_dic)
+    except Exception as e:
+        return jsonify(str(e))
+
+
 @app.route('/depositos/usuario', methods = ['GET','POST'])
 def depositos():
     try:
@@ -1504,6 +1530,80 @@ def alta_salida_ed():
         return redirect(url_for('gestion_stock'))  
     except Exception as e:
         return error(e,"gestion_stock")
+
+''' 
+    ----------
+    PRODUCCION
+    ----------
+'''
+@app.route('/produccion')
+def gestion_prod():
+    return render_template('elegirProd.html',usuario=session["usuario"])
+
+@app.route('/produccion/insumos')
+def prod_Insumos():
+    insumos = NegocioInsumo.get_all()
+    prods = NegocioProduccion.get_all_insumos()
+    return render_template('insumosProd.html',insumos=insumos,prods=prods,usuario=session["usuario"])
+
+@app.route('/produccion/articulos')
+def prod_Articulos():
+    articulos = NegocioArticulo.get_all()
+    prods = NegocioProduccion.get_all_articulos()
+    return render_template('articulosProd.html', articulos=articulos,usuario=session["usuario"],prods=prods)
+
+
+@app.route('/produccion/insumos/<id>')
+def get_materiales_prod(id):
+    ins = NegocioInsumo.get_by_id(id)
+    ids = [i.idMaterial for i in ins.materiales]
+    cants = [i.cantidad for i in ins.materiales]
+    materiales = NegocioMaterial.get_by_id_array(ids)
+    materiales_dic =  [{"nombre":   m.nombre,
+                        "stock":    m.stock,
+                        "cant":     c}
+                        for m,c in list(zip(materiales,cants))]
+    materiales_dic.append({"nombre": ins.nombre,"stock": ins.stock})
+    return jsonify(materiales_dic)
+
+
+@app.route('/produccion/articulos/<id>')
+def get_insumos_prod(id):
+    art = NegocioArticulo.get_by_id(id)
+    ids = [i.idInsumo for i in art.insumos]
+    cants = [i.cantidad for i in art.insumos]
+    insumos = NegocioInsumo.get_by_id_array(ids)
+    insumos_dic =  [{"nombre":   i.nombre,
+                     "stock":    i.stock,
+                     "cant":     c}
+                     for i,c in list(zip(insumos,cants))]
+    insumos_dic.append({"nombre": art.nombre,"stock": art.stock})
+    return jsonify(insumos_dic)
+
+
+
+@app.route('/produccion/insumos/confirmar',methods=["POST","GET"])
+def confirmar_prod_ins():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idIns"])
+            cant = float(request.form["cantidad"])
+            NegocioProduccion.confirmar_produccion(id,cant,"ins")
+        return redirect(url_for('prod_Insumos'))
+    except Exception as e:
+        return error(e,"produccion-ins")
+
+
+@app.route('/produccion/articulos/confirmar',methods=["POST","GET"])
+def confirmar_prod_art():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idArt"])
+            cant = float(request.form["cantidad"])
+            NegocioProduccion.confirmar_produccion(id,cant,"art")
+        return redirect(url_for('prod_Articulos'))
+    except Exception as e:
+        return error(e,"produccion-art")
 
 
 '''

@@ -2,6 +2,7 @@ from data.data import Datos
 from data.data_direccion import DatosDireccion
 from data.data_deposito import DatosDeposito
 from data.data_pedido import DatosPedido
+from data.data_tipo_documento import DatosTipoDocumento
 from classes import Usuario
 from utils import Utils
 import custom_exceptions
@@ -347,3 +348,46 @@ class DatosUsuario(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+
+
+
+    @classmethod
+    def buscar_info_user(cls,busqueda):
+        """
+        Obtiene todos los usuarios según su ID, nombre completo, email, o documento
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT usuarios.idUsuario, \
+                usuarios.nroDoc, \
+                usuarios.nombre, \
+                usuarios.apellido, \
+                usuarios.email, \
+                usuarios.password, \
+                usuarios.idTipoUsuario, \
+                usuarios.idTipoDoc, \
+                usuarios.idDireccion, \
+                usuarios.idNivel, \
+                usuarios.img \
+                from usuarios WHERE estado = \"habilitado\" AND (idUsuario=\"{}\" OR email=\"{}\" OR nroDOC=\"{}\")").format(busqueda,busqueda,busqueda,busqueda)
+            cls.cursor.execute(sql)
+            usuarios = cls.cursor.fetchall()
+            users = []
+            for usu in usuarios:
+                direc = DatosDireccion.get_one_id(usu[8])
+                depositos = DatosDeposito.get_by_id_usuario(usu[0])
+                ped = DatosPedido.get_by_user_id(usu[0])
+                tipo_doc = DatosTipoDocumento.get_by_id(usu[7])
+                usuario = Usuario(usu[0],usu[1],tipo_doc,usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10])
+                usuario.calcularTotalEcopuntos()
+                users.append(usuario)
+            return users
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.buscar_info_user()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error buscando usuarios.")
+        finally:
+            cls.cerrar_conexion()

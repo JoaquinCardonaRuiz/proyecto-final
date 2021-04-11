@@ -109,10 +109,25 @@ class NegocioUsuario(Negocio):
 
     @classmethod
     def checkEP(cls,id,totalEP):
+        """Comprueba que se puede gastar cierta cantidad de EP. Si no es así, levanta una excepción de negocio"""
         user = DatosUsuario.get_by_id(id)
         nueva_cant_ep = user.totalEcopuntos - totalEP
         if nueva_cant_ep < 0:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.useEP()",msj="error-ep",msj_adicional="EP insuficientes para realizar pedido")
+
+
+    @classmethod
+    def descontarEPDeposito(cls,id,cant):
+        """Descuenta EcoPuntos del usuario al cancelar un depósito. Si el user tiene suficientes EP para restar,
+        se devuelve 0. Si no es así, se descuentan todos los que tiene y se devuelve el nro de EP que no se pudo
+        descontar."""
+        user = DatosUsuario.get_by_id(id)
+        if user.totalEcopuntos >= cant:
+            cls.useEP(user.id,cant)
+            return 0
+        else:
+            cls.useEP(user.id,user.totalEcopuntos)
+            return cant-user.totalEcopuntos
 
 
     @classmethod
@@ -228,5 +243,13 @@ class NegocioUsuario(Negocio):
     def get_all_documentos(cls,uid=False):
         try:
             return DatosUsuario.get_all_documentos(uid)
+        except Exception as e:
+            raise e
+
+
+    @classmethod
+    def buscar_info_user(cls,busqueda):
+        try:
+            return DatosUsuario.buscar_info_user(busqueda)
         except Exception as e:
             raise e

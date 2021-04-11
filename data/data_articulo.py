@@ -271,6 +271,27 @@ class DatosArticulo(Datos):
 
 
     @classmethod
+    def addStock(cls,idTA,cant):
+        """
+        Suma la cantidad especificada al stock de un tipo articulo
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE tiposArticulo SET stock=stock+{} WHERE idTipoArticulo={};").format(cant,idTA)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.addStock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+
+    @classmethod
     def get_nombres_by_idIns(cls, idIns):
         """
         Obtiene los articulos de la BD con un idArt en su receta

@@ -692,7 +692,6 @@ input:focus ~ .highlight {
   background: url("/static/img/chevron.svg") white no-repeat calc(100% - 10px) !important; /* Better placement regardless of input width */
   background-size: 20px !important;
   width: 100%;
-}
 
 .switch-label-re{
   color: rgb(105, 105, 105);
@@ -705,5 +704,4 @@ input:focus ~ .highlight {
 #primary-btn-sal{
   display: none;
 }
-
 

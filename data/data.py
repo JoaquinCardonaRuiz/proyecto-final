@@ -39,6 +39,7 @@ class Datos():
         """
         
         try:
+                        
             cls.db = mysql.connector.connect(host="sql10.freemysqlhosting.net", # Host de la BD.
                         user="sql10404333", # Usuario de la BD
                         passwd="nBUhZ1gSar", # Contraseña de la BD
