@@ -66,7 +66,7 @@ class DatosSalidaStock(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql = ("INSERT into salidasStock (idEntidad, idTipoArticulo, cantSalida, fecha, concepto, valorTotal) values (%s,%s,%s,%s,%s,%s)")
+            sql = ("INSERT into salidasStock (idEntidad, idTipoArticulo, cantidadSalida, fecha, concepto, valorTotal) values (%s,%s,%s,%s,%s,%s)")
             values = (idEntidad,idArt, cant, fecha ,concepto, valorTotal)
             cls.cursor.execute(sql, values)
             cls.db.commit()

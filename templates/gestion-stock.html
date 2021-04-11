@@ -273,11 +273,11 @@
                         <div class="row">
                             <div class="col" style="width: 50%;">
                                 <div class="group">      
-                                    <input type="number" id="cantidadInputSM" name="cantidadSM" onkeypress="return isNumberKey(this, event);" min="1" style="width: 70%;" oninput="activate_validations();validaCantSM(value);" autocomplete="off">
+                                    <input type="number" id="cantidadInputSM" name="cantidadSM" onkeypress="return event.charCode >= 48" min="1" style="width: 70%;" oninput="activate_validations();validaCantSM(value);" autocomplete="off">
                                     <span class="highlight" style="width: 70%;"></span>
                                     <span class="bar" style="width: 70%;"></span>
                                     <label style="width: 70%;">Cantidad</label>
-                                    <p id="cantErrorSM" class="modalErrorMessage" style="width: 70%;">* Completar.</p>
+                                    <p id="cantErrorSM" class="modalErrorMessage" style="width: 100%;">* Completar.</p>
                                 </div>
                             </div>
                             <div class="col mt-2" style="width: 50%; margin-left: -20% !important;">
@@ -383,11 +383,11 @@
                             <div class="row">
                                 <div class="col" style="width: 50%;">
                                     <div class="group">      
-                                        <input type="number" id="cantidadInputSE" name="cantidadSE" onkeypress="return isNumberKey(this, event);" min="1" style="width: 70%;" oninput="activate_validations_se();validaCantSE(value);" autocomplete="off">
+                                        <input type="number" id="cantidadInputSE" name="cantidadSE" onkeypress="return event.charCode >= 48" min="1" style="width: 70%;" oninput="activate_validations_se();validaCantSE(value);" autocomplete="off">
                                         <span class="highlight" style="width: 70%;"></span>
                                         <span class="bar" style="width: 70%;"></span>
                                         <label style="width: 70%;">Cantidad</label>
-                                        <p id="cantErrorSE" class="modalErrorMessage" style="width: 70%;">* Completar.</p>
+                                        <p id="cantErrorSE" class="modalErrorMessage" style="width: 100%;">* Completar.</p>
                                     </div>
                                 </div>
                                 <div class="col mt-2" style="width: 50%; margin-left: -20% !important;">
@@ -408,17 +408,17 @@
                                 <span class="highlight" style="width: 90%;"></span>
                                 <span class="bar" style="width: 90%;"></span>
                                 <label>Precio Unitatio en ARS</label>
-                                <p id="valorUnitarioErrorSE" class="modalErrorMessage">* Formato de fecha incorrecto.</p>
+                                <p id="valorUnitarioErrorSE" class="modalErrorMessage">* El precio unitario no puede quedar vacío.</p>
                             </div>
                         </div>
                         <div class="col" style="width: 5%; margin-left: -3.5%;">
                             <div class="group">
                                 <input type="text" id="idEntidadInput" name="id" hidden style="width: 77%;">      
-                                <input type="number" id="totalValSE" name="fechaSE" style="width: 77%;" autocomplete="off" oninput="inputTotalVal(value);">
+                                <input type="number" id="totalValSE" name="totalValSE" style="width: 77%;" autocomplete="off" oninput="inputTotalVal(value);">
                                 <span class="highlight" style="width: 77%;"></span>
                                 <span class="bar" style="width: 77%;"></span>
                                 <label>Precio Total en ARS</label>
-                                <p id="valorTotalErrorSE" class="modalErrorMessage">* Formato de fecha incorrecto.</p>
+                                <p id="valorTotalErrorSE" class="modalErrorMessage">* El precio total no puede quedar vacío.</p>
                             </div>
                         </div>        
                     </div>
@@ -434,7 +434,7 @@
                         <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione "Registrar salida" para añadir la salida</p>
                     </div>
                 </div>
-                <input type="text" id="idArtSM" name="idArtSE" hidden>
+                <input type="text" id="idArtSE" name="idArtSE" hidden>
             </form>
         </div>
         <div class="modal-footer">

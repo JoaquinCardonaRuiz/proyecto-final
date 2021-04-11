@@ -261,6 +261,11 @@ function validaCant(val){
         $("#cantError").fadeIn();
         cantidad = false;
     }
+    else if (parseFloat(val) <= 0){
+        $("#cantError").text("* Debe ser mayor a 0.")
+        $("#cantError").fadeIn();
+        cantidad = false;
+    }
     else{
         $("#cantError").fadeOut();
         cantidad = true;
@@ -276,6 +281,11 @@ function validaCantSM(val){
                 $("#cantErrorSM").fadeIn();
                 cantidadSM = false;
             }
+            else if (parseFloat(val) <= 0){
+                $("#cantErrorSM").text("* Debe ser mayor a 0.")
+                $("#cantErrorSM").fadeIn();
+                cantidadSM = false;
+            }
             else if (val > stock_disp){
                 $("#cantErrorSM").text("* No hay stock.")
                 $("#cantErrorSM").fadeIn();
@@ -288,6 +298,11 @@ function validaCantSM(val){
         }
         else if (val == ""){
             $("#cantErrorSM").text("* Completar.")
+            $("#cantErrorSM").fadeIn();
+            cantidadSM = false;
+        }
+        else if (parseFloat(val) <= 0){
+            $("#cantErrorSM").text("* Debe ser mayor a 0.")
             $("#cantErrorSM").fadeIn();
             cantidadSM = false;
         }
@@ -308,6 +323,11 @@ function validaCantSE(val){
                 $("#cantErrorSE").fadeIn();
                 cantidadSE = false;
             }
+            else if (parseFloat(val) <= 0){
+                $("#cantErrorSE").text("* Debe ser mayor a 0.")
+                $("#cantErrorSE").fadeIn();
+                cantidadSE = false;
+            }
             else if (val > stock_disp){
                 $("#cantErrorSE").text("* No hay stock.")
                 $("#cantErrorSE").fadeIn();
@@ -317,6 +337,10 @@ function validaCantSE(val){
                     valor_unitario = valor_original;
                 }
                 $("#totalValSE").val(parseFloat(val) * valor_unitario);
+                $("#valorTotalErrorSE").fadeOut();
+                $("#valorUnitarioErrorSE").fadeOut();
+                valorTotal= true;
+                valorUnidad = true;
             }
             else{
                 $("#cantErrorSE").fadeOut();
@@ -326,10 +350,19 @@ function validaCantSE(val){
                     valor_unitario = valor_original;
                 }
                 $("#totalValSE").val(parseFloat(val) * valor_unitario);
+                $("#valorTotalErrorSE").fadeOut();
+                $("#valorUnitarioErrorSE").fadeOut();
+                valorTotal= true;
+                valorUnidad = true;
             }
         }
         else if (val == ""){
             $("#cantErrorSE").text("* Completar.")
+            $("#cantErrorSE").fadeIn();
+            cantidadSE = false;
+        }
+        else if (parseFloat(val) <= 0){
+            $("#cantErrorSE").text("* Debe ser mayor a 0.")
             $("#cantErrorSE").fadeIn();
             cantidadSE = false;
         }
@@ -342,6 +375,10 @@ function validaCantSE(val){
                 valor_unitario = valor_original;
             }
             $("#totalValSE").val(parseFloat(val) * valor_unitario);
+            $("#valorTotalErrorSE").fadeOut();
+            $("#valorUnitarioErrorSE").fadeOut();
+            valorTotal= true;
+            valorUnidad = true;
         }
         enable_disable_se();
     }
@@ -522,7 +559,14 @@ function submitFormSM(type){
             pantalla = 2;
         }
         else if (pantalla == 2){
+            $("#modal-form-sed").hide();
+            $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+            $(".lds-ring").show().fadeIn(500);
+            $('#primary-btn-sal').prop('disabled', true);
+            $('#secondary-btn-sal').prop('disabled', true);
             $( "#modal-form-sed").submit();
+
+            nextMsgAltSM();
         }
         
     }
@@ -613,6 +657,8 @@ function inputUnitVal(val){
         valorUnidad = true;
         $("#valorUnitarioErrorSE").fadeOut();
         $("#totalValSE").val($("#cantidadInputSE").val() * val);
+        valorTotal = true;
+        $("#valorTotalErrorSE").fadeOut();
     }
     enable_disable_se();
     
@@ -628,6 +674,8 @@ function inputTotalVal(val){
         valorTotal = true;
         $("#valorTotalErrorSE").fadeOut();
         $("#unitValSE").val(valor_unitario);
+        valorUnidad = true;
+        $("#valorUnitarioErrorSE").fadeOut();
     }
     enable_disable_se();
     

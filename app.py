@@ -1497,7 +1497,7 @@ def alta_salida_ed():
             concepto = request.form["descripcionSE"]
             fecha = request.form["fechaSE"]
             idEntidad = request.form["idEntidad"]
-            valorTotal = request.form["valorTotal"]
+            valorTotal = request.form["totalValSE"]
             NegocioSalidaStock.add_one(idEntidad,idArt,cant,concepto,fecha,valorTotal)
         return redirect(url_for('gestion_stock'))  
     except Exception as e:
