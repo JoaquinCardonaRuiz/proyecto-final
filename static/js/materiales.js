@@ -473,7 +473,7 @@ function openModalDesc(id,nom,desc){
     document.getElementById("idDescInput").value = id;
     $("#desc-row").show();
     $("#edit-row").hide();
-    $("#edit-btn").show();
+    $("#edit-btn-desc").show();
     $("#listo-desc-btn").show();
     if(desc != ""){
         document.getElementById("desc-label").style.color = "#000";
@@ -491,7 +491,7 @@ function edit_desc(){
     $("#desc-row").hide();
     $("#edit-row").show();
     document.getElementById("descEditInput").value = document.getElementById("desc-label").innerHTML;
-    $("#edit-btn").hide();
+    $("#edit-btn-desc").hide();
     $("#listo-desc-btn").hide();
     $("#cancel-btn").show();
     $("#confirm-btn").show();
@@ -502,7 +502,7 @@ function cancel_edit_desc(){
     $("#edit-row").hide();
     document.getElementById("descEditInput").value = "";
 
-    $("#edit-btn").show();
+    $("#edit-btn-desc").show();
     $("#listo-desc-btn").show();
     $("#cancel-btn").hide();
     $("#confirm-btn").hide();
