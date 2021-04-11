@@ -36,9 +36,7 @@ class NegocioEntidadDestino(Negocio):
             return entidades
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio_entidad_destino.get_all()",
-                                                    msj=str(e),
-                                                    msj_adicional="Error en la capa de Negocio obtieniendo las entidades destino de la capa de Datos.")
+            raise e
     
     
 
@@ -88,3 +86,15 @@ class NegocioEntidadDestino(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_entidad_destino.update()",
                                                    msj=str(e),
                                                    msj_adicional="Error en la capa de Negocio actualizando una Entidad destino de la base de Datos")
+
+
+
+    @classmethod
+    def update_desc(cls,idED,desc):
+        """
+        Actualiza la desc de una Entidad Destino en la BD
+        """
+        try:
+            DatosEntidadDestino.update_desc(idED,desc)
+        except Exception as e:
+            raise(e)

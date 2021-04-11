@@ -12,14 +12,16 @@ class DatosSalidaStock(Datos):
             sql = ("SELECT idSalida, \
                            idTipoArticulo, \
                            fecha, \
-                           cantidadSalida \
+                           cantidadSalida, \
+                           valorTotal, \
+                           concepto \
                            FROM salidasStock WHERE idEntidad = {};".format(id))
             cls.cursor.execute(sql)
             salidas = cls.cursor.fetchall()
             salidasStock = []
             for s in salidas:
                 articulos = CantArticulo(s[3],s[1])
-                salida = SalidaStock(s[0],articulos,s[2])
+                salida = SalidaStock(s[0],articulos,s[2],s[4],s[5])
                 salidasStock.append(salida)
             return salidasStock
 

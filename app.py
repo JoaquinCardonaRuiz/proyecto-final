@@ -497,6 +497,15 @@ def gestion_ed():
     return render_template('gestion-entidades-destino.html', entidades = entidades, usuario=session["usuario"])
 
 
+@app.route('/gestion-ed/editdesc',methods=["POST","GET"])
+def edit_desc_ed():
+    if request.method == "POST":
+        idED = int(request.form["idED"])
+        desc = request.form["desc"]
+        NegocioEntidadDestino.update_desc(idED,desc)
+        return redirect(url_for('gestion_ed'))
+
+
 @app.route('/gestion-ed/articulos', methods = ['GET','POST'])
 def get_articulos():
     try:

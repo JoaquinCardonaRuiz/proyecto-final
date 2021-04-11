@@ -714,15 +714,14 @@ class EntidadDestino:
     Atributos:
         id (string): Identificador de la entidad.
         nombre (string): Nombre para identificación por parte del usuario.
-        direccion (Direccion): dirección física donde se ubica la entidad destino
         salidas (SalidaStock[]): Arreglo de las salidas de stock destinadas a la entidad.
     """
-    def __init__(self,id,nombre,estado,direccion,salidas=[]):
+    def __init__(self,id,nombre,estado,salidas=[],desc=""):
         self.id = id
         self.nombre = nombre
         self.estado = estado
-        self.direccion = direccion
         self.salidas = salidas
+        self.desc = desc
 
 class SalidaStock:
     """ Representa un artículo que se saca del stock para entregar a una entidad de destino. 
@@ -731,12 +730,14 @@ class SalidaStock:
         id (string): Identificador de la entidad.
         articulos (CantArticulo): Lote de articulos que representa.
         fecha (Date): Fecha de la transacción.
+        valorTotal (float): Valor al que se realizó la salida
         concepto (string): Motivo por el cual se produce la salida.
     """
-    def __init__(self,id,articulos,fecha,concepto):
+    def __init__(self,id,articulos,fecha,valorTotal,concepto):
         self.id = id
         self.articulos = articulos
         self.fecha = fecha
+        self.valorTotal = valorTotal
         self.concepto = concepto
 
 
