@@ -22,7 +22,6 @@ var tipo_salida = false;
 var valor_unitario = false;
 var valor_original = false;
 
-
 var valorUnidad = false;
 var valorTotal = false;
 
@@ -187,6 +186,8 @@ function openSalidadaModal(){
     $("#fechaErrorSE").hide();
     $("#descErrorSM").hide();
     $("#descErrorSE").hide();
+    $("#valorTotalErrorSE").hide();
+    $("#valorUnitarioErrorSE").hide();
     
     //Seteo de valores iniciales.
     $("#art-select-picker-sm").val(-1);
@@ -201,23 +202,24 @@ function openSalidadaModal(){
     $("#descSE").val("");
     $("#cantidadInputSM").val("");
     $("#cantidadInputSE").val("");
+    $("#unitValSE").val("");
+    $("#totalValSE").val("");
     
     cantidadSM = false;
     descripcionSM = false;
     fechaSM = true;
-
     cantidadSE = false;
     descripcionSE = false;
     fechaSE = true;
-
     stock_disp = false;
-
     valida_cant_sm = false;
     valida_cant_se = false;
-    
     pantalla = 1;
-
     tipo_salida = false;
+    valor_unitario = false;
+    valor_original = false;
+    valorUnidad = false;
+    valorTotal = false;
 
     $("#salidaModal").modal('show');
 }
@@ -258,6 +260,7 @@ function completeUnidadMedidaSE(um){
 
 function validaCant(val){
     if (val == ""){
+        $("#cantError").text("* Completar.")
         $("#cantError").fadeIn();
         cantidad = false;
     }

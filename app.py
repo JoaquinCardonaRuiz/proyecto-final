@@ -1435,6 +1435,7 @@ def gestion_stock():
         articulos = NegocioArticulo.get_all()
         materiales = NegocioMaterial.get_all()
         entidades = NegocioEntidadDestino.get_all()
+        
         return render_template('gestion-stock.html', materiales = materiales, articulos=articulos, entidades = entidades)  
     except Exception as e:
         return error(e,"gestion_stock")
@@ -1458,7 +1459,8 @@ def historial_movimientos():
         depositos = NegocioDeposito.get_all()
         materiales = NegocioMaterial.get_all()
         pedidos = NegocioPedido.get_all_historial_mov()
-        return render_template('movimientos-stock.html', salidasStock=salidasStock, salidasMun = salidasMun, articulos = articulos, depositos = depositos, materiales = materiales, pedidos = pedidos)  
+        entradas = NegocioEntradaExterna.get_all()
+        return render_template('movimientos-stock.html', salidasStock=salidasStock, salidasMun = salidasMun, articulos = articulos, depositos = depositos, materiales = materiales, pedidos = pedidos, entradas = entradas)  
     except Exception as e:
         return error(e,"historial_movimientos")
 

@@ -28,8 +28,10 @@
                         <option value=-1 selected>&nbsp; Sin filtro</option>
                         
                         <option value="Depósito">&nbsp; Depósito</option>
+                        <option value="Entrada Externa">&nbsp; Entrada Externa</option>
                         <option value="Pedido">&nbsp; Pedido</option>
-                        <option value="Producción">&nbsp; Producción</option>
+                        <option value="Producción Insumo">&nbsp; Producción Insumo</option>
+                        <option value="Producción Material">&nbsp; Producción Material</option>
                         <option value="Salida Entidad de Destino">&nbsp; Salida Entidad de Destino</option>
                         <option value="Salida Municipio">&nbsp; Salida Municipio</option>
                     </select>
@@ -96,7 +98,7 @@
                         {%for art in articulos%}
                             {%if art.id == ss.articulos.idTipoArticulo%}
                             <td>{{art.nombre}}</td>
-                            <td value="Entrada">-<span id="ss-{{ss.id + art.id}}"></span></td>
+                            <td value="Entrada"><i class="fas fa-caret-down color-negativo caret-up"></i> -<span id="ss-{{ss.id + art.id}}"></span></td>
                             <script>$("#ss-{{ss.id + art.id}}").text(parseFloat('{{ss.articulos.cantidad}}'));</script>
                             <td>{{art.unidadMedida}}</td>
                             {%endif%}
@@ -112,7 +114,7 @@
                         {%for art in articulos%}
                             {%if art.id == sm.articulos.idTipoArticulo%}
                             <td>{{art.nombre}}</td>
-                            <td value="Entrada">-<span id="sm-{{sm.id + art.id}}"></span></td>
+                            <td value="Entrada"><i class="fas fa-caret-down color-negativo caret-up"></i> -<span id="sm-{{sm.id + art.id}}"></span></td>
                             <script>$("#sm-{{sm.id + art.id}}").text(parseFloat('{{sm.articulos.cantidad}}'));</script>
                             <td>{{art.unidadMedida}}</td>
                             {%endif%}
@@ -128,7 +130,7 @@
                         {%for art in articulos%}
                             {%if art.id == ped.articulos.idTipoArticulo%}
                             <td>{{art.nombre}}</td>
-                            <td value="Entrada">-<span id="ped-{{ped.id + art.id}}"></span></td>
+                            <td value="Entrada"><i class="fas fa-caret-down color-negativo caret-up"></i> -<span id="ped-{{ped.id + art.id}}"></span></td>
                             <script>$("#ped-{{ped.id + art.id}}").text(parseFloat('{{ped.articulos.cantidad}}'));</script>
                             <td>{{art.unidadMedida}}</td>
                             {%endif%}
@@ -144,12 +146,28 @@
                         {%for mat in materiales%}
                             {%if mat.id == dep.material.idMaterial%}
                             <td>{{mat.nombre}}</td>
-                            <td value="Entrada">+<span id="dep-{{dep.id + mat.id}}"></span></td>
+                            <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="dep-{{dep.id + mat.id}}"></span></td>
                             <script>$("#dep-{{dep.id + mat.id}}").text(parseFloat('{{dep.material.cantidad}}'));</script>
                             <td>{{mat.unidadMedida}}</td>
                             {%endif%}
                         {%endfor%}
                         <td class="Fecha">{{dep.fechaDeposito}}</td>    
+                    </tr>
+                    {%endfor%}
+
+                    {%for ent in entradas%}
+                    <tr>
+                        <th>Entrada Externa</th>
+
+                        {%for mat in materiales%}
+                            {%if mat.id == ent.material.idMaterial%}
+                            <td>{{mat.nombre}}</td>
+                            <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="ent-{{ent.id + mat.id}}"></span></td>
+                            <script>$("#ent-{{ent.id + mat.id}}").text(parseFloat('{{ent.material.cantidad}}'));</script>
+                            <td>{{mat.unidadMedida}}</td>
+                            {%endif%}
+                        {%endfor%}
+                        <td class="Fecha">{{ent.fecha}}</td>    
                     </tr>
                     {%endfor%}
                 </tbody>

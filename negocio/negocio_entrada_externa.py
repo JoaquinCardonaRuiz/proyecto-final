@@ -17,3 +17,10 @@ class NegocioEntradaExterna(Negocio):
                 DatosMaterial.addStock(idMaterial,float(cant))
         except Exception as e:
             raise e
+    
+    @classmethod
+    def get_all(cls):
+        try:
+           return DatosEntradaExterna.get_all()
+        except Exception as e:
+            raise e
