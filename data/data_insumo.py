@@ -41,22 +41,34 @@ class DatosInsumo(Datos):
 
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls,noFilter):
         """
         Obtiene todos los insumos de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT idInsumo, \
-                           nombre, \
-                           unidadMedida, \
-                           cMateriales, \
-                           cProduccion, \
-                           cTotal, \
-                           stock, \
-                           otrosCostos, \
-                           color \
-                           FROM insumos WHERE estado!=\"eliminado\";")
+            if noFilter == False:
+                sql = ("SELECT idInsumo, \
+                            nombre, \
+                            unidadMedida, \
+                            cMateriales, \
+                            cProduccion, \
+                            cTotal, \
+                            stock, \
+                            otrosCostos, \
+                            color \
+                            FROM insumos WHERE estado!=\"eliminado\";")
+            else:
+                sql = ("SELECT idInsumo, \
+                            nombre, \
+                            unidadMedida, \
+                            cMateriales, \
+                            cProduccion, \
+                            cTotal, \
+                            stock, \
+                            otrosCostos, \
+                            color \
+                            FROM insumos;")
             cls.cursor.execute(sql)
             insumos_ = cls.cursor.fetchall()
             insumos = []

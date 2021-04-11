@@ -34,12 +34,12 @@ class NegocioInsumo(Negocio):
     
     
     @classmethod
-    def get_all(cls):
+    def get_all(cls,noFilter=False):
         """
         Obtiene todos los insumos de la BD.
         """
         try:
-            insumos = DatosInsumo.get_all()
+            insumos = DatosInsumo.get_all(noFilter)
             return insumos
 
         except Exception as e:
@@ -111,10 +111,3 @@ class NegocioInsumo(Negocio):
         except Exception as e:
             raise e
 
-
-    @classmethod
-    def get_by_id_array(cls,ids):
-        insumos = []
-        for id in ids:
-            insumos.append(cls.get_by_id(id))
-        return insumos

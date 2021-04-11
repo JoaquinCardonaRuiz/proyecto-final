@@ -63,20 +63,30 @@ class DatosMaterial(Datos):
     
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls,noFilter):
         """
         Obtiene todos los materiales de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT idMaterial, \
+            if noFilter == False:
+                sql = ("SELECT idMaterial, \
+                            nombre, \
+                            unidadMedida, \
+                            costoRecoleccion, \
+                            stock, \
+                            color, \
+                            estado \
+                            FROM materiales WHERE estado!=\"eliminado\" order by nombre ASC;")
+            else:
+                sql = ("SELECT idMaterial, \
                            nombre, \
                            unidadMedida, \
                            costoRecoleccion, \
                            stock, \
                            color, \
                            estado \
-                           FROM materiales WHERE estado!=\"eliminado\" order by nombre ASC;")
+                           FROM materiales order by nombre ASC;")
             cls.cursor.execute(sql)
             materiales_ = cls.cursor.fetchall()
             materiales = []

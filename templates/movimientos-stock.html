@@ -30,8 +30,8 @@
                         <option value="Depósito">&nbsp; Depósito</option>
                         <option value="Entrada Externa">&nbsp; Entrada Externa</option>
                         <option value="Pedido">&nbsp; Pedido</option>
+                        <option value="Producción Artículo">&nbsp; Producción Artículo</option>
                         <option value="Producción Insumo">&nbsp; Producción Insumo</option>
-                        <option value="Producción Material">&nbsp; Producción Material</option>
                         <option value="Salida Entidad de Destino">&nbsp; Salida Entidad de Destino</option>
                         <option value="Salida Municipio">&nbsp; Salida Municipio</option>
                     </select>
@@ -83,7 +83,7 @@
             <table class="table" id="content-table">
                 <thead style=" border-top:none">
                 <tr>
-                    <th scope="col" class="table-heading">Tipo</th>
+                    <th scope="col" class="table-heading">Tipo + ID</th>
                     <th scope="col" class="table-heading">Nombre Elemento</th>
                     <th scope="col" class="table-heading">Movimiento</th>
                     <th scope="col" class="table-heading">Unidad de Medida</th>
@@ -93,7 +93,7 @@
                 <tbody>
                     {%for ss in salidasStock%}
                     <tr>
-                        <th>Salida Entidad de Destino</th>
+                        <th>Salida Entidad de Destino #{{ss.id}}</th>
 
                         {%for art in articulos%}
                             {%if art.id == ss.articulos.idTipoArticulo%}
@@ -109,7 +109,7 @@
 
                     {%for sm in salidasMun%}
                     <tr>
-                        <th>Salida Municipio</th>
+                        <th>Salida Municipio #{{sm.id}}</th>
 
                         {%for art in articulos%}
                             {%if art.id == sm.articulos.idTipoArticulo%}
@@ -125,7 +125,7 @@
 
                     {%for ped in pedidos%}
                     <tr>
-                        <th>Pedido</th>
+                        <th>Pedido #{{ped.id}}</th>
 
                         {%for art in articulos%}
                             {%if art.id == ped.articulos.idTipoArticulo%}
@@ -141,7 +141,7 @@
 
                     {%for dep in depositos%}
                     <tr>
-                        <th>Depósito</th>
+                        <th>Depósito #{{dep.id}}</th>
 
                         {%for mat in materiales%}
                             {%if mat.id == dep.material.idMaterial%}
@@ -157,7 +157,7 @@
 
                     {%for ent in entradas%}
                     <tr>
-                        <th>Entrada Externa</th>
+                        <th>Entrada Externa #{{ent.id}}</th>
 
                         {%for mat in materiales%}
                             {%if mat.id == ent.material.idMaterial%}
@@ -168,6 +168,38 @@
                             {%endif%}
                         {%endfor%}
                         <td class="Fecha">{{ent.fecha}}</td>    
+                    </tr>
+                    {%endfor%}
+
+                    {%for prod in produccionIns%}
+                    <tr>
+                        <th>Producción Insumo #{{prod.id}}</th>
+
+                        {%for ins in insumos%}
+                            {%if ins.id == prod.insumos.idInsumo%}
+                            <td>{{ins.nombre}}</td>
+                            <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="prod-{{prod.id + ins.id}}"></span></td>
+                            <script>$("#prod-{{prod.id + ins.id}}").text(parseFloat('{{prod.insumos.cantidad}}'));</script>
+                            <td>{{ins.unidadMedida}}</td>
+                            {%endif%}
+                        {%endfor%}
+                        <td class="Fecha">{{prod.fecha}}</td>    
+                    </tr>
+                    {%endfor%}
+
+                    {%for prod in produccionArt%}
+                    <tr>
+                        <th>Producción Artículo #{{prod.id}}</th>
+
+                        {%for art in articulos%}
+                            {%if art.id == prod.articulos.idTipoArticulo%}
+                            <td>{{art.nombre}}</td>
+                            <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="prod-art-{{prod.id + art.id}}"></span></td>
+                            <script>$("#prod-art-{{prod.id + art.id}}").text(parseFloat('{{prod.articulos.cantidad}}'));</script>
+                            <td>{{art.unidadMedida}}</td>
+                            {%endif%}
+                        {%endfor%}
+                        <td class="Fecha">{{prod.fecha}}</td>    
                     </tr>
                     {%endfor%}
                 </tbody>

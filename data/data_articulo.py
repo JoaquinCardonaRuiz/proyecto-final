@@ -172,7 +172,6 @@ class DatosArticulo(Datos):
                 sql += " LIMIT {}".format(limit)
             sql += ";"
             sql = sql.format(*ids)
-            print(sql)
             cls.cursor.execute(sql)
             articulos_ = cls.cursor.fetchall()
             articulos = []

@@ -1482,11 +1482,16 @@ def historial_movimientos():
         salidasStock = NegocioSalidaStock.get_all()
         salidasMun = NegocioSalidaMun.get_all()
         articulos = NegocioArticulo.get_all(True)
+        materiales = NegocioMaterial.get_all(True)
+        insumos = NegocioInsumo.get_all(True)
         depositos = NegocioDeposito.get_all()
-        materiales = NegocioMaterial.get_all()
         pedidos = NegocioPedido.get_all_historial_mov()
         entradas = NegocioEntradaExterna.get_all()
-        return render_template('movimientos-stock.html', salidasStock=salidasStock, salidasMun = salidasMun, articulos = articulos, depositos = depositos, materiales = materiales, pedidos = pedidos, entradas = entradas)  
+        produccionIns = NegocioProduccion.get_all_insumos()
+        produccionArt = NegocioProduccion.get_all_articulos()
+        return render_template('movimientos-stock.html', salidasStock=salidasStock, salidasMun = salidasMun, 
+                                articulos = articulos, depositos = depositos, materiales = materiales, pedidos = pedidos, 
+                                entradas = entradas,produccionIns=produccionIns,produccionArt = produccionArt, insumos=insumos)  
     except Exception as e:
         return error(e,"historial_movimientos")
 

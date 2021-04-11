@@ -16,7 +16,6 @@ function active_filter(){
     in_out_input_val = $("#in-out-input").val();
     date_from_input_val = $("#date-from-input").val();
     date_to_input_val = $("#date-to-input").val();
-    
     //Tipo
     if (type_input_val != -1){
         filter_by_type = true;
@@ -59,7 +58,7 @@ function filter_table(filter){
     $('#content-table > tbody  > tr').each(function() {
         hide = false;
         if (filter_by_type){
-            if ($(this).find("th:first").text() != type_filter){
+            if ($(this).find("th:first").text().split(" #")[0] != type_filter){
                 hide = true;
             }
         }
