@@ -417,10 +417,11 @@ class ProduccionArticulo:
         articulos (CantArticulos): articulos involucrados
         fecha (Date): fecha de produccion
     """
-    def __init__(self,id,articulos,fecha):
+    def __init__(self,id,articulos,fecha,receta=None):
         self.id = id
         self.articulos = articulos
         self.fecha = fecha
+        self.receta = receta
 
 class SalidaStockMunicipalidad:
     """
@@ -495,10 +496,11 @@ class ProduccionInsumo:
         insumos (CantInsumo): insumos involucrados
         fecha (Date): fecha de produccion
     """
-    def __init__(self,id,insumos,fecha):
+    def __init__(self,id,insumos,fecha,receta=None):
         self.id = id
         self.insumos = insumos
         self.fecha = fecha
+        self.receta = receta
 
 
 '''

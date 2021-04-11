@@ -63,7 +63,7 @@ function filter_table(filter){
             }
         }
         if (filter_by_in_out){
-            mov = parseFloat($(this).find("td:nth-child(3)").text());
+            mov = parseFloat($(this).find("td:nth-child(4)").text());
             if (in_out_filter == "Entrada" && mov < 0){
                 hide = true;
             }
@@ -75,7 +75,7 @@ function filter_table(filter){
 
         if (filter_by_date_from){
 
-            var dateString = $(this).find("td:nth-child(6)").text();
+            var dateString = $(this).find("td:nth-child(7)").text();
             var newData = dateString.replace(/(\d+[/])(\d+[/])/, '$2$1');
             var date = new Date(newData);
 
@@ -88,7 +88,7 @@ function filter_table(filter){
         }
         if (filter_by_date_to){
             
-            var dateString = $(this).find("td:nth-child(6)").text();
+            var dateString = $(this).find("td:nth-child(7)").text();
             var newData = dateString.replace(/(\d+[/])(\d+[/])/, '$2$1');
             var date = new Date(newData);
 
