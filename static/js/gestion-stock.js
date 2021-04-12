@@ -810,6 +810,67 @@ function getDataIns(id){
 
 }
 
+function getDataArt(id){
+    $("#chart-row-art").hide();
+    $("#loading-row-art").fadeIn();
+    $("#loading-text-art").fadeIn();
+    $.getJSON("/gestion-depositos/chat-data-art/"+String(id),function (result){
+        const d = new Date();
+        var months = []
+        //TODO: Corregir, no funciona bien.
+        for (i = parseInt(d.getMonth())+1; i <12; i++){
+            months.push(monthNames[i] + " " + String(d.getFullYear()-1));
+        } 
+        for (i = 0; i <= parseInt(d.getMonth()); i++){
+            months.push(monthNames[i] + " " + String(d.getFullYear()));
+        }
+        $("#loading-row-art").hide();
+        $("#loading-text-art").hide();
+        $("#chart-row-art").fadeIn();
+        var chart = new CanvasJS.Chart("chartContainer3", {
+            animationEnabled: true,
+            theme: "light2",
+            title:{
+              text: ""
+            },
+            axisY: {
+              gridThickness: 0,
+              stripLines: [
+                {
+                  value: 0,
+                  showOnTop: true,
+                  color: "gray",
+                  thickness: 2
+                }
+              ]
+            },
+            data: [{        
+              type: "line",
+              lineColor: "#95C22B",
+              color:"#95C22B", 
+              indexLabelFontSize: 16,
+              dataPoints: [
+                {x:1, y: result[0],label:months[0]},
+                {x:2, y: result[1],label:months[1]},
+                {x:3, y: result[2],label:months[2]},
+                {x:4, y: result[3],label:months[3]},
+                {x:5, y: result[4],label:months[4]},
+                {x:6, y: result[5],label:months[5]},
+                {x:7, y: result[6],label:months[6]},
+                {x:8, y: result[7],label:months[7]},
+                {x:9, y: result[8],label:months[8]},
+                {x:10, y: result[9],label:months[9]},
+                {x:11, y: result[10],label:months[10]},
+                {x:12, y: result[11],label:months[11]}
+              ]
+            }]
+          });
+          chart.render(); 
+    });
+
+}
+
 
 getDataMat($("#chart-mat-sp").val());
 getDataIns($("#chart-ins-sp").val());
+getDataArt($("#chart-art-sp").val());

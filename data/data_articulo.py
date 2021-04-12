@@ -375,7 +375,7 @@ class DatosArticulo(Datos):
                     #Si no lo es, busco en la BD los movimientos del mes siguiente para restarselos al valor guardado en stock.
                     
                     #Salidas ED
-                    sql = ("select SUM(cantSalida) from salidasStock where idTipoArticulo = %s and month(fecha)=%s and year(fecha)=%s")
+                    sql = ("select SUM(cantidadSalida) from salidasStock where idTipoArticulo = %s and month(fecha)=%s and year(fecha)=%s")
                     if current_month == 12:
                         values = (id, 1, current_year+1)
                     else:

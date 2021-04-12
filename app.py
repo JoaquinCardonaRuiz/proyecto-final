@@ -1514,7 +1514,7 @@ def gestion_stock():
         materiales = NegocioMaterial.get_all()
         entidades = NegocioEntidadDestino.get_all()
         insumos = NegocioInsumo.get_all()
-        
+
         return render_template('gestion-stock.html', materiales = materiales, articulos=articulos, entidades = entidades, insumos = insumos)  
     except Exception as e:
         return error(e,"gestion_stock")
@@ -1598,6 +1598,11 @@ def get_chart_data_mat(id):
 def get_chart_data_ins(id):
     stock = NegocioInsumo.get_by_id(id).stock
     return jsonify(NegocioInsumo.get_movimientos_stock(id,stock))
+
+@app.route('/gestion-depositos/chat-data-art/<id>')
+def get_chart_data_art(id):
+    stock = NegocioArticulo.get_by_id(id).stock
+    return jsonify(NegocioArticulo.get_movimientos_stock(id,stock))
 
 ''' 
     ----------

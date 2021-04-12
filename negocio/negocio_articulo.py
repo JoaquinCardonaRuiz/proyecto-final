@@ -179,6 +179,6 @@ class NegocioArticulo(Negocio):
         try:
             return DatosArticulo.get_movimientos_stock(id,stock)[::-1]
         except Exception as e:
-            raise custom_exceptions.ErrorDeNegocio(origen="negocio_material.get_movimientos_stock()",
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.get_movimientos_stock()",
                                                    msj=str(e),
                                                    msj_adicional="Error en la capa de Negocio obteniendo los movimientos de stock de la base de Datos")

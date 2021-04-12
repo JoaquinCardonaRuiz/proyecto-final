@@ -483,6 +483,6 @@ th,tr,td{
     display: none !important;
 }
 
-#chart-row-mat, #chart-row-ins{
+#chart-row-mat, #chart-row-ins, #chart-row-art{
     display: none;
 }
