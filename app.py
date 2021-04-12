@@ -1535,6 +1535,11 @@ def alta_salida_ed():
     except Exception as e:
         return error(e,"gestion_stock")
 
+@app.route('/gestion-depositos/chat-data-mat/<id>')
+def get_chart_data_mat(id):
+    stock = NegocioMaterial.get_by_id(id).stock
+    return jsonify(NegocioMaterial.get_movimientos_stock(id,stock))
+
 ''' 
     ----------
     PRODUCCION

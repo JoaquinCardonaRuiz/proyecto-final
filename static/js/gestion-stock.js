@@ -226,7 +226,7 @@ function openSalidadaModal(){
 
 function completeUnidadMedida(um){
     var array = um.split(",");
-    $("#unidadMedidaInput").val(array[0]);
+    $("#unidadMedidaInput").val(array[0].replace("%", " "));
     $("#idMat").val(array[1]);
     enable_disable();
 }
@@ -234,7 +234,7 @@ function completeUnidadMedida(um){
 function completeUnidadMedidaSM(um){
     var array = um.split(",");
     $("#idArtSM").val(array[1]);
-    unidadMedida = array[0];
+    unidadMedida = array[0].replace("%", " ");
     stock_disp = parseFloat(array[2]);
     $("#stockDisponibleSM").val(stock_disp + " " + array[0] + " disponibles en stock");
     validaCantSM($("#cantidadInputSM").val());
@@ -243,7 +243,7 @@ function completeUnidadMedidaSM(um){
 
 function completeUnidadMedidaSE(um){
     var array = um.split(",");
-    unidadMedida = array[0];
+    unidadMedida = array[0].replace("%", " ");
     stock_disp = parseFloat(array[2]);
     valor_unitario = parseFloat(array[3]);
     valor_original = parseFloat(array[3]);
@@ -683,3 +683,57 @@ function inputTotalVal(val){
     enable_disable_se();
     
 }
+
+function getDataMat(id){
+    $("#chart-row-mat").hide();
+    $("#loading-row-mat").fadeIn();
+    $("#loading-text-mat").fadeIn();
+    $.getJSON("/gestion-depositos/chat-data-mat/"+String(id),function (result){
+        $("#loading-row-mat").hide();
+        $("#loading-text-mat").hide();
+        $("#chart-row-mat").fadeIn();
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            title:{
+              text: ""
+            },
+            axisY: {
+              gridThickness: 0,
+              stripLines: [
+                {
+                  value: 0,
+                  showOnTop: true,
+                  color: "gray",
+                  thickness: 2
+                }
+              ]
+            },
+            data: [{        
+              type: "line",
+              lineColor: "#95C22B",
+              color:"#95C22B", 
+              indexLabelFontSize: 16,
+              dataPoints: [
+                {x:1, y: result[0] },
+                {x:2, y: result[1]},
+                {x:3, y: result[2] },
+                {x:4, y: result[3] },
+                {x:5, y: result[4] },
+                {x:6, y: result[5] },
+                {x:7, y: result[6] },
+                {x:8, y: result[7] },
+                {x:9, y: result[8] },
+                {x:10, y: result[9] },
+                {x:11, y: result[10] },
+                {x:12, y: result[11] }
+              ]
+            }]
+          });
+          chart.render(); 
+    });
+
+}
+
+
+getDataMat($("#chart-mat-sp").val());

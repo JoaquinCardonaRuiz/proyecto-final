@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 
 {% extends 'layout.html' %}
@@ -56,25 +57,45 @@
             </div>
         </div>
 
+        <!-- Gráfico de materiales-->
+        <div class="container" id="table-container">
+            <h4 class="table-title">Movimiento de Stock de Materiales en el último año</h4>
+            <div class="row d-flex justify-content-end">
+                <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 25% !important; margin-right: 7%;" id="chart-mat-sp" class="selectpicker selectpicker-nooutline" oninput="getDataMat(value)" data-live-search="true">
+                    {%for mat in materiales%}
+                        <option value={{mat.id}}>&nbsp; {{mat.nombre}}</option>
+                    {%endfor%}
+                    
+                </select>
+            </div>
+            <div class="row mt-4" id="loading-row-mat" style="padding-top: 5%;">
+                <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <p class="loading-text-chart mb-4" id="loading-text-mat">Cargando gráfico...</p>
+            <div class="row mb-4" id="chart-row-mat">
+                <div id="chartContainer" class="mt-4 mb-4" style="height: 300px; width: 86%; margin-left: 7%;"></div>
+            </div>
+            <div class="row mt-4" id="loading-row-mat" style="padding-top: 3%;">
+            </div>
+            
+        </div>
+
         <!-- Tabla Pedidos Activos-->
         <div class="container" id="table-container">
-            <h4 class="table-title">Últimos Movimientos de Stock</h4>
-            <div class="row d-flex justify-content-center scrollable-table">
-                <table class="table" id="content-table">
-                    <thead style=" border-top:none">
-                    <tr>
-                        <th scope="col" class="table-heading">Tipo</th>
-                        <th scope="col" class="table-heading">Nombre Elemento</th>
-                        <th scope="col" class="table-heading">Movimiento</th>
-                        <th scope="col" class="table-heading">Unidad de Medida</th>
-                        <th scope="col" class="table-heading">Fecha</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    
-                    </tbody>
-                </table>
+            <h4 class="table-title">Movimiento de Stock de Insumos en el último año</h4>
+            <div class="row">
+                <div id="chartContainer2" class="mt-4 mb-4" style="height: 300px; width: 86%; margin-left: 7%;"></div>
             </div>
+            
+        </div>
+
+        <!-- Tabla Pedidos Activos-->
+        <div class="container" id="table-container">
+            <h4 class="table-title">Movimiento de Stock de Artículos en el último año</h4>
+            <div class="row">
+                <div id="chartContainer3" class="mt-4 mb-4" style="height: 300px; width: 86%; margin-left: 7%;"></div>
+            </div>
+            
         </div>
 
     </div>
@@ -131,7 +152,7 @@
                             <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c; width: 120% !important;" id="mat-select-picker-re" class="selectpicker selectpicker-nooutline" oninput="completeUnidadMedida(value);" data-live-search="true">
                                 <option value=-1 selected disabled>&nbsp; Seleccione un material</option>
                                 {%for mat in materiales%}
-                                    <option onclick="alert('hey');" value={{mat.unidadMedida}},{{mat.id}}>&nbsp; {{mat.nombre}}</option>
+                                    <option value={{mat.unidadMedida|replace(" ","%")}},{{mat.id}}>&nbsp; {{mat.nombre}}</option>
                                 {%endfor%}
                                 
                             </select>
@@ -235,9 +256,9 @@
                                 <option value=-1 selected disabled>&nbsp; Seleccione un artículo</option>
                                 {%for art in articulos%}
                                     {%if art.stock|float > 0%}
-                                        <option value={{art.unidadMedida}},{{art.id}},{{art.stock}}>&nbsp; {{art.nombre}}</option>
+                                        <option value={{art.unidadMedida|replace(" ","%")}},{{art.id}},{{art.stock}}>&nbsp; {{art.nombre}}</option>
                                     {%else%}
-                                        <option value={{art.unidadMedida}},{{art.id}},{{art.stock}} disabled data-toggle="tooltip" data-placement="right" title="Este artículo se encuentra sin stock">&nbsp; {{art.nombre}}</option>
+                                        <option value={{art.unidadMedida|replace(" ","%")}},{{art.id}},{{art.stock}} disabled data-toggle="tooltip" data-placement="right" title="Este artículo se encuentra sin stock">&nbsp; {{art.nombre}}</option>
                                     {%endif%}
                                 {%endfor%}
                                 
@@ -345,9 +366,9 @@
                                     <option value=-1 selected disabled>&nbsp; Seleccione un artículo</option>
                                     {%for art in articulos%}
                                         {%if art.stock|float > 0%}
-                                            <option value={{art.unidadMedida}},{{art.id}},{{art.stock}},{{art.valor}}>&nbsp; {{art.nombre}}</option>
+                                            <option value={{art.unidadMedida|replace(" ","%")}},{{art.id}},{{art.stock}},{{art.valor}}>&nbsp; {{art.nombre}}</option>
                                         {%else%}
-                                            <option value={{art.unidadMedida}},{{art.id}},{{art.stock}} disabled data-toggle="tooltip" data-placement="right" title="Este artículo se encuentra sin stock">&nbsp; {{art.nombre}}</option>
+                                            <option value={{art.unidadMedida|replace(" ","%")}},{{art.id}},{{art.stock}} disabled data-toggle="tooltip" data-placement="right" title="Este artículo se encuentra sin stock">&nbsp; {{art.nombre}}</option>
                                         {%endif%}
                                     {%endfor%}
                                     
