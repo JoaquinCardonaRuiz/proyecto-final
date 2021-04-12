@@ -621,7 +621,7 @@ input:focus ~ .highlight {
 .cards-row-materiales{
   transition: width 0.4s, height 0.4s, transform 0.4s;
   margin-top: 10%; 
-  margin-left: 2% !important; 
+  margin-left: 2%; 
   width: 96.5%;
   margin-bottom: 7%;
 }

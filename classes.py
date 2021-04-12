@@ -315,10 +315,13 @@ class CantMaterial:
         cantidad (float): Cantidad del material que se representa, en la unidad de medida 
             especificada por el mismo.
         idMaterial (string): Identificador del material correspondiente.
+        estado (String, opcional): en el caso de una producción, puede tomar el valor 'deshabilitado' para
+            indicar que el material fue eliminado
     """
-    def __init__(self,cantidad,idMaterial):
+    def __init__(self,cantidad,idMaterial,estado="disponible"):
         self.cantidad = cantidad
         self.idMaterial = idMaterial
+        self.estado=estado
 
 class EntradaStock:
     """

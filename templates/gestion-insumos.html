@@ -366,7 +366,7 @@
                     </div>       
                 </div>                 
             </div>
-            <div class="row cards-row-materiales" id="cards-row-materiales">
+            <div class="row cards-row-materiales" id="cards-row-materiales" style="margin-left: 2%;">
                 <h6 class="indicator-label-2" id="se-req-msj">Se requerirán:</h6>
                 <p class="warning-label-altaPD" id="warning-label-altaPD"><i class="fa fa-exclamation-triangle warning-icon-altaPD" id="warning-icon-altaPD"></i> No ha seleccionado ningún material para este Insumo.</p>
                 {% for material in materiales %}
@@ -453,8 +453,8 @@
             </li>
           </ul>
         </div>
-        <form action="{{url_for('edit_insumo')}}" method="POST" id="editInsumoForm" autocomplete="off" class="tab-content modal-body">
-        <div class="row" id="loadingRow">
+        <form action="{{url_for('edit_insumo')}}" method="POST" id="editInsumoForm" autocomplete="off" class="tab-content modal-body" style="margin-top:0px !important;overflow-x: hidden;">
+        <div class="row" id="loadingRow" style="margin-top:4%;">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
         </div>
         <!-- TAB 1 -->
