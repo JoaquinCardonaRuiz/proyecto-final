@@ -77,8 +77,9 @@
                     <th scope="col" class="table-heading">Precio</th>
                     <th scope="col" class="table-heading">Stock</th>
                     <th scope="col" class="table-heading">Unidad</th>
+                    <th scope="col" class="table-heading">Desc.</th>
                     <th scope="col" class="table-heading">Insumos</th>
-                    <th scope="col" class="table-heading">Publico</th>
+                    <th scope="col" class="table-heading">Público</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -106,6 +107,7 @@
                     <th scope="row">{{art.nombre|truncate(25,true)}}</th>
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
                     <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
+                    <button id="open-modal-desc" href='#'data-toggle="modal" data-target="#descModal"hidden="true"></button>
                     <button id="open-mat-vacio" href='#'data-toggle="modal" data-target="#materialesVacioModal"hidden="true"></button>
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
                     <td scope="row">{{art.costoTotal}}</td>
@@ -113,6 +115,7 @@
                     <td scope="row">{{art.valor}}</td>
                     <td scope="row">{{art.stock}}</td>
                     <td scope="row">{{art.unidadMedida}}</td>
+                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{art.id}}','{{art.nombre}}','{{art.desc}}');">Ver Descripción</a></td>
                     <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalInsumos('{{art.nombre}}',{{ids_insumos}},{{cantidades}});">Ver insumos</a></td>
                     {% if art.ventaUsuario %}
                         <td scope="row">Si</td>
@@ -147,6 +150,49 @@
 </div>
 
 
+
+<!-- Descripcion Modal -->
+<div class="modal fade modal-lg" id="descModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalDesc"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="modal-body" id="desc-modal-body" action="{{url_for('edit_desc_articulo')}}" method="POST" autocomplete="off">
+                <div class="container" id="">
+                    <div class="row" id="desc-row" style="display:none;justify-content: center;">
+                        <p id="desc-label"></p>
+                    </div>
+                    <div class="row" id="loadingRow">
+                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <div class="row" id="edit-row" style="display:none;display:grid;margin-top:-2%;">
+                        <div class="col">
+                          <div class="group">
+                            <p>Editar Descripción:</p>
+                            <input hidden id="idDescInput" name="idArt">
+                            <textarea type="text"  id="descEditInput" name="desc" style="width:100%"></textarea>
+                              <span class="highlight"></span>
+                              <span class="bar"></span>
+                              <p id="descArtError" class="modalErrorMessage"></p>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+            </form>        
+        <div class="modal-footer">
+            <div type="button" class="btn secondary-btn" id="edit-btn-desc" style="display:none;" onclick="edit_desc();"><i class="fas fa-pen"></i> Editar</div>
+            <div type="button" class="btn primary-btn" id="listo-desc-btn" style="display:none;" data-dismiss="modal">Listo</div>
+            <div type="button" class="btn secondary-btn" id="cancel-btn" style="display:none;" onclick="cancel_edit_desc();">Cancelar</div>
+            <div type="button" class="btn primary-btn" id="confirm-btn" style="display:none;" onclick="confirmar_desc_load();confirmar_desc();">Confirmar</div>
+        </div>
+    </div>
+
+    </div>
+</div>
 
 
 <!-- Insumos Modal -->
@@ -274,9 +320,19 @@
                           <label style="margin-top: 1%;">Venta a usuarios</label>
                           <input style="margin-left: -3%;margin-top: 6%;" class="form-check-input" type="checkbox" id="usuariosCheck" name="ventaUsuario">
                         </div>
-                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="row-pag-1-3" style="display:none;display:grid;margin-top:4%;">
+                <div class="col">
+                  <div class="group">
+                    <p style="margin-left:5%">Descripción:</p> 
+                    <textarea type="text"  id="descEditInput" name="desc" style="width:90%;margin-left:5%;margin-right:5%;"></textarea>
+                      <span class="highlight"></span>
+                      <p id="descArtError" class="modalErrorMessage"></p>
                   </div>
               </div>
+          </div>
 
 
 

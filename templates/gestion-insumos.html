@@ -76,6 +76,7 @@
                     <th scope="col" class="table-heading">Costo</th>
                     <th scope="col" class="table-heading">Stock</th>
                     <th scope="col" class="table-heading">Unidad</th>
+                    <th scope="col" class="table-heading">Desc.</th>
                     <th scope="col" class="table-heading">Materiales</th>
                 </tr>
                 </thead>
@@ -105,10 +106,12 @@
                     <th scope="row">{{ins.nombre}}</th>
                     <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
                     <button id="open-mat-vacio" href='#'data-toggle="modal" data-target="#materialesVacioModal"hidden="true"></button>
+                    <button id="open-modal-desc" href='#'data-toggle="modal" data-target="#descModal"hidden="true"></button>
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
                     <td scope="row">{{ins.costoTotal}}</td>
                     <td scope="row">{{ins.stock}}</td>
                     <td scope="row">{{ins.unidadMedida}}</td>
+                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{ins.id}}','{{ins.nombre}}','{{ins.desc}}');">Ver Descripción</a></td>
                     <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{ins.nombre}}',{{ids_materiales}},{{cantidades}});">Ver materiales</a></td>
                     <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ins.id}}','{{ins.nombre}}','{{ins.costoProduccion}}','{{ins.costoMateriales}}','{{ins.unidadMedida}}','{{ins.otrosCostos}}','{{ins.color}}',{{ids_materiales}},{{cantidades}},{{cantidades_totales}})"></i></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="resetBaja();openBajaModal('{{ins.id}}','{{ins.nombre}}')"></i></td>
@@ -136,6 +139,52 @@
       </div>
   </div>
 </div>
+
+
+
+<!-- Descripcion Modal -->
+<div class="modal fade modal-lg" id="descModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalDesc"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="modal-body" id="desc-modal-body" action="{{url_for('edit_desc_insumo')}}" method="POST" autocomplete="off">
+                <div class="container" id="">
+                    <div class="row" id="desc-row" style="display:none;justify-content: center;">
+                        <p id="desc-label"></p>
+                    </div>
+                    <div class="row" id="loadingRow">
+                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <div class="row" id="edit-row" style="display:none;display:grid;margin-top:-2%;">
+                        <div class="col">
+                          <div class="group">
+                            <p>Editar Descripción:</p>
+                            <input hidden id="idDescInput" name="idIns">
+                            <textarea type="text"  id="descEditInput" name="desc" style="width:100%"></textarea>
+                              <span class="highlight"></span>
+                              <span class="bar"></span>
+                              <p id="descArtError" class="modalErrorMessage"></p>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+            </form>        
+        <div class="modal-footer">
+            <div type="button" class="btn secondary-btn" id="edit-btn-desc" style="display:none;" onclick="edit_desc();"><i class="fas fa-pen"></i> Editar</div>
+            <div type="button" class="btn primary-btn" id="listo-desc-btn" style="display:none;" data-dismiss="modal">Listo</div>
+            <div type="button" class="btn secondary-btn" id="cancel-btn" style="display:none;" onclick="cancel_edit_desc();">Cancelar</div>
+            <div type="button" class="btn primary-btn" id="confirm-btn" style="display:none;" onclick="confirmar_desc_load();confirmar_desc();">Confirmar</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
 
 
 <!-- Materiales Vacio Modal -->
@@ -250,7 +299,17 @@
                     </div>
                 </div>
             </div>
-            <div class="row" id="row-to-hide-2">
+            <div class="row" id="row-desc" style="display:none;display:grid;">
+                <div class="col">
+                  <div class="group">
+                    <p style="margin-left:5%">Descripción:</p> 
+                    <textarea type="text"  id="descEditInput" name="desc" style="width:90%;margin-left:5%;margin-right:5%;"></textarea>
+                      <span class="highlight"></span>
+                      <p id="descArtError" class="modalErrorMessage"></p>
+                  </div>
+              </div>
+          </div>
+            <div class="row" id="row-to-hide-2" style="margin-top: 5%;">
                 <div class="col">
                     <div class="group" style="margin-left: 10%;">
                         <input hidden>
@@ -293,7 +352,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 0px;">
+            <div class="row" id="fieldsRow1Alta1" style="margin-left: 6.5%; margin-right: 8%; margin-top: 5%;">
                 <h6 class="indicator-label">Seleccione los materiales que se requerirán para producir el insumo:</h6>
                 <div class="dropdown-box" id="dropdown-altaPD">
                     <h4 id="heading-option" onclick="dropdownManager();">

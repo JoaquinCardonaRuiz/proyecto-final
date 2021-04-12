@@ -60,6 +60,7 @@ function cargar_pagina(){
         $("#subheader-pag-4").hide();
         $("#row-pag-1-1").fadeIn(400);
         $("#row-pag-1-2").fadeIn(400);
+        $("#row-pag-1-3").fadeIn(400);
         $("#row-pag-2-1").hide();
         $("#row-pag-2-2").hide();
         $("#row-pag-3-1").hide();
@@ -77,6 +78,7 @@ function cargar_pagina(){
         $("#subheader-pag-4").hide();
         $("#row-pag-1-1").hide();
         $("#row-pag-1-2").hide();
+        $("#row-pag-1-3").hide();
         $("#row-pag-2-1").hide();
         $("#row-pag-2-2").hide();
         $("#row-pag-3-1").hide();
@@ -97,6 +99,7 @@ function cargar_pagina(){
         $("#subheader-pag-4").hide();
         $("#row-pag-1-1").hide();
         $("#row-pag-1-2").hide();
+        $("#row-pag-1-3").hide();
         $("#row-pag-2-1").fadeIn(400);
         $("#row-pag-2-2").fadeIn(400);
         $("#row-pag-3-1").hide();
@@ -116,6 +119,7 @@ function cargar_pagina(){
         $("#subheader-pag-4").fadeIn(400);
         $("#row-pag-1-1").hide();
         $("#row-pag-1-2").hide();
+        $("#row-pag-1-3").hide();
         $("#row-pag-2-1").hide();
         $("#row-pag-2-2").hide();
         $("#row-pag-3-1").fadeIn(400);
@@ -962,3 +966,59 @@ function truncateString(str, num) {
     // Return str truncated with '...' concatenated to the end of str.
     return str.slice(0, num) + '...'
   }
+
+
+function openModalDesc(id,nom,desc){
+    document.getElementById("headingModalDesc").innerHTML = "Descripción de " + nom;
+    document.getElementById("idDescInput").value = id;
+    $("#desc-row").show();
+    $("#edit-row").hide();
+    $("#edit-btn-desc").show();
+    $("#listo-desc-btn").show();
+    if(desc != ""){
+        document.getElementById("desc-label").style.color = "#000";
+        document.getElementById("desc-label").innerHTML = desc;
+    }else{
+        document.getElementById("desc-label").style.color = "#666";
+        document.getElementById("desc-label").innerHTML = "Este artículo no tiene descripción.";
+    }
+    
+    document.getElementById("open-modal-desc").click();
+}
+
+
+function edit_desc(){
+    $("#desc-row").hide();
+    $("#edit-row").show();
+    document.getElementById("descEditInput").value = document.getElementById("desc-label").innerHTML;
+    $("#edit-btn-desc").hide();
+    $("#listo-desc-btn").hide();
+    $("#cancel-btn").show();
+    $("#confirm-btn").show();
+}
+
+function cancel_edit_desc(){
+    $("#desc-row").show();
+    $("#edit-row").hide();
+    document.getElementById("descEditInput").value = "";
+
+    $("#edit-btn-desc").show();
+    $("#listo-desc-btn").show();
+    $("#cancel-btn").hide();
+    $("#confirm-btn").hide();
+}
+
+function confirmar_desc_load(){
+    jQuery.noConflict();
+    $("#cancel-btn").attr("disabled", true);
+    $("#confirm-btn").attr("disabled", true);
+    $("#edit-row").hide();
+    $(".lds-ring").hide();
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show();
+    $("#loadingRow").show();
+}
+
+function confirmar_desc(){
+    document.getElementById("desc-modal-body").submit();
+}

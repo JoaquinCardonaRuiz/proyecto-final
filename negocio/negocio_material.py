@@ -48,12 +48,12 @@ class NegocioMaterial(Negocio):
 
     
     @classmethod
-    def add(cls,nombre,unidad,costoRecoleccion,color,estado):
+    def add(cls,nombre,unidad,costoRecoleccion,color,estado,desc):
         """
         Agrega un material a la BD
         """
         try:
-            DatosMaterial.add(nombre,unidad,costoRecoleccion,color,estado)
+            DatosMaterial.add(nombre,unidad,costoRecoleccion,color,estado,desc)
         except Exception as e:
             raise(e)
 
@@ -81,3 +81,14 @@ class NegocioMaterial(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_material.delete()",
                                                    msj=str(e),
                                                    msj_adicional="Error en la capa de Negocio eliminando un material de la base de Datos")
+
+
+    @classmethod
+    def update_desc(cls,idMat,desc):
+        """
+        Actualiza la desc de un material en la BD
+        """
+        try:
+            DatosMaterial.update_desc(idMat,desc)
+        except Exception as e:
+            raise(e)

@@ -296,9 +296,9 @@ class Material:
         stock (float): Cantidad del material presente en inventario.
         color(string): Código hexadecimal del color con que se muestra un material.
         estado(string): Indica si los depositos del material estan habilitados
-        descripcion(string): Descripción del material.
+        desc(string): Descripción del material.
     """
-    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color,estado="habilitado",descripcion="Este elemento no tiene descripción aún."):
+    def __init__(self,id,nombre,unidadMedida,costoRecoleccion,stock, color,estado="habilitado",desc=""):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -306,7 +306,7 @@ class Material:
         self.stock = stock
         self.color = color
         self.estado = estado
-        self.descripcion = descripcion
+        self.desc = desc
 
 class CantMaterial:
     """ Representa una cantidad de material mismo tipo. Almacena el material y la cantidad.
@@ -364,6 +364,7 @@ class TipoArticulo:
         otrosCostos (float): costos miscelaneos adicionales
         imagen (string): url de imagen del articulo
         ventaUsuario (bool): verdadero si el articulo se vende a usuarios, falso si no
+        desc (string): descripción del tipo de artículo.
     """
     def __init__(self,
                 id,
@@ -379,7 +380,8 @@ class TipoArticulo:
                 stock,
                 otrosCostos,
                 imagen,
-                ventaUsuario):
+                ventaUsuario,
+                desc):
         self.id = id
         self.nombre = nombre
         self.insumos = insumos
@@ -394,6 +396,7 @@ class TipoArticulo:
         self.otrosCostos = otrosCostos
         self.imagen = imagen
         self.ventaUsuario = ventaUsuario
+        self.desc = desc
 
 class CantArticulo:
     """ Representa un conjunto de artículos del mismo tipo. Almacena el tipo y la cantidad.
@@ -454,6 +457,7 @@ class Insumo:
         stock (float): existencias del insumo
         color (string): color que representa al insumo
         otrosCostos (float): costos miscelaneos adicionales
+        desc (string): descripción del insumo
     """
     def __init__(self,
                  id,
@@ -465,7 +469,8 @@ class Insumo:
                  materiales,
                  stock,
                  otrosCostos,
-                 color):
+                 color,
+                 desc):
         self.id = id
         self.nombre = nombre
         self.unidadMedida = unidadMedida
@@ -476,6 +481,7 @@ class Insumo:
         self.stock = stock
         self.otrosCostos = otrosCostos
         self.color = color
+        self.desc = desc
 
 class CantInsumo:
     """
@@ -683,15 +689,14 @@ class EntidadDestino:
     Atributos:
         id (string): Identificador de la entidad.
         nombre (string): Nombre para identificación por parte del usuario.
-        direccion (Direccion): dirección física donde se ubica la entidad destino
         salidas (SalidaStock[]): Arreglo de las salidas de stock destinadas a la entidad.
     """
-    def __init__(self,id,nombre,estado,direccion,salidas=[]):
+    def __init__(self,id,nombre,estado,salidas=[],desc=""):
         self.id = id
         self.nombre = nombre
         self.estado = estado
-        self.direccion = direccion
         self.salidas = salidas
+        self.desc = desc
 
 class SalidaStock:
     """ Representa un artículo que se saca del stock para entregar a una entidad de destino. 
@@ -700,12 +705,14 @@ class SalidaStock:
         id (string): Identificador de la entidad.
         articulos (CantArticulo): Lote de articulos que representa.
         fecha (Date): Fecha de la transacción.
+        valorTotal (float): Valor al que se realizó la salida
         concepto (string): Motivo por el cual se produce la salida.
     """
-    def __init__(self,id,articulos,fecha,concepto):
+    def __init__(self,id,articulos,fecha,valorTotal,concepto):
         self.id = id
         self.articulos = articulos
         self.fecha = fecha
+        self.valorTotal = valorTotal
         self.concepto = concepto
 
 

@@ -65,6 +65,7 @@
 
 
     <!-- Tabla Entidades-->
+    <button id="open-modal-desc" href='#'data-toggle="modal" data-target="#descModal"hidden="true"></button>
 
     <div class="container" id="table-container">
         <div class="row d-flex justify-content-center">
@@ -72,6 +73,7 @@
                 <thead style=" border-top:none">
                 <tr>
                     <th scope="col" class="table-heading">Nombre de la Entidad</th>
+                    <th scope="col" class="table-heading">Descripción</th>
                     <th scope="col" class="table-heading">Salidas de Stock</th>
                     <th class="table-heading delete-th"></th>
                     <th class="table-heading modify-th"></th>
@@ -86,6 +88,7 @@
                     <th scope="row">{{ent.nombre}}</th>
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
+                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{ent.id}}','{{ent.nombre}}','{{ent.desc}}');">Ver Descripción</a></td>
                     <td><a class="custom-link" href='#' onclick="openLoadingRing();getTablaSalidas('{{ent.id}}','{{ent.nombre}}')">Ver Salidas</a></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{ent.id}}','{{ent.nombre}}')"></i></td>
                     <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ent.id}}','{{ent.nombre}}')"></i></td>
@@ -275,6 +278,55 @@
       </div>
     </div>
 </div>
+
+
+
+
+
+<!-- Descripcion Modal -->
+<div class="modal fade modal-lg" id="descModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="headingModalDesc"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form class="modal-body" id="desc-modal-body" action="{{url_for('edit_desc_ed')}}" method="POST" autocomplete="off">
+              <div class="container" id="">
+                  <div class="row" id="desc-row" style="display:none;justify-content: center;">
+                      <p id="desc-label"></p>
+                  </div>
+                  <div class="row" id="loadingRow">
+                      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                  </div>
+                  <div class="row" id="edit-row" style="display:none;display:grid;margin-top:-2%;">
+                      <div class="col">
+                        <div class="group">
+                          <p>Editar Descripción:</p>
+                          <input hidden id="idDescInput" name="idED">
+                          <textarea type="text"  id="descEditInput" name="desc" style="width:100%"></textarea>
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <p id="descArtError" class="modalErrorMessage"></p>
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </form>        
+      <div class="modal-footer">
+          <div type="button" class="btn secondary-btn" id="edit-btn-desc" style="display:none;" onclick="edit_desc();"><i class="fas fa-pen"></i> Editar</div>
+          <div type="button" class="btn primary-btn" id="listo-desc-btn" style="display:none;" data-dismiss="modal">Listo</div>
+          <div type="button" class="btn secondary-btn" id="cancel-btn" style="display:none;" onclick="cancel_edit_desc();">Cancelar</div>
+          <div type="button" class="btn primary-btn" id="confirm-btn" style="display:none;" onclick="confirmar_desc_load();confirmar_desc();">Confirmar</div>
+      </div>
+  </div>
+
+  </div>
+</div>
+
+
 
 
 <script src="static/js/gestion-ed.js"></script>

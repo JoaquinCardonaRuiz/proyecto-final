@@ -540,6 +540,15 @@ def gestion_ed():
     return render_template('gestion-entidades-destino.html', entidades = entidades, usuario=session["usuario"])
 
 
+@app.route('/gestion-ed/editdesc',methods=["POST","GET"])
+def edit_desc_ed():
+    if request.method == "POST":
+        idED = int(request.form["idED"])
+        desc = request.form["desc"]
+        NegocioEntidadDestino.update_desc(idED,desc)
+        return redirect(url_for('gestion_ed'))
+
+
 @app.route('/gestion-ed/articulos', methods = ['GET','POST'])
 def get_articulos():
     try:
@@ -871,6 +880,7 @@ def alta_articulo():
         costoObtencionAlt =     request.form['costoObtencionAlt']
         margen =                request.form['margen']
         valor =                 request.form['valor']
+        desc =                  request.form['desc']
 
 
         #INSUMOS
@@ -883,7 +893,7 @@ def alta_articulo():
                     cants.append({"idIns":id,"cantidad":cant})
 
         try:
-            idNuevoArt = NegocioArticulo.add(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants)
+            idNuevoArt = NegocioArticulo.add(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants,desc)
         
             #IMAGEN
             imagen = ""
@@ -965,6 +975,13 @@ def baja_articulo(id):
         return error(e,"articulos")
     return redirect(url_for('gestion_articulos'))
 
+@app.route('/articulos/editdesc',methods=["POST","GET"])
+def edit_desc_articulo():
+    if request.method == "POST":
+        idArt = int(request.form["idArt"])
+        desc = request.form["desc"]
+        NegocioArticulo.update_desc(idArt,desc)
+        return redirect(url_for('gestion_articulos'))
 
 
 @app.route('/articulos/insumos/<ids>')
@@ -1022,6 +1039,7 @@ def alta_insumo():
         costoProduccion =       request.form['costoProduccion']
         otrosCostos =           request.form['otrosCostos']
         color =                 request.form['color']
+        desc =                  request.form['desc']
         cants = []
         for key in request.form.keys():
             if "id-" in key:
@@ -1030,7 +1048,7 @@ def alta_insumo():
                 if cant > 0:
                     cants.append({"idMat":id,"cantidad":cant})
         try:
-            NegocioInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants)
+            NegocioInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants,desc)
         except Exception as e:
             return error(e,"insumos")
         return redirect(url_for('gestion_insumos'))
@@ -1058,6 +1076,17 @@ def edit_insumo():
         except Exception as e:
             return error(e,"insumos")
         return redirect(url_for('gestion_insumos'))
+
+
+@app.route('/insumos/editdesc',methods=["POST","GET"])
+def edit_desc_insumo():
+    if request.method == "POST":
+        idIns = int(request.form["idIns"])
+        desc = request.form["desc"]
+        NegocioInsumo.update_desc(idIns,desc)
+        return redirect(url_for('gestion_insumos'))
+
+
 
 
 @app.route('/insumos/baja/<id>')
@@ -1126,8 +1155,9 @@ def alta_material():
         costoRecoleccion =      request.form['costoRecoleccion']
         color =                 request.form['color']
         estado =                request.form['estado']
+        desc =                  request.form['desc']
         try:
-            NegocioMaterial.add(nombre,unidad,costoRecoleccion,color,estado)
+            NegocioMaterial.add(nombre,unidad,costoRecoleccion,color,estado,desc)
         except Exception as e:
             return error(e,"materiales")
         return redirect(url_for('gestion_materiales'))
@@ -1167,6 +1197,16 @@ def get_recetas_insumos(idMat):
         return jsonify(arr)
     except Exception as e:
         return error(e,"materiales")
+
+
+@app.route('/materiales/editdesc',methods=["POST","GET"])
+def edit_desc_material():
+    if request.method == "POST":
+        idMat = int(request.form["idMat"])
+        desc = request.form["desc"]
+        NegocioMaterial.update_desc(idMat,desc)
+        return redirect(url_for('gestion_materiales'))
+
   
   
 def valida_session():

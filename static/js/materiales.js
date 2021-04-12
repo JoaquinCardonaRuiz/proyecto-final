@@ -123,6 +123,8 @@ function alta_material(){
     $("#row-to-hide-1").hide();
     $("#row-to-hide-2").hide();
     $("#row-to-hide-3").hide();
+    $("#row-desc").hide();
+
     $('#alta-btn').prop('disabled', true);
     $('#secondary-btn').prop('disabled', true);
     submitForm('altaMaterialForm');
@@ -463,4 +465,60 @@ function labelPosition(){
 
     $("#pdInactivoMod").css({top: 0, position:'absolute'});
     $("#pdInactivoMod").css({left: pos_switch_left + 140, position:'absolute'});
+}
+
+
+function openModalDesc(id,nom,desc){
+    document.getElementById("headingModalDesc").innerHTML = "Descripción de " + nom;
+    document.getElementById("idDescInput").value = id;
+    $("#desc-row").show();
+    $("#edit-row").hide();
+    $("#edit-btn-desc").show();
+    $("#listo-desc-btn").show();
+    if(desc != ""){
+        document.getElementById("desc-label").style.color = "#000";
+        document.getElementById("desc-label").innerHTML = desc;
+    }else{
+        document.getElementById("desc-label").style.color = "#666";
+        document.getElementById("desc-label").innerHTML = "Este material no tiene descripción.";
+    }
+    
+    document.getElementById("open-modal-desc").click();
+}
+
+
+function edit_desc(){
+    $("#desc-row").hide();
+    $("#edit-row").show();
+    document.getElementById("descEditInput").value = document.getElementById("desc-label").innerHTML;
+    $("#edit-btn-desc").hide();
+    $("#listo-desc-btn").hide();
+    $("#cancel-btn").show();
+    $("#confirm-btn").show();
+}
+
+function cancel_edit_desc(){
+    $("#desc-row").show();
+    $("#edit-row").hide();
+    document.getElementById("descEditInput").value = "";
+
+    $("#edit-btn-desc").show();
+    $("#listo-desc-btn").show();
+    $("#cancel-btn").hide();
+    $("#confirm-btn").hide();
+}
+
+function confirmar_desc_load(){
+    jQuery.noConflict();
+    $("#cancel-btn").attr("disabled", true);
+    $("#confirm-btn").attr("disabled", true);
+    $("#edit-row").hide();
+    $(".lds-ring").hide();
+    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
+    $(".lds-ring").show();
+    $("#loadingRow").show();
+}
+
+function confirmar_desc(){
+    document.getElementById("desc-modal-body").submit();
 }

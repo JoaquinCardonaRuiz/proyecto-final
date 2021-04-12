@@ -68,14 +68,14 @@ class NegocioArticulo(Negocio):
                                                     msj_adicional="Error en la capa de Negocio obtieniendo tipos de articulo de la capa de Datos.")
 
     @classmethod
-    def add(cls,nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants):
+    def add(cls,nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,valor,cants,desc):
         """
         Agrega un articulo a la BD
         """
         try:
             costoTotal = float(costoInsumos)+float(costoProduccion)+float(otrosCostos)
             margen=float(margen)/100
-            idArt = DatosArticulo.add(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal)
+            idArt = DatosArticulo.add(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal,desc)
             DatosValor.add(idArt,datetime.now().strftime('%Y-%m-%d %H:%M:%S'),valor)
             for c in cants:
                 DatosCantInsumo.addComponente(c["idIns"],idArt,c["cantidad"])
@@ -160,5 +160,13 @@ class NegocioArticulo(Negocio):
     def update_img(cls,aid,img):
         try:
             DatosArticulo.update_img(aid,img)
+        except Exception as e:
+            raise e
+
+
+    @classmethod
+    def update_desc(cls,aid,desc):
+        try:
+            DatosArticulo.update_desc(aid,desc)
         except Exception as e:
             raise e
