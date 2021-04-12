@@ -17,14 +17,15 @@ class DatosMaterial(Datos):
                            costoRecoleccion, \
                            stock, \
                            color, \
-                           estado \
+                           estado, \
+                           descripcion \
                            FROM materiales WHERE idMaterial = {};").format(id)
             cls.cursor.execute(sql)
             m = cls.cursor.fetchone()
             if m == None:
                 return False
             else:
-                material = Material(m[0],m[1],m[2],m[3],m[4],m[5],m[6])
+                material = Material(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7])
                 return material
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_material.get_by_id()",
@@ -43,15 +44,15 @@ class DatosMaterial(Datos):
         try:
             cls.abrir_conexion()
             if noSuspendidos:
-                sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial, materiales.estado from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' and materiales.estado = 'habilitado' order by materiales.nombre ASC;")
+                sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial, materiales.estado, materiales.descripcion from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' and materiales.estado = 'habilitado' order by materiales.nombre ASC;")
             else:
-                sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial, materiales.estado from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' and materiales.estado != 'eliminado' order by materiales.nombre ASC;")
+                sql = ("select materiales.nombre, materiales.unidadMedida, materiales.color, materiales.idMaterial, materiales.estado, materiales.descripcion from puntosDeposito left join puntosDep_mat using(idPunto) left join materiales using (idMaterial) where idPunto = %s and puntosDep_mat.estado = 'disponible' and materiales.estado != 'eliminado' order by materiales.nombre ASC;")
             values = (idPuntoDep,)
             cls.cursor.execute(sql, values)
             materiales = cls.cursor.fetchall()
             materiales_ = []
             for material in materiales:
-                materiales_.append(Material(material[3], material[0], material[1], None, None, material[2],material[4])) 
+                materiales_.append(Material(material[3], material[0], material[1], None, None, material[2],material[4],material[5])) 
             return materiales_
             
         except Exception as e:
@@ -77,7 +78,8 @@ class DatosMaterial(Datos):
                             costoRecoleccion, \
                             stock, \
                             color, \
-                            estado \
+                            estado, \
+                            descripcion \
                             FROM materiales WHERE estado!=\"eliminado\" order by nombre ASC;")
             else:
                 sql = ("SELECT idMaterial, \
@@ -85,14 +87,14 @@ class DatosMaterial(Datos):
                            unidadMedida, \
                            costoRecoleccion, \
                            stock, \
-                           color, \
-                           estado \
+                           estado, \
+                           descripcion \
                            FROM materiales order by nombre ASC;")
             cls.cursor.execute(sql)
             materiales_ = cls.cursor.fetchall()
             materiales = []
             for m in materiales_:
-                material_ = Material(m[0],m[1],m[2],m[3],m[4],m[5],m[6])
+                material_ = Material(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7])
                 materiales.append(material_)
             return materiales
             
@@ -105,14 +107,14 @@ class DatosMaterial(Datos):
 
     
     @classmethod
-    def add(cls,nombre,unidad,costoRecoleccion,color,estado):
+    def add(cls,nombre,unidad,costoRecoleccion,color,estado,desc):
         """
         Agrega un material a la BD
         """
         try:
             cls.abrir_conexion()
-            sql= ("INSERT INTO materiales (nombre,unidadMedida,costoRecoleccion,color,stock,estado) \
-                   VALUES (\"{}\",\"{}\",{},\"{}\",0,\"{}\");".format(nombre,unidad,costoRecoleccion,color,estado))
+            sql= ("INSERT INTO materiales (nombre,unidadMedida,costoRecoleccion,color,estado,descripcion) \
+                   VALUES (\"{}\",\"{}\",{},\"{}\",\"{}\",\"{}\");".format(nombre,unidad,costoRecoleccion,color,estado,desc))
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
@@ -203,7 +205,25 @@ class DatosMaterial(Datos):
 
 
 
-
+    @classmethod
+    def update_desc(cls,idMat,desc):
+        """
+        Actualiza un material en la BD
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE materiales SET descripcion=\"{}\" WHERE idMaterial={};").format(desc,idMat)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.update_desc()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando la desc de un material en la BD.")
+        finally:
+            cls.cerrar_conexion()
+            
+            
     @classmethod
     def updateStock(cls,id,cant):
         """

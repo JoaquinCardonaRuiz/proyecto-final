@@ -19,7 +19,7 @@ class DatosEntidadDestino(Datos):
             entidades = []
             for e in entidades_:
                 salidas =   DatosSalidaStock.get_salidas_by_entidad(e[0],noClose = True)
-                entidad_ =  EntidadDestino(e[0],e[1],e[2],salidas)
+                entidad_ =  EntidadDestino(e[0],e[1],e[2],salidas,e[3])
                 entidades.append(entidad_)
             return entidades
             
@@ -60,7 +60,7 @@ class DatosEntidadDestino(Datos):
             cls.cursor.execute(sql)
             e = cls.cursor.fetchall()[0]
             salidas =   DatosSalidaStock.get_salidas_by_entidad(e[0],noClose = True)
-            entidad = EntidadDestino(e[0],e[1],e[2],salidas)
+            entidad = EntidadDestino(e[0],e[1],e[2],salidas,e[3])
             return entidad
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_entidad_destino.get_one()",
@@ -126,5 +126,24 @@ class DatosEntidadDestino(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_entidad_destino.check_name_repeats()",
                                                     msj=str(e),
                                                     msj_adicional="Error comprobando repeticiones de nombres de entidad destino en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def update_desc(cls,idEnt,desc):
+        """
+        Actualiza la descripcion de una entidad de destino en la BD
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE entidadesDestino SET descripcion = \"{}\" WHERE idEntidad={}".format(desc,idEnt))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_entidad_destino.update_desc()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando una entidad destino en la BD.")
         finally:
             cls.cerrar_conexion()

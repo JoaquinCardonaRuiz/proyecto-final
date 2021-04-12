@@ -47,13 +47,13 @@ class NegocioInsumo(Negocio):
 
 
     @classmethod
-    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants):
+    def add(cls,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,color,cants,desc):
         """
         Agrega un insumo a la BD
         """
         try:
             costoTotal = float(costoMateriales)+float(costoProduccion)+float(otrosCostos)
-            idIns = DatosInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color)
+            idIns = DatosInsumo.add(nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color,desc)
             for c in cants:
                 DatosCantMaterial.addComponente(c["idMat"],idIns,c["cantidad"])
         except Exception as e:
@@ -108,6 +108,22 @@ class NegocioInsumo(Negocio):
     def get_nombres_by_idMat(cls,idMat):
         try:
             return DatosInsumo.get_nombres_by_idMat(idMat)
+        except Exception as e:
+            raise e
+
+
+    @classmethod
+    def get_by_id_array(cls,ids):
+        insumos = []
+        for id in ids:
+            insumos.append(cls.get_by_id(id))
+        return insumos
+
+
+    @classmethod
+    def update_desc(cls,idIns,desc):
+        try:
+            DatosInsumo.update_desc(idIns,desc)
         except Exception as e:
             raise e
 

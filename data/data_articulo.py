@@ -10,7 +10,6 @@ class DatosArticulo(Datos):
         """
         Obtiene todos los articulos de la BD.
         """
-        
         try:
             cls.abrir_conexion()
             if noFilter == False:
@@ -25,7 +24,8 @@ class DatosArticulo(Datos):
                             stock, \
                             otrosCostos, \
                             img, \
-                            vUsuario \
+                            vUsuario, \
+                            descripcion \
                             FROM tiposArticulo WHERE estado!=\"eliminado\";")
             else:
                 sql = ("SELECT idTipoArticulo, \
@@ -39,7 +39,8 @@ class DatosArticulo(Datos):
                             stock, \
                             otrosCostos, \
                             img, \
-                            vUsuario \
+                            vUsuario, \
+                            descripcion \
                             FROM tiposArticulo;")
             cls.cursor.execute(sql)
             articulos_ = cls.cursor.fetchall()
@@ -47,7 +48,7 @@ class DatosArticulo(Datos):
             for a in articulos_:
                 insumos = DatosCantInsumo.get_from_TAid(a[0])
                 valor = DatosValor.get_from_TAid(a[0])[2]
-                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
+                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12])
                 articulos.append(articulo_)
             return articulos
             
@@ -77,7 +78,8 @@ class DatosArticulo(Datos):
                            stock, \
                            otrosCostos, \
                            img, \
-                           vUsuario \
+                           vUsuario, \
+                           descripcion \
                            FROM tiposArticulo WHERE idTipoArticulo = {} and estado!=\"eliminado\";").format(id)
             cls.cursor.execute(sql)
             a = cls.cursor.fetchone()
@@ -86,7 +88,7 @@ class DatosArticulo(Datos):
             else:
                 insumos = DatosCantInsumo.get_from_TAid(a[0])
                 valor = DatosValor.get_from_TAid(a[0])[2]
-                articulo = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
+                articulo = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12])
                 return articulo
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_by_id()",
@@ -115,7 +117,8 @@ class DatosArticulo(Datos):
                            stock, \
                            otrosCostos, \
                            img, \
-                           vUsuario \
+                           vUsuario, \
+                           descripcion \
                            FROM tiposArticulo WHERE estado!=\"eliminado\"")
             if ids != []:
                 sql += " AND idTipoArticulo!={}"
@@ -129,7 +132,7 @@ class DatosArticulo(Datos):
             for a in articulos_:
                 insumos = DatosCantInsumo.get_from_TAid(a[0])
                 valor = DatosValor.get_from_TAid(a[0])[2]
-                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
+                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12])
                 articulos.append(articulo_)
             return articulos
             
@@ -161,7 +164,8 @@ class DatosArticulo(Datos):
                            stock, \
                            otrosCostos, \
                            img, \
-                           vUsuario \
+                           vUsuario, \
+                           descripcion \
                            FROM tiposArticulo WHERE estado!=\"eliminado\" AND vUsuario=1 and stock>0")
             if ids != []:
                 sql += " AND idTipoArticulo!={}"
@@ -178,7 +182,7 @@ class DatosArticulo(Datos):
             for a in articulos_:
                 insumos = DatosCantInsumo.get_from_TAid(a[0])
                 valor = DatosValor.get_from_TAid(a[0])[2]
-                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11])
+                articulo_ = TipoArticulo(a[0],a[1],insumos,a[2],a[3],a[4],valor,a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12])
                 articulos.append(articulo_)
             return articulos
             
@@ -191,14 +195,14 @@ class DatosArticulo(Datos):
 
 
     @classmethod
-    def add(cls,nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal):
+    def add(cls,nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,margen,costoTotal,desc):
         """
         Agrega un articulo a la BD
         """
         try:
             cls.abrir_conexion()
-            sql= ("INSERT INTO tiposArticulo (nombre,unidadMedida,img,vUsuario,cInsumos,cProduccion,otrosCostos,cObtencionAlt,cTotal,margenGanancia,stock,estado) \
-                   VALUES (\"{}\",\"{}\",\"\",{},{},{},{},{},{},{},0,\"disponible\");".format(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen))
+            sql= ("INSERT INTO tiposArticulo (nombre,unidadMedida,img,vUsuario,cInsumos,cProduccion,otrosCostos,cObtencionAlt,cTotal,margenGanancia,stock,estado,descripcion) \
+                   VALUES (\"{}\",\"{}\",\"\",{},{},{},{},{},{},{},0,\"disponible\",\"{}\");".format(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen,desc))
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
@@ -238,7 +242,7 @@ class DatosArticulo(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql= ("UPDATE tiposArticulo SET nombre=\"{}\",unidadMedida=\"{}\",vUsuario={},cInsumos={},cProduccion={},otrosCostos={},cObtencionAlt={},cTotal={},margenGanancia={},estado=\"disponible\" WHERE idTipoArticulo={};").format(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen,idArt)
+            sql= ("UPDATE tiposArticulo SET nombre=\"{}\",unidadMedida=\"{}\",vUsuario={},cInsumos={},cProduccion={},otrosCostos={},cObtencionAlt={},cTotal={},margenGanancia={} WHERE idTipoArticulo={};").format(nombre,unidad,ventaUsuario,costoInsumos,costoProduccion,otrosCostos,costoObtencionAlt,costoTotal,margen,idArt)
             cls.cursor.execute(sql)
             cls.db.commit()
             return cls.cursor.lastrowid
@@ -329,3 +333,22 @@ class DatosArticulo(Datos):
                                                     msj_adicional="Error actualizando la imagen de un articulo en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+    @classmethod
+    def update_desc(cls,aid,desc):
+        """
+        Asigna una nueva descripcion a un articulo
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE tiposArticulo SET descripcion=\"{}\" WHERE idTipoArticulo={}").format(desc,aid)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.update_desc()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando la descripcion de un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+

@@ -127,3 +127,8 @@ function set_ep_logo_pos(num){
     $("#ep-logo-modal-info").css({left: left_input + left_factor, position:'absolute'});
 }
 
+
+
+function openArtModal(idPed){
+    document.getElementById("link-art-"+idPed.toString()).click();
+}
