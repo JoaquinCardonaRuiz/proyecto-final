@@ -3,6 +3,7 @@ from data.data_cant_insumo import DatosCantInsumo
 from data.data_valor import DatosValor
 import custom_exceptions
 from classes import TipoArticulo
+import datetime
 
 class DatosArticulo(Datos):
     @classmethod
@@ -349,6 +350,97 @@ class DatosArticulo(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_articulo.update_desc()",
                                                     msj=str(e),
                                                     msj_adicional="Error actualizando la descripcion de un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
+    def get_movimientos_stock(cls,id,stock):
+        """
+        Obtiene los movimientos de un material en base a su id, el tipo y el mes.
+        """
+        try:
+            cls.abrir_conexion()
+            d = datetime.datetime.now()
+            start_month = int(d.strftime("%m"))
+            start_year = int(d.year)
+            current_month = start_month
+            current_year = start_year
+            data = []
+            for i in range(1,13):
+                #valido si es el mes actual, en cuyo caso, aplica el stock actual.
+                if current_month == start_month and current_year == start_year:
+                    data.append(stock)
+                    current_month -= 1
+                else:
+                    #Si no lo es, busco en la BD los movimientos del mes siguiente para restarselos al valor guardado en stock.
+                    
+                    #Salidas ED
+                    sql = ("select SUM(cantSalida) from salidasStock where idTipoArticulo = %s and month(fecha)=%s and year(fecha)=%s")
+                    if current_month == 12:
+                        values = (id, 1, current_year+1)
+                    else:
+                        values = (id, current_month+1, current_year)
+                    cls.cursor.execute(sql,values)
+                    valStockSED = cls.cursor.fetchone()[0]
+
+                    if valStockSED == None:
+                        valStockSED = 0
+
+                    #Salidas Municipio
+                    sql = ("select SUM(cantSalida) from salidasMun where idTipoArticulo = %s and month(fecha)=%s and year(fecha)=%s")
+                    if current_month == 12:
+                        values = (id, 1, current_year+1)
+                    else:
+                        values = (id, current_month+1, current_year)
+                    cls.cursor.execute(sql,values)
+                    valStockSM = cls.cursor.fetchone()[0]
+
+                    if valStockSM == None:
+                        valStockSM = 0
+
+                    #Pedidos
+                    sql = ("select SUM(cantidad) from pedidos right join tiposArt_pedidos using(idPedido) where idTipoArticulo = %s and month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado'")
+                    if current_month == 12:
+                        values = (id, 1, current_year+1)
+                    else:
+                        values = (id, current_month+1, current_year)
+                    cls.cursor.execute(sql,values)
+                    valStockPed = cls.cursor.fetchone()[0]
+
+                    if valStockPed == None:
+                        valStockPed = 0
+                    
+                    #Producción Articulos
+                    sql = ("select sum(cantidad) from prodTipArt where idTipoArticulo = %s and month(fecha)=%s and year(fecha)=%s and estado != 'deshabilitado'")
+                    if current_month == 12:
+                        values = (id, 1, current_year+1)
+                    else:
+                        values = (id, current_month+1, current_year)
+                    cls.cursor.execute(sql,values)
+                    valStockProdArt = cls.cursor.fetchone()[0]
+
+                    if valStockProdArt == None:
+                        valStockProdArt = 0
+
+                    #Aplico los movimientos del mes al stock
+                    stock += valStockSM
+                    stock += valStockSED
+                    stock += valStockPed
+                    stock -= valStockProdArt
+
+                    data.append(stock)
+
+                    if current_month != 1:
+                        current_month -= 1
+                    else:
+                        current_month = 12
+                        current_year -= 1
+            return data
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.get_movimientos_stock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
         finally:
             cls.cerrar_conexion()
 

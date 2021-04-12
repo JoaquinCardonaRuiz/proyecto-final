@@ -121,7 +121,7 @@ class NegocioInsumo(Negocio):
     @classmethod
     def get_movimientos_stock(cls,id,stock):
         """
-        Obtiene los movimientos de stock de un material durante el último año en base a su ID, recibiendo stock actual como parámetro.
+        Obtiene los movimientos de stock de un insumo durante el último año en base a su ID, recibiendo stock actual como parámetro.
         """
         try:
             return DatosInsumo.get_movimientos_stock(id,stock)[::-1]
