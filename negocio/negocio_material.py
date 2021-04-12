@@ -3,6 +3,7 @@ from data.data_material import DatosMaterial
 from data.data_cant_material import DatosCantMaterial
 import custom_exceptions
 from data.data_material import DatosMaterial
+import datetime
 
 
 class NegocioMaterial(Negocio):
@@ -81,6 +82,19 @@ class NegocioMaterial(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_material.delete()",
                                                    msj=str(e),
                                                    msj_adicional="Error en la capa de Negocio eliminando un material de la base de Datos")
+    
+    @classmethod
+    def get_movimientos_stock(cls,id,stock):
+        """
+        Obtiene los movimientos de stock de un material durante el último año en base a su ID, recibiendo stock actual como parámetro.
+        """
+        try:
+            
+            return DatosMaterial.get_movimientos_stock(id,stock)[::-1]
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_material.get_movimientos_stock()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error en la capa de Negocio obteniendo los movimientos de stock de la base de Datos")
 
 
     @classmethod

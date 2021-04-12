@@ -54,7 +54,7 @@ class DatosSalidaStock(Datos):
             if len(salidasStock_) > 0:
                 for salida in salidasStock_:
                     cant_art = CantArticulo(salida[4],salida[1],float(salida[5])/float(salida[4]))
-                    salidasStock.append(SalidaStock(salida[0],cant_art,salida[3].strftime("%d/%m/%Y"),salida[6]))
+                    salidasStock.append(SalidaStock(salida[0],cant_art,salida[3].strftime("%d/%m/%Y"),float(salida[4]),salida[6]))
             return salidasStock
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_salida_stock_get_all()",

@@ -478,3 +478,11 @@ th,tr,td{
     font-size: 15px;
     margin-top: 5px;
 }
+
+.canvasjs-chart-credit{
+    display: none !important;
+}
+
+#chart-row-mat, #chart-row-ins, #chart-row-art{
+    display: none;
+}

@@ -111,19 +111,22 @@ class NegocioInsumo(Negocio):
         except Exception as e:
             raise e
 
-
-    @classmethod
-    def get_by_id_array(cls,ids):
-        insumos = []
-        for id in ids:
-            insumos.append(cls.get_by_id(id))
-        return insumos
-
-
     @classmethod
     def update_desc(cls,idIns,desc):
         try:
             DatosInsumo.update_desc(idIns,desc)
         except Exception as e:
             raise e
+
+    @classmethod
+    def get_movimientos_stock(cls,id,stock):
+        """
+        Obtiene los movimientos de stock de un insumo durante el último año en base a su ID, recibiendo stock actual como parámetro.
+        """
+        try:
+            return DatosInsumo.get_movimientos_stock(id,stock)[::-1]
+        except Exception as e:
+            raise custom_exceptions.ErrorDeNegocio(origen="negocio_material.get_movimientos_stock()",
+                                                   msj=str(e),
+                                                   msj_adicional="Error en la capa de Negocio obteniendo los movimientos de stock de la base de Datos")
 
