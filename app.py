@@ -1252,7 +1252,20 @@ def pedidosUser():
         orden = {"listo":0,"preparado":1,"pendiente":2,"retirado":3,"cancelado":4,"devuelto":5}
         pedidos_ordenados = sorted(pedidos, key=lambda x: orden[x.estado])
         puntosRetiro = NegocioPuntoRetiro.get_all(True)
-        return render_template('pedidosUser.html',pedidos = pedidos_ordenados,puntosRetiro=puntosRetiro, usuario=session["usuario"])
+        return render_template('pedidosUser.html',pedidos = pedidos_ordenados,puntosRetiro=puntosRetiro, idPed =0,usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"pedidos")
+
+
+@app.route('/gestion-pedidos/usuario/<id>')
+def pedidosUser_articulos(id):
+    try:
+        id=int(id)
+        pedidos = NegocioPedido.get_by_user_id(session["usuario"].id)
+        orden = {"listo":0,"preparado":1,"pendiente":2,"retirado":3,"cancelado":4,"devuelto":5}
+        pedidos_ordenados = sorted(pedidos, key=lambda x: orden[x.estado])
+        puntosRetiro = NegocioPuntoRetiro.get_all(True)
+        return render_template('pedidosUser.html',pedidos = pedidos_ordenados,puntosRetiro=puntosRetiro, idPed=id,usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
 

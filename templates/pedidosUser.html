@@ -133,7 +133,7 @@
                                     <td scope="row">{{pr.nombre}}</td>
                                 {%endif%}
                             {%endfor%}
-                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>
+                            <td><a id="link-art-{{p.id}}" class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>
                             {%if p.estado == "pendiente"%}
                                 <td>
                                     <div>
@@ -239,5 +239,10 @@
 
 
 <script src="/static/js/pedidos.js"></script>
+{%if idPed!= 0%}
+    <script>
+        openArtModal({{idPed}});
+    </script>
+{%endif%}
 {% endblock %}
                                 
