@@ -39,8 +39,7 @@ class Usuario:
         IDTipoUsuario (string): Identificador de la instancia de TipoUsuario que corresponde
             a la entidad.
         direccion (Direccion): Dirección física del domicilio del usuario
-        despositosActivos (Deposito[]): Arreglo de depositos cuyos ecopuntos siguen vigentes.
-        depositosVencidos (Deposito[]): Arreglo de depositos cuyos ecopuntos se encuentran vencidos.
+        despositos (Deposito[]): Arreglo de depositos realizados por el usuario.
         pedidos (Pedidos[]): Arreglo de los pedidos realizados por el usuario.
         totalEcopuntos (int): Sumatoria de la cantidad de ecopuntos que el usuario posee.
         idNivel (string): Identificador del nivel que le corresponde al usuario.
@@ -51,6 +50,7 @@ class Usuario:
         estimacionesEnergia (Estimacion[]): Arreglo de estimaciones de consumo de energía
             recibidas por el usuario.
         img (String): ruta a imagen de perfil
+        estado(String): representa el estado de un usuario respecto a su registro, o bien, a su estado en la BD.
     """
 
     def __init__(self, 
@@ -62,15 +62,15 @@ class Usuario:
                 password, 
                 idTipoUsuario,
                 direccion,
-                depositosActivos=[],
-                depositosVencidos=[],
+                depositos=[],
                 pedidos=None,
                 idNivel=None,
                 recomendacionesPlantas=[],
                 estimacionesCO2=[],
                 estimacionesEnergia=[],
                 email=None,
-                img = "/static/img/avatar.png"):
+                img = "/static/img/avatar.png",
+                estado = None):
         self.id = id
         self.nroDoc = nroDoc
         self.tipoDoc = tipoDoc
@@ -79,8 +79,7 @@ class Usuario:
         self.password = password
         self.idTipoUsuario = idTipoUsuario
         self.direccion = direccion
-        self.depositosActivos = depositosActivos
-        self.depositosVencidos = depositosVencidos
+        self.depositos = depositos
         self.pedidos = pedidos
         self.totalEcopuntos = 0
         self.idNivel = idNivel
@@ -89,6 +88,7 @@ class Usuario:
         self.estimacionesEnergia = estimacionesEnergia
         self.email = email
         self.img = img
+        self.estado = estado
 
     def comprobarVencimientoDepositos(self,):
         """ """
@@ -98,7 +98,7 @@ class Usuario:
         Calcula los EcoPuntos del Usuario en base a sus depositos
         """
         self.totalEcopuntos = 0
-        for dep in self.depositosActivos:
+        for dep in self.depositos:
             ep = dep.ecoPuntos
             self.totalEcopuntos += ep.cantidadRestante
 
@@ -326,13 +326,15 @@ class EntradaStock:
 
     Atributos:
         id (string): identificador de la entidad
-        materiales (CantMaterial): materiales involucrados en la entrada
+        material (CantMaterial): material involucrado en la entrada
         fecha (Date): fecha de la entrada
+        concepto (string): motivo por el que se produce la entrada
     """
-    def __init__(self,id,materiales,fecha):
+    def __init__(self,id,material,fecha,concepto):
         self.id = id
-        self.materiales = materiales
+        self.material = material
         self.fecha = fecha
+        self.concepto = concepto
 
 '''
 ARTICULOS
@@ -418,10 +420,11 @@ class ProduccionArticulo:
         articulos (CantArticulos): articulos involucrados
         fecha (Date): fecha de produccion
     """
-    def __init__(self,id,articulos,fecha):
+    def __init__(self,id,articulos,fecha,receta=None):
         self.id = id
         self.articulos = articulos
         self.fecha = fecha
+        self.receta = receta
 
 class SalidaStockMunicipalidad:
     """
@@ -499,10 +502,11 @@ class ProduccionInsumo:
         insumos (CantInsumo): insumos involucrados
         fecha (Date): fecha de produccion
     """
-    def __init__(self,id,insumos,fecha):
+    def __init__(self,id,insumos,fecha,receta=None):
         self.id = id
         self.insumos = insumos
         self.fecha = fecha
+        self.receta = receta
 
 
 '''
@@ -523,8 +527,9 @@ class Deposito:
             asignados al usuario al registrar el depósito. 
         fechaRegistro (Date, optional): Fecha en la que el depósito fue registrado por el usuario.
         fechaDeposito (Date): Fecha en la que el depósito fue realizado.
+        estado (String): Estado de la entidad
     """
-    def __init__(self, id, codigo, material, idPuntoDeposito, fechaDeposito, ecoPuntos=None, fechaRegistro=None):
+    def __init__(self, id, codigo, material, idPuntoDeposito, fechaDeposito, ecoPuntos=None, fechaRegistro=None, estado=""):
         self.id = id
         self.codigo = codigo
         self.material = material
@@ -532,33 +537,16 @@ class Deposito:
         self.fechaDeposito = fechaDeposito
         self.ecoPuntos = ecoPuntos
         self.fechaRegistro = fechaRegistro
+        self.estado = estado
 
-    def isActivo(self):
-        #TODO: Desarrollar este metodo
-        return True
-
-    def comprobarCodigo(self, codigo):
-        return False
-
-class DepositosSinRegistrar:
-    """ Clase SINGLETON que guarda las instancias de depositos que fueron realizadas pero no 
-    se registraron a ningún usuario.
-    Atributos:
-        id (string): Identificador de la entidad.
-        depositos (Deposito[], opcional): Arreglo donde se guardan los depositos no 
-            registrados.
-    """
-
-    def __init__(self, id, depositos=[]):
-        self.id = id
-        self.depositos = depositos
+    def isAcreditado(self):
+        return bool(self.fechaRegistro)
 
 class EcoPuntos:
     """ Representa un conjunto de ecopuntos, correspondiente a un depósito, los mismos 
     comparten una fecha de vencimiento.
     Atributos:
         id (string): Identificador de la entidad.
-        fechaVencimiento (Date): fecha en la cual los ecopuntos vencen.
         cantidad (float): cantidad de ecopuntos que este conjunto representa.
         cantidadRestante (float): cantidad de ecopuntos de este conjunto que no han sido
             utilizados.
@@ -568,7 +556,6 @@ class EcoPuntos:
     """
 
     valorMonetario = None
-    tiempoVencimiento = None
 
     @classmethod
     def getEPData(cls):
@@ -603,21 +590,9 @@ class EcoPuntos:
         self.id = id
         self.cantidad = cantidad
         self.cantidadRestante = cantidadRestante
-        self.fechaVencimiento = self.calcularFechaVenc()
         # Sería conveniente (pero no necesario) ejecutar la siguiente linea:
         # EcoPuntos.getEPdata()
         # A fin de proteger contra inconsistencias.
-        # Pero debe evaluarse el impacto a la performance.
-
-    def calcularFechaVenc(self):
-        """Esta función calcula la fecha de vencimiento, utilizando la fecha actual, y el
-        atributo de clase tiempoVencimiento.
-        """
-        # Algo así como
-        # return fecha_actual + EcoPuntos.tiempoVencimiento
-        return 0
-        # Devuelvo 0 porque devolver None hace que el linter piense que hay un error
-
 
 
 '''

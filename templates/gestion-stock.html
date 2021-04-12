@@ -1,0 +1,448 @@
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+{% extends 'layout.html' %}
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+    <div class="container" id="heading-container">
+        <h1 class="heading">Gestión de Stock</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Registre entradas de materiales, salidas de artículos, y visualice los distintos niveles de stock.</span></h6>
+    </div>
+    <div id="main-content">
+
+        <div class="container" id="top-container">
+            <div class="row">
+                <div class="container" id="option-left" onclick="redirectStock('/gestion-stock/ver-stock','ns');" style="width: 49%;">
+                        <div class="option-text">
+                            <p class="option-title">Visualizar Niveles de Stock</p>
+                            <p class="text-box">Visualizar los niveles de stock de los distintos Materiales, Insumos y Artículos registrados en el sistema</p>
+                        </div>
+                        <i class="fas fa-boxes option-img" id="option-img-1"></i>
+                </div>
+                <div class="container" id="option-right" onclick="redirectStock('/gestion-stock/historial-movimientos','ms')" style="width: 49%;">
+                    <div class="option-text">
+                        <p class="option-title">Ver Movimientos de Stock</p>
+                        <p class="text-box">Ver un historial de las entradas y salidas de los Materiales, Insumos y Artículos registrados en el sistema</p>
+                    </div>
+                    <i class="fa fa-history option-img"  id="option-img-3"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" id="top-container" style="margin-top: 2%;">
+            <div class="row">
+                <div class="container" id="option-left" onclick="openEntradaModal();" style="width: 49%;">
+                        <div class="option-text">
+                            <p class="option-title">Registrar Entrada Material</p>
+                            <p class="text-box">Registrar una entrada externa de un material al stock del sistema</p>
+                        </div>
+                        <i class="fa fas fa-sign-in-alt option-img" id="option-img-1"></i>
+                </div>
+                <div class="container" id="option-right" onclick="openSalidadaModal()" style="width: 49%;">
+                    <div class="option-text">
+                        <p class="option-title">Registrar Salida Artículo</p>
+                        <p class="text-box">Registrar una salida externa de un artículo hacia el Municipio o una entidad de destino</p>
+                    </div>
+                    <i class="fa fas fa-sign-out-alt option-img"  id="option-img-3"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla Pedidos Activos-->
+        <div class="container" id="table-container">
+            <h4 class="table-title">Últimos Movimientos de Stock</h4>
+            <div class="row d-flex justify-content-center scrollable-table">
+                <table class="table" id="content-table">
+                    <thead style=" border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Tipo</th>
+                        <th scope="col" class="table-heading">Nombre Elemento</th>
+                        <th scope="col" class="table-heading">Movimiento</th>
+                        <th scope="col" class="table-heading">Unidad de Medida</th>
+                        <th scope="col" class="table-heading">Fecha</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    
+
+    <div class="container" id="top-container" style="padding-top: 2%;">
+        <div class="row" id="loadingRowPuntos">
+            <div id="lds-ring-big" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
+        <p id="loading-text"></p>
+    </div>
+    
+    
+    
+</div>
+
+<!-- Loading Modal -->
+<!-- Para mostrar mientras se carga un modal-->
+<div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+      <br><br><br><br><br><br><br><br>
+      <div class="row" id="loadingRow">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
+    </div>
+</div>
+
+<!--Entrada Modal -->
+<div class="modal fade modal-lg" id="entradaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Registrar entrada de un Material</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{url_for('alta_entrada_mat')}}" method="POST" class="modal-body modal-body-card" id="altaEntradaExternaForm">
+            <div class="row mt-4" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row" style="margin-top: -1%; margin-bottom: -2%;">
+                <p class="bottom-modal-text" id="loading-row-text"></p>
+            </div>
+            <div class="" id="modal-form-er">
+                <div class="row subheader-row" id="subheader-alta-pd">
+                    <div class="col" style="margin-left: 1%;">
+                        <label class="subheader" id="subheader-alta-salida">Datos de la Entrada:</label>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="margin-top: 6%;">
+                    <div class="col" style="width: 100% !important; margin-left: 9%;">
+                        <div class="group" id="password-input-group">
+                            <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c; width: 120% !important;" id="mat-select-picker-re" class="selectpicker selectpicker-nooutline" oninput="completeUnidadMedida(value);" data-live-search="true">
+                                <option value=-1 selected disabled>&nbsp; Seleccione un material</option>
+                                {%for mat in materiales%}
+                                    <option onclick="alert('hey');" value={{mat.unidadMedida}},{{mat.id}}>&nbsp; {{mat.nombre}}</option>
+                                {%endfor%}
+                                
+                            </select>
+                            <input type="text" id="idEntidadInput" name="id" hidden width="130%">
+                            <span class="highlight password-input" width="130%"></span>
+                            <span class="bar password-input" width="130%"></span>
+                            <label class="password-input">Seleccionar Material</label>
+                        </div>
+                    </div>
+                    <div class="col" style="width: 10%; margin-left: 12%;">
+                        <div class="group">      
+                            <input type="number" id="cantidadInput" name="cantidad" onkeypress="return isNumberKey(this, event);" min="1" style="width: 70%;" oninput="validaCant(value);" autocomplete="off">
+                            <span class="highlight" style="width: 70%;"></span>
+                            <span class="bar" style="width: 70%;"></span>
+                            <label>Cantidad</label>
+                            <p id="cantError" class="modalErrorMessage">* Completar.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="margin-top: 2% !important;">
+                    <div class="col" style="width: 100% !important; margin-left: 9%;">
+                        <div class="group">
+                            <input type="text" id="idEntidadInput" name="id" hidden>      
+                            <input type="date" id="dateInput" name="fecha" style="width: 140% !important;" autocomplete="off" oninput="validaFecha(value);">
+                            <span class="highlight" style="width: 140%;"></span>
+                            <span class="bar" style="width: 140%;"></span>
+                            <label>Fecha</label>
+                            <p id="fechaError" class="modalErrorMessage">* Formato de fecha incorrecto.</p>
+                        </div>
+                    </div>            
+                    <div class="col" style="width: 10%; margin-left: 17.5%;">
+                        <div class="group">      
+                            <input class="data-show-input" type="text" id="unidadMedidaInput" readonly style="width: 70%;">
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <label>Unidad de medida</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="fieldsRow1Alta2-er" style="width: 81%; margin-left: 9.5%;">
+                    <div class="group" style="width: 100%;">
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <textarea class="form-control green-text-area mt-3" id="descEnt" rows="3" name="descripcion" oninput="validaDesc(value);"></textarea>
+                        <p id="descError" class="modalErrorMessage" style="margin-bottom: -3%;">* La descripción no puede quedar vacía.</p>
+                        <label>Descripción/Concepto</label>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: -1%; margin-bottom: -2%;">
+                    <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione "Registrar entrada" para añadir la entrada</p>
+                </div>
+            </div>
+            <input type="text" id="idMat" name="idMat" hidden>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn-re">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('altaNivelForm')" id="primary-btn-re">Registrar entrada</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Salida Modal -->
+<div class="modal fade modal-lg" id="salidaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Registrar salida de Artículos</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modal-body-card">
+            <div class="row mt-4" id="loadingRow">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="row" style="margin-top: -1%; margin-bottom: -2%;">
+                <p class="bottom-modal-text" id="loading-row-text-sm"></p>
+            </div>
+
+            <!--Submenu-->
+            <div class="row" id="submenu-modal">
+                <h5 id="heading-submenu-modal">¿Qué tipo de salida desea registrar?</h5>
+                <button type="button" class="btn primary-btn" id="submenu-modal-btn" data-mdb-ripple-color="dark" onclick="changeForm('sm')">
+                    Salida de stock del Municipio
+                </button>
+                <button type="button" class="btn primary-btn" id="submenu-modal-btn" data-mdb-ripple-color="dark" onclick="changeForm('sed')">
+                    Salida de stock hacia una Entidad de Destino
+                </button>
+            </div>
+
+            <!--Salida stock municipio-->
+            <form class="" id="modal-form-sm" action="{{url_for('alta_salida_mun')}}" method="POST">
+                <div class="row subheader-row" id="subheader-alta-pd">
+                    <div class="col" style="margin-left: 1%;">
+                        <label class="subheader" id="subheader-alta-salida">Salida al Municipio</label>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="width: 100%;">
+                    <div class="col" style="width: 65%; margin-left: 9%;">
+                        <div class="group" id="password-input-group">
+                            <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="art-select-picker-sm" class="selectpicker selectpicker-nooutline" oninput="completeUnidadMedidaSM(value);" data-live-search="true">
+                                <option value=-1 selected disabled>&nbsp; Seleccione un artículo</option>
+                                {%for art in articulos%}
+                                    {%if art.stock|float > 0%}
+                                        <option value={{art.unidadMedida}},{{art.id}},{{art.stock}}>&nbsp; {{art.nombre}}</option>
+                                    {%else%}
+                                        <option value={{art.unidadMedida}},{{art.id}},{{art.stock}} disabled data-toggle="tooltip" data-placement="right" title="Este artículo se encuentra sin stock">&nbsp; {{art.nombre}}</option>
+                                    {%endif%}
+                                {%endfor%}
+                                
+                            </select>
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight password-input"></span>
+                            <span class="bar password-input"></span>
+                            <label class="password-input">Seleccionar Artículo</label>
+                        </div>
+                    </div>
+                    <div class="col" style="width: 10%;">
+                        <div class="group">
+                            <input class="data-show-input" type="text" id="stockDisponibleSM" readonly style="width: 100%;">
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <label>Stock Disponible</label>      
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="margin-top: 2% !important;">
+                    <div class="col" style="width: 65%; margin-left: 9%;">
+                        <div class="group">
+                            <input type="text" id="idEntidadInput" name="id" hidden style="width: 89%;">      
+                            <input type="date" id="dateInputSM" name="fechaSM" style="width: 89%;" autocomplete="off" oninput="validaFechaSM(value);">
+                            <span class="highlight" style="width: 89%;"></span>
+                            <span class="bar" style="width: 89%;"></span>
+                            <label>Fecha</label>
+                            <p id="fechaErrorSM" class="modalErrorMessage">* Formato de fecha incorrecto.</p>
+                        </div>
+                    </div>            
+                    <div class="col" style="width:20%; margin-left: -4%;">
+                        <div class="row">
+                            <div class="col" style="width: 50%;">
+                                <div class="group">      
+                                    <input type="number" id="cantidadInputSM" name="cantidadSM" onkeypress="return event.charCode >= 48" min="1" style="width: 70%;" oninput="activate_validations();validaCantSM(value);" autocomplete="off">
+                                    <span class="highlight" style="width: 70%;"></span>
+                                    <span class="bar" style="width: 70%;"></span>
+                                    <label style="width: 70%;">Cantidad</label>
+                                    <p id="cantErrorSM" class="modalErrorMessage" style="width: 100%;">* Completar.</p>
+                                </div>
+                            </div>
+                            <div class="col mt-2" style="width: 50%; margin-left: -20% !important;">
+                                <div class="group">
+                                    <input class="data-show-input" type="text" value="Unidades" readonly style="width: 100%;">
+                                    <input type="text" id="idEntidadInput" name="id" hidden>
+                                    <label></label>      
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="fieldsRow1Alta2-er" style="width: 81%; margin-left: 9.2%;">
+                    <div class="group" style="width: 100%;">
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <textarea class="form-control green-text-area mt-3" id="descSM" rows="3" name="descripcionSM" oninput="validaDescSM(value);"></textarea>
+                        <p id="descErrorSM" class="modalErrorMessage" style="margin-bottom: -3%;">* La descripción no puede quedar vacía.</p>
+                        <label>Descripción/Concepto</label>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: -1%; margin-bottom: -2%;">
+                    <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione "Registrar salida" para añadir la salida</p>
+                </div>
+                <input type="text" id="idArtSM" name="idArtSM" hidden>
+            </form>
+
+            <!--Salida stock Entidades de Destino-->
+            <form class="" id="modal-form-sed" action="{{url_for('alta_salida_ed')}}" method="POST">
+                <!--Selección de Entidad de Destino-->
+                <div id="pantalla-1">
+                    <div class="row subheader-row" id="subheader-alta-pd">
+                        <div class="col" style="margin-left: 1%;">
+                            <label class="subheader" id="subheader-alta-salida">Entidad de Destino</label>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="width: 100%;" hidden>
+                        <div class="group" id="password-input-group" style="width: 81%; margin-left: 3%;">
+                            <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="ent-select-picker-sm" class="selectpicker selectpicker-nooutline" name="idEntidad" oninput="validaEntidad(value);" data-live-search="true">
+                                <option value=-1 selected disabled>&nbsp; Seleccione una entidad de destino</option>
+                                {%for ent in entidades%}
+                                        <option value={{ent.id}} >&nbsp; {{ent.nombre}}</option>
+                                {%endfor%}
+                                
+                            </select>
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <span class="highlight password-input"></span>
+                            <span class="bar password-input"></span>
+                            <label class="password-input">Seleccionar Entidad</label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: -1%; margin-bottom: -2%;">
+                        <p class="bottom-modal-text" id="bottomAltaModalText">Una vez seleccionada la Entidad, presione "Siguiente" para continuar</p>
+                    </div>
+                </div>
+
+                <!--Datos de la salida-->
+                <div id="pantalla-2">
+                    <div class="row subheader-row" id="subheader-alta-pd">
+                        <div class="col" style="margin-left: 1%;">
+                            <label class="subheader" id="subheader-alta-salida">Datos de la Salida</label>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="width: 100%;">
+                        <div class="col" style="width: 65%; margin-left: 9%;">
+                            <div class="group" id="password-input-group">
+                                <select style="background:#fff;box-shadow:none;border: none;border-bottom: 2px solid #cfec8c;" id="art-select-picker-sed" class="selectpicker selectpicker-nooutline" oninput="completeUnidadMedidaSE(value);" data-live-search="true">
+                                    <option value=-1 selected disabled>&nbsp; Seleccione un artículo</option>
+                                    {%for art in articulos%}
+                                        {%if art.stock|float > 0%}
+                                            <option value={{art.unidadMedida}},{{art.id}},{{art.stock}},{{art.valor}}>&nbsp; {{art.nombre}}</option>
+                                        {%else%}
+                                            <option value={{art.unidadMedida}},{{art.id}},{{art.stock}} disabled data-toggle="tooltip" data-placement="right" title="Este artículo se encuentra sin stock">&nbsp; {{art.nombre}}</option>
+                                        {%endif%}
+                                    {%endfor%}
+                                    
+                                </select>
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <span class="highlight password-input"></span>
+                                <span class="bar password-input"></span>
+                                <label class="password-input">Seleccionar Artículo</label>
+                            </div>
+                        </div>
+                        <div class="col" style="width: 10%;">
+                            <div class="group">
+                                <input class="data-show-input" type="text" id="stockDisponibleSE" readonly style="width: 100%;">
+                                <input type="text" id="idEntidadInput" name="id" hidden>
+                                <label>Stock Disponible</label>      
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="margin-top: 2% !important;">
+                        <div class="col" style="width: 65%; margin-left: 9%;">
+                            <div class="group">
+                                <input type="text" id="idEntidadInput" name="id" hidden style="width: 89%;">      
+                                <input type="date" id="dateInputSE" name="fechaSE" style="width: 89%;" autocomplete="off" oninput="validaFechaSE(value);">
+                                <span class="highlight" style="width: 89%;"></span>
+                                <span class="bar" style="width: 89%;"></span>
+                                <label>Fecha</label>
+                                <p id="fechaErrorSE" class="modalErrorMessage">* Formato de fecha incorrecto.</p>
+                            </div>
+                        </div>            
+                        <div class="col" style="width:20%; margin-left: -4%;">
+                            <div class="row">
+                                <div class="col" style="width: 50%;">
+                                    <div class="group">      
+                                        <input type="number" id="cantidadInputSE" name="cantidadSE" onkeypress="return event.charCode >= 48" min="1" style="width: 70%;" oninput="activate_validations_se();validaCantSE(value);" autocomplete="off">
+                                        <span class="highlight" style="width: 70%;"></span>
+                                        <span class="bar" style="width: 70%;"></span>
+                                        <label style="width: 70%;">Cantidad</label>
+                                        <p id="cantErrorSE" class="modalErrorMessage" style="width: 100%;">* Completar.</p>
+                                    </div>
+                                </div>
+                                <div class="col mt-2" style="width: 50%; margin-left: -20% !important;">
+                                    <div class="group">
+                                        <input class="data-show-input" type="text" value="Unidades" readonly style="width: 100%;">
+                                        <input type="text" id="idEntidadInput" name="id" hidden>
+                                        <label></label>      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center" id="fieldsRow1Alta1-er" style="margin-top: 2% !important;">
+                        <div class="col" style="width: 65%; margin-left: 9%;">
+                            <div class="group">
+                                <input type="text" id="idEntidadInput" name="id" hidden style="width: 90%;">      
+                                <input type="number" id="unitValSE" name="fechaSE" style="width: 90%;" autocomplete="off" oninput="inputUnitVal(value);">
+                                <span class="highlight" style="width: 90%;"></span>
+                                <span class="bar" style="width: 90%;"></span>
+                                <label>Precio Unitatio en ARS</label>
+                                <p id="valorUnitarioErrorSE" class="modalErrorMessage">* El precio unitario no puede quedar vacío.</p>
+                            </div>
+                        </div>
+                        <div class="col" style="width: 5%; margin-left: -3.5%;">
+                            <div class="group">
+                                <input type="text" id="idEntidadInput" name="id" hidden style="width: 77%;">      
+                                <input type="number" id="totalValSE" name="totalValSE" style="width: 77%;" autocomplete="off" oninput="inputTotalVal(value);">
+                                <span class="highlight" style="width: 77%;"></span>
+                                <span class="bar" style="width: 77%;"></span>
+                                <label>Precio Total en ARS</label>
+                                <p id="valorTotalErrorSE" class="modalErrorMessage">* El precio total no puede quedar vacío.</p>
+                            </div>
+                        </div>        
+                    </div>
+                    <div class="row" id="fieldsRow1Alta2-er" style="width: 81%; margin-left: 9.2%;">
+                        <div class="group" style="width: 100%;">
+                            <input type="text" id="idEntidadInput" name="id" hidden>
+                            <textarea class="form-control green-text-area mt-3" id="descSE" rows="3" name="descripcionSE" oninput="validaDescSE(value);"></textarea>
+                            <p id="descErrorSE" class="modalErrorMessage" style="margin-bottom: -3%;">* La descripción no puede quedar vacía.</p>
+                            <label>Descripción/Concepto</label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: -1%; margin-bottom: -2%;">
+                        <p class="bottom-modal-text" id="bottomAltaModalText">Una vez completados todos los datos, presione "Registrar salida" para añadir la salida</p>
+                    </div>
+                </div>
+                <input type="text" id="idArtSE" name="idArtSE" hidden>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" onclick="cierraModal();" id="secondary-btn-sal">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitFormSM()" id="primary-btn-sal">Registrar salida</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script src="static/js/gestion-stock.js"></script>
+
+{% endblock %}

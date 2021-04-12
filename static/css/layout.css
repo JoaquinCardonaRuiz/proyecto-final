@@ -75,7 +75,7 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 	margin-left: auto; 
 	margin-right: 2.4%; 
 	display: flex;
-	width: 100%;
+	width: 90%;
 	min-width: 255px;
 }
 
@@ -188,8 +188,28 @@ html {
 	scroll-behavior: smooth;
   }
 
-.fa-sign-out-alt,.fa-barcode,.fa-map-marked-alt{
+.fa-sign-out-alt,.fa-barcode,.fa-map-marked-alt,.fa-lightbulb,.fa-boxes{
 	color: #95C22B !important;
+}
+
+#carrito-navbar{
+	font-size: 19px;
+	color: #95c22bb9;
+	margin-top: 1px;
+}
+
+#carrito-navbar:hover{
+	color: #badd93cb;
+	cursor: pointer;
+}
+
+.numberCircle:hover{
+	cursor: pointer;
+}
+
+#carrito-navbar-container:hover{
+	cursor: pointer;
+	color: #a5d173;
 }
 
 .vl-heading {
@@ -198,3 +218,22 @@ html {
 	margin-right: 15px;
 	margin-top: 0px;
   }
+
+#user-profile-img-navbar{
+	border-radius:50%;
+	width: 28px;
+}
+
+.numberCircle {
+	margin-top: -17px !important;
+	margin-left: 3px;
+    width: 18px;
+	height: 18px;
+    line-height: 15px;
+    border-radius: 50%;
+	color: grey;
+    text-align: center;
+    font-size: 9px;
+    border: 2px solid #95c22bb9;
+	background-color: white;
+}

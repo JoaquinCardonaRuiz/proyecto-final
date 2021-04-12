@@ -2,6 +2,7 @@ from data.data import Datos
 from data.data_direccion import DatosDireccion
 from data.data_deposito import DatosDeposito
 from data.data_pedido import DatosPedido
+from data.data_tipo_documento import DatosTipoDocumento
 from classes import Usuario
 from utils import Utils
 import custom_exceptions
@@ -34,14 +35,12 @@ class DatosUsuario(Datos):
             if len(usuarios) > 0:
                 usu = usuarios[0]
                 if usu[11] != "habilitado":
-                    usuario = Usuario(usu[0],None,None,None,None,usu[5],None,None,email=usu[4])
+                    usuario = Usuario(usu[0],None,None,None,None,usu[5],None,None,email=usu[4],estado=usu[11])
                 else:
                     direc = DatosDireccion.get_one_id(usu[8])
                     depositos = DatosDeposito.get_by_id_usuario(usu[0])
-                    da = [d for d in depositos if d.isActivo()]
-                    dv = [d for d in depositos if not(d.isActivo())]
                     ped = DatosPedido.get_by_user_id(usu[0])
-                    usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10])
+                    usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10],usu[11])
                 usuario.calcularTotalEcopuntos()
                 return usuario
             else:
@@ -84,10 +83,8 @@ class DatosUsuario(Datos):
                 usu = usuarios[0]
                 direc = DatosDireccion.get_one_id(usu[8])
                 depositos = DatosDeposito.get_by_id_usuario(usu[0])
-                da = [d for d in depositos if d.isActivo()]
-                dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10])
                 usuario.calcularTotalEcopuntos()
                 return usuario
             else:
@@ -132,12 +129,12 @@ class DatosUsuario(Datos):
             cls.abrir_conexion()
 
             #Verifico si existe un usuario con este codigo
-            sql = ("SELECT idUsuario,email,password from usuarios where codigo_registro = %s")
+            sql = ("SELECT idUsuario,email,password,estado from usuarios where codigo_registro = %s")
             values = (code,)
             cls.cursor.execute(sql, values)
             user = cls.cursor.fetchone()
             print(user)
-            if len(user) >0:
+            if len(user) > 0 and user[3] == "no-verificado":
                 #Una vez verificado, actualizo su estado
                 sql = ("UPDATE usuarios set estado = %s where idUsuario = %s")
                 values = ("no-activo",user[0])
@@ -147,7 +144,7 @@ class DatosUsuario(Datos):
 
                 return {"email":user[1],"password":user[2]}
             else:
-                #Si no existe ningun usuario con ese codigo, devuelvo False
+                #Si no existe ningun usuario con ese codigo, o su estado no es "no-verificado", devuelvo False
                 return False
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_usuario.update_nivel()",
@@ -303,10 +300,8 @@ class DatosUsuario(Datos):
             for usu in usuarios:
                 direc = DatosDireccion.get_one_id(usu[8])
                 depositos = DatosDeposito.get_by_id_usuario(usu[0])
-                da = [d for d in depositos if d.isActivo()]
-                dv = [d for d in depositos if not(d.isActivo())]
                 ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,da,dv,ped,usu[9],[],[],[],usu[4],usu[10])
+                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10])
                 usuario.calcularTotalEcopuntos()
                 users.append(usuario)
             return users
@@ -320,22 +315,30 @@ class DatosUsuario(Datos):
             cls.cerrar_conexion()
     
     @classmethod
-    def alta(cls, email, password, noClose = False):
+    def alta(cls, email, password, nroDoc=False, idTipoDoc=False, nombre=False, apellido=False,idTipoUsuario=False,idDireccion=False,idNivel=False,img=False,estado=False, activacion=False, noClose=False):
         """
         Da de alta un usuario en la BD.
         """
         try:
-            cls.abrir_conexion()
-            sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'usuarios'")
-            cls.cursor.execute(sql)
-            id_asignado = cls.cursor.fetchone()[0]
-            code = str(Utils.encripta_codigo(str(email) + str(password) + str(id_asignado)))
-            sql = ("INSERT into usuarios (email,password,estado,codigo_registro) values (%s,%s,%s,%s)")
-            values = (email, password,"no-verificado",code)
-            cls.cursor.execute(sql, values)
-            cls.db.commit()
+            if activacion == False:
+                cls.abrir_conexion()
+                sql = ("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME   = 'usuarios'")
+                cls.cursor.execute(sql)
+                id_asignado = cls.cursor.fetchone()[0]
+                code = str(Utils.encripta_codigo(str(email) + str(password) + str(id_asignado)))
+                sql = ("INSERT into usuarios (email,password,estado,codigo_registro) values (%s,%s,%s,%s)")
+                values = (email, password,"no-verificado",code)
+                cls.cursor.execute(sql, values)
+                cls.db.commit()
+                return code
 
-            return code
+            else:
+                cls.abrir_conexion()
+                sql = ("UPDATE usuarios SET nroDoc=%s,idTipoDoc=%s,nombre=%s,apellido=%s,idTipoUsuario=%s,idDireccion=%s,idNivel=%s,img=%s,estado=%s where email = %s")
+                values = (nroDoc,idTipoDoc,nombre,apellido,idTipoUsuario,idDireccion,idNivel,img,estado,email)
+                cls.cursor.execute(sql, values)
+                cls.db.commit()
+                return True
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
@@ -345,3 +348,46 @@ class DatosUsuario(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+
+
+
+    @classmethod
+    def buscar_info_user(cls,busqueda):
+        """
+        Obtiene todos los usuarios según su ID, nombre completo, email, o documento
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT usuarios.idUsuario, \
+                usuarios.nroDoc, \
+                usuarios.nombre, \
+                usuarios.apellido, \
+                usuarios.email, \
+                usuarios.password, \
+                usuarios.idTipoUsuario, \
+                usuarios.idTipoDoc, \
+                usuarios.idDireccion, \
+                usuarios.idNivel, \
+                usuarios.img \
+                from usuarios WHERE estado = \"habilitado\" AND (idUsuario=\"{}\" OR email=\"{}\" OR nroDOC=\"{}\")").format(busqueda,busqueda,busqueda,busqueda)
+            cls.cursor.execute(sql)
+            usuarios = cls.cursor.fetchall()
+            users = []
+            for usu in usuarios:
+                direc = DatosDireccion.get_one_id(usu[8])
+                depositos = DatosDeposito.get_by_id_usuario(usu[0])
+                ped = DatosPedido.get_by_user_id(usu[0])
+                tipo_doc = DatosTipoDocumento.get_by_id(usu[7])
+                usuario = Usuario(usu[0],usu[1],tipo_doc,usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10])
+                usuario.calcularTotalEcopuntos()
+                users.append(usuario)
+            return users
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.buscar_info_user()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error buscando usuarios.")
+        finally:
+            cls.cerrar_conexion()

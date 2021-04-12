@@ -52,7 +52,7 @@ var error_demora = false;
 var error_horarios = [false, false, false, false, false, false, false];
 
 var demora_prom_pr = 0;
-
+var redirect_link = '/';
 
 
 $.getJSON("/gestion-puntos-retiro/nombres-pr",function (result){
@@ -265,13 +265,16 @@ function openModalHorarios(id, nombre, estado){
 function openModalMateriales(id, nombre){
     document.getElementById("open-loading-modal").click();
     $.getJSON("/gestion-puntos-retiro/pedidos/"+String(id),function (result){
-
+        redirect_link = '/gestion-pedidos/pr/'+ String(id);
         document.getElementById("close-loading-modal").click();
         document.getElementById("open-modal-ped").click();
-
+        $("#content-table-modal-pedidos > tbody").empty();
         // Establezco título
         document.getElementById("headingModalPedidos").innerHTML = "Pedidos de " + nombre;
         if (result.length > 0){
+            $("#no-deps").hide(); 
+            $("#content-table-modal-pedidos").show();
+            $("#btn-ped-row").show();
             for (var i in result){
                 start = '<tr>';
                 ending = '</tr>';
@@ -284,7 +287,7 @@ function openModalMateriales(id, nombre){
                     estado = '<td><div><i class="fas fa-circle" style="color:#3399ff" id="estado-activo"></i> En preparación</div>';
                 }
                 else if(result[i]["estado"] == "preparado"){
-                    estado = '<td><div><i class="fas fa-circle" style="color:#ddbb44" id="estado-activo"></i> Preparados</div>';
+                    estado = '<td><div><i class="fas fa-circle" style="color:#ddbb44" id="estado-activo"></i> Preparado</div>';
                 }
                 else if(result[i]["estado"] == "listo"){
                     estado = '<td><div><i class="fas fa-circle" style="color:#00aa44" id="estado-activo"></i> Listo para retiro</div>';
@@ -303,10 +306,12 @@ function openModalMateriales(id, nombre){
                 //TODO: Hacer if para asignar a cada tabla, según su estado.
                 $('#content-table-modal-pedidos').append(append);
             }
-            
-
         }
-
+        else{
+            $("#content-table-modal-pedidos").hide();
+            $("#btn-ped-row").hide();       
+            $("#no-deps").show(); 
+        }
     });
 
         
@@ -1054,8 +1059,6 @@ function display_page(){
         goToTopOfPage();
      }
      else{
-        closeMenu();
-        labelShowHide();
         $("#modal-alta-p1").hide();
         $("#modal-alta-p2").hide();
         $("#modal-alta-p3").fadeIn();
@@ -1328,6 +1331,9 @@ function setHorariosModValues(id){
     });
 }
 
+function redirect(){
+    window.location.href = redirect_link;
+}
 
 //Abre el modal de baja.
 function openBajaModal(nombre, id){

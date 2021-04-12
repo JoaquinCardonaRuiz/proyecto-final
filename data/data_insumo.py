@@ -42,23 +42,36 @@ class DatosInsumo(Datos):
 
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls,noFilter):
         """
         Obtiene todos los insumos de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT idInsumo, \
-                           nombre, \
-                           unidadMedida, \
-                           cMateriales, \
-                           cProduccion, \
-                           cTotal, \
-                           stock, \
-                           otrosCostos, \
-                           color, \
-                           descripcion \
-                           FROM insumos WHERE estado!=\"eliminado\";")
+            if noFilter == False:
+                sql = ("SELECT idInsumo, \
+                            nombre, \
+                            unidadMedida, \
+                            cMateriales, \
+                            cProduccion, \
+                            cTotal, \
+                            stock, \
+                            otrosCostos, \
+                            color, \
+                            descripcion \
+                            FROM insumos WHERE estado!=\"eliminado\";")
+            else:
+                sql = ("SELECT idInsumo, \
+                            nombre, \
+                            unidadMedida, \
+                            cMateriales, \
+                            cProduccion, \
+                            cTotal, \
+                            stock, \
+                            otrosCostos, \
+                            color, \
+                            descripcion \
+                            FROM insumos;")
             cls.cursor.execute(sql)
             insumos_ = cls.cursor.fetchall()
             insumos = []
@@ -166,12 +179,49 @@ class DatosInsumo(Datos):
         try:
             cls.abrir_conexion()
             sql= ("UPDATE insumos SET descripcion=\"{}\" WHERE idInsumo={};").format(desc,idIns)
-            cls.cursor.execute(sql)
-            cls.db.commit()
-            return cls.cursor.lastrowid
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_insumo.update_desc()",
                                                     msj=str(e),
                                                     msj_adicional="Error actualizando la desc de un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def addStock(cls,idIns,cant):
+        """
+        Suma la cantidad especificada al stock de un insumo
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE insumos SET stock=stock+{} WHERE idInsumo={};").format(cant,idIns)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.addStock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def removeStock(cls,idIns,cant):
+        """
+        Resta la cantidad especificada al stock de un insumo
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE insumos SET stock=stock-{} WHERE idInsumo={};").format(cant,idIns)
+
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.removeStock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un insumo en la BD.")
         finally:
             cls.cerrar_conexion()

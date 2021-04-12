@@ -7,12 +7,12 @@ from data.data_material import DatosMaterial
 
 class NegocioMaterial(Negocio):
     @classmethod
-    def get_all(cls):
+    def get_all(cls, noFilter=False):
         """
         Obtiene todos los materiales de la BD.
         """
         try:
-            materiales = DatosMaterial.get_all()
+            materiales = DatosMaterial.get_all(noFilter)
             return materiales
 
         except Exception as e:

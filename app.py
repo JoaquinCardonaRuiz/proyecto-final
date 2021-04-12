@@ -14,7 +14,6 @@ import mail
 import os
 
 
-
 #app
 app = Flask(__name__)
 app.secret_key = 'SecretKeyForSigningCookies'
@@ -59,28 +58,39 @@ def start():
 @app.route('/main', methods = ['GET','POST'])
 def main():
     if valida_session(): return redirect(url_for('login'))
-    else: 
-        nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel, True)
-        if len(session["usuario"].pedidos) >= 5:
-            pedidos = session["usuario"].pedidos[:5]
-        else:
-            pedidos = session["usuario"].pedidos
-        puntosRetiro = NegocioPuntoRetiro.get_all()
-        if len(session["usuario"].depositosActivos) >= 5:
-            depositos = session["usuario"].depositosActivos[:5]
-        else:
-            depositos = session["usuario"].depositosActivos
-        puntosDep = NegocioPuntoDeposito.get_all()
-        materiales = NegocioMaterial.get_all()
-        max_level = NegocioNivel.get_min_max_niveles()[1]
-        tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
-    return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
+    else:
+        if session["usuario"].estado == "no-activo":
+            tipos_doc = NegocioTipoDocumento.get_all()
+            return render_template('datos-personales.html', tipos_doc=tipos_doc,user=session["usuario"])
+        
+        elif session["usuario"].estado == "no-verificado":
+            return render_template('email-sent.html',email=session["usuario"].email) 
+        else: 
+            nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel, True)
+            if len(session["usuario"].pedidos) >= 5:
+                pedidos = session["usuario"].pedidos[:5]
+            else:
+                pedidos = session["usuario"].pedidos
+            puntosRetiro = NegocioPuntoRetiro.get_all()
+            if len(session["usuario"].depositos) >= 5:
+                depositos = session["usuario"].depositos[:5]
+            else:
+                depositos = session["usuario"].depositos
+            puntosDep = NegocioPuntoDeposito.get_all()
+            materiales = NegocioMaterial.get_all()
+            max_level = NegocioNivel.get_min_max_niveles()[1]
+            tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
+            return render_template('main.html',pedidos = pedidos,puntosRetiro=puntosRetiro,usuario=session["usuario"],
     nivel=nivel, depositos = depositos, puntosDep = puntosDep, materiales = materiales, max_level = max_level, tipoUsuario = tipoUsuario)
 
 
 @app.route('/layout/datos-usuario')
 def get_datos_usuario():
-    return jsonify({"nombre":session["usuario"].nombre + " " + session["usuario"].apellido, "totalEP":session["usuario"].totalEcopuntos})
+    if "carrito" in session.keys():
+        carrito = session["carrito"]
+    else:
+        carrito = False
+    return jsonify({"nombre":session["usuario"].nombre + " " + session["usuario"].apellido, "totalEP":session["usuario"].totalEcopuntos, "img":session["usuario"].img,"carrito": carrito})
 
 ''' 
     -----------------
@@ -103,7 +113,7 @@ def authentication(email, password):
         session.modified = True
         return jsonify({"login-state":True})
     except Exception as e:
-        return jsonify({"login-state":False})
+        return error(e,"gestion-puntos-deposito")
     return render_template('login.html')
 
 @app.route('/logout/<val>', methods = ['GET','POST'])
@@ -157,10 +167,18 @@ def register_all_emails():
 
 @app.route('/datos-personales', methods = ['GET','POST'])
 def datos_personales():
-    try: 
-        session["usuario"]
-        tipos_doc = NegocioTipoDocumento.get_all()
-        return render_template('datos-personales.html', tipos_doc=tipos_doc,user=session["usuario"])
+    try:
+        if valida_session(): return redirect(url_for('login'))
+        else:
+            if session["usuario"].estado == "no-activo":
+                tipos_doc = NegocioTipoDocumento.get_all()
+                return render_template('datos-personales.html', tipos_doc=tipos_doc,user=session["usuario"])
+            
+            elif session["usuario"].estado == "habilitado":
+                return redirect(url_for('main'))
+            
+            elif session["usuario"].estado == "no-verificado":
+                return render_template('email-sent.html',email=session["usuario"].email) 
     except:
         return redirect(url_for('login'))
 
@@ -172,6 +190,25 @@ def verificacion(codigo):
         return redirect(url_for('datos_personales'))
     else:
         return redirect(url_for('start'))
+
+@app.route('/datos-personales/activacion', methods = ['GET','POST'])
+def activacion():
+    if request.method == 'POST':
+        email = request.form['email']
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        ciudad = request.form['ciudad']
+        calle = request.form['calle']
+        altura = request.form['altura']
+        pais = request.form['pais']
+        provincia = request.form['provincia']
+        documento = request.form['documento']
+        tipo_doc = request.form['tipo_doc']
+        if NegocioUsuario.activacion(email,nombre,apellido,calle,altura,ciudad,provincia,pais,documento,tipo_doc):
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            return redirect(url_for('main'))
+        else:
+            return redirect(url_for('datos_personales'))
 
 ''' 
     ------------------
@@ -267,12 +304,12 @@ def perfil_listas(type):
 
 @app.route('/encontrar-punto-deposito', methods = ['GET','POST'])
 def encontrar_pd():
-    puntos_dep = NegocioPuntoDeposito.get_all()
+    puntos_dep = NegocioPuntoDeposito.get_all(filterInactivos=True)
     return render_template('encontrar-pd.html', puntos_dep = puntos_dep)
 
 @app.route('/encontrar-punto-retiro', methods = ['GET','POST'])
 def encontrar_pr():
-    puntos_ret = NegocioPuntoRetiro.get_all()
+    puntos_ret = NegocioPuntoRetiro.get_all(filterInactivos=True)
     return render_template('encontrar-pr.html', puntos_ret = puntos_ret)
 
 
@@ -379,8 +416,7 @@ def carrito():
         if val_tot_ep == 0: 
             val_tot_ep = 1
         step = 100/(val_tot_ep)
-        print(step)
-        puntos_retiro = NegocioPuntoRetiro.get_all()
+        puntos_retiro = NegocioPuntoRetiro.get_all(filterInactivos=True)
         
         return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, 
                                 valor_ep = valor_ep, demora_prom = demora_prom, valor = valor, nivel=nivel, 
@@ -478,7 +514,14 @@ def mod_nivel_request(id):
     except Exception as e:
         return error(e,"gestion_niveles")
 
-
+@app.route('/info-niveles')
+def info_niveles():
+    try:
+        if valida_session(): return redirect(url_for('login'))
+        niveles = NegocioNivel.get_niveles()
+    except Exception as e:
+        return error(e, "info_niveles")
+    return render_template('info-niveles.html', niveles = niveles)
 
 
 ''' 
@@ -798,7 +841,8 @@ def baja_pr():
     
     if request.method == 'POST':
         id = request.form['idPuntoBaja']
-        NegocioPuntoRetiro.baja_pr(id)
+        print(id)
+        #NegocioPuntoRetiro.baja_pr(id)
         
     return redirect(url_for('gestion_pr'))
 
@@ -961,7 +1005,13 @@ def get_insumos(ids):
         return error(e,"insumos")
     return redirect(url_for('gestion_articulos'))
 
-
+@app.route('/articulos/get-stock/<id>', methods = ['GET','POST'])
+def get_stock_art(id):
+    try:
+        art = NegocioArticulo.get_by_id(id)
+        return jsonify(art.stock)
+    except:
+        return jsonify(False)
 
 
 ''' 
@@ -1181,7 +1231,7 @@ def elegirPR():
 def deposito():
     try:
         pedidos = NegocioPedido.get_all()
-        puntosRetiro = NegocioPuntoRetiro.get_all()
+        puntosRetiro = NegocioPuntoRetiro.get_all(True)
         return render_template('deposito.html',pedidos = pedidos,puntosRetiro=puntosRetiro, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
@@ -1201,7 +1251,7 @@ def pedidosUser():
         pedidos = NegocioPedido.get_by_user_id(session["usuario"].id)
         orden = {"listo":0,"preparado":1,"pendiente":2,"retirado":3,"cancelado":4,"devuelto":5}
         pedidos_ordenados = sorted(pedidos, key=lambda x: orden[x.estado])
-        puntosRetiro = NegocioPuntoRetiro.get_all()
+        puntosRetiro = NegocioPuntoRetiro.get_all(True)
         return render_template('pedidosUser.html',pedidos = pedidos_ordenados,puntosRetiro=puntosRetiro, usuario=session["usuario"])
     except Exception as e:
         return error(e,"pedidos")
@@ -1217,14 +1267,12 @@ def get_articulos_pedido(ids):
         ids = eval("["+ids+"]")
         print(ids)
         articulos = NegocioArticulo.get_by_id_array(ids)
-        print("tengo articulos")
         articulos_dic =  [{"nombre":          a.nombre,
                             "unidadmedida":    a.unidadMedida}
                             for a in articulos]
         return jsonify(articulos_dic)
     except Exception as e:
-        return error(e,"articulos")
-    return redirect(url_for('gestion_articulos'))
+        return error(e,"pedidos")
 
 
 @app.route('/gestion-pedidos/actualizar', methods = ['GET','POST'])
@@ -1242,12 +1290,146 @@ def update_estado_pedido():
     except Exception as e:
         return error(e,"pedidos")
 
+@app.route('/pedidos/info/<id>')
+def pedidos_info(id):
+    try:
+        res = NegocioPedido.get_one(id,True)
+        ped = res[0]
+        user = res[1]
+        pr = NegocioPuntoRetiro.get_by_id(ped.idPuntoRetiro)
+        td = NegocioTipoDocumento.get_by_id(user.tipoDoc)
+        pedido = {"id":ped.id,"totalEP":ped.totalEP,"totalARS":ped.totalARS,"estado":ped.estado,"fecha_enc":ped.fechaEncargo,"fecha_ret":ped.fechaRetiro}
+        usuario = {"id":user.id,"nombre":user.nombre,"apellido":user.apellido,"tipoDoc":td.nombre,"nroDoc":user.nroDoc,"email":user.email}
+        punto_retiro = {"id":pr.id,"nombre":pr.nombre,"calle":pr.direccion.calle,"altura":pr.direccion.altura,"ciudad":pr.direccion.ciudad,"provincia":pr.direccion.provincia,"pais":pr.direccion.pais}
+        return jsonify([pedido, usuario, punto_retiro])
+    except Exception as e:
+        return error(e,"pedidos")
+
+
+
+
+
+
 
 '''
-    -----------------------
-    Depósitos (Usuario)
-    -----------------------
+    -----------------
+    Gestion de Depósitos
+    -----------------
 '''
+
+@app.route('/elegir-PD')
+def elegirPD():
+    try:
+        puntosDeposito = NegocioPuntoDeposito.get_all()
+        return render_template('elegir-PD.html',puntosDeposito = puntosDeposito, usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"depositos")
+
+@app.route('/gestion-depositos/admin')
+def allDepositos():
+    try:
+        materiales = NegocioMaterial.get_all()
+        depositos = NegocioDeposito.get_all()
+        return render_template('depositosAdmin.html',materiales=materiales,depositos = depositos, usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"pedidoss")
+
+@app.route('/gestion-depositos/pd/<id>')
+def pedidosPD(id):
+    try:
+        materiales = NegocioMaterial.get_all()
+        depositos = NegocioDeposito.get_by_id_PD(int(id))
+        puntoDeposito = NegocioPuntoDeposito.get_by_id(int(id))
+        return render_template('depositosPD.html',materiales=materiales,depositos = depositos,puntoDeposito=puntoDeposito, usuario=session["usuario"])
+    except Exception as e:
+        return error(e,"depositos")
+
+@app.route('/gestion-depositos/materiales/<ids>')
+def get_materiales_deposito(ids):
+    # esto es probablemente lo mas inseguro que se puede hacer en un sistema web
+    # basicamente el user podria poner codigo python en el url y hacer que lo corra el server
+    # aca lo uso para convertir un string tipo "[1,2,3]" a un arreglo [1,2,3]
+    #TODO: CAMBIAR ESTA LINEA:
+    try:
+        ids = eval("["+ids+"]")
+        print(ids)
+        materiales = NegocioMaterial.get_by_id_array(ids)
+        mat_dic =  [{"nombre":          m.nombre,
+                     "unidadmedida":    m.unidadMedida}
+                     for m in materiales]
+        return jsonify(mat_dic)
+    except Exception as e:
+        return error(e,"depositos")
+
+
+@app.route('/gestion-depositos/actualizar', methods = ['GET','POST'])
+def update_estado_deposito():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idDep"])
+            estado = request.form["estado"]
+            pd = int(request.form["idPD"])
+
+            if estado == "cancelado":
+                NegocioDeposito.cancelar(id)
+                NegocioNivel.actualiza_nivel_all()
+                session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+                session.modified = True
+                
+
+            elif estado == "acreditado":
+                uid = int(request.form["idUser"])
+                NegocioDeposito.acreditar(id,uid)
+                NegocioNivel.actualiza_nivel_all()
+                session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+                session.modified = True
+
+            if pd == 0:
+                return redirect(url_for("allDepositos"))
+            else:
+                return redirect("/gestion-depositos/pd/"+str(pd))
+    except Exception as e:
+        return error(e,"pedidos")
+
+
+@app.route('/gestion-depositos/cancelar/<id>')
+def get_info_cancelar(id):
+    return jsonify(NegocioDeposito.get_info_cancelar(id))
+
+@app.route('/gestion-depositos/info/<id>')
+def deposito_info(id):
+    try:
+        dep = NegocioDeposito.get_by_id(id)
+
+        usuario = {}
+        if dep.isAcreditado():
+            user_id = NegocioDeposito.get_user_id(id)
+            user = NegocioUsuario.get_by_id(user_id)
+            td = NegocioTipoDocumento.get_by_id(user.tipoDoc)
+            usuario = {"id":user.id,"nombre":user.nombre,"apellido":user.apellido,"tipoDoc":td.nombre,"nroDoc":user.nroDoc,"email":user.email}
+        
+        pd = NegocioPuntoDeposito.get_by_id(dep.idPuntoDeposito)
+        deposito = {"id":dep.id,"codigo":dep.codigo,"fechaDeposito":dep.fechaDeposito,"fechaRegistro":dep.fechaRegistro,"ecoPuntos":dep.ecoPuntos.cantidad}
+        punto_deposito = {"id":pd.id,"nombre":pd.nombre,"calle":pd.direccion.calle,"altura":pd.direccion.altura,"ciudad":pd.direccion.ciudad,"provincia":pd.direccion.provincia,"pais":pd.direccion.pais}
+        return jsonify([deposito, usuario, punto_deposito])
+    except Exception as e:
+        return error(e,"pedidos")
+
+
+@app.route('/gestion-depositos/buscar-info-user/<busqueda>')
+def buscar_info_user(busqueda):
+    try:
+        users = NegocioUsuario.buscar_info_user(busqueda)
+        users_dic =  [{"id":      u.id,
+                     "nombre":    u.nombre+" "+u.apellido,
+                     "tiponroDoc":   u.nroDoc + " ("+u.tipoDoc.nombre+")",
+                     "email":     u.email}
+                     for u in users]
+        return jsonify(users_dic)
+    except Exception as e:
+        return jsonify(str(e))
+
+
 @app.route('/depositos/usuario', methods = ['GET','POST'])
 def depositos():
     try:
@@ -1297,7 +1479,6 @@ def canjear_codigo():
 @app.route('/codigo/<cod>')
 def verificar_codigo(cod):
     try:
-        #TODO: Registrar fecha de registro.
         response = NegocioDeposito.verificar_codigo(cod,session["usuario"])
         nuevos_ep = response + session["usuario"].totalEcopuntos
         NegocioUsuario.update_nivel(session["usuario"].id,nuevos_ep)
@@ -1306,6 +1487,178 @@ def verificar_codigo(cod):
         return jsonify(response)
     except Exception as e:
         return error(e,"codigo")
+
+''' 
+    -----------------
+    Gestión de Stock
+    -----------------
+'''
+
+@app.route('/gestion-stock', methods = ['GET','POST'])
+def gestion_stock():
+    try:
+        articulos = NegocioArticulo.get_all()
+        materiales = NegocioMaterial.get_all()
+        entidades = NegocioEntidadDestino.get_all()
+        
+        return render_template('gestion-stock.html', materiales = materiales, articulos=articulos, entidades = entidades)  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
+@app.route('/gestion-stock/ver-stock', methods = ['GET','POST'])
+def ver_stock():
+    try:
+        materiales = NegocioMaterial.get_all()
+        insumos = NegocioInsumo.get_all()
+        articulos = NegocioArticulo.get_all()
+        return render_template('niveles-stock.html',materiales = materiales, insumos = insumos, articulos = articulos)  
+    except Exception as e:
+        return error(e,"ver_stock")
+
+@app.route('/gestion-stock/historial-movimientos', methods = ['GET','POST'])
+def historial_movimientos():
+    try:
+        salidasStock = NegocioSalidaStock.get_all()
+        salidasMun = NegocioSalidaMun.get_all()
+        articulos = NegocioArticulo.get_all(True)
+        materiales = NegocioMaterial.get_all(True)
+        insumos = NegocioInsumo.get_all(True)
+        depositos = NegocioDeposito.get_all()
+        pedidos = NegocioPedido.get_all_historial_mov()
+        entradas = NegocioEntradaExterna.get_all()
+        produccionIns = NegocioProduccion.get_all_insumos()
+        produccionArt = NegocioProduccion.get_all_articulos()
+        return render_template('movimientos-stock.html', salidasStock=salidasStock, salidasMun = salidasMun, 
+                                articulos = articulos, depositos = depositos, materiales = materiales, pedidos = pedidos, 
+                                entradas = entradas,produccionIns=produccionIns,produccionArt = produccionArt, insumos=insumos)  
+    except Exception as e:
+        return error(e,"historial_movimientos")
+
+@app.route('/gestion-stock/alta-entrada-mat', methods = ['GET','POST'])
+def alta_entrada_mat():
+    try:
+        if request.method == 'POST':
+            idMat = request.form["idMat"]
+            cant = request.form["cantidad"]
+            concepto = request.form["descripcion"]
+            fecha = request.form["fecha"]
+            NegocioEntradaExterna.add_one(idMat,cant,concepto, fecha)
+        return redirect(url_for('gestion_stock'))  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
+@app.route('/gestion-stock/alta-salida-mun', methods = ['GET','POST'])
+def alta_salida_mun():
+    try:
+        if request.method == 'POST':
+            idArt = request.form["idArtSM"]
+            cant = request.form["cantidadSM"]
+            concepto = request.form["descripcionSM"]
+            fecha = request.form["fechaSM"]
+            NegocioSalidaMun.add_one(idArt,cant,concepto, fecha)
+        return redirect(url_for('gestion_stock'))  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
+@app.route('/gestion-stock/alta-salida-ed', methods = ['GET','POST'])
+def alta_salida_ed():
+    try:
+        if request.method == 'POST':
+            idArt = request.form["idArtSE"]
+            cant = request.form["cantidadSE"]
+            concepto = request.form["descripcionSE"]
+            fecha = request.form["fechaSE"]
+            idEntidad = request.form["idEntidad"]
+            valorTotal = request.form["totalValSE"]
+            NegocioSalidaStock.add_one(idEntidad,idArt,cant,concepto,fecha,valorTotal)
+        return redirect(url_for('gestion_stock'))  
+    except Exception as e:
+        return error(e,"gestion_stock")
+
+''' 
+    ----------
+    PRODUCCION
+    ----------
+'''
+@app.route('/produccion')
+def gestion_prod():
+    return render_template('elegirProd.html',usuario=session["usuario"])
+
+@app.route('/produccion/insumos')
+def prod_Insumos():
+    insumos = NegocioInsumo.get_all()
+    prods = NegocioProduccion.get_all_insumos()
+    return render_template('insumosProd.html',insumos=insumos,prods=prods,usuario=session["usuario"])
+
+@app.route('/produccion/articulos')
+def prod_Articulos():
+    articulos = NegocioArticulo.get_all()
+    prods = NegocioProduccion.get_all_articulos()
+    return render_template('articulosProd.html', articulos=articulos,usuario=session["usuario"],prods=prods)
+
+
+@app.route('/produccion/insumos/<id>')
+def get_materiales_prod(id):
+    ins = NegocioInsumo.get_by_id(id)
+    ids = [i.idMaterial for i in ins.materiales]
+    cants = [i.cantidad for i in ins.materiales]
+    materiales = NegocioMaterial.get_by_id_array(ids)
+    materiales_dic =  [{"nombre":   m.nombre,
+                        "stock":    m.stock,
+                        "cant":     c}
+                        for m,c in list(zip(materiales,cants))]
+    materiales_dic.append({"nombre": ins.nombre,"stock": ins.stock})
+    return jsonify(materiales_dic)
+
+
+@app.route('/produccion/articulos/<id>')
+def get_insumos_prod(id):
+    art = NegocioArticulo.get_by_id(id)
+    ids = [i.idInsumo for i in art.insumos]
+    cants = [i.cantidad for i in art.insumos]
+    insumos = NegocioInsumo.get_by_id_array(ids)
+    insumos_dic =  [{"nombre":   i.nombre,
+                     "stock":    i.stock,
+                     "cant":     c}
+                     for i,c in list(zip(insumos,cants))]
+    insumos_dic.append({"nombre": art.nombre,"stock": art.stock})
+    return jsonify(insumos_dic)
+
+
+
+@app.route('/produccion/insumos/confirmar',methods=["POST","GET"])
+def confirmar_prod_ins():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idIns"])
+            cant = float(request.form["cantidad"])
+            NegocioProduccion.confirmar_produccion(id,cant,"ins")
+        return redirect(url_for('prod_Insumos'))
+    except Exception as e:
+        return error(e,"produccion-ins")
+
+
+@app.route('/produccion/articulos/confirmar',methods=["POST","GET"])
+def confirmar_prod_art():
+    try:
+        if request.method == 'POST':
+            id = int(request.form["idArt"])
+            cant = float(request.form["cantidad"])
+            NegocioProduccion.confirmar_produccion(id,cant,"art")
+        return redirect(url_for('prod_Articulos'))
+    except Exception as e:
+        return error(e,"produccion-art")
+
+
+'''
+    -----------------------
+    Quienes somos
+    -----------------------
+'''
+@app.route('/quienes-somos', methods = ['GET','POST'])
+def nosotros():
+    return render_template('quienes-somos.html')
+
 
 if __name__ == '__main__':
     app.debug = True

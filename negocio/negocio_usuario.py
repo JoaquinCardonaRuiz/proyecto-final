@@ -1,7 +1,9 @@
 from negocio.negocio import Negocio
 import custom_exceptions
 from negocio.negocio_ecopuntos import NegocioEcoPuntos
+from negocio.negocio_direccion import NegocioDireccion
 from negocio.negocio_nivel import NegocioNivel
+from negocio.negocio_tipo_documento import NegocioTipoDocumento
 from data.data_usuario import DatosUsuario
 from utils import Utils
 import re
@@ -16,6 +18,26 @@ class NegocioUsuario(Negocio):
                 return DatosUsuario.alta(email,password)
             else:
                 return False
+        except Exception as e:
+            raise e
+    
+    @classmethod
+    def activacion(cls,email,nombre,apellido,calle,altura,ciudad,provincia,pais,documento,tipo_doc):
+        try:
+            #Valida las RN de una direccion
+            if NegocioDireccion.valida_direccion(calle,altura,ciudad,provincia,pais):
+                print("1")
+                #Valida que el nombre, el apellido y el documento no sean vacios:
+                if nombre != "" and apellido != "" and documento != "":
+                    print("2")
+                    #Valida que el tipo de documento esté entre los tipos de docuemtno existentes.
+                    if [x for x in NegocioTipoDocumento.get_all() if str(x.id) == str(tipo_doc)]:
+                        #Hago el alta:
+                        idNivel = NegocioNivel.get_nivel_nombre(NegocioNivel.get_min_max_niveles()[0]).id
+                        idDireccion = NegocioDireccion.alta_direccion(calle,altura,ciudad,provincia,pais)
+                        if DatosUsuario.alta(email,None,documento,tipo_doc,nombre,apellido,1,idDireccion,idNivel,"/static/img/avatar.png","habilitado",True):
+                            return True
+            return False
         except Exception as e:
             raise e
         
@@ -87,6 +109,7 @@ class NegocioUsuario(Negocio):
 
     @classmethod
     def checkEP(cls,id,totalEP):
+        """Comprueba que se puede gastar cierta cantidad de EP. Si no es así, levanta una excepción de negocio"""
         user = DatosUsuario.get_by_id(id)
         nueva_cant_ep = user.totalEcopuntos - totalEP
         if nueva_cant_ep < 0:
@@ -94,11 +117,25 @@ class NegocioUsuario(Negocio):
 
 
     @classmethod
+    def descontarEPDeposito(cls,id,cant):
+        """Descuenta EcoPuntos del usuario al cancelar un depósito. Si el user tiene suficientes EP para restar,
+        se devuelve 0. Si no es así, se descuentan todos los que tiene y se devuelve el nro de EP que no se pudo
+        descontar."""
+        user = DatosUsuario.get_by_id(id)
+        if user.totalEcopuntos >= cant:
+            cls.useEP(user.id,cant)
+            return 0
+        else:
+            cls.useEP(user.id,user.totalEcopuntos)
+            return cant-user.totalEcopuntos
+
+
+    @classmethod
     def useEP(cls,id, totalEP):
         user = DatosUsuario.get_by_id(id)
         nueva_cant_ep = user.totalEcopuntos - totalEP
         ep_restantes = totalEP
-        deps_ordenados = sorted(user.depositosActivos, key=lambda x: x.fechaDeposito)
+        deps_ordenados = sorted(user.depositos, key=lambda x: x.fechaDeposito)
         
         #para cada deposito
         for dep in deps_ordenados:
@@ -206,5 +243,13 @@ class NegocioUsuario(Negocio):
     def get_all_documentos(cls,uid=False):
         try:
             return DatosUsuario.get_all_documentos(uid)
+        except Exception as e:
+            raise e
+
+
+    @classmethod
+    def buscar_info_user(cls,busqueda):
+        try:
+            return DatosUsuario.buscar_info_user(busqueda)
         except Exception as e:
             raise e

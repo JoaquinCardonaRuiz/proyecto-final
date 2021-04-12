@@ -136,8 +136,6 @@
     height: 45px;
     transition: width 1s, height 1s, transform 1s;
     text-align: center;
-    display: none;
-
 }
 
 .error-msg-text{

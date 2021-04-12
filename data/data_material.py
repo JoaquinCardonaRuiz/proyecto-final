@@ -64,21 +64,31 @@ class DatosMaterial(Datos):
     
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls,noFilter):
         """
         Obtiene todos los materiales de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT idMaterial, \
+            if noFilter == False:
+                sql = ("SELECT idMaterial, \
+                            nombre, \
+                            unidadMedida, \
+                            costoRecoleccion, \
+                            stock, \
+                            color, \
+                            estado, \
+                            descripcion \
+                            FROM materiales WHERE estado!=\"eliminado\" order by nombre ASC;")
+            else:
+                sql = ("SELECT idMaterial, \
                            nombre, \
                            unidadMedida, \
                            costoRecoleccion, \
                            stock, \
-                           color, \
                            estado, \
                            descripcion \
-                           FROM materiales WHERE estado!=\"eliminado\" order by nombre ASC;")
+                           FROM materiales order by nombre ASC;")
             cls.cursor.execute(sql)
             materiales_ = cls.cursor.fetchall()
             materiales = []
@@ -154,6 +164,26 @@ class DatosMaterial(Datos):
             cls.cerrar_conexion()
 
 
+
+
+    @classmethod
+    def removeStock(cls,idMat,cant):
+        """
+        Resta la cantidad especificada al stock de un material
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE materiales SET stock=stock-{} WHERE idMaterial={};").format(cant,idMat)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.removeStock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
     @classmethod
     def addStock(cls, id,cant):
         """
@@ -189,5 +219,24 @@ class DatosMaterial(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_material.update_desc()",
                                                     msj=str(e),
                                                     msj_adicional="Error actualizando la desc de un material en la BD.")
+        finally:
+            cls.cerrar_conexion()
+            
+            
+    @classmethod
+    def updateStock(cls,id,cant):
+        """
+        Actualiza el stock de un material.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE materiales SET stock = {} WHERE idMaterial={}".format(cant,id))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.updateStock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
         finally:
             cls.cerrar_conexion()

@@ -25,3 +25,6 @@ from negocio.negocio_tipo_usuario           import NegocioTipoUsuario
 from negocio.negocio_usuario                import NegocioUsuario
 from negocio.negocio_valor                  import NegocioValor
 from negocio.negocio_direccion              import NegocioDireccion
+from negocio.negocio_salida_mun             import NegocioSalidaMun
+from negocio.negocio_entrada_externa        import NegocioEntradaExterna
+from negocio.negocio_produccion             import NegocioProduccion

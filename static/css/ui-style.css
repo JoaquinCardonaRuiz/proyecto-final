@@ -79,12 +79,13 @@
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     font-size: 18px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Hind', sans-serif;
     margin-right: 14%;
     text-align: left;
     margin-left: 15%;
     top: 39%;
     font-size: 23px;
+    font-weight: 500;
 }
 
 .textbox{
@@ -242,7 +243,7 @@ h2 		 {
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     font-size: 16px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Hind', sans-serif;
     margin-right: 14%;
 }
 
@@ -425,3 +426,55 @@ h2 		 {
     background-color: #87af28;
 }
 
+.horarios-container-ecnontrar-punto{
+    text-align: center;
+    margin: 0;
+    position: relative;
+    top: -81%;
+    margin-right: 0%;
+    width: 30%;
+    margin-right: -5%;
+}
+
+.horarios-img-ecnontrar-punto:hover{
+    cursor: pointer;
+}
+
+.horarios-img-ecnontrar-punto{
+    text-align: center;
+    margin: 0;
+    position: relative;
+    top: -80%;
+    margin-left: 2%;
+    font-size: 30px;
+    background-color: transparent;
+    color: rgb(192, 192, 192);   
+}
+
+.horarios-desc-ecnontrar-punto{
+    text-align: center;
+    margin: 0;
+    position: relative;
+    top: -70%;
+    margin-left: 2%;
+    color: rgb(132,117,167);
+}
+
+#contentMovStock{
+    display: none;
+}
+
+th,tr,td{
+    font-family: 'Hind', sans-serif;
+}
+
+.green-text-area:focus{
+    outline: none !important;
+    border:1px solid #95C22B !important;
+    box-shadow: 0 0 0px #95C22B !important;
+}
+
+#mat-select-picker-re{
+    font-size: 15px;
+    margin-top: 5px;
+}

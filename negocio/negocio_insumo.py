@@ -8,7 +8,7 @@ class NegocioInsumo(Negocio):
     @classmethod
     def get_by_id(cls,id):
         """
-        Obtiene todos un insumos de la BD a partir de su id.
+        Obtiene un insumo de la BD a partir de su id.
         """
         try:
             insumo = DatosInsumo.get_by_id(id)
@@ -16,15 +16,30 @@ class NegocioInsumo(Negocio):
 
         except Exception as e:
             raise e
+
+
+    @classmethod
+    def get_by_id_array(cls,ids):
+        """
+        Obtiene insumos de la BD a partir de un arreglo de ids.
+        """
+        try:
+            insumos = []
+            for id in ids:
+                insumos.append(DatosInsumo.get_by_id(id))
+            return insumos
+
+        except Exception as e:
+            raise e
     
     
     @classmethod
-    def get_all(cls):
+    def get_all(cls,noFilter=False):
         """
         Obtiene todos los insumos de la BD.
         """
         try:
-            insumos = DatosInsumo.get_all()
+            insumos = DatosInsumo.get_all(noFilter)
             return insumos
 
         except Exception as e:
@@ -111,3 +126,4 @@ class NegocioInsumo(Negocio):
             DatosInsumo.update_desc(idIns,desc)
         except Exception as e:
             raise e
+

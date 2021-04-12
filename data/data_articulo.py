@@ -6,26 +6,42 @@ from classes import TipoArticulo
 
 class DatosArticulo(Datos):
     @classmethod
-    def get_all(cls):
+    def get_all(cls,noFilter):
         """
         Obtiene todos los articulos de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT idTipoArticulo, \
-                           nombre, \
-                           cProduccion, \
-                           cInsumos, \
-                           cTotal, \
-                           margenGanancia, \
-                           unidadMedida, \
-                           cObtencionAlt, \
-                           stock, \
-                           otrosCostos, \
-                           img, \
-                           vUsuario, \
-                           descripcion \
-                           FROM tiposArticulo WHERE estado!=\"eliminado\";")
+            if noFilter == False:
+                sql = ("SELECT idTipoArticulo, \
+                            nombre, \
+                            cProduccion, \
+                            cInsumos, \
+                            cTotal, \
+                            margenGanancia, \
+                            unidadMedida, \
+                            cObtencionAlt, \
+                            stock, \
+                            otrosCostos, \
+                            img, \
+                            vUsuario, \
+                            descripcion \
+                            FROM tiposArticulo WHERE estado!=\"eliminado\";")
+            else:
+                sql = ("SELECT idTipoArticulo, \
+                            nombre, \
+                            cProduccion, \
+                            cInsumos, \
+                            cTotal, \
+                            margenGanancia, \
+                            unidadMedida, \
+                            cObtencionAlt, \
+                            stock, \
+                            otrosCostos, \
+                            img, \
+                            vUsuario, \
+                            descripcion \
+                            FROM tiposArticulo;")
             cls.cursor.execute(sql)
             articulos_ = cls.cursor.fetchall()
             articulos = []
@@ -160,7 +176,6 @@ class DatosArticulo(Datos):
                 sql += " LIMIT {}".format(limit)
             sql += ";"
             sql = sql.format(*ids)
-            print(sql)
             cls.cursor.execute(sql)
             articulos_ = cls.cursor.fetchall()
             articulos = []
@@ -259,6 +274,27 @@ class DatosArticulo(Datos):
 
 
     @classmethod
+    def addStock(cls,idTA,cant):
+        """
+        Suma la cantidad especificada al stock de un tipo articulo
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE tiposArticulo SET stock=stock+{} WHERE idTipoArticulo={};").format(cant,idTA)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.addStock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+
+    @classmethod
     def get_nombres_by_idIns(cls, idIns):
         """
         Obtiene los articulos de la BD con un idArt en su receta
@@ -315,3 +351,4 @@ class DatosArticulo(Datos):
                                                     msj_adicional="Error actualizando la descripcion de un articulo en la BD.")
         finally:
             cls.cerrar_conexion()
+

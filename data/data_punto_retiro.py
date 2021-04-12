@@ -35,24 +35,52 @@ class DatosPuntoRetiro(Datos):
 
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls,noFilter, filterInactivos):
         """
         Obtiene todos los puntos de retiro de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT idPunto, \
-                           estadoEliminacion, \
-                           demoraFija, \
-                           nombre, \
-                           idDireccion, \
-                           estado \
-                        FROM puntosRetiro WHERE estadoEliminacion != \"eliminado\" order by nombre ASC;")
+            if noFilter and filterInactivos == False:
+                sql = ("SELECT idPunto, \
+                            estadoEliminacion, \
+                            demoraFija, \
+                            nombre, \
+                            idDireccion, \
+                            estado \
+                            FROM puntosRetiro order by nombre ASC;")
+            elif noFilter == False and filterInactivos == False:
+                sql = ("SELECT idPunto, \
+                            estadoEliminacion, \
+                            demoraFija, \
+                            nombre, \
+                            idDireccion, \
+                            estado \
+                            FROM puntosRetiro WHERE estadoEliminacion != \"eliminado\" order by nombre ASC;")
+            elif noFilter and filterInactivos:
+                sql = ("SELECT idPunto, \
+                            estadoEliminacion, \
+                            demoraFija, \
+                            nombre, \
+                            idDireccion, \
+                            estado \
+                            FROM puntosRetiro where estado=1 order by nombre ASC;")
+            elif noFilter == False and filterInactivos:
+                sql = ("SELECT idPunto, \
+                            estadoEliminacion, \
+                            demoraFija, \
+                            nombre, \
+                            idDireccion, \
+                            estado \
+                            FROM puntosRetiro WHERE estadoEliminacion != \"eliminado\" and estado=1 order by nombre ASC;")
             cls.cursor.execute(sql)
             puntos = cls.cursor.fetchall()
             puntosRetiro = []
             for pr in puntos:
-                direccion = DatosDireccion.get_one_id(pr[4])
+                if pr[4] == None:
+                    direccion = None
+                else:
+                    direccion = DatosDireccion.get_one_id(pr[4])
                 horarios = DatosHorario.get_horariosPR_id(pr[0])
                 puntoRetiro = PuntoRetiro(pr[0],direccion,pr[3],pr[1],horarios,pr[2],bool(pr[5]))
                 puntosRetiro.append(puntoRetiro)

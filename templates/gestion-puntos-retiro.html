@@ -6,8 +6,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    
-    
 </head>
 
 {% extends 'layout.html' %}
@@ -195,6 +193,11 @@
                 </button>
             </div>
             <div class="container modal-body d-flex justify-content-center" id="">
+                <div class="row justify-content-center" id="no-deps">
+                    <p id="" class="advert-icon-no-mats"><i class="fa fa-exclamation-triangle advert-icon-no-mats"></i></p>
+                    <p class="bottom-modal-text-baja">Este Punto de Retiro aún no tiene pedidos asignados</p>
+                    <p class="bottom-modal-text less-margin-top">En cuanto algún usuario realice un pedido, podrá visualizarlo aquí.</p>
+                </div>
                 <table class="table" id="content-table-modal-pedidos" style="margin-left: 5%; margin-right: 5%; margin-top: -4.5%; margin-bottom: 0%;">
                     <thead style="border-top:none">
                     <tr>
@@ -209,7 +212,12 @@
                     <tbody>
                     </tbody>
                 </table>
-            </div>        
+            </div>      
+            <div class="row justify-content-center" id="btn-ped-row">
+                <button type="button" class="btn secondary-btn" id="ver-pedidos-btn" data-mdb-ripple-color="dark" onclick="redirect('/codigo')">
+                    Ver todos los pedidos para este punto
+                </button>
+            </div>  
         <div class="modal-footer">
             <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
         </div>

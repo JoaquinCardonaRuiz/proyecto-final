@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<!-- Sidebar import -->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+
+
+
+
+    <!-- Heading -->
+
+    <div class="container" id="heading-container">
+        <h1 class="heading">Producción de Artículos</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Registre y gestione la producción de Artículos.</span></h6>
+    </div>
+    
+
+
+
+    <!-- Alta-->
+    <div class="container" id="table-container">
+        <p style="text-align:left;padding-top:2%;padding-left:2%;color:#666;font-size:22px">Registrar producción de un Artículo<p>
+        <div class="row d-flex justify-content-center" style="display:block !important">
+            <form action="{{url_for('confirmar_prod_art')}}" method="POST" class="row" id="pag1-content"style="padding-top:5%;margin-left:10%">
+                {%set ids = []%}
+                {%set nombres = []%}
+                {%for art in articulos%}
+                    <!--{{ids.append(art.id)}}-->
+                    <!--{{nombres.append(art.nombre)}}-->
+                {%endfor%}
+                <div class="col">
+                    <div class="group">
+                        <select style="background:#fff;box-shadow:none;position: relative;border: none;width: 300px;border-bottom: 2px solid #cfec8c;" class="selectpicker selectpicker-nooutline wide-input" id="nombreArtInput" name="idArt" data-live-search="true" oninput="verificar_prod();">
+                            <option value=-1 disabled selected>-- Por favor, elija un Artículo --</option>
+                          </select>
+                        <img src="/static/img/chevron.svg" style="left:370px;top:-35px;position:relative;width:20px;display:inline;pointer-events: none;">
+                        <span class="highlight"></span>
+                        <span class="bar wide-bar"></span>
+                        <label style="top:-20px;font-size:14px;color:#95C22B;">Nombre del Artículo</label>
+                        <p id="nameError" class="modalErrorMessage"></p>
+                        <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">Seleccione el artículo producido.</p>
+                    </div>
+                </div>
+                 <div class="col">
+                    <div class="group">
+                        <input class="cant-input" style="left:-25px;" type="number" id="cantInput" name="cantidad" required value=1 min=1 max=10000 onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' onclick='verificar_prod()' onkeyup='verificar_prod()'>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Cantidad</label>
+                        <p id="cantError" class="modalErrorMessage"></p>
+                        <p id="codigoError" class="modalErrorMessage" style="color:#aaa !important;">Ingrese la cantidad producida.</p>
+                    </div>
+                </div>
+            </form>
+            <div class="row" id="pag1-buttons"style="display:grid;margin-right:13%;">
+                <div class="col">
+                    <div class="row d-flex justify-content-center">
+                        <button style="margin-bottom: 3%;width: 75%;position: relative;left: 8%;background-color: #95C22B;color: white;" type="button" class="btn" id="siguiente-btn" data-mdb-ripple-color="dark" onclick="show_lring();pasar_pagina(1);" disabled>
+                            Siguiente
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="loadingRow">
+                <br>
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                <br>
+            </div>
+
+
+            <!-- Page 2 -->
+            <div class="row" id="pag2-content"style="margin-left:2%;margin-right: 2%;" hidden>
+                <div class="col">
+                <p style="text-align:left;padding-top:2%;padding-left:5%;color:#666;font-size:18px">Insumos a utilizar<p>
+                    <div class="row d-flex justify-content-center">
+                        <table class="table" id="content-table" style="width:80% !important;margin-top:0% !important;">
+                            <thead style=" border-top:none">
+                                <tr>
+                                    <th scope="col" class="table-heading">Nombre</th>
+                                    <th scope="col" class="table-heading">Stock Actual</th>
+                                    <th scope="col" class="table-heading">Stock a Utilizar</th>
+                                    <th scope="col" class="table-heading">Stock restante</th>
+                                </tr>
+                            </thead>
+                            <tbody id="insumos-table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="pag3-content"style="margin-left:2%;margin-right: 2%;" hidden>
+                <div class="col">
+                <p style="text-align:left;padding-top:2%;padding-left:5%;color:#666;font-size:18px">Stock resultante<p>
+                    <div class="row d-flex justify-content-center">
+                        <table class="table" id="content-table" style="width:80% !important;margin-top:0% !important;">
+                            <thead style=" border-top:none">
+                                <tr>
+                                    <th scope="col" class="table-heading">Nombre</th>
+                                    <th scope="col" class="table-heading">Stock Actual</th>
+                                    <th scope="col" class="table-heading">Stock a Producir</th>
+                                    <th scope="col" class="table-heading">Stock Resultante</th>
+                                </tr>
+                            </thead>
+                            <tbody id="insumos-table">
+                                <tr>
+                                    <td scope="row" id="art-nombre"></td>
+                                    <td scope="row" id="art-stock"></td>
+                                    <td scope="row" id="art-cant"></td>
+                                    <td scope="row" id="art-result"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="pag2-buttons"style="display:grid;margin-right:13%;" hidden>
+                <div class="col">
+                    <div class="row d-flex justify-content-center">
+                        <button style="margin-bottom: 3%;width: 40%;position: relative;left: 8%;background-color: #979797;color: white; margin-right:2%;" type="button" class="btn" id="atras-btn" data-mdb-ripple-color="dark" onclick="pasar_pagina(-1);">
+                            Cancelar
+                        </button>
+                        <button style="margin-bottom: 3%;width: 40%;position: relative;left: 8%;background-color: #95C22B;color: white;" type="button" class="btn" id="alta-btn" data-mdb-ripple-color="dark" onclick="confirmarProd();" disabled>
+                            Confirmar Producción
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+    <hr style="width:50%">
+
+    <!-- Tabla Producciones-->
+
+    <div class="container" id="table-container">
+    <p style="text-align:left;padding-top:2%;padding-left:2%;color:#666;font-size:20px">Historial de Producciones<p>
+        <div class="row d-flex justify-content-center">
+            <table class="table" id="content-table">
+                <thead style=" border-top:none">
+                <tr>
+                    <th scope="col" class="table-heading">ID</th>
+                    <th scope="col" class="table-heading">Nombre Articulo</th>
+                    <th scope="col" class="table-heading">Unidad Medida</th>
+                    <th scope="col" class="table-heading">Cantidad</th>
+                    <th scope="col" class="table-heading">Fecha</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for prod in prods%}
+                    {%set art=[]%}
+                    {%for artic in articulos%}
+                        {%if artic.id == prod.articulos.idTipoArticulo%}
+                            <!--{{art.append(artic)}}-->
+                        {%endif%}
+                    {%endfor%}
+                    {%set art = art[0]%}
+                    <tr>
+                        <th scope="row">{{prod.id}}</th>
+                        <td scope="row">{{art.nombre}}</td>
+                        <td scope="row">{{art.unidadMedida}}</td>
+                        <td scope="row">{{prod.articulos.cantidad}}</td>
+                        <td scope="row">{{prod.fecha}}</td>
+                    </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+<!-- Loading Modal -->
+<!-- Para mostrar mientras se carga un modal-->
+
+  <div class="modal fade modal-lg" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <br><br><br><br><br><br><br><br>
+        <div class="row" id="loadingRow">
+              <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
+        </div>
+      </div>
+  </div>
+
+
+<script src="/static/js/produccion.js"></script>
+<script>load_dd_articulos({{ids|safe}},{{nombres|safe}})</script>
+{% endblock %}
