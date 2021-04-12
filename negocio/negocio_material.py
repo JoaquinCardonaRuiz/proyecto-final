@@ -94,7 +94,7 @@ class NegocioMaterial(Negocio):
         except Exception as e:
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_material.get_movimientos_stock()",
                                                    msj=str(e),
-                                                   msj_adicional="Error en la capa de Negocio eliminando un material de la base de Datos")
+                                                   msj_adicional="Error en la capa de Negocio obteniendo los movimientos de stock de la base de Datos")
 
 
     @classmethod

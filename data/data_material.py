@@ -87,6 +87,7 @@ class DatosMaterial(Datos):
                            unidadMedida, \
                            costoRecoleccion, \
                            stock, \
+                           color, \
                            estado, \
                            descripcion \
                            FROM materiales order by nombre ASC;")

@@ -80,15 +80,28 @@
             
         </div>
 
-        <!-- Tabla Pedidos Activos-->
+        <!-- Gráfico de insumos-->
         <div class="container" id="table-container">
             <h4 class="table-title">Movimiento de Stock de Insumos en el último año</h4>
-            <div class="row">
+            <div class="row d-flex justify-content-end">
+                <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 25% !important; margin-right: 7%;" id="chart-ins-sp" class="selectpicker selectpicker-nooutline" oninput="getDataIns(value)" data-live-search="true">
+                    {%for ins in insumos%}
+                        <option value={{ins.id}}>&nbsp; {{ins.nombre}}</option>
+                    {%endfor%}
+                    
+                </select>
+            </div>
+            <div class="row mt-4" id="loading-row-ins" style="padding-top: 5%;">
+                <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <p class="loading-text-chart mb-4" id="loading-text-ins">Cargando gráfico...</p>
+            <div class="row mb-4" id="chart-row-ins">
                 <div id="chartContainer2" class="mt-4 mb-4" style="height: 300px; width: 86%; margin-left: 7%;"></div>
+            </div>
+            <div class="row mt-4" id="loading-row-ins" style="padding-top: 3%;">
             </div>
             
         </div>
-
         <!-- Tabla Pedidos Activos-->
         <div class="container" id="table-container">
             <h4 class="table-title">Movimiento de Stock de Artículos en el último año</h4>
