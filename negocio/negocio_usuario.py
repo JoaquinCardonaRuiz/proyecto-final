@@ -160,6 +160,42 @@ class NegocioUsuario(Negocio):
         return nueva_cant_ep
             
 
+
+    @classmethod
+    def addEP(cls,id, totalEP):
+        """
+        Agrega EPs al usuario tras cancelar un pedido
+        """
+        user = DatosUsuario.get_by_id(id)
+        nueva_cant_ep = user.totalEcopuntos + totalEP
+        ep_restantes = totalEP
+        deps_ordenados = sorted(user.depositos, key=lambda x: x.fechaDeposito,reverse=True)
+        
+        #para cada deposito
+        for dep in deps_ordenados:
+
+            #agarro los EP que le corresponden y su cantidad utilizada
+            ep = dep.ecoPuntos
+            cant_total = ep.cantidad
+            cant_rest = ep.cantidadRestante
+            cant_utilizada = cant_total-ep.cantidadRestante
+
+            #si la cantidad utilizada es 0, sigo de largo
+            if cant_utilizada < 1:
+                continue
+
+            #si la cantidad utilizada alcanza para cubrir los EP que le agrego el usuario, termino el loop y actualizo ese deposito
+            elif cant_utilizada >= ep_restantes:
+                NegocioEcoPuntos.updateEps(ep.id, cant = cant_rest+ep_restantes)
+                break
+
+            #si no alcanza, actualizo ese deposito y sigo con el siguiente
+            else:
+                NegocioEcoPuntos.updateEps(ep.id, cant = cant_total)
+                ep_restantes -= cant_utilizada
+        return nueva_cant_ep
+
+
     @classmethod
     def get_by_id(cls,uid):
         try:
