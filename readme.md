@@ -10,4 +10,4 @@ EcoAsistente fue desarrollado utilizando enteramente con herramientas de código
 
 ### Tech Stack
 
-![](/home/joaquinc/Documents/TechStack.png)
+![](https://imgur.com/a/50wqqBJ)
