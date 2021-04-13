@@ -67,8 +67,6 @@ class NegocioInsumo(Negocio):
         """
         try:
             materiales = cls.get_by_id(int(idIns)).materiales
-            print("Materiales originales:", str([m.idMaterial for m in materiales]))
-            print("Materiales nuevos:", str([m.idMaterial for m in mats]))
             for m in mats:
                 if m.idMaterial in [i.idMaterial for i in materiales]:
                     if m.cantidad == 0:
