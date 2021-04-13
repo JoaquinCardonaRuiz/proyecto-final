@@ -59,7 +59,12 @@
                                     <script>
                                         $("#" +'{{articulo.id}}' + "-stock").text(Math.round(parseFloat($("#" + '{{articulo.id}}' + "-stock").text())));
                                     </script>
-                                    <p class="mb-3 text-muted text-uppercase small">X vendidos de este artículo este mes</p>
+                                    {%for venta in cant_ventas_mes%}
+                                        {%if venta.idTipoArticulo|int == articulo.id|int%}
+                                        <p class="mb-3 text-muted text-uppercase small"><span id="unidades-vendidas-{{articulo.id}}">{{venta.cantidad}}</span> unidades vendidas este mes</p>
+                                        <script>$("#unidades-vendidas-{{articulo.id}}").text(parseFloat({{venta.cantidad}}))</script>
+                                        {%endif%}
+                                    {%endfor%}
                                 </div>
                                 <div>
                                     {%for item in carrito%}

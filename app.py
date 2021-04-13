@@ -417,8 +417,12 @@ def carrito():
             val_tot_ep = 1
         step = 100/(val_tot_ep)
         puntos_retiro = NegocioPuntoRetiro.get_all(filterInactivos=True)
+        carrito=Utils.carrito_to_list(session["carrito"])
+        cant_ventas_mes = []
+        for item in carrito:
+            cant_ventas_mes.append(CantArticulo(NegocioArticulo.cant_vendidos_mes_actual(item.idTipoArticulo),item.idTipoArticulo))
         
-        return render_template('carrito.html',carrito=Utils.carrito_to_list(session["carrito"]),articulos=articulos, 
+        return render_template('carrito.html',carrito=carrito,articulos=articulos, cant_ventas_mes = cant_ventas_mes, 
                                 valor_ep = valor_ep, demora_prom = demora_prom, valor = valor, nivel=nivel, 
                                 usuario = usuario, val_tot_ep = val_tot_ep, step = step, puntos_retiro = puntos_retiro)
     except Exception as e:

@@ -52,21 +52,32 @@ class DatosPedido(Datos):
     
     
     @classmethod
-    def get_all(cls,noClose=False):
+    def get_all(cls,filtrar_cancelados=False,noClose=False):
         """
         Obtiene todos los pedidos de la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT \
-                    idPedido, \
-                    fechaEnc, \
-                    fechaRet, \
-                    totalARS, \
-                    totalEP, \
-                    idPunto, \
-                    estado \
-                    FROM pedidos WHERE estado != \"eliminado\";")
+            if filtrar_cancelados == False:
+                sql = ("SELECT \
+                        idPedido, \
+                        fechaEnc, \
+                        fechaRet, \
+                        totalARS, \
+                        totalEP, \
+                        idPunto, \
+                        estado \
+                        FROM pedidos WHERE estado != \"eliminado\";")
+            else:
+                sql = ("SELECT \
+                        idPedido, \
+                        fechaEnc, \
+                        fechaRet, \
+                        totalARS, \
+                        totalEP, \
+                        idPunto, \
+                        estado \
+                        FROM pedidos WHERE estado != \"eliminado\" and estado!= 'cancelado' and estado != 'devuelto';")
             cls.cursor.execute(sql)
             pedidos_ = cls.cursor.fetchall()
             pedidos = []

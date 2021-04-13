@@ -362,7 +362,7 @@ class DatosArticulo(Datos):
             cls.abrir_conexion()
             d = datetime.datetime.now()
             current_month = int(d.strftime("%m"))
-            sql = ("select sum(cantidad) from pedidos right join tiposArt_pedidos using (idPedido) where month(fechaEnc) = %s and idTipoArticulo = %s")
+            sql = ("select sum(cantidad) from pedidos right join tiposArt_pedidos using (idPedido) where month(fechaEnc) = %s and idTipoArticulo = %s and pedidos.estado != 'cancelado' and pedidos.estado != 'devuelto'")
             values = (current_month, aid)
             cls.cursor.execute(sql, values)
             result = cls.cursor.fetchone()[0]
