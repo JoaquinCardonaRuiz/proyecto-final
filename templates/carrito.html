@@ -30,18 +30,18 @@
     <div class="container" id="table-container">
         <!--Section: Block Content-->
         <section class="carrito-content" id="carrito-content">
-
+            
             <!--Grid row-->
             <div class="row">
-        
+            
+            {%if carrito|length > 0%}
             <!--Grid column-->
             <div class="col-lg-8">
-        
+                
                 <!-- Card -->
                 <div class="mb-3" style="width: 97.5%; margin-right: 2.5%;">
                 <div class="pt-4 wish-list">
                     <h5 class="mb-4">Carrito (<span>{{carrito|length}}</span> productos)</h5>
-                    
                     {%for articulo in articulos%}
                     <div class="row mb-4">
                     <div class="col-md-5 col-lg-3 col-xl-3">
@@ -133,7 +133,6 @@
                         <img class="" height="23px" src="/static/img/mercado-pago.png" alt="Mercadopago">
 
                     </div>
-                    
                 </div>
                 </div>
                 <!-- Card -->
@@ -220,7 +219,22 @@
                 </div>
             </div>
             <!--Grid column-->
-        
+            {%else%}
+            <div class="row d-flex justify-content-center" style="margin-top:5%; width: 100%;">
+                <h3 class="title-empty-card">¡Ups! Parece que el carrito está vacío</h3>
+            </div>
+            <div class="row d-flex justify-content-center" style="margin-top:0%; width: 100%;">
+                <p class="page-content-subtitle">Visita nuestra EcoTienda para añadir productos al carrito</p>
+            </div>
+            <div class="row d-flex justify-content-center" style="margin-top:3%; width: 100%;">
+                <img src="/static/img/carrito_vacio.png" width="55%" alt="">
+            </div>
+            <div class="row d-flex justify-content-center" style="width: 100%; margin-bottom: 4%;">
+                <button type="button" class="btn" id="ecoasistente-btn-main" style="width: 55%;" data-mdb-ripple-color="dark" onclick="redirect('/eco-tienda');">
+                    <i class="fa fa-shopping-bag mr-2 fa-fw" style="color: white;"></i>Visitar la EcoTienda
+                </button>
+            </div>
+            {%endif%}
             </div>
             <!-- Grid row -->
         

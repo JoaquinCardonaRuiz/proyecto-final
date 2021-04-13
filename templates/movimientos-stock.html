@@ -134,8 +134,8 @@
                             {%if art.id == ped.articulos.idTipoArticulo%}
                             <td data-toggle="tooltip" data-placement="right" title="{{art.nombre}}">{{art.nombre|truncate(25,true,'...')}}</td>
                             <td>Artículo</td>
-                            <td value="Entrada"><i class="fas fa-caret-down color-negativo caret-up"></i> -<span id="ped-{{ped.id + art.id}}"></span></td>
-                            <script>$("#ped-{{ped.id + art.id}}").text(parseFloat('{{ped.articulos.cantidad}}'));</script>
+                            <td value="Entrada"><i class="fas fa-caret-down color-negativo caret-up"></i> -<span id="ped-{{ped.id}}-{{art.id}}"></span></td>
+                            <script>$("#ped-{{ped.id}}-{{art.id}}").text(parseFloat('{{ped.articulos.cantidad}}'));</script>
                             <td>{{art.unidadMedida}}</td>
                             {%endif%}
                         {%endfor%}
@@ -151,8 +151,8 @@
                             {%if mat.id == dep.material.idMaterial%}
                             <td data-toggle="tooltip" data-placement="right" title="{{mat.nombre}}">{{mat.nombre|truncate(25,true,'...')}}</td>
                             <td>Material</td>
-                            <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="dep-{{dep.id + mat.id}}"></span></td>
-                            <script>$("#dep-{{dep.id + mat.id}}").text(parseFloat('{{dep.material.cantidad}}'));</script>
+                            <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="dep-{{dep.id}}-{{mat.id}}"></span></td>
+                            <script>$("#dep-{{dep.id}}-{{mat.id}}").text(parseFloat('{{dep.material.cantidad}}'));</script>
                             <td>{{mat.unidadMedida}}</td>
                             {%endif%}
                         {%endfor%}
@@ -168,8 +168,8 @@
                             {%if mat.id == ent.material.idMaterial%}
                             <td data-toggle="tooltip" data-placement="right" title="{{mat.nombre}}">{{mat.nombre|truncate(25,true,'...')}}</td>
                             <td>Material</td>
-                            <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="ent-{{ent.id + mat.id}}"></span></td>
-                            <script>$("#ent-{{ent.id + mat.id}}").text(parseFloat('{{ent.material.cantidad}}'));</script>
+                            <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="ent-{{ent.id}}-{{mat.id}}"></span></td>
+                            <script>$("#ent-{{ent.id}}-{{mat.id}}").text(parseFloat('{{ent.material.cantidad}}'));</script>
                             <td>{{mat.unidadMedida}}</td>
                             {%endif%}
                         {%endfor%}
