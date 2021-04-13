@@ -43,14 +43,13 @@ function verificar_prod_ins(){
 
 
 function fill_materiales_table(){
+    permitir_prod = true;
     document.getElementById("insumos-table").innerHTML = "";
     tbody = document.getElementById("insumos-table");
     idIns = document.getElementById("nombreInsInput").value;
     cant = Number(document.getElementById("cantInput").value);
     $.getJSON("/produccion/insumos/"+String(idIns),function (result){
-        console.log(result);
         for(i in result){
-
             if(i == result.length-1){
                 var stock = Number(result[i]["stock"]);
                 document.getElementById("ins-nombre").innerHTML = result[i]["nombre"];
@@ -80,7 +79,7 @@ function fill_materiales_table(){
 
                 tdStockRest = document.createElement("td");
                 tdStockRest.setAttribute("scope","row");
-                if(permitir_prod){
+                if(stockRestante >= 0){
                     tdStockRest.innerHTML = stockRestante;
                 }else{
                     tdStockRest.setAttribute("style","color:#cc0000;");
@@ -143,6 +142,7 @@ function verificar_prod(){
 
 
 function fill_insumos_table(){
+    permitir_prod = true;
     document.getElementById("insumos-table").innerHTML = "";
     tbody = document.getElementById("insumos-table");
     idArt = document.getElementById("nombreArtInput").value;
@@ -180,7 +180,7 @@ function fill_insumos_table(){
 
                 tdStockRest = document.createElement("td");
                 tdStockRest.setAttribute("scope","row");
-                if(permitir_prod){
+                if(stockRestante >= 0){
                     tdStockRest.innerHTML = stockRestante;
                 }else{
                     tdStockRest.setAttribute("style","color:#cc0000;");
