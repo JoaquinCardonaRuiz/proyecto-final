@@ -170,6 +170,13 @@ class NegocioArticulo(Negocio):
             DatosArticulo.update_desc(aid,desc)
         except Exception as e:
             raise e
+
+    @classmethod
+    def cant_vendidos_mes_actual(cls,aid):
+        try:
+            return DatosArticulo.cant_vendidos_mes_actual(aid)
+        except Exception as e:
+            raise e
     
     @classmethod
     def get_movimientos_stock(cls,id,stock):

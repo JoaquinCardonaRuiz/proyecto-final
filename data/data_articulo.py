@@ -354,6 +354,29 @@ class DatosArticulo(Datos):
             cls.cerrar_conexion()
 
     @classmethod
+    def cant_vendidos_mes_actual(cls,aid):
+        """
+        Obtiene la cantidad de unidades vendidas de un artículo en base a su ID.
+        """
+        try:
+            cls.abrir_conexion()
+            d = datetime.datetime.now()
+            current_month = int(d.strftime("%m"))
+            sql = ("select sum(cantidad) from pedidos right join tiposArt_pedidos using (idPedido) where month(fechaEnc) = %s and idTipoArticulo = %s")
+            values = (current_month, aid)
+            cls.cursor.execute(sql, values)
+            result = cls.cursor.fetchone()[0]
+            if result == None:
+                result = 0
+            return result
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.cant_vendidos_mes_actual()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo la cantidad de unidades vendidas de un artículo.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
     def get_movimientos_stock(cls,id,stock):
         """
         Obtiene los movimientos de un material en base a su id, el tipo y el mes.
