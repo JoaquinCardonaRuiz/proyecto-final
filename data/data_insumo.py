@@ -261,14 +261,15 @@ class DatosInsumo(Datos):
                         valStockProdIns = 0
                     
                     #Producción Articulos
-                    sql = ("select sum(tiposArt_ins.cantidad * prodTipArt.cantidad) from prodTipArt left join tiposArt_ins using(idTipoArticulo) where idInsumo = %s and month(fecha)=%s and year(fecha)=%s")
+                    sql = ("select sum(iu.cantidad * prodTipArt.cantidad) from prodTipArt right join insumosUtilizados as iu on iu.idProd = prodTipArt.idProdTipArt where idInsumo = %s and month(fecha)=%s and year(fecha)=%s")
                     if current_month == 12:
                         values = (id, 1, current_year+1)
                     else:
                         values = (id, current_month+1, current_year)
                     cls.cursor.execute(sql,values)
+                    
                     valStockProdArt = cls.cursor.fetchone()[0]
-
+                    
                     if valStockProdArt == None:
                         valStockProdArt = 0
 

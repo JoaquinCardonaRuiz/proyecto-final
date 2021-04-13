@@ -399,7 +399,7 @@ class DatosArticulo(Datos):
                         valStockSM = 0
 
                     #Pedidos
-                    sql = ("select SUM(cantidad) from pedidos right join tiposArt_pedidos using(idPedido) where idTipoArticulo = %s and month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado'")
+                    sql = ("select SUM(cantidad) from pedidos right join tiposArt_pedidos using(idPedido) where idTipoArticulo = %s and month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado' and estado != 'devuelto'")
                     if current_month == 12:
                         values = (id, 1, current_year+1)
                     else:

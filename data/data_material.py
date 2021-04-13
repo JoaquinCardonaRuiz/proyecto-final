@@ -289,7 +289,7 @@ class DatosMaterial(Datos):
                         valStockEnt = 0
                     
                     #Producciones insumos
-                    sql = ("select sum(mat_ins.cantidad * prodInsumos.cantidad) from prodInsumos left join mat_ins using(idInsumo) where idMaterial = %s and month(fecha)=%s and year(fecha)=%s")
+                    sql = ("select sum(mu.cantidad * prodInsumos.cantidad) from prodInsumos right join materialesUtilizados as mu on mu.idProd = prodInsumos.idprodInsumo where idMaterial = %s and month(fecha)=%s and year(fecha)=%s;")
                     if current_month == 12:
                         values = (id, 1, current_year+1)
                     else:
@@ -311,6 +311,7 @@ class DatosMaterial(Datos):
                     else:
                         current_month = 12
                         current_year -= 1
+            print(data)
             return data
 
         except Exception as e:
