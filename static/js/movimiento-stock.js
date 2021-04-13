@@ -126,8 +126,8 @@ function sortTable() {
         shouldSwitch = false;
         /* Get the two elements you want to compare,
         one from current row and one from the next: */
-        var x1 = String(rows[i].getElementsByTagName("TD")[3].innerHTML);
-        var y1 = String(rows[i + 1].getElementsByTagName("TD")[3].innerHTML);
+        var x1 = String(rows[i].getElementsByTagName("TD")[4].innerHTML);
+        var y1 = String(rows[i + 1].getElementsByTagName("TD")[4].innerHTML);
 
         // Check if the two rows should switch place:
         x = x1.replace(/(\d+[/])(\d+[/])/, '$2$1');

@@ -21,13 +21,14 @@ class DatosProduccion(Datos):
                     idTipoArticulo, \
                     fecha, \
                     cantidad \
-                    FROM prodTipArt WHERE estado != \"eliminado\";")
+                    FROM prodTipArt WHERE estado != \"eliminado\" order by fecha DESC;")
             cls.cursor.execute(sql)
             prods_ = cls.cursor.fetchall()
             producciones = []
             for p in prods_:
                 arts = CantArticulo(p[3],p[1])
-                receta = cls.get_receta_art(p[1])
+                receta = cls.get_receta_art(p[0])
+                print(receta)
                 prod = ProduccionArticulo(p[0],arts,p[2].strftime("%d/%m/%Y"),receta)
                 producciones.append(prod)
             return producciones
@@ -53,13 +54,13 @@ class DatosProduccion(Datos):
                     idInsumo, \
                     fecha, \
                     cantidad \
-                    FROM prodInsumos WHERE estado != \"eliminado\";")
+                    FROM prodInsumos WHERE estado != \"eliminado\" order by fecha DESC;")
             cls.cursor.execute(sql)
             prods_ = cls.cursor.fetchall()
             producciones = []
             for p in prods_:
                 ins = CantInsumo(p[3],p[1])
-                receta = cls.get_receta_ins(p[1])
+                receta = cls.get_receta_ins(p[0])
                 prod = ProduccionInsumo(p[0],ins,p[2].strftime("%d/%m/%Y"),receta)
                 producciones.append(prod)
             return producciones
@@ -97,14 +98,14 @@ class DatosProduccion(Datos):
             cls.cerrar_conexion()
     
     @classmethod
-    def get_receta_ins(cls,idIns):
+    def get_receta_ins(cls,idProd):
         """
         Devuelve un arreglo de los CantMaterial que se utilizan para producir un insumo.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT idMaterial, cantidad from mat_ins where idInsumo = %s and estado = 'disponible'")
-            values = (idIns,)
+            sql = ("SELECT idMaterial, mu.cantidad from materialesUtilizados as mu left join prodInsumos on mu.idProd = prodInsumos.idprodInsumo where idProd = %s and estado = 'disponible'")
+            values = (idProd,)
             cls.cursor.execute(sql,values)
             receta_ = cls.cursor.fetchall()
             receta = []
@@ -119,14 +120,14 @@ class DatosProduccion(Datos):
             cls.cerrar_conexion()
 
     @classmethod
-    def get_receta_art(cls,idArt):
+    def get_receta_art(cls,idProd):
         """
         Devuelve un arreglo de los CantMaterial que se utilizan para producir un insumo.
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT idInsumo, cantidad from tiposArt_ins where idTipoArticulo = %s and estado = 'disponible'")
-            values = (idArt,)
+            sql = ("SELECT idInsumo, iu.cantidad from insumosUtilizados as iu left join prodTipArt on iu.idProd = prodTipArt.idProdTipArt where idProd = %s and estado = 'disponible'")
+            values = (idProd,)
             cls.cursor.execute(sql,values)
             receta_ = cls.cursor.fetchall()
             receta = []
