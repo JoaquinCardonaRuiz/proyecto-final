@@ -46,9 +46,9 @@ class NegocioPedido(Negocio):
             raise e
 
     @classmethod
-    def get_all_historial_mov(cls):
+    def get_all_historial_mov(cls, filtrar_cancelados=False):
         try:
-            pedidos_ = DatosPedido.get_all()
+            pedidos_ = DatosPedido.get_all(filtrar_cancelados=True)
             pedidos = []
             for pedido in pedidos_:
                 for art in pedido.articulos:
