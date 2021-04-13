@@ -1,8 +1,6 @@
 # EcoAsistente - Proyecto Final
 
-EcoAsistente es el proyecto final de la carrera de Ingeniería en Sistemas de la Información de 
-
-[Bruno Tomás Caracini](https://github.com/brunocaracini) y [Joaquín Cardona Ruiz](https://github.com/JoaquinCardonaRuiz). EcoAsistente es un sistema web que incentiva el reciclaje mediante recompensas, y provee una tienda donde adquirir productos hechos con materiales reciclados. 
+EcoAsistente es el proyecto final de la carrera de Ingeniería en Sistemas de la Información de [Bruno Tomás Caracini](https://github.com/brunocaracini) y [Joaquín Cardona Ruiz](https://github.com/JoaquinCardonaRuiz). EcoAsistente es un sistema web que incentiva el reciclaje mediante recompensas, y provee una tienda donde adquirir productos hechos con materiales reciclados. 
 
 ## Desarrollo
 
