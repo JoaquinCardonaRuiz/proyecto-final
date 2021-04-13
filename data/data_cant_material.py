@@ -107,3 +107,25 @@ class DatosCantMaterial(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+
+
+
+
+    @classmethod
+    def addComponenteUtilizado(cls,idMat,idProd,cant):
+        """
+        Registra una cantidad de un material utilizado para la produccion de un insumo.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("INSERT INTO materialesUtilizados (idMaterial, idProd, cantidad) \
+                    VALUES ({},{},{});".format(idMat,idProd,cant))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_cant_material.addComponenteUtilizado()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error registrando un material utilizado en la produccion de un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()

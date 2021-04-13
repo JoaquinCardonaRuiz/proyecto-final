@@ -88,3 +88,25 @@ class DatosCantInsumo(Datos):
                                                     msj_adicional="Error eliminando un insumo componente de un articulo en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+
+
+    @classmethod
+    def addComponenteUtilizado(cls,idIns,idProd,cant):
+        """
+        Registra una cantidad de un insumo utilizado para la produccion de un tipo articulo.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("INSERT INTO insumosUtilizados (idInsumo, idProd, cantidad) \
+                    VALUES ({},{},{});".format(idIns,idProd,cant))
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_cant_insumo.addComponenteUtilizado()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error registrando un insumo utilizado en la produccion de un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()

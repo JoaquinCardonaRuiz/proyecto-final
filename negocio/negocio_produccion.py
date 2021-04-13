@@ -27,7 +27,7 @@ class NegocioProduccion(Negocio):
     def confirmar_produccion(cls,id,cant,kind):
         try:
             fecha = datetime.now()
-            DatosProduccion.add(id,fecha,cant,kind)
+            idNuevaProd = DatosProduccion.add(id,fecha,cant,kind)
             if kind == "art":
                 #sumar stock art
                 DatosArticulo.addStock(id,cant)
@@ -35,6 +35,7 @@ class NegocioProduccion(Negocio):
                 #restar stock ins
                 insumos = DatosCantInsumo.get_from_TAid(id)
                 for i in insumos:
+                    DatosCantInsumo.addComponenteUtilizado(i.idInsumo,idNuevaProd,i.cantidad*cant)
                     DatosInsumo.removeStock(i.idInsumo,i.cantidad*cant)
 
             elif kind == "ins":
@@ -44,6 +45,7 @@ class NegocioProduccion(Negocio):
                 #restar stock mat
                 materiales = DatosCantMaterial.get_from_Insid(id)
                 for m in materiales:
+                    DatosCantMaterial.addComponenteUtilizado(m.idMaterial,idNuevaProd,m.cantidad*cant)
                     DatosMaterial.removeStock(m.idMaterial,m.cantidad*cant)
         except Exception as e:
             raise e

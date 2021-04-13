@@ -88,7 +88,7 @@ class DatosProduccion(Datos):
                         VALUES ({},\"{}\",{},'disponible');".format(id,fecha,cant))
             cls.cursor.execute(sql)
             cls.db.commit()
-            return True
+            return cls.cursor.lastrowid
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_produccion.add()",
                                                     msj=str(e),
