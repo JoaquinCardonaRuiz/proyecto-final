@@ -132,7 +132,7 @@ class DatosPedido(Datos):
     @classmethod
     def get_one(cls,id,noClose=False):
         """
-        Obtiene todos los pedidos de la BD.
+        Obtiene un pedido de la BD en base a su ID.
         """
         try:
             cls.abrir_conexion()
@@ -157,9 +157,9 @@ class DatosPedido(Datos):
            
             
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_by_idPR()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_pedido.get_one()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obtieniendo los pedidos de un PRdesde la BD.")
+                                                    msj_adicional="Error obtieniendo un pedidos de desde la BD.")
         finally:
             if not(noClose):
                 cls.cerrar_conexion()

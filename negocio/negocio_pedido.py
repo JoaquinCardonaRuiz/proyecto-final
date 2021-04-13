@@ -5,6 +5,7 @@ from data.data_punto_retiro import DatosPuntoRetiro
 from data.data_cant_articulo import DatosCantArticulo
 from negocio.negocio_articulo import NegocioArticulo
 from negocio.negocio_usuario import NegocioUsuario
+from data.data_articulo import DatosArticulo
 from datetime import datetime, timedelta
 from classes import Pedido
 import custom_exceptions
@@ -68,6 +69,18 @@ class NegocioPedido(Negocio):
     def update_estado(cls,id,estado):
         try:
             DatosPedido.update_estado(id,estado)
+            if estado == "cancelado":
+                result = DatosPedido.get_one(id)
+                pedido = result[0]
+                id_usuario = result[1]
+
+                #Devovler EPs a User
+                NegocioUsuario.addEP(id_usuario,pedido.totalEP)
+
+                #Devolver Stock al articulo
+                for art in pedido.articulos:
+                    DatosArticulo.addStock(art.idTipoArticulo,art.cantidad)
+
         except Exception as e:
             raise e
 
