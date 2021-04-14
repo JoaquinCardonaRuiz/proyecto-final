@@ -371,13 +371,15 @@ function openEditModal(id,nombre,costoProduccion,costoMaterial,unidadMedida,otro
     //como la funcion dropdownOptionSelect lo que hace es mostrar una carta si NO está en selectedOptions y
     //ocultarla si SI está, entonces creo un arreglo que es el arreglo de materiales que tengo que mostrar, concatenado con
     //selectedOptions, y mando todos a dropdownOptionSelect. Va a ocultar los que están mostrados, y mostrar los nuevos.
-    var arr = [...ids,...selectedOptionsMod];
+    var arr = [...selectedOptionsMod,...ids];
+    console.log(arr);
+    console.log(cantidades);
+    console.log("---");
     for(var i = 0; i < arr.length; i++){
         var cant = 0;
-        if(i<cantidades.length){
-            cant = cantidades[i];
+        if(arr.length - i <= cantidades.length){
+            cant = cantidades[i-(arr.length - cantidades.length)];
         }
-        console.log(cant);
         dropdownOptionSelectMod(arr[i],cant);
     }
     calcularCostoMod("");
@@ -927,6 +929,7 @@ function verificar_cantidades_mod(){
     if(!hayerror){
         document.getElementById("cmInputMod").value = String(sum);
         document.getElementById('bottomMatText').innerHTML="Costo de Materiales: ARS $"+String(sum);
+        calcularCostoMod();
         document.getElementById("edit-btn").disabled = false;
     }
     permiteEdit();

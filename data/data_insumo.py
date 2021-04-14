@@ -291,3 +291,68 @@ class DatosInsumo(Datos):
                                                     msj_adicional="Error actualizando el stock de un material en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def get_costo_total(cls,id):
+        """
+        Obtiene el costo total de un insumo de la BD en base a su id.
+        """
+        
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT cTotal FROM insumos WHERE estado!=\"eliminado\" and idInsumo={};").format(id)
+            cls.cursor.execute(sql)
+            ct = cls.cursor.fetchone()[0]
+            return ct
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.get_costo_total()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo el costo total de un insumo desde la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+
+
+    @classmethod
+    def get_ins_afectados(cls,idMat):
+        """
+        Devuelve los IDs de los insumos que tienen en su receta un material
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT idInsumo FROM mat_ins WHERE idMaterial = {} GROUP BY idInsumo").format(idMat)
+            cls.cursor.execute(sql)
+            res = cls.cursor.fetchall()
+            return [i[0] for i in res]
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.get_ins_afectados()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo insumos afectados por un material.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+
+    @classmethod
+    def updateCostos(cls,idIns,cMat,cTot):
+        """
+        Actualiza los costos de un insumo a la cantidad especificada
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE insumos SET cMateriales={}, cTotal={} WHERE idInsumo={};").format(cMat,cTot,idIns)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_insumo.updateCostos()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando los costos de un insumo en la BD.")
+        finally:
+            cls.cerrar_conexion()

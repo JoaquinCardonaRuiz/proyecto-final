@@ -193,7 +193,7 @@
                     </div>
                     <div class="col" style="width: 10%; margin-left: 12%;">
                         <div class="group">      
-                            <input type="number" id="cantidadInput" name="cantidad" onkeypress="return isNumberKey(this, event);" min="1" style="width: 70%;" oninput="validaCant(value);" autocomplete="off">
+                            <input type="number" id="cantidadInput" name="cantidad" onkeypress="return isNumberKey(this, event);" min=0 style="width: 70%;" oninput="validaCant(value);" autocomplete="off">
                             <span class="highlight" style="width: 70%;"></span>
                             <span class="bar" style="width: 70%;"></span>
                             <label>Cantidad</label>
@@ -321,7 +321,7 @@
                         <div class="row">
                             <div class="col" style="width: 50%;">
                                 <div class="group">      
-                                    <input type="number" id="cantidadInputSM" name="cantidadSM" onkeypress="return event.charCode >= 48" min="1" style="width: 70%;" oninput="activate_validations();validaCantSM(value);" autocomplete="off">
+                                    <input type="number" id="cantidadInputSM" name="cantidadSM" onkeypress="return event.charCode >= 48" min=0 style="width: 70%;" oninput="activate_validations();validaCantSM(value);" autocomplete="off">
                                     <span class="highlight" style="width: 70%;"></span>
                                     <span class="bar" style="width: 70%;"></span>
                                     <label style="width: 70%;">Cantidad</label>
@@ -431,7 +431,7 @@
                             <div class="row">
                                 <div class="col" style="width: 50%;">
                                     <div class="group">      
-                                        <input type="number" id="cantidadInputSE" name="cantidadSE" onkeypress="return event.charCode >= 48" min="1" style="width: 70%;" oninput="activate_validations_se();validaCantSE(value);" autocomplete="off">
+                                        <input type="number" id="cantidadInputSE" name="cantidadSE" onkeypress="return event.charCode >= 48" min=0 style="width: 70%;" oninput="activate_validations_se();validaCantSE(value);" autocomplete="off">
                                         <span class="highlight" style="width: 70%;"></span>
                                         <span class="bar" style="width: 70%;"></span>
                                         <label style="width: 70%;">Cantidad</label>

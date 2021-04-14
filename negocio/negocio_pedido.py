@@ -34,7 +34,8 @@ class NegocioPedido(Negocio):
         #Articulos y Stock
         for art in carrito:
             NegocioArticulo.disminuirStock(art.idTipoArticulo,art.cantidad)
-            DatosCantArticulo.addArticuloPedido(art.idTipoArticulo,idPedido,art.cantidad)
+            mg = DatosArticulo.get_margen_ganancia(art.idTipoArticulo)
+            DatosCantArticulo.addArticuloPedido(art.idTipoArticulo,idPedido,art.cantidad,mg)
 
         return idPedido
             

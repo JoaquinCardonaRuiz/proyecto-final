@@ -197,6 +197,8 @@ function calcularCosto(input){
 
     costoTotal = Number(costoProd) + Number(costoIns) + Number(otrosCostos);
     document.getElementById("bottomAltaModalText").innerHTML="Costo Total: ARS $"+String(costoTotal);
+    var margen = Number(document.getElementById("margenInput-mod").value);
+    document.getElementById("valorInput-mod").value =  (costoTotal * (1+(margen/100))).toFixed(2);
     permitirCostos();
 }
 
@@ -405,13 +407,15 @@ function openEditModal(id,nombre,costoProduccion,costoInsumos,costoTotalA,valor,
     //como la funcion dropdownOptionSelect lo que hace es mostrar una carta si NO está en selectedOptions y
     //ocultarla si SI está, entonces creo un arreglo que es el arreglo de materiales que tengo que mostrar, concatenado con
     //selectedOptions, y mando todos a dropdownOptionSelect. Va a ocultar los que están mostrados, y mostrar los nuevos.
-    var arr = [...ids,...selectedOptionsMod];
+    var arr = [...selectedOptionsMod,...ids];
+    console.log(arr);
+    console.log(cantidades);
+    console.log("---");
     for(var i = 0; i < arr.length; i++){
         var cant = 0;
-        if(i<cantidades.length){
-            cant = cantidades[i];
+        if(arr.length - i <= cantidades.length){
+            cant = cantidades[i-(arr.length - cantidades.length)];
         }
-        console.log(cant);
         dropdownOptionSelectMod(arr[i],cant);
     }
     calcularCostoMod();
@@ -490,6 +494,8 @@ function calcularCostoMod(input){
 
     costoTotal = Number(costoProd) + Number(costoIns) + Number(otrosCostos);
     document.getElementById("bottomMatText3").innerHTML="Costo Total: ARS $"+String(costoTotal);
+    var margen = Number(document.getElementById("margenInput-mod").value);
+    document.getElementById("valorInput-mod").value =  (costoTotal * (1+(margen/100))).toFixed(2);
     check_edit();
 }
 
@@ -947,10 +953,10 @@ function verificar_cantidades_mod(){
             }
         }
     }
-    console.log(sum);
     if(!hayerror){
         document.getElementById("ciInput-mod").value = String(sum);
         document.getElementById('bottomMatText').innerHTML="Costo de Insumos: ARS $"+String(sum);
+        calcularCostoMod();
         document.getElementById("edit-btn").disabled = false;
     }
     check_edit();
