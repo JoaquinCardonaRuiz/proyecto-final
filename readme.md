@@ -4,7 +4,7 @@ EcoAsistente es el proyecto final de la carrera de Ingeniería en Sistemas de la
 
 ## Desarrollo
 
-EcoAsistente fue desarrollado utilizando enteramente con herramientas de código abierto. Se ha utilizado el framework de desarrollo web [Flask](https://flask.palletsprojects.com/en/1.1.x/), y utilizando [MariaDB](https://mariadb.org/) como base de datos.
+EcoAsistente fue desarrollado utilizando enteramente con herramientas de código abierto. Se ha utilizado el framework de desarrollo web [Flask](https://flask.palletsprojects.com/en/1.1.x/), y [MariaDB](https://mariadb.org/) como base de datos.
 
 ### Tech Stack
 
