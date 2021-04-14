@@ -64,14 +64,14 @@ class DatosCantArticulo(Datos):
 
 
     @classmethod
-    def addArticuloPedido(cls,idArt,idPed,cant):
+    def addArticuloPedido(cls,idArt,idPed,cant,mg):
         """
         Registra una cantidad de un articulo de un pedido en la BD.
         """
         try:
             cls.abrir_conexion()
-            sql = ("INSERT INTO tiposArt_pedidos (idTipoArticulo, idPedido, cantidad) \
-                    VALUES ({},{},{});".format(idArt,idPed,cant))
+            sql = ("INSERT INTO tiposArt_pedidos (idTipoArticulo, idPedido, cantidad, margenGanancia) \
+                    VALUES ({},{},{},{});".format(idArt,idPed,cant,mg))
             cls.cursor.execute(sql)
             cls.db.commit()
             return True

@@ -506,3 +506,25 @@ class DatosArticulo(Datos):
                                                     msj_adicional="Error actualizando los costos de un articulo en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def get_margen_ganancia(cls,id):
+        """
+        Obtiene el margen de ganancia de un articulo de la BD en base a su id.
+        """
+        
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT margenGanancia FROM tiposArticulo WHERE estado!=\"eliminado\" and idTipoArticulo={};").format(id)
+            cls.cursor.execute(sql)
+            ct = cls.cursor.fetchone()[0]
+            return ct
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_margen_ganancia()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo el margen de ganancia de un articulo desde la BD.")
+        finally:
+            cls.cerrar_conexion()
