@@ -461,9 +461,48 @@ class DatosArticulo(Datos):
             return data
 
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data_material.get_movimientos_stock()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_movimientos_stock()",
                                                     msj=str(e),
-                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
+                                                    msj_adicional="Error actualizando el stock de un articulo en la BD.")
         finally:
             cls.cerrar_conexion()
 
+
+    @classmethod
+    def get_arts_afectados(cls,idIns):
+        """
+        Devuelve los IDs de los artículos que tienen en su receta un insumo
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("SELECT idTipoArticulo FROM tiposArt_ins  WHERE idInsumo = {} GROUP BY idTipoArticulo").format(idIns)
+            cls.cursor.execute(sql)
+            res = cls.cursor.fetchall()
+            return [i[0] for i in res]
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_arts_afectados()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obteniendo articulos afectados por un insumo.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+
+    @classmethod
+    def updateCostos(cls,idTA,cIns,cTot):
+        """
+        Actualiza los costos de un tipo articulo a la cantidad especificada
+        """
+        try:
+            cls.abrir_conexion()
+            sql= ("UPDATE tiposArticulo SET cInsumos={}, cTotal={} WHERE idTipoArticulo={};").format(cIns,cTot,idTA)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return cls.cursor.lastrowid
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.updateCostos()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando los costos de un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()

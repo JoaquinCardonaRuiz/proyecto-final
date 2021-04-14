@@ -2,6 +2,7 @@ from negocio.negocio import Negocio
 import custom_exceptions
 from data.data_articulo import DatosArticulo
 from data.data_valor import DatosValor
+from data.data_insumo import DatosInsumo
 from data.data_cant_insumo import DatosCantInsumo
 from datetime import datetime
 
@@ -189,3 +190,31 @@ class NegocioArticulo(Negocio):
             raise custom_exceptions.ErrorDeNegocio(origen="negocio_articulo.get_movimientos_stock()",
                                                    msj=str(e),
                                                    msj_adicional="Error en la capa de Negocio obteniendo los movimientos de stock de la base de Datos")
+
+
+
+    @classmethod
+    def calcular_costos(cls,id):
+        """
+        Recalcula los costos de un artículo, y su precio
+        """
+        #Obtiene el articulo
+        art = cls.get_by_id(id)
+
+        #Calcula el nuevo costo de Insumos
+        nuevoCostoIns = 0
+        for ins in art.insumos:
+            nuevoCostoIns += DatosInsumo.get_costo_total(ins.idInsumo)*ins.cantidad
+        
+        #Si el nuevo costo de insumos es distinto al anterior
+        if nuevoCostoIns != art.costoInsumos:
+            art.costoTotal -= art.costoInsumos
+            art.costoTotal += nuevoCostoIns
+            art.costoInsumos = nuevoCostoIns
+
+            #Se actualizan los costos de insumos y el total
+            DatosArticulo.updateCostos(art.id,art.costoInsumos,art.costoTotal)
+
+            #Y se actualiza el valor
+            art.valor = art.costoTotal * (1+art.margenGanancia)
+            DatosValor.add(id,datetime.now().strftime('%Y-%m-%d %H:%M:%S'),art.valor)

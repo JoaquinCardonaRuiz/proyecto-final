@@ -1,6 +1,8 @@
 from negocio.negocio import Negocio
 from data.data_material import DatosMaterial
 from data.data_cant_material import DatosCantMaterial
+from data.data_insumo import DatosInsumo
+from negocio.negocio_insumo import NegocioInsumo
 import custom_exceptions
 from data.data_material import DatosMaterial
 import datetime
@@ -66,6 +68,12 @@ class NegocioMaterial(Negocio):
         """
         try:
             DatosMaterial.update(idMat,nombre,unidad,costoRecoleccion,color,estado)
+
+            ins_afectados = DatosInsumo.get_ins_afectados(idMat)
+            for idIns in ins_afectados:
+                print("corrigiendo valor de insumo: ",str(idIns))
+                NegocioInsumo.calcular_costos(idIns)
+
         except Exception as e:
             raise(e)
 

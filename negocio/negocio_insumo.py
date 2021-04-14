@@ -1,6 +1,9 @@
 from negocio.negocio import Negocio
 from data.data_insumo import DatosInsumo
 from data.data_cant_material import DatosCantMaterial
+from data.data_articulo import DatosArticulo
+from negocio.negocio_articulo import NegocioArticulo
+from data.data_material import DatosMaterial
 import custom_exceptions
 
 class NegocioInsumo(Negocio):
@@ -87,6 +90,12 @@ class NegocioInsumo(Negocio):
 
             costoTotal = float(costoMateriales)+float(costoProduccion)+float(otrosCostos)
             DatosInsumo.update(idIns,nombre,unidad,costoMateriales,costoProduccion,otrosCostos,costoTotal,color)
+
+            arts_afectados = DatosArticulo.get_arts_afectados(idIns)
+            for idArt in arts_afectados:
+                print("corrigiendo valor de articulo: ",str(idArt))
+                NegocioArticulo.calcular_costos(idArt)
+            
         except Exception as e:
             raise(e)
 
@@ -128,3 +137,32 @@ class NegocioInsumo(Negocio):
                                                    msj=str(e),
                                                    msj_adicional="Error en la capa de Negocio obteniendo los movimientos de stock de la base de Datos")
 
+
+
+    @classmethod
+    def calcular_costos(cls,id):
+        """
+        Recalcula los costos de un insumo
+        """
+        #Obtiene el insumo
+        ins = cls.get_by_id(id)
+
+        #Calcula el nuevo costo de Materiales
+        nuevoCostoMat = 0
+        for mat in ins.materiales:
+            nuevoCostoMat += DatosMaterial.get_costo_rec(mat.idMaterial)*mat.cantidad
+        
+        #Si el nuevo costo de insumos es distinto al anterior
+        if nuevoCostoMat != ins.costoMateriales:
+            ins.costoTotal -= ins.costoMateriales
+            ins.costoTotal += nuevoCostoMat
+            ins.costoMateriales = nuevoCostoMat
+
+            #Se actualizan los costos de insumos y el total
+            DatosInsumo.updateCostos(ins.id,ins.costoMateriales,ins.costoTotal)
+
+            #Y se actualizan los arts afectados
+            arts_afectados = DatosArticulo.get_arts_afectados(ins.id)
+            for idArt in arts_afectados:
+                print("corrigiendo valor de articulo: ",str(idArt))
+                NegocioArticulo.calcular_costos(idArt)
