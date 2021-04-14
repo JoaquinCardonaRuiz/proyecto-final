@@ -1686,6 +1686,29 @@ def confirmar_prod_art():
         return error(e,"produccion-art")
 
 
+''' 
+    ----------
+    Gestión de Usuarios
+    ----------
+'''
+
+@app.route('/elegir-tipo-gu', methods = ['GET','POST'])
+def elegir_tipo_gu():
+    try:
+        #tiposUsuario = NegocioTipoUsuario.get_all()
+        return render_template('elegir-tipo-gu.html')  
+    except Exception as e:
+        return error(e,"gestion_usuarios")
+
+@app.route('/permisos-acceso', methods = ['GET','POST'])
+def permisos_acceso():
+    try:
+        tiposUsuario = NegocioTipoUsuario.get_all()
+        modulos = NegocioModulo.get_all()
+        return render_template('permisos-usuarios.html', tipos_usuario = tiposUsuario, modulos = modulos)  
+    except Exception as e:
+        return error(e,"permisos_acceso")
+
 '''
     -----------------------
     Quienes somos

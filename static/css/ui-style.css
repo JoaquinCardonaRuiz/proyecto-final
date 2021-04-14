@@ -486,3 +486,13 @@ th,tr,td{
 #chart-row-mat, #chart-row-ins, #chart-row-art{
     display: none;
 }
+
+.list-group-item{
+    border: 1px solid lightgrey !important;
+}
+
+.list-group-item:hover{
+    cursor: pointer;
+    background-color: #99ca279f;
+    color: white;
+}

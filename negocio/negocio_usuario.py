@@ -289,3 +289,10 @@ class NegocioUsuario(Negocio):
             return DatosUsuario.buscar_info_user(busqueda)
         except Exception as e:
             raise e
+    
+    @classmethod
+    def get_all(cls):
+        try:
+            return DatosUsuario.get_all()
+        except Exception as e:
+            raise e
