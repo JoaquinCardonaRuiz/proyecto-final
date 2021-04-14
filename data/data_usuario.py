@@ -100,6 +100,8 @@ class DatosUsuario(Datos):
         finally:
             if not(noClose):
                 cls.cerrar_conexion()
+    
+    
 
 
     @classmethod
@@ -313,7 +315,7 @@ class DatosUsuario(Datos):
                                                     msj_adicional="Error obteniendo todos los usuarios.")
         finally:
             cls.cerrar_conexion()
-    
+
     @classmethod
     def alta(cls, email, password, nroDoc=False, idTipoDoc=False, nombre=False, apellido=False,idTipoUsuario=False,idDireccion=False,idNivel=False,img=False,estado=False, activacion=False, noClose=False):
         """
@@ -370,7 +372,7 @@ class DatosUsuario(Datos):
                 usuarios.idDireccion, \
                 usuarios.idNivel, \
                 usuarios.img \
-                from usuarios WHERE estado = \"habilitado\" AND (idUsuario=\"{}\" OR email=\"{}\" OR nroDOC=\"{}\")").format(busqueda,busqueda,busqueda,busqueda)
+                from usuarios WHERE estado = \"habilitado\" AND (idUsuario=\"{}\" OR email=\"{}\" OR nroDOC=\"{}\")").format(busqueda,busqueda,busqueda)
             cls.cursor.execute(sql)
             usuarios = cls.cursor.fetchall()
             users = []

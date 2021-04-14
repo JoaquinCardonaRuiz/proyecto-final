@@ -10,3 +10,10 @@ class NegocioTipoUsuario(Negocio):
             return DatosTipoUsuario.get_by_id(id)
         except Exception as e:
             raise e
+
+    @classmethod
+    def get_all(cls):
+        try:
+            return DatosTipoUsuario.get_all()
+        except Exception as e:
+            raise e
