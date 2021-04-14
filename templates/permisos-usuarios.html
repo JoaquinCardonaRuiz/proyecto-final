@@ -15,11 +15,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.3/clipboard.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    
 
 </head>
 
@@ -42,7 +45,7 @@
 
     <div class="container" id="top-container">
         <div class="row">
-            <div class="container" id="option-left" onclick="redirectStock('/gestion-stock/ver-stock','ns');" style="width: 49%;">
+            <div class="container" id="option-left" onclick="openAltaModal();" style="width: 49%;">
                     <div class="option-text">
                         <p class="option-title">Añadir Tipo de Usuario</p>
                         <p class="text-box">Añadir un nuevo Tipo de Usuario al sistemay determinar sus permisos de acceso</p>
@@ -80,7 +83,7 @@
             </div>
             <div class="col" style="width: 100%;">
                 <h5 class="table-title" id="table-permisos-title" style="margin-left: -14%;">Permisos del <span id="tipo-usuario-sel">Ciudadano</span></h5>
-                <div class="table-container-permisos" id="permisos-table"> 
+                <div class="table-container-permisos" id="permisos-table" style="display: none;"> 
                     <table class="table content-table-main" id="" style="margin-left: 5%; width: 90%;">
                         <thead style=" border-top:none">
                         <tr>
@@ -103,7 +106,7 @@
                                 <td>{{modulo.nombre}}</td>
                                 <td>
                                     <div class="custom-control custom-switch cs-enabled">
-                                        <input type="checkbox" class="custom-control-input" id="acceso-{{modulo.id}}">
+                                        <input type="checkbox" class="custom-control-input" id="acceso-{{modulo.id}}" oninput="cambiaSwitch({{modulo.id}});">
                                         <label class="custom-control-label" for="acceso-{{modulo.id}}"></label>
                                       </div>
                                 </td>
@@ -112,7 +115,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="table-container-permisos" id="permisos-table-disabled" style="display: none;"> 
+                <div class="table-container-permisos" id="permisos-table-disabled"> 
                     <table class="table content-table-main" id="" style="margin-left: 5%; width: 90%;">
                         <thead style=" border-top:none">
                         <tr>
@@ -163,5 +166,51 @@
 
         
 </div>
+
+<!--Modal Modificar email -->
+<div class="modal fade modal-lg" id="tuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Añadir un Tipo de Usuario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modal-body-card">
+            <div class="row profile-loading-row mt-2" style="display: none;" id="loadingRow">
+                <div class="lds-ring" style="display: none;"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <form action="{{url_for('add_tipo_usuario')}}" method="POST" id="tuForm">
+                <div class="row subheader-row" id="subheader-alta-pd">
+                    <div class="col">
+                        <label class="subheader" id="subheader-alta">Tipo de Usuario</label>
+                    </div>
+                </div>
+                <div class="row" id="fieldsRow1Alta1" style="margin-top: -2%;">
+                    <div class="group" style="margin-left: 10%; width: 87%; margin-top: 2%;">
+                        <input type="text" oninput="validateTU(value)" required autocomplete="off" id="tuInput" class="tuInput" name="tuInput" style="width: 90%;">
+                        <input type="text" id="idEntidadInput" name="id" hidden>
+                        <span class="highlight" style="width: 90%;"></span>
+                        <span class="bar" style="width: 90%;"></span>
+                        <label style="margin-top: -5px;">Nombre Tipo de Usuario</label>
+                        <p id="tu-error" class="modalErrorMessage" style="display: none;">* Nombre inválido.</p>
+                    </div>
+                </div>
+            </form>
+            <div class="row bottom-row">
+                <p class="bottom-modal-text label-bottom" id="bottomAltaModalTextAltaPD" style="margin-top: 1%;">Una vez completado el nombre, presione "Crear Tipo de Usuario".</p>
+                <p class="bottom-modal-text" id="bottomAltaModalTextEmail"></p>            
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
+          <button type="button" class="btn primary-btn" onclick="submitForm('email')" id="primary-btn-tu" disabled>Crear Tipo de Usuario</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
 <script src="/static/js/permisos-usuario.js"></script>
 {% endblock %}

@@ -1700,6 +1700,16 @@ def elegir_tipo_gu():
     except Exception as e:
         return error(e,"gestion_usuarios")
 
+@app.route('/gestion-usuarios/add-tu',methods=["POST","GET"])
+def add_tipo_usuario():
+    try:
+        if request.method == 'POST':
+            name = request.form["tuInput"]
+            NegocioTipoUsuario.add_one(name)
+        return redirect(url_for('permisos_acceso'))
+    except Exception as e:
+        return error(e,"gestion_usuarios")
+
 @app.route('/permisos-acceso', methods = ['GET','POST'])
 def permisos_acceso():
     try:
@@ -1724,6 +1734,33 @@ def get_modulos_all():
         for mod in mods:
             modulos.append(mod.id)
         return jsonify(modulos)
+    except Exception as e:
+        return error(e,"permisos_acceso")
+
+@app.route('/permisos-acceso/add/<id_modulo>/<idTipoUsuario>', methods = ['GET','POST'])
+def add_permiso(id_modulo,idTipoUsuario):
+    try:
+        
+        return jsonify(NegocioTipoUsuario.add_permiso(idTipoUsuario, id_modulo))
+    except Exception as e:
+        return error(e,"permisos_acceso")
+
+@app.route('/permisos-acceso/remove/<id_modulo>/<idTipoUsuario>', methods = ['GET','POST'])
+def remove_permiso(id_modulo,idTipoUsuario):
+    try:
+        
+        return jsonify(NegocioTipoUsuario.remove_permiso(idTipoUsuario, id_modulo))
+    except Exception as e:
+        return error(e,"permisos_acceso")
+
+@app.route('/gestion-usuarios/tipos-usuario/', methods = ['GET','POST'])
+def get_all_tipos():
+    try:
+        tipos_ = NegocioTipoUsuario.get_all()
+        tipos = []
+        for tu in tipos_:
+            tipos.append(tu.nombre)
+        return jsonify(tipos)
     except Exception as e:
         return error(e,"permisos_acceso")
 

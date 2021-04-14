@@ -13,7 +13,6 @@ class DatosTipoUsuario(Datos):
         """
         try:
             cls.abrir_conexion()
-            print(id)
             sql = ("SELECT tiposUsuario.idTipoUsuario, \
                 tiposUsuario.nombre \
                 from tiposUsuario where tiposUsuario.idTipoUsuario = {} and estado != 'eliminado'").format(id)
@@ -33,6 +32,24 @@ class DatosTipoUsuario(Datos):
                                                     msj=str(e),
                                                     msj_adicional="Error buscando tipo de usuario en la BD.")
     
+    @classmethod
+    def add_one(cls, nombre, noClose = False):
+        """
+        Añade un nuevo Tipo de Usuario a la BD.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("INSERT into tiposUsuario (nombre) values (%s)")
+            values = (nombre,)
+            cls.cursor.execute(sql,values)
+            cls.db.commit()
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_tipo_usuario.add_one()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error añadiendo un nuevo Tipo de Usuario a la BD.")
+
     @classmethod
     def get_all(cls, noClose = False):
         """
@@ -57,6 +74,60 @@ class DatosTipoUsuario(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_tipo_usuario.get_all()",
                                                     msj=str(e),
                                                     msj_adicional="Error buscando todos los tipo de usuario en la BD.")
+    
+    @classmethod
+    def add_permiso(cls, idTU, idMod, noClose = False):
+        """
+        Añade un permiso para un Tipo de Usuario
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("select idTipoUsuario from permisosAcceso where idTipoUsuario = %s and idModulo = %s")
+            values = (idTU, idMod)
+            cls.cursor.execute(sql, values)
+            res = cls.cursor.fetchone()
+            if res != None:
+                return False
+            else:
+                sql = ("INSERT into permisosAcceso (idTipoUsuario, idModulo) VALUES (%s,%s)")
+                values = (idTU, idMod)
+                cls.cursor.execute(sql, values)
+                cls.db.commit()
+                return True
+
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_tipo_usuario.add_permiso()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error añadiendo un permiso para un Tipo de Usuario en la BD.")
+    
+    @classmethod
+    def remove_permiso(cls, idTU, idMod, noClose = False):
+        """
+        Borra un permiso para un Tipo de Usuario
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("select idTipoUsuario from permisosAcceso where idTipoUsuario = %s and idModulo = %s")
+            values = (idTU, idMod)
+            cls.cursor.execute(sql, values)
+            res = cls.cursor.fetchone()
+            if res != None:
+                sql = ("Delete from permisosAcceso where idTipoUsuario = %s and idModulo = %s")
+                values = (idTU, idMod)
+                cls.cursor.execute(sql, values)
+                cls.db.commit()
+                return True
+            else:
+                return False
+
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_tipo_usuario.remove_permiso()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error borrando un permiso para un Tipo de Usuario en la BD.")
 
     @classmethod
     def get_modulos(cls,idTipUsu,noClose = False):
