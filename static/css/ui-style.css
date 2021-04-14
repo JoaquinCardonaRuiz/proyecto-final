@@ -497,6 +497,10 @@ th,tr,td{
     color: white;
 }
 
+.list-group-item-del:hover{
+    background-color: #f14e4eef !important;
+}
+
 .table-container-permisos{
     border-radius: 10px;
     border: 1px solid lightgrey !important;

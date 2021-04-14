@@ -73,6 +73,11 @@ function openAltaModal(){
     $("#tuModal").modal('show');
 }
 
+function openBajaModal(){
+    jQuery.noConflict();
+    $("#tuModalBaja").modal('show');
+}
+
 function validateTU(val){
     if (val == ""){
         $("#tu-error").text("* El nombre no puede quedar vacío.");

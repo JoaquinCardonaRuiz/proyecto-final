@@ -52,7 +52,7 @@
                     </div>
                     <i class="fa fa-plus option-img" id="option-img-1"></i>
             </div>
-            <div class="container" id="option-right" onclick="redirectStock('/gestion-stock/historial-movimientos','ms')" style="width: 49%;">
+            <div class="container" id="option-right" onclick="openBajaModal();" style="width: 49%;">
                 <div class="option-text">
                     <p class="option-title">Eliminar Tipo de Usuario</p>
                     <p class="text-box">Eliminar un Tipo de Usuario registrado en el sistema junto con sus permisos de acceso</p>
@@ -167,7 +167,7 @@
         
 </div>
 
-<!--Modal Modificar email -->
+<!--Modal ALta -->
 <div class="modal fade modal-lg" id="tuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
       <div class="modal-content">
@@ -206,6 +206,54 @@
         <div class="modal-footer">
           <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn">Cancelar</button>
           <button type="button" class="btn primary-btn" onclick="submitForm('email')" id="primary-btn-tu" disabled>Crear Tipo de Usuario</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Modal ALta -->
+<div class="modal fade modal-lg" id="tuModalBaja" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModal">Eliminar un Tipo de Usuario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modal-body-card">
+            <div class="row profile-loading-row mt-2" style="display: none;" id="loadingRow">
+                <div class="lds-ring" style="display: none;"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <form action="{{url_for('add_tipo_usuario')}}" method="POST" id="tuForm">
+                <div class="row subheader-row" id="subheader-alta-pd">
+                    <div class="col">
+                        <label class="subheader" id="subheader-alta">Seleccione el Tipo de Usuario que desea eliminar</label>
+                    </div>
+                </div>
+                <div class="row" id="fieldsRow1Alta1" style="margin-top: -4%;">
+                    <ul class="list-group" style="width: 80%; margin-left: 10%;">
+                        {%for tu in tipos_usuario%}
+                        <li class="list-group-item d-flex justify-content-between lh-condensed list-group-item-del" onclick="getModulos('{{tu.id}}');setUserLabel('{{tu.nombre}}');">
+                            <div>
+                              <h6 class="my-0">{{tu.nombre}}</h6>
+                              <small class="text-muted"></small>
+                            </div>
+                            <i class="fas fa-trash" style="color: #f14e4eef;"></i>
+                          </li>
+        
+                        </li>
+                        {%endfor%}
+                      </ul>
+                </div>
+            </form>
+            <div class="row bottom-row">
+                <p class="bottom-modal-text" id="bottomAltaModalTextEmail"></p>            
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
+            <button type="button" class="btn primary-btn-alert" onclick="baja_nivel();" id="primary-btn-alert">Eliminar Tipo de Usuario</button>
         </div>
       </div>
     </div>
