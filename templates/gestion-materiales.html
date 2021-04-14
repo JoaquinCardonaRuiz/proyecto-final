@@ -75,7 +75,7 @@
                     <th scope="col" class="table-heading">Nombre</th>
                     <th scope="col" class="table-heading">Stock</th>
                     <th scope="col" class="table-heading">Unidad</th>
-                    <th scope="col" class="table-heading">Costo R.</th>
+                    <th scope="col" class="table-heading">Costo</th>
                     <th scope="col" class="table-heading">Desc.</th>
                     <th scope="col" class="table-heading">Depositos</th>
                 </tr>
@@ -94,7 +94,7 @@
                     <td scope="row">{{mat.stock}}</td>
                     <td scope="row">{{mat.unidadMedida}}</td>
                     <td scope="row">{{mat.costoRecoleccion}}</td>
-                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{mat.id}}','{{mat.nombre}}','{{mat.desc}}');">Ver Descripción</a></td>
+                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{mat.id}}','{{mat.nombre}}','{{mat.desc}}');"><i class="fa fa-question-circle custom-link-fa"></i> Ver Descripción</a></td>
                     {%if mat.estado == "habilitado"%}
                         <td>
                             <div>

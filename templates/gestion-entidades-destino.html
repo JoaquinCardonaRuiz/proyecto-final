@@ -88,8 +88,8 @@
                     <th scope="row">{{ent.nombre}}</th>
                     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal"hidden="true">
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
-                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{ent.id}}','{{ent.nombre}}','{{ent.desc}}');">Ver Descripción</a></td>
-                    <td><a class="custom-link" href='#' onclick="openLoadingRing();getTablaSalidas('{{ent.id}}','{{ent.nombre}}')">Ver Salidas</a></td>
+                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{ent.id}}','{{ent.nombre}}','{{ent.desc}}');"><i class="fa fa-question-circle custom-link-fa"></i> Ver Descripción</a></td>
+                    <td><a class="custom-link" href='#' onclick="openLoadingRing();getTablaSalidas('{{ent.id}}','{{ent.nombre}}')"><i class="fa fa-sign-out-alt custom-link-fa"></i> Ver Salidas</a></td>
                     <td class="delete-row"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon" onclick="openBajaModal('{{ent.id}}','{{ent.nombre}}')"></i></td>
                     <td class="modify-row"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon" onclick="openEditModal('{{ent.id}}','{{ent.nombre}}')"></i></td>
                 </tr>

@@ -115,8 +115,8 @@
                     <td scope="row">{{art.valor}}</td>
                     <td scope="row">{{art.stock}}</td>
                     <td scope="row">{{art.unidadMedida}}</td>
-                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{art.id}}','{{art.nombre}}','{{art.desc}}');">Ver Descripción</a></td>
-                    <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalInsumos('{{art.nombre}}',{{ids_insumos}},{{cantidades}});">Ver insumos</a></td>
+                    <td><a class="custom-link" href='#' onclick="openModalDesc('{{art.id}}','{{art.nombre}}','{{art.desc}}');"><i class="fa fa-question-circle custom-link-fa"></i> Ver Descripción</a></td>
+                    <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalInsumos('{{art.nombre}}',{{ids_insumos}},{{cantidades}});"><i class="fa fa-pallet custom-link-fa"></i> Ver insumos</a></td>
                     {% if art.ventaUsuario %}
                         <td scope="row">Si</td>
                     {% else %}
