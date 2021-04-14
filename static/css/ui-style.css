@@ -493,6 +493,24 @@ th,tr,td{
 
 .list-group-item:hover{
     cursor: pointer;
-    background-color: #99ca279f;
+    background-color: #a9d3479f;
     color: white;
+}
+
+.table-container-permisos{
+    border-radius: 10px;
+    border: 1px solid lightgrey !important;
+    margin-left: -14%;
+    margin-right: 8%;
+    margin-top: 4%;
+
+}
+
+
+.cs-disabled{
+    margin-top: -1.8% !important; position: absolute !important; margin-left: 9.4% !important;
+}
+
+.cs-enabled{
+    margin-top: 5% !important; position: absolute !important; margin-left: 9.4% !important;
 }

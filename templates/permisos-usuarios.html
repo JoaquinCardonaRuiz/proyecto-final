@@ -40,17 +40,33 @@
     </div>
 
 
-
-    <!-- Tabla Entidades-->
+    <div class="container" id="top-container">
+        <div class="row">
+            <div class="container" id="option-left" onclick="redirectStock('/gestion-stock/ver-stock','ns');" style="width: 49%;">
+                    <div class="option-text">
+                        <p class="option-title">Añadir Tipo de Usuario</p>
+                        <p class="text-box">Añadir un nuevo Tipo de Usuario al sistemay determinar sus permisos de acceso</p>
+                    </div>
+                    <i class="fa fa-plus option-img" id="option-img-1"></i>
+            </div>
+            <div class="container" id="option-right" onclick="redirectStock('/gestion-stock/historial-movimientos','ms')" style="width: 49%;">
+                <div class="option-text">
+                    <p class="option-title">Eliminar Tipo de Usuario</p>
+                    <p class="text-box">Eliminar un Tipo de Usuario registrado en el sistema junto con sus permisos de acceso</p>
+                </div>
+                <i class="fa fa-trash option-img"  id="option-img-3"></i>
+            </div>
+        </div>
+    </div>
 
     <div class="container" id="table-container">
-        <h4 class="table-title">Permisos de Acceso</h4>          
+        <h4 class="table-title" style="margin-bottom: 3%;">Permisos de Acceso</h4>          
         <div class="row d-flex justify-content-center mt-4" style="padding-bottom: 5%; margin-top: 2%;">
             <div class="col" style="width: 100%; margin-left: 4%;">
-                <h5 class="table-title">Seleccione el Tipo de Usuario</h5> 
+                <h5 class="table-title" style="margin-left: 0%;">Seleccione el Tipo de Usuario</h5> 
                 <ul class="list-group" style="width: 80%; padding-top: 3%;">
                     {%for tu in tipos_usuario%}
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <li class="list-group-item d-flex justify-content-between lh-condensed" onclick="getModulos('{{tu.id}}');setUserLabel('{{tu.nombre}}');">
                         <div>
                           <h6 class="my-0">{{tu.nombre}}</h6>
                           <small class="text-muted"></small>
@@ -63,26 +79,75 @@
                   </ul>
             </div>
             <div class="col" style="width: 100%;">
-                <table class="table content-table-main" id="" style="margin-left: -10%;">
-                    <thead style=" border-top:none">
-                    <tr>
-                        <th scope="col" class="table-heading">Nombre Módulo</th>
-                        <th scope="col" class="table-heading">Acceso</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {%for modulo in modulos%}
+                <h5 class="table-title" id="table-permisos-title" style="margin-left: -14%;">Permisos del <span id="tipo-usuario-sel">Ciudadano</span></h5>
+                <div class="table-container-permisos" id="permisos-table"> 
+                    <table class="table content-table-main" id="" style="margin-left: 5%; width: 90%;">
+                        <thead style=" border-top:none">
                         <tr>
-                            <td>{{modulo.nombre}}</td>
-                            <td>Si</td>
+                            <th scope="col" class="table-heading">Nombre Módulo</th>
+                            <th scope="col" class="table-heading">Acceso</th>
                         </tr>
-                        {%endfor%}
-                    </tbody>
-                </table>
-                <div class="row mt-4" id="loading-row-permisos" style="padding-top: 10%; margin-left: -31%;">
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Módulos Ciudadano</td>
+                                <td>
+                                    <div class="custom-control custom-switch cs-disabled">
+                                        <input type="checkbox" class="custom-control-input" id="acceso-0" checked disabled>
+                                        <label class="custom-control-label" for="acceso-0"></label>
+                                      </div>
+                                </td>
+                            </tr>
+                            {%for modulo in modulos%}
+                            <tr>
+                                <td>{{modulo.nombre}}</td>
+                                <td>
+                                    <div class="custom-control custom-switch cs-enabled">
+                                        <input type="checkbox" class="custom-control-input" id="acceso-{{modulo.id}}">
+                                        <label class="custom-control-label" for="acceso-{{modulo.id}}"></label>
+                                      </div>
+                                </td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-container-permisos" id="permisos-table-disabled" style="display: none;"> 
+                    <table class="table content-table-main" id="" style="margin-left: 5%; width: 90%;">
+                        <thead style=" border-top:none">
+                        <tr>
+                            <th scope="col" class="table-heading">Nombre Módulo</th>
+                            <th scope="col" class="table-heading">Acceso</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Módulos Ciudadano</td>
+                                <td>
+                                    <div class="custom-control custom-switch cs-disabled">
+                                        <input type="checkbox" class="custom-control-input" id="acceso-disabled-0" checked disabled>
+                                        <label class="custom-control-label" for="acceso-disabled-0"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            {%for modulo in modulos%}
+                            <tr>
+                                <td>{{modulo.nombre}}</td>
+                                <td>
+                                    <div class="custom-control custom-switch cs-disabled">
+                                        <input type="checkbox" class="custom-control-input" id="acceso-disabled-{{modulo.id}}" disabled>
+                                        <label class="custom-control-label" for="acceso-disabled-{{modulo.id}}"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-4" id="loading-row-permisos" style="padding-top: 10%; margin-left: -31%; display: none;">
                     <div id="lds-ring-permisos" class="lds-ring" style="display:block"><div></div><div></div><div></div><div></div></div>
                 </div>
-                <p class="loading-text-chart mb-4" id="loading-text-permisos" style="margin-left: -20%;">Cargando permisos...</p>
+                <p class="loading-text-chart mb-4" id="loading-text-permisos" style="margin-left: -20%; display: none;">Cargando permisos...</p>
             </div>
             
         </div>
@@ -98,5 +163,5 @@
 
         
 </div>
-<script src="/static/js/codigo.js"></script>
+<script src="/static/js/permisos-usuario.js"></script>
 {% endblock %}

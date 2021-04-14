@@ -1709,6 +1709,24 @@ def permisos_acceso():
     except Exception as e:
         return error(e,"permisos_acceso")
 
+@app.route('/permisos-acceso/modulos/<id>', methods = ['GET','POST'])
+def get_modulos(id):
+    try:
+        return jsonify(NegocioTipoUsuario.get_by_id(id).modulosAcceso)
+    except Exception as e:
+        return error(e,"permisos_acceso")
+
+@app.route('/permisos-acceso/modulos/all', methods = ['GET','POST'])
+def get_modulos_all():
+    try:
+        modulos = []
+        mods = NegocioModulo.get_all()
+        for mod in mods:
+            modulos.append(mod.id)
+        return jsonify(modulos)
+    except Exception as e:
+        return error(e,"permisos_acceso")
+
 '''
     -----------------------
     Quienes somos

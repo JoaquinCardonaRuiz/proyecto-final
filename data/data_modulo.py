@@ -13,7 +13,7 @@ class DatosModulo(Datos):
             cls.abrir_conexion()
             sql = ("SELECT idModulo, \
                            nombre \
-                           from modulos")
+                           from modulos order by nombre ASC")
             cls.cursor.execute(sql)
             mods = cls.cursor.fetchall()
             modulos = []
