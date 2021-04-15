@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/codigo.css')}}">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.3/clipboard.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+<!-- Sidebar import -->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+
+
+
+
+    <!-- Heading -->
+
+    <div class="container" id="heading-container">
+        <h3 class="heading">EcoTips</h3>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Informate sobre cómo vivir una vida más sustentable.</span></h6>
+    </div>
+    <a href="#section0" onclick="toggle_card(0)" id="section0"><img id="img-0" src="/static/img/ecotips0.png" style="width: 90%;margin-left: 5%;margin-top:5%;margin-bottom:5%"></a>
+    <div id="card0" hidden>
+        <div class="container" id="table-container" style="margin-top: -4%;padding-top: 3%;padding-left:3%;padding-right:3%;padding-bottom:2%;">
+            <h3 id="un-hogar-conectado-a-la-naturaleza">Un hogar conectado a la naturaleza</h3>
+            <p>Puede parecer que la salud de los ecosistemas que nos rodean están fuera de nuestras manos, pero incorporar plantas y árboles nativos a nuestras casas y patios nos puede ayudar a crear una ciudad que sea un refugio para la flora y la fauna autóctona, y ayudar a las nuevas generaciones a apreciar las formas de vida de nuestra región, y a crear ciudades conscientes de su impacto en la naturaleza, con hogares, calles, y espacios públicos que reflejen su región y su respeto por la flora que la puebla y la enriquece.</p>
+            <h4 id="recursos">Recursos</h4>
+            <p>Se trate de tu casa o de tu departamento, de tu espacio de trabajo o de la vereda que compartís con tus vecinos, hay muchas opciones para incoporar flora a tu espacio que provea aire puro y fresco, un ambiente harmonioso, y que colabore con la preservación de nuestros ecosistemas. En esta sección, te proveemos con la información necesaria para comenzar.</p>
+            <ul>
+            <li><p><strong>La Fundación de Historia Natural Félix de Azara</strong>, lleva más de 20 años investigando y conservando la riqueza natural de nuestro país, y lleva publicados incontables libros, revistas, artículos, e informes de acceso gratuito en su <a href="https://fundacionazara.org.ar/">página web</a>. En está sección queremos destacar uno de sus libros, <a href="https://www.fundacionazara.org.ar/img/libros/Cultivo-de-plantas-autoctonas.pdf">Cultivo de Plantas Autóctonas de la Argentina</a>, por Gustavo Aparicio. Se trata de una detallada guía sobre la jardinería autóctona para espacios domésticos, y hace un excelente trabajo de explorar qué plantas utilizar, cómo cultivarlas, y los beneficios de esta práctica.</p>
+            </li>
+            <li><p><strong>La Nación</strong> nos provee <a href="https://www.lanacion.com.ar/lifestyle/consejos-para-armar-tu-jardin-con-plantas-nativas-nid2099736/">una guía de jardinería local</a>, con algunas de plantas nativas que podemos utilizar, e instrucciones para darles un lugar en nuestros jardines. Escrito por Inés Pujana, con ayuda de Francisco García Erize, biólogo de la UBA especializado en flora autóctona y Alberto López, etnobiólogo.</p>
+            </li>
+            <li><p><strong>Aves Argentinas</strong> se dedica a la conservación de hábitats naturales en nuestro país hace más de un siglo, y en su <a href="https://www.avesargentinas.org.ar/">sitio web</a> proveen información de todo tipo sobre la flora y la fauna de nuestro país, junto con material y cursos sobre su conservación. Nos proveen con una conveniente <a href="https://www.avesargentinas.org.ar/plantas-nativas">lista interactiva de plantas nativas</a>, y una <a href="https://www.avesargentinas.org.ar/sites/default/files/Indicaciones%20de%20Siembra%20Nutricias%20de%20Mariposas%20de%20Buenos%20Aires%20%281%29.pdf">guía con indicaciones de siembra</a> para plantas nativas rioplantenses, en particular aquellas de las que se puede alimentar nuestra <a href="https://www.bfa.fcnym.unlp.edu.ar/catalogo/doc_num.php?explnum_id=428">gran variedad de mariposas</a>.</p>
+            </li>
+            <li><p><strong>Clarín</strong> ofrece una <a href="https://www.clarin.com/entremujeres/hogar-y-familia/plantas-nativas-medio-ambiente-necesita-recomendadas_0_qION2RjZw.html">guía de paisajismo con plantas nativas</a>, escrita por la paisajista Gisela Ofner. En el artículo, nos expone a los beneficios y la importancia de comprometerse a la flora autóctona.</p>
+            </li>
+            <li><p><strong>La Universidad Nacional de Córdoba</strong> ofrece bajo su editorial el libro <a href="https://editorial.unc.edu.ar/producto/cultivo-de-plantas-nativas-propagacion-y-viverismo-de-especies-de-argentina-central/">Cultivo de Plantas Nativas. Propagación y Viverismo de Especies de Argentina Central</a>, escrito por Cecilia Eynard, Ana Calviño y Lorena Ashworth, que contiene instrucciones y fotografías detalladas para el cultivo, propagación, y uso de árboles, arbustos, herbáceas, enredaderas, cactus, pastos, y helechos nativos.</p>
+            </li>
+            </ul>
+        </div>
+    </div>
+    <a href="#section1" onclick="toggle_card(1)" id="section1"><img id="img-1" src="/static/img/ecotips1.png" style="width: 90%;margin-left: 5%;margin-bottom:5%"></a>
+    <div id="card1" hidden>
+        <div class="container" id="table-container" style="margin-top: -4%;padding-top: 3%;padding-left:3%;padding-right:3%;padding-bottom:2%;">
+            <h3 id="this-is-an-example">This is an Example</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque risus  arcu, fermentum id venenatis eu, sagittis non enim. Nulla sed blandit  tellus. Praesent quis quam ultrices, gravida leo ut, sagittis erat.  Aliquam quis euismod eros, ut mollis tortor. Quisque placerat ac diam  quis viverra. Nulla nec faucibus mauris. Duis vestibulum mi orci, non  lacinia turpis aliquet eu. Proin id luctus quam, ac commodo mauris.  Proin sit amet quam sodales, aliquet urna a, scelerisque tellus. Vivamus ullamcorper libero felis, at luctus nibh laoreet in. Maecenas auctor  quam purus, sed convallis odio ullamcorper ut. Orci varius natoque  penatibus et magnis dis parturient montes, nascetur ridiculus mus. In  hac habitasse platea dictumst. Aliquam imperdiet nisl et orci tincidunt  aliquet. Aliquam quis nibh tortor.</p>
+            <ul>
+            <li>venenatis eu</li>
+            <li>venenatis eu</li>
+            <li>venenatis eu</li>
+            </ul>
+            <h4 id="title-2">Title 2</h4>
+            <p>convallis odio ullamcorper ut. Orci varius natoque  penatibus et magnis dis parturient montes, nascetur ridiculus mus. In  hac habitasse platea dictumst. Aliquam imperdiet nisl et orci tincidunt  aliquet. Aliquam quis nibh tortor.</p>
+        </div>
+    </div>
+    <a href="#section2" onclick="toggle_card(2)" id="section2"><img id="img-2" src="/static/img/ecotips2.png" style="width: 90%;margin-left: 5%;margin-bottom:5%"></a>
+    <div id="card2" hidden>
+        <div class="container" id="table-container" style="margin-top: -4%;padding-top: 3%;padding-left:3%;padding-right:3%;padding-bottom:2%;">
+            <h3 id="this-is-an-example">This is an Example</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque risus  arcu, fermentum id venenatis eu, sagittis non enim. Nulla sed blandit  tellus. Praesent quis quam ultrices, gravida leo ut, sagittis erat.  Aliquam quis euismod eros, ut mollis tortor. Quisque placerat ac diam  quis viverra. Nulla nec faucibus mauris. Duis vestibulum mi orci, non  lacinia turpis aliquet eu. Proin id luctus quam, ac commodo mauris.  Proin sit amet quam sodales, aliquet urna a, scelerisque tellus. Vivamus ullamcorper libero felis, at luctus nibh laoreet in. Maecenas auctor  quam purus, sed convallis odio ullamcorper ut. Orci varius natoque  penatibus et magnis dis parturient montes, nascetur ridiculus mus. In  hac habitasse platea dictumst. Aliquam imperdiet nisl et orci tincidunt  aliquet. Aliquam quis nibh tortor.</p>
+            <ul>
+            <li>venenatis eu</li>
+            <li>venenatis eu</li>
+            <li>venenatis eu</li>
+            </ul>
+            <h4 id="title-2">Title 2</h4>
+            <p>convallis odio ullamcorper ut. Orci varius natoque  penatibus et magnis dis parturient montes, nascetur ridiculus mus. In  hac habitasse platea dictumst. Aliquam imperdiet nisl et orci tincidunt  aliquet. Aliquam quis nibh tortor.</p>
+        </div>
+    </div>
+    
+
+        
+</div>
+<script src="/static/js/ecotips.js"></script>
+{% endblock %}

@@ -1,0 +1,18 @@
+# Un hogar conectado a la naturaleza
+
+Puede parecer que la salud de los ecosistemas que nos rodean están fuera de nuestras manos, pero incoporar plantas y árboles nativos a nuestras casas y patios nos puede ayudar a crear una ciudad que sea un refugio para la flora y la fauna autóctona, y ayudar a las nuevas generaciones a apreciar las formas de vida de nuestra región, y a crear ciudades conscientes de su impacto en la naturaleza, con hogares, calles, y espacios públicos que reflejen su región y su respeto por la flora que la puebla y la enriquece.
+
+## Recursos
+
+Se trate de tu casa o de tu departamento, de tu espacio de trabajo o de la vereda que compartís con tus vecinos, hay muchas opciones para incoporar flora a tu espacio que provea aire puro y fresco, un ambiente harmonioso, y que colabore con la preservación de nuestros ecosistemas. En esta sección, te proveemos con la información necesaria para comenzar.
+
+* **La Fundación de Historia Natural Félix de Azara**, lleva más de 20 años investigando y conservando la riqueza natural de nuestro país, y lleva publicados incontables libros, revistas, artículos, e informes de acceso gratuito en su [página web](https://fundacionazara.org.ar/). En está sección queremos destacar uno de sus libros, [Cultivo de Plantas Autóctonas de la Argentina](https://www.fundacionazara.org.ar/img/libros/Cultivo-de-plantas-autoctonas.pdf), por Gustavo Aparicio. Se trata de una detallada guía sobre la jardinería autóctona para espacios domésticos, y hace un excelente trabajo de explorar qué plantas utilizar, cómo cultivarlas, y los beneficios de esta práctica.
+
+* **La Nación** nos provee [una guía de jardinería local](https://www.lanacion.com.ar/lifestyle/consejos-para-armar-tu-jardin-con-plantas-nativas-nid2099736/), con algunas de plantas nativas que podemos utilizar, e instrucciones para darles un lugar en nuestros jardines. Escrito por Inés Pujana, con ayuda de Francisco García Erize, biólogo de la UBA especializado en flora autóctona y Alberto López, etnobiólogo.
+
+* **Aves Argentinas** se dedica a la conservación de hábitats naturales en nuestro país hace más de un siglo, y en su [sitio web](https://www.avesargentinas.org.ar/) proveen información de todo tipo sobre la flora y la fauna de nuestro país, junto con material y cursos sobre su conservación. Nos proveen con una conveniente [lista interactiva de plantas nativas](https://www.avesargentinas.org.ar/plantas-nativas), y una [guía con indicaciones de siembra](https://www.avesargentinas.org.ar/sites/default/files/Indicaciones%20de%20Siembra%20Nutricias%20de%20Mariposas%20de%20Buenos%20Aires%20%281%29.pdf) para plantas nativas rioplantenses, en particular aquellas de las que se puede alimentar nuestra [gran variedad de mariposas](https://www.bfa.fcnym.unlp.edu.ar/catalogo/doc_num.php?explnum_id=428).
+
+* **Clarín** ofrece una [guía de paisajismo con plantas nativas](https://www.clarin.com/entremujeres/hogar-y-familia/plantas-nativas-medio-ambiente-necesita-recomendadas_0_qION2RjZw.html), escrita por la paisajista Gisela Ofner. En el artículo, nos expone a los beneficios y la importancia de comprometerse a la flora autóctona.
+
+* **La Universidad Nacional de Córdoba** ofrece bajo su editorial el libro [Cultivo de Plantas Nativas. Propagación y Viverismo de Especies de Argentina Central](https://editorial.unc.edu.ar/producto/cultivo-de-plantas-nativas-propagacion-y-viverismo-de-especies-de-argentina-central/), escrito por Cecilia Eynard, Ana Calviño y Lorena Ashworth, que contiene instrucciones y fotografías detalladas para el cultivo, propagación, y uso de árboles, arbustos, herbáceas, enredaderas, cactus, pastos, y helechos nativos.
+

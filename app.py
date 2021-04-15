@@ -449,6 +449,23 @@ def confirmar_checkout(idPR, totalEP, totalARS):
         return dic
 
 
+
+
+
+
+''' 
+    -------
+    EcoTips
+    -------
+'''
+@app.route('/eco-tips')
+def ecotips():
+    return render_template('eco-tips.html',usuario = session["usuario"])
+
+
+
+
+
 ''' 
     -------
     Niveles
