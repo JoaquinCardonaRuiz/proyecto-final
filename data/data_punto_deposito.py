@@ -40,6 +40,38 @@ class DatosPuntoDeposito(Datos):
             if not(noClose):
                 cls.cerrar_conexion()
 
+    
+    @classmethod
+    def get_all_sin_filtro(cls, noClose = False):
+        """
+        Obtiene todos los Puntos de Depósito de la BD.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("select * from puntosDeposito order by nombre ASC")
+            cls.cursor.execute(sql)
+            puntosDeposito = cls.cursor.fetchall()
+            puntosDeposito_ = []
+            for punto in puntosDeposito:
+                #Se instancia sin los horarios ya que no se muestran, para no generar tráfico de datos innecesario.
+                if punto[3] == 'eliminado':
+                    direccion = None
+                else:
+                    direccion = DatosDireccion.get_one_id(punto[4])
+                materiales_ = DatosMaterial.get_all_byIdPuntoDep(punto[0],True)
+                materiales = []
+                for mat in materiales_:
+                    materiales.append(mat.id)
+                puntosDeposito_.append(PuntoDeposito(punto[0],direccion,punto[1],punto[2], materiales, None)) 
+            return puntosDeposito_
+            
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data.get_all()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error otodos los Puntos de Depósito desde la BD.")
+        finally:
+            if not(noClose):
+                cls.cerrar_conexion()
 
 
     @classmethod
