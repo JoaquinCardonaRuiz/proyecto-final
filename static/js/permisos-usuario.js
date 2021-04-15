@@ -2,6 +2,7 @@ var idModulos = [];
 var idTipoUsuario = false;
 var tipoUsuario = false;
 var tiposUsuarioNames = [];
+var page = 1;
 
 function setUserLabel(val){
     $("#tipo-usuario-sel").text(val);
@@ -131,5 +132,74 @@ function nextMsgEmail() {
 var messages = [
     "Estamos añadiendo el Tipo de Usuario...",
     "Ajustando algunos detalles",
+    "¡Casi listo! Últimos retoques"
+].reverse();
+
+function changeTrashColor(id){
+    $("#trash-" + String(id)).css("color","#ffffff"); 
+}
+
+function changeTrashColorBack(id){
+    $("#trash-" + String(id)).css("color","#f14e4eef"); 
+} 
+
+
+
+function setBajaLabel(nombre){
+    alert("hey");
+    $("#nombreTUbaja").text(String(nombre));
+}
+
+$('.list-group-item-del').click(function() {
+    nombreBaja = jQuery(this).find( ".my-0" ).text();
+    $("#nombreTUbaja").text(String(nombreBaja));
+    $("#list-group-baja").hide();
+    $("#subheader-baja").hide();
+    $("#bajaRow").fadeIn();
+    $("#secondary-btn-baja").text('Anterior');
+    $("#primary-btn-alert").prop('disabled',false);
+    $("#idTuBaja").val(jQuery(this).find( ".my-1" ).text())
+    page = 2;
+});
+
+function pageHandler(){
+    if (page == 1){
+        jQuery.noConflict();
+        $("#tuModalBaja").modal('hide');
+    }
+    else{
+        $("#bajaRow").hide();
+        $("#list-group-baja").fadeIn();
+        $("#subheader-baja").fadeIn();
+        $("#primary-btn-alert").prop('disabled',true);
+        $("#secondary-btn-baja").text('Cancelar');
+        page = 1;
+    }
+}
+
+function submitFormBaja(){
+    $("#bajaTUform").hide();
+    $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
+    $(".lds-ring").fadeIn(500);
+    $("#loadingRow").fadeIn(500);
+    $("#bottomBajaModalText").fadeIn(500);
+    $("#primary-btn-alert").prop('disabled',true);
+    $("#secondary-btn-baja").prop('disabled',true);
+    nextMsgBaja();
+    
+}
+
+function nextMsgBaja() {
+    if (messagesBaja.length == 1) {
+        $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500);
+
+    } else {
+        $('#bottomBajaModalText').html(messagesBaja.pop()).fadeIn(500).delay(10000).fadeOut(500, nextMsgBaja);
+    }
+};
+
+var messagesBaja = [
+    "Estamos eliminando el Tipo de Usuario...",
+    "Quitando permisos...",
     "¡Casi listo! Últimos retoques"
 ].reverse();

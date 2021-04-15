@@ -845,8 +845,7 @@ def baja_pr():
     
     if request.method == 'POST':
         id = request.form['idPuntoBaja']
-        print(id)
-        #NegocioPuntoRetiro.baja_pr(id)
+        NegocioPuntoRetiro.baja_pr(id)
         
     return redirect(url_for('gestion_pr'))
 

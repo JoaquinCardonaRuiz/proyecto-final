@@ -225,35 +225,46 @@
             <div class="row profile-loading-row mt-2" style="display: none;" id="loadingRow">
                 <div class="lds-ring" style="display: none;"><div></div><div></div><div></div><div></div></div>
             </div>
-            <form action="{{url_for('add_tipo_usuario')}}" method="POST" id="tuForm">
-                <div class="row subheader-row" id="subheader-alta-pd">
-                    <div class="col">
-                        <label class="subheader" id="subheader-alta">Seleccione el Tipo de Usuario que desea eliminar</label>
+            
+            <div class="row subheader-row" id="subheader-alta-pd">
+                <div class="col" id="subheader-baja">
+                    <label class="subheader" id="subheader-alta">Seleccione el Tipo de Usuario que desea eliminar</label>
+                </div>
+            </div>
+            <div class="row mb-2" id="fieldsRow1Alta1" style="margin-top: -4%;">
+                <ul class="list-group" id="list-group-baja" style="width: 80%; margin-left: 10%;">
+                    {%for tu in tipos_usuario%}
+                    {%if tu.nombre != 'Ciudadano'%}
+                    <li class="list-group-item d-flex justify-content-between lh-condensed list-group-item-del" onmouseover="changeTrashColor({{tu.id}});" onmouseout="changeTrashColorBack({{tu.id}});">
+                        <div>
+                          <h6 class="my-0">{{tu.nombre}}</h6>
+                          <h6 class="my-1" hidden>{{tu.id}}</h6>
+                          <small class="text-muted"></small>
+                        </div>
+                        <i class="fas fa-trash" id="trash-{{tu.id}}" style="color: #f14e4eef;"></i>
+                      </li>
+                    {%endif%}
+                    {%endfor%}
+                  </ul>
+            </div>
+            <div class="modal-body-baja" id="bajaRow" style="display: none; margin-bottom: -2%; margin-top: -8%;">
+                <div class="row" id="loadingRow">
+                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <form action="{{url_for('baja_pd')}}" method="POST" id="bajaTUform">
+                    <div class="row margin-bottom-row" id="fieldsRowBaja">
+                        <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark">
+                        <p class="bottom-modal-text-baja" id="baja-question">¿Está seguro que desea eliminar el <span id="nombreTUbaja"></span>?</p>
+                        <p class="bottom-modal-text less-margin-top"> Una vez eliminado, tanto el Tipo de Usuario como sus permisos de acceso no se podrán recuperar.</p>
+                        <input type="text" id="idTuBaja" name="idTuBaja" hidden>
                     </div>
-                </div>
-                <div class="row" id="fieldsRow1Alta1" style="margin-top: -4%;">
-                    <ul class="list-group" style="width: 80%; margin-left: 10%;">
-                        {%for tu in tipos_usuario%}
-                        <li class="list-group-item d-flex justify-content-between lh-condensed list-group-item-del" onclick="getModulos('{{tu.id}}');setUserLabel('{{tu.nombre}}');">
-                            <div>
-                              <h6 class="my-0">{{tu.nombre}}</h6>
-                              <small class="text-muted"></small>
-                            </div>
-                            <i class="fas fa-trash" style="color: #f14e4eef;"></i>
-                          </li>
-        
-                        </li>
-                        {%endfor%}
-                      </ul>
-                </div>
-            </form>
-            <div class="row bottom-row">
-                <p class="bottom-modal-text" id="bottomAltaModalTextEmail"></p>            
+                </form>
+                <p class="bottom-modal-text" id="bottomBajaModalText"></p>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn secondary-btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
-            <button type="button" class="btn primary-btn-alert" onclick="baja_nivel();" id="primary-btn-alert">Eliminar Tipo de Usuario</button>
+            <button type="button" class="btn secondary-btn" onclick="pageHandler();" id="secondary-btn-baja">Cancelar</button>
+            <button type="button" class="btn primary-btn-alert" onclick="submitFormBaja();" id="primary-btn-alert" disabled>Eliminar Tipo de Usuario</button>
         </div>
       </div>
     </div>
