@@ -228,7 +228,20 @@
             
             <div class="row subheader-row" id="subheader-alta-pd">
                 <div class="col" id="subheader-baja">
-                    <label class="subheader" id="subheader-alta">Seleccione el Tipo de Usuario que desea eliminar</label>
+                    <label class="subheader" id="subheader-alta-tu">Seleccione el Tipo de Usuario que desea eliminar</label>
+                </div>
+            </div>
+            <div class="row justify-content-center" id="selectReemplazoRow" style="display: none; margin-top: -2%; margin-bottom: 2%;" >
+                <select style="background:#fff;box-shadow:none;border: none; font-size: 15px; border-bottom: 2px solid #f14e4eef; width: 78% !important; margin-left: 0%;" id="tu-reemplazo" class="selectpicker selectpicker-nooutline" oninput="enable_disable_tu_baja(value);" data-live-search="true">
+                    <option value=-1 selected disabled>Por favor, seleccione un tipo de usuario de reemplazo</option>
+                    {%for tu in tipos_usuario%}
+                    {%if tu.nombre != 'Ciudadano'%}
+                        <option value='{{tu.id}},{{tu.nombre}}'>{{tu.nombre}}</option>
+                    {%endif%}
+                    {%endfor%}    
+                </select>
+                <div class="row mt-4">
+                    <p class="bottom-modal-text label-bottom" id="bottomAltaModalTextAltaPD" style="margin-top: 3%;">Una vez seleccionado el Tipo de Usuario de reemplazo, presione "Siguiente".</p>
                 </div>
             </div>
             <div class="row mb-2" id="fieldsRow1Alta1" style="margin-top: -4%;">
@@ -255,8 +268,9 @@
                     <div class="row margin-bottom-row" id="fieldsRowBaja">
                         <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark">
                         <p class="bottom-modal-text-baja" id="baja-question">¿Está seguro que desea eliminar el <span id="nombreTUbaja"></span>?</p>
-                        <p class="bottom-modal-text less-margin-top"> Una vez eliminado, tanto el Tipo de Usuario como sus permisos de acceso no se podrán recuperar.</p>
+                        <p class="bottom-modal-text less-margin-top">Los usuarios del tipo "<span id="nombreTUbaja2"></span>" pasarán a ser del tipo "<span id="nuevoNombre"></span>".<br>Una vez eliminado, tanto el Tipo de Usuario como sus permisos de acceso no se podrán recuperar.</p>
                         <input type="text" id="idTuBaja" name="idTuBaja" hidden>
+                        <input type="text" id="idTuBajaRemplazo" name="idTuBajaRemplazo" hidden>
                     </div>
                 </form>
                 <p class="bottom-modal-text" id="bottomBajaModalText"></p>
@@ -264,7 +278,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn secondary-btn" onclick="pageHandler();" id="secondary-btn-baja">Cancelar</button>
-            <button type="button" class="btn primary-btn-alert" onclick="submitFormBaja();" id="primary-btn-alert" disabled>Eliminar Tipo de Usuario</button>
+            <button type="button" class="btn primary-btn-alert" onclick="submitFormBaja();" id="primary-btn-alert" disabled>Siguiente</button>
         </div>
       </div>
     </div>
