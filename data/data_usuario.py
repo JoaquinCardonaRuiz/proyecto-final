@@ -318,7 +318,7 @@ class DatosUsuario(Datos):
             cls.cerrar_conexion()
 
     @classmethod
-    def alta(cls, email, password, nroDoc=False, idTipoDoc=False, nombre=False, apellido=False,idTipoUsuario=False,idDireccion=False,idNivel=False,img=False,estado=False, activacion=False, noClose=False):
+    def alta(cls, email, password, fecha=False,nroDoc=False, idTipoDoc=False, nombre=False, apellido=False,idTipoUsuario=False,idDireccion=False,idNivel=False,img=False,estado=False, activacion=False, noClose=False):
         """
         Da de alta un usuario en la BD.
         """
@@ -329,8 +329,8 @@ class DatosUsuario(Datos):
                 cls.cursor.execute(sql)
                 id_asignado = cls.cursor.fetchone()[0]
                 code = str(Utils.encripta_codigo(str(email) + str(password) + str(id_asignado)))
-                sql = ("INSERT into usuarios (email,password,estado,codigo_registro) values (%s,%s,%s,%s)")
-                values = (email, password,"no-verificado",code)
+                sql = ("INSERT into usuarios (email,password,estado,codigo_registro,fechaReg) values (%s,%s,%s,%s,%s)")
+                values = (email, password,"no-verificado",code,fecha)
                 cls.cursor.execute(sql, values)
                 cls.db.commit()
                 return code
