@@ -355,6 +355,69 @@ class DatosUsuario(Datos):
 
 
     @classmethod
+    def get_cant_usuarios(cls):
+        """
+        Obtiene los movimientos de un material en base a su id, el tipo y el mes.
+        """
+        try:
+            cls.abrir_conexion()
+            d = datetime.datetime.now()
+            start_month = int(d.strftime("%m"))
+            start_year = int(d.year)
+            current_month = start_month
+            current_year = start_year
+            sql = ("SELECT count(*) from usuarios")
+            cls.cursor.execute()
+            cant = cls.cursor.fetchone[0]
+            data = []
+            sql = ("SELECT min(fechaReg) from usuarios")
+            cls.cursor.execute()
+            res = cls.cursor.fetchone()
+            if res != None:
+                res = datetime.datetime.now()
+            else:
+                fecha_min = res[0]
+            #TODO: calcular la cantidad de meses de diferencia entre la fecha actua y la que esta en fecha_min para iterar el for
+            for i in range(1,13):
+                #valido si es el mes actual, en cuyo caso, aplica el stock actual.
+                if current_month == start_month and current_year == start_year:
+                    data.append(cant)
+                    current_month -= 1
+                else:
+                    #Si no lo es, busco en la BD los movimientos del mes siguiente para restarselos al valor guardado en cantidad.
+                    #Usuarios
+                    sql = ("select count(*) from usuarios where month(fechaReg)=%s and year(fechaReg)=%s")
+                    if current_month == 12:
+                        values = (id, 1, current_year+1)
+                    else:
+                        values = (id, current_month+1, current_year)
+                    cls.cursor.execute(sql,values)
+                    valCantMes = cls.cursor.fetchone()[0]
+
+                    if valCantMes == None:
+                        valCantMes = 0
+
+                    #Aplico los movimientos del mes al stock
+                    cant -= valCantMes
+                    data.append(cant)
+
+                    if current_month != 1:
+                        current_month -= 1
+                    else:
+                        current_month = 12
+                        current_year -= 1
+            print(data)
+            return data
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.get_movimientos_stock()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
     def buscar_info_user(cls,busqueda):
         """
         Obtiene todos los usuarios según su ID, nombre completo, email, o documento
