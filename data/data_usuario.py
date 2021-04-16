@@ -354,7 +354,7 @@ class DatosUsuario(Datos):
 
 
     @classmethod
-    def get_cant_usuarios(cls,id):
+    def get_cant_usuarios(cls):
         """
         Obtiene los movimientos de un material en base a su id, el tipo y el mes.
         """
