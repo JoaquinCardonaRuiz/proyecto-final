@@ -76,7 +76,7 @@ def main():
                 depositos = session["usuario"].depositos[:5]
             else:
                 depositos = session["usuario"].depositos
-            puntosDep = NegocioPuntoDeposito.get_all()
+            puntosDep = NegocioPuntoDeposito.get_all_sin_filtro()
             materiales = NegocioMaterial.get_all()
             max_level = NegocioNivel.get_min_max_niveles()[1]
             tipoUsuario = NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario)
