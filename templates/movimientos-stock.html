@@ -98,7 +98,7 @@
 
                         {%for art in articulos%}
                             {%if art.id == ss.articulos.idTipoArticulo%}
-                            <td data-toggle="tooltip" data-placement="right" title="{{art.nombre}}">{{art.nombre|truncate(25,true,'...')}}</td>
+                            <td data-toggle="tooltip" data-placement="right" title="{{art.nombre}}">{{art.nombre|truncate(20,true,'...')}}</td>
                             <td>Artículo</td>
                             <td value="Entrada"><i class="fas fa-caret-down color-negativo caret-up"></i> -<span id="ss-{{ss.id + art.id}}"></span></td>
                             <script>$("#ss-{{ss.id + art.id}}").text(parseFloat('{{ss.articulos.cantidad}}'));</script>
@@ -115,7 +115,7 @@
 
                         {%for art in articulos%}
                             {%if art.id == sm.articulos.idTipoArticulo%}
-                            <td data-toggle="tooltip" data-placement="right" title="{{art.nombre}}">{{art.nombre|truncate(25,true,'...')}}</td>
+                            <td data-toggle="tooltip" data-placement="right" title="{{art.nombre}}">{{art.nombre|truncate(20,true,'...')}}</td>
                             <td>Artículo</td>
                             <td value="Entrada"><i class="fas fa-caret-down color-negativo caret-up"></i> -<span id="sm-{{sm.id + art.id}}"></span></td>
                             <script>$("#sm-{{sm.id + art.id}}").text(parseFloat('{{sm.articulos.cantidad}}'));</script>
@@ -132,7 +132,7 @@
 
                         {%for art in articulos%}
                             {%if art.id == ped.articulos.idTipoArticulo%}
-                            <td data-toggle="tooltip" data-placement="right" title="{{art.nombre}}">{{art.nombre|truncate(25,true,'...')}}</td>
+                            <td data-toggle="tooltip" data-placement="right" title="{{art.nombre}}">{{art.nombre|truncate(20,true,'...')}}</td>
                             <td>Artículo</td>
                             <td value="Entrada"><i class="fas fa-caret-down color-negativo caret-up"></i> -<span id="ped-{{ped.id}}-{{art.id}}"></span></td>
                             <script>$("#ped-{{ped.id}}-{{art.id}}").text(parseFloat('{{ped.articulos.cantidad}}'));</script>
@@ -149,7 +149,7 @@
 
                         {%for mat in materiales%}
                             {%if mat.id == dep.material.idMaterial%}
-                            <td data-toggle="tooltip" data-placement="right" title="{{mat.nombre}}">{{mat.nombre|truncate(25,true,'...')}}</td>
+                            <td data-toggle="tooltip" data-placement="right" title="{{mat.nombre}}">{{mat.nombre|truncate(20,true,'...')}}</td>
                             <td>Material</td>
                             <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="dep-{{dep.id}}-{{mat.id}}"></span></td>
                             <script>$("#dep-{{dep.id}}-{{mat.id}}").text(parseFloat('{{dep.material.cantidad}}'));</script>
@@ -166,7 +166,7 @@
 
                         {%for mat in materiales%}
                             {%if mat.id == ent.material.idMaterial%}
-                            <td data-toggle="tooltip" data-placement="right" title="{{mat.nombre}}">{{mat.nombre|truncate(25,true,'...')}}</td>
+                            <td data-toggle="tooltip" data-placement="right" title="{{mat.nombre}}">{{mat.nombre|truncate(20,true,'...')}}</td>
                             <td>Material</td>
                             <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="ent-{{ent.id}}-{{mat.id}}"></span></td>
                             <script>$("#ent-{{ent.id}}-{{mat.id}}").text(parseFloat('{{ent.material.cantidad}}'));</script>
@@ -183,7 +183,7 @@
 
                             {%for ins in insumos%}
                                 {%if ins.id == prod.insumos.idInsumo%}
-                                <td data-toggle="tooltip" data-placement="right" title="{{ins.nombre}}">{{ins.nombre|truncate(25,true,'...')}}</td>
+                                <td data-toggle="tooltip" data-placement="right" title="{{ins.nombre}}">{{ins.nombre|truncate(20,true,'...')}}</td>
                                 <td>Insumo</td>
                                 <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="prod-ins-{{prod.id}}"></span></td>
                                 <script>$("#prod-ins-{{prod.id}}").text(parseFloat('{{prod.insumos.cantidad}}'));</script>
@@ -197,7 +197,7 @@
                             <th>Producción Insumo #{{prod.id}}</th>
                             {%for mat in materiales%}
                                 {%if ele.idMaterial == mat.id%}
-                                <td data-toggle="tooltip" data-placement="right" title="{{mat.nombre}}">{{mat.nombre|truncate(25,true,'...')}}</td>
+                                <td data-toggle="tooltip" data-placement="right" title="{{mat.nombre}}">{{mat.nombre|truncate(20,true,'...')}}</td>
                                 <td>Material</td>
                                 <td value="Entrada"><i class="fas fa-caret-down color-negativo caret-up"></i> -<span id="ele-{{prod.id}}-{{mat.id}}"></span></td>
                                 <script>$("#ele-{{prod.id}}-{{mat.id}}").text(parseFloat('{{ele.cantidad}}'));</script>
@@ -215,7 +215,7 @@
 
                             {%for art in articulos%}
                                 {%if art.id == prod.articulos.idTipoArticulo%}
-                                <td data-toggle="tooltip" data-placement="right" title="{{art.nombre}}">{{art.nombre|truncate(25,true,'...')}}</td>
+                                <td data-toggle="tooltip" data-placement="right" title="{{art.nombre}}">{{art.nombre|truncate(20,true,'...')}}</td>
                                 <td>Artículo</td>
                                 <td value="Entrada"><i class="fas fa-caret-up color-activo caret-up"></i> +<span id="prod-art-{{prod.id}}"></span></td>
                                 <script>$("#prod-art-{{prod.id}}").text(parseFloat('{{prod.articulos.cantidad}}'));</script>
@@ -229,7 +229,7 @@
                             <th>Producción Artículo #{{prod.id}}</th>
                             {%for ins in insumos%}
                                 {%if ele.idInsumo == ins.id%}
-                                <td data-toggle="tooltip" data-placement="right" title="{{ins.nombre}}">{{ins.nombre|truncate(25,true,'...')}}</td>
+                                <td data-toggle="tooltip" data-placement="right" title="{{ins.nombre}}">{{ins.nombre|truncate(20,true,'...')}}</td>
                                 <td>Insumo</td>
                                 <td value="Entrada"><i class="fas fa-caret-down color-negativo caret-up"></i> -<span id="ele2-{{ins.id}}-{{prod.id}}"></span></td>
                                 <script>$("#ele2-{{ins.id}}-{{prod.id}}").text(parseFloat('{{ele.cantidad}}'));</script>
