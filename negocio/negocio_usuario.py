@@ -5,6 +5,7 @@ from negocio.negocio_direccion import NegocioDireccion
 from negocio.negocio_nivel import NegocioNivel
 from negocio.negocio_tipo_documento import NegocioTipoDocumento
 from data.data_usuario import DatosUsuario
+from datetime import datetime, timedelta
 from utils import Utils
 import re
 
@@ -15,7 +16,9 @@ class NegocioUsuario(Negocio):
     def alta(cls,email,password):
         try:
             if str(email) not in DatosUsuario.get_all_emails():
-                return DatosUsuario.alta(email,password)
+                format_str = '%Y-%m-%d' # Formato de la fecha
+                fecha = datetime.strptime(datetime.now(), format_str)
+                return DatosUsuario.alta(email,password,fecha=fecha)
             else:
                 return False
         except Exception as e:
