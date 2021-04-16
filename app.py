@@ -1634,6 +1634,8 @@ def get_chart_data_art(id):
     PRODUCCION
     ----------
 '''
+
+
 @app.route('/reportes-admin')
 def reportes_admin():
     materiales = NegocioMaterial.get_all()
