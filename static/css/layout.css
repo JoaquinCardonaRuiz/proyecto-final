@@ -188,7 +188,7 @@ html {
 	scroll-behavior: smooth;
   }
 
-.fa-sign-out-alt,.fa-barcode,.fa-map-marked-alt,.fa-lightbulb,.fa-boxes, .fa-user-tie{
+.fa-sign-out-alt,.fa-barcode,.fa-map-marked-alt,.fa-lightbulb,.fa-boxes, .fa-user-tie, .fa-box,.fa-pallet,.fa-track-loading,.fa-users,.fa-recycle,.fa-paper-plane,.fa-money-check-alt,.fa-file-invoice-dollar,.fa-dollar-sign,.fa-user-check,.fa-compass,.fa-map-marked-alt{
 	color: #95C22B !important;
 }
 
