@@ -58,6 +58,8 @@ function puntosRet(){
 }
 
 function stockMats_data(id, cant_meses=24){
+
+    document.getElementById("chartContainer").innerHTML ="";
     $("#chart-row-mat").hide();
     $("#loading-row-mat").fadeIn();
     $("#loading-text-mat").fadeIn();
@@ -80,50 +82,64 @@ function stockMats_data(id, cant_meses=24){
         $("#loading-row-mat").hide();
         $("#loading-text-mat").hide();
         $("#chart-row-mat").fadeIn();
-        dataSet = [];
+        datos = [];
         result = result.reverse();
         for (var i=result.length-1; i >= 0;i--){
-            dataSet.push({x:Number(i), y: result[i],label:String(months[i])})
+            datos.push([String(months[i]),result[i]]);
         }
-        var chart = new CanvasJS.Chart("chartContainer", {
-            animationEnabled: true,
-            theme: "light2",
-            title:{
-              text: ""
-            },
-            axisY: {
-              gridThickness: 0,
-              stripLines: [
-                {
-                  value: 0,
-                  showOnTop: true,
-                  color: "gray",
-                  thickness: 2
-                }
-              ]
-            },
-            data: [{        
-              type: "line",
-              lineColor: "#95C22B",
-              color:"#95C22B", 
-              indexLabelFontSize: 16,
-              dataPoints: dataSet
-            }]
-          });
-          chart.render();
+        console.log(datos);
+
+        //Creo grafico
+
+        // map data for the first series, take x from the zero column and value from the first column of data set
+        var seriesData = datos.reverse();
+
+        // create line chart
+        var chart = anychart.area();
+
+        // turn on chart animation
+        chart.animation(true);
+
+        // axes settings
+        chart.yAxis().title('Stock');
+
+        var xAxis = chart.xAxis();
+        xAxis.title('Fecha');
+
+
+        // create a series with mapped data
+        var series = chart.area(seriesData);
+        series.name('Stock');
+        series.hovered().markers().enabled(true).type('circle').size(4);
+        series.markers(true);
+        series.color("#95C22B");
+        // set chart tooltip and interactivity settings
+        chart
+          .tooltip()
+          .position('center-top')
+          .anchor('center-bottom')
+          .positionMode('point');
+
+        chart.interactivity().hoverMode('by-x');
+
+        // set container id for the chart
+        chart.container('chartContainer');
+        // initiate chart drawing
+        chart.draw();
+
 
 
           //Lleno tabla
           document.getElementById("tbody-stockMats").innerHTML = "";
-          dsrev = dataSet.reverse();
+          dsrev = datos.reverse();
           for(var k in dsrev){
             var tr = document.createElement("tr");
             var td1 = document.createElement("td");
-            td1.innerHTML=dsrev[k].label;
+            td1.innerHTML=dsrev[k][0];
 
             var td2 = document.createElement("td");
             if(k+1 < dsrev.length){
-              change = dsrev[k].y - dsrev[Number(k)+1].y;
+              change = dsrev[k][1] - dsrev[Number(k)+1][1];
               if(change > 0){
                 td2.innerHTML="<i class='fas fa-caret-up color-activo caret-up'></i>"+"+"+change.toString();
               }else if (change < 0){
@@ -135,12 +151,13 @@ function stockMats_data(id, cant_meses=24){
               td2.innerHTML="0";
             }
             var td3 = document.createElement("td");
-            td3.innerHTML=dsrev[k].y;
+            td3.innerHTML=dsrev[k][1];
 
             tr.appendChild(td1);
             tr.appendChild(td3);
             tr.appendChild(td2);
             document.getElementById("tbody-stockMats").appendChild(tr);
+          
           }
-    });
+        });
 }
