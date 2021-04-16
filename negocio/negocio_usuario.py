@@ -275,13 +275,7 @@ class NegocioUsuario(Negocio):
                 return DatosUsuario.get_all_emails(uid)
         except Exception as e:
             raise e
-            
-    @classmethod
-    def get_cant_usuarios(cls):
-        try:
-            return DatosUsuario.get_cant_usuarios()
-        except Exception as e:
-            raise e
+
 
     @classmethod
     def get_all_documentos(cls,uid=False):
