@@ -1,6 +1,5 @@
 const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-];
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
 function openGraphModal(option){
     document.getElementById("open-graph-modal").click();
@@ -78,14 +77,13 @@ function stockMats_data(id, cant_meses=24){
         for (i = 0; i <= parseInt(d.getMonth()); i++){
             months.push(monthNames[i] + " " + String(d.getFullYear()));
         }
-        console.log(months);
         $("#loading-row-mat").hide();
         $("#loading-text-mat").hide();
         $("#chart-row-mat").fadeIn();
         dataSet = [];
         result = result.reverse();
-        for (var i=0; i < result.length;i++){
-            dataSet.push({x:i+1, y: result[i],label:months[i]})
+        for (var i=result.length-1; i >= 0;i--){
+            dataSet.push({x:Number(i), y: result[i],label:String(months[i])})
         }
         var chart = new CanvasJS.Chart("chartContainer", {
             animationEnabled: true,
