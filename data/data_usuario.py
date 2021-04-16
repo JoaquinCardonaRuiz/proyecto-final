@@ -353,7 +353,6 @@ class DatosUsuario(Datos):
                 cls.cerrar_conexion()
 
 
-
     @classmethod
     def get_cant_usuarios(cls):
         """
@@ -377,6 +376,7 @@ class DatosUsuario(Datos):
                 res = datetime.datetime.now()
             else:
                 fecha_min = res[0]
+                print(fecha_min)
             #TODO: calcular la cantidad de meses de diferencia entre la fecha actua y la que esta en fecha_min para iterar el for
             for i in range(1,13):
                 #valido si es el mes actual, en cuyo caso, aplica el stock actual.
