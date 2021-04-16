@@ -1,4 +1,7 @@
 from data.data import Datos
+from data.data_punto_deposito import DatosPuntoDeposito
+from data.data_punto_retiro import DatosPuntoRetiro
+
 import custom_exceptions
 import datetime
 
@@ -319,11 +322,106 @@ class DatosReportes(Datos):
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT ")
-            return True
+
+            #Todos los depósitos
+            sql = ("SELECT count(*) from depositos")
+            cls.cursor.execute(sql)
+            total_depositos = cls.cursor.fetchone()[0]
+            if total_depositos == None:
+                total_depositos = 0
+            
+            #Depósitos NO acreditados
+            sql = ("select count(*) from depositos where idUsuario is Null;")
+            cls.cursor.execute(sql)
+            dep_no_acreditados = cls.cursor.fetchone()[0]
+            if dep_no_acreditados == None:
+                dep_no_acreditados = 0
+            
+            #Depósitos NO acreditados
+            sql = ("select count(*) from depositos where idUsuario is not Null;")
+            cls.cursor.execute(sql)
+            dep_acreditados = cls.cursor.fetchone()[0]
+            if dep_acreditados == None:
+                dep_acreditados = 0
+            
+            porcentaje_acreditados = float(dep_acreditados) * 100/float(total_depositos)
+            porcentaje_no_acreditados = float(dep_no_acreditados) * 100/float(total_depositos)
+            return [porcentaje_acreditados,porcentaje_no_acreditados]
 
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_material.ganancias_art()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
+    def porcentaje_dep_por_pd(cls):
+        """
+        Obtiene los movimientos de un material en base a su id, el tipo y el mes.
+        """
+        try:
+            cls.abrir_conexion()
+            data = []
+            #Todos los depósitos
+            sql = ("SELECT count(*) from depositos where estado !='eliminado'")
+            cls.cursor.execute(sql)
+            total_depositos = cls.cursor.fetchone()[0]
+            if total_depositos == None:
+                total_depositos = 0
+            
+            #Depósitos por PD
+            pds = DatosPuntoDeposito.get_all_sin_filtro()
+            for pd in pds:
+                sql = ("select count(*) from depositos where idPunto = %s and estado !='eliminado'")
+                values = (pd.id,)
+                cls.cursor.execute(sql,values)
+                cant_dep_pd = cls.cursor.fetchone()[0]
+                if cant_dep_pd == None:
+                    cant_dep_pd = 0
+                porcentaje_dep_pd = float(cant_dep_pd) * 100/ float(total_depositos)
+                data.append([pd.nombre,porcentaje_dep_pd])
+            
+            return data
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.porcentaje_dep_por_pd()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
+        finally:
+            cls.cerrar_conexion()
+    
+    @classmethod
+    def porcentaje_ped_por_pr(cls):
+        """
+        Obtiene los movimientos de un material en base a su id, el tipo y el mes.
+        """
+        try:
+            cls.abrir_conexion()
+            data = []
+            #Todos los depósitos
+            sql = ("SELECT count(*) from pedidos where estado != 'eliminado'")
+            cls.cursor.execute(sql)
+            total_pedidos = cls.cursor.fetchone()[0]
+            if total_pedidos == None:
+                total_pedidos = 0
+            
+            #Pedidos por PR
+            prs = DatosPuntoRetiro.get_all(True,False)
+            for pr in prs:
+                sql = ("select count(*) from pedidos where idPunto = %s and estado !='eliminado'")
+                values = (pr.id,)
+                cls.cursor.execute(sql,values)
+                cant_ped_pr = cls.cursor.fetchone()[0]
+                if cant_ped_pr == None:
+                    cant_ped_pr = 0
+                porcentaje_ped_pr = float(cant_ped_pr) * 100/ float(total_pedidos)
+                data.append([pr.nombre,porcentaje_ped_pr])
+            
+            return data
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.porcentaje_ped_por_pr()",
                                                     msj=str(e),
                                                     msj_adicional="Error actualizando el stock de un material en la BD.")
         finally:

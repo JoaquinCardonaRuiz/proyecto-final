@@ -303,7 +303,7 @@ function openModalMateriales(id, nombre){
                 }
                 append = start + id + totalEP + totalARS + fechaEnc + fechaRet + estado;
     
-                //TODO: Hacer if para asignar a cada tabla, según su estado.
+                
                 $('#content-table-modal-pedidos').append(append);
             }
         }
@@ -1331,7 +1331,7 @@ function setHorariosModValues(id){
     });
 }
 
-function redirect(){
+function redirectPR(){
     window.location.href = redirect_link;
 }
 

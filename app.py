@@ -1634,6 +1634,8 @@ def get_chart_data_art(id):
     PRODUCCION
     ----------
 '''
+
+
 @app.route('/reportes-admin')
 def reportes_admin():
     materiales = NegocioMaterial.get_all()
@@ -1668,6 +1670,21 @@ def ganancias_art_totales(meses, idArt):
 def get_movimientos_stock_materiales(meses, idMat):
     stock = NegocioMaterial.get_by_id(idMat).stock
     cants = NegocioReportes.get_movimientos_stock_materiales(idMat,stock,meses)
+    return jsonify(cants)
+
+@app.route('/reportes-admin/porcentaje-dep-acreditados/')
+def porcentaje_dep_acreditados():
+    cants = NegocioReportes.porcentaje_dep_acreditados()
+    return jsonify(cants)
+
+@app.route('/reportes-admin/porcentaje-dep-pd/')
+def porcentaje_dep_por_pd():
+    cants = NegocioReportes.porcentaje_dep_por_pd()
+    return jsonify(cants)
+
+@app.route('/reportes-admin/porcentaje-ped-pr/')
+def porcentaje_ped_por_pr():
+    cants = NegocioReportes.porcentaje_ped_por_pr()
     return jsonify(cants)
 
 ''' 
