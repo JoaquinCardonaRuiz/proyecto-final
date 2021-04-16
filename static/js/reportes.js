@@ -112,6 +112,33 @@ function stockMats_data(id, cant_meses=24){
               dataPoints: dataSet
             }]
           });
-          chart.render(); 
+          chart.render();
+
+
+          //Lleno tabla
+          for(var k in dataSet.reverse()){
+            var tr = document.createElement("tr");
+            var td1 = document.createElement("td");
+            td1.innerHTML=dataSet[k].label;
+
+            var td2 = document.createElement("td");
+            if(k>0){
+              change = dataSet[k].y - dataSet[k-1].y;
+              if(change > 0){
+                td2.innerHTML="+"+change.toString();
+              }else{
+                td2.innerHTML=change.toString();
+              }
+            }else{
+              td2.innerHTML="0";
+            }
+            var td3 = document.createElement("td");
+            td3.innerHTML=dataSet[k].y;
+
+            tr.appendChild(td1);
+            tr.appendChild(td3);
+            tr.appendChild(td2);
+            document.getElementById("tbody-stockMats").appendChild(tr);
+          }
     });
 }
