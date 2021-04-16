@@ -116,16 +116,20 @@ function stockMats_data(id, cant_meses=24){
 
 
           //Lleno tabla
-          for(var k in dataSet.reverse()){
+          document.getElementById("tbody-stockMats").innerHTML = "";
+          dsrev = dataSet.reverse();
+          for(var k in dsrev){
             var tr = document.createElement("tr");
             var td1 = document.createElement("td");
-            td1.innerHTML=dataSet[k].label;
+            td1.innerHTML=dsrev[k].label;
 
             var td2 = document.createElement("td");
-            if(k>0){
-              change = dataSet[k].y - dataSet[k-1].y;
+            if(k+1 < dsrev.length){
+              change = dsrev[k].y - dsrev[Number(k)+1].y;
               if(change > 0){
-                td2.innerHTML="+"+change.toString();
+                td2.innerHTML="<i class='fas fa-caret-up color-activo caret-up'></i>"+"+"+change.toString();
+              }else if (change < 0){
+                td2.innerHTML="<i class='fas fa-caret-down color-negativo caret-up'></i>" + change.toString();
               }else{
                 td2.innerHTML=change.toString();
               }
@@ -133,7 +137,7 @@ function stockMats_data(id, cant_meses=24){
               td2.innerHTML="0";
             }
             var td3 = document.createElement("td");
-            td3.innerHTML=dataSet[k].y;
+            td3.innerHTML=dsrev[k].y;
 
             tr.appendChild(td1);
             tr.appendChild(td3);
