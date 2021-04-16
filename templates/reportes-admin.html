@@ -174,12 +174,12 @@
                 <h5 class="table-title" style="margin-left: 6%;">Niveles de Stock de Materiales</h5>
                 <div class="graph-row" id="stockMats" style="display: none;">
                     <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
-                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-mat-time-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data($('#stock-mat-sp').val(),value)" data-live-search="true">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-mat-time-sp" class="selectpicker selectpicker-nooutline" oninput="stock_data($('#stock-mat-sp').val(),value)" data-live-search="true">
                                 <option value=12>&nbsp; 1 año</option>
                                 <option value=36>&nbsp; 3 años</option>
                                 <option value=60>&nbsp; 5 años</option>    
                         </select>
-                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 30% !important; margin-right: 7%;" id="stock-mat-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data(value, $('#stock-mat-time-sp').val())" data-live-search="true">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 30% !important; margin-right: 7%;" id="stock-mat-sp" class="selectpicker selectpicker-nooutline" oninput="stock_data(value, $('#stock-mat-time-sp').val())" data-live-search="true">
                             {%for mat in materiales%}
                                 <option value={{mat.id}}>&nbsp; {{mat.nombre}}</option>
                             {%endfor%}
@@ -192,7 +192,7 @@
                 </div>
                 <p class="loading-text-chart mb-4" id="loading-text-mat">Cargando gráfico...</p>
                 <div class="row mb-4" id="chart-row-mat">
-                    <div id="chartContainer" class="mt-4 mb-4" style="height: 300px; width: 86%; margin-left: 7%;"></div>
+                    <div id="chartContainer" class="mt-4 mb-4" style="height: 300px; width: 89%; margin-left: 5%;"></div>
                 </div>
                 <div class="row mt-4" id="loading-row-mat" style="padding-top: 3%;">
                 </div>
