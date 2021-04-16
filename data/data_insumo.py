@@ -261,7 +261,7 @@ class DatosInsumo(Datos):
                         valStockProdIns = 0
                     
                     #Producción Articulos
-                    sql = ("select sum(iu.cantidad * prodTipArt.cantidad) from prodTipArt right join insumosUtilizados as iu on iu.idProd = prodTipArt.idProdTipArt where idInsumo = %s and month(fecha)=%s and year(fecha)=%s")
+                    sql = ("select sum(iu.cantidad) from prodTipArt right join insumosUtilizados as iu on iu.idProd = prodTipArt.idProdTipArt where idInsumo = %s and month(fecha)=%s and year(fecha)=%s")
                     if current_month == 12:
                         values = (id, 1, current_year+1)
                     else:

@@ -289,7 +289,7 @@ class DatosMaterial(Datos):
                         valStockEnt = 0
                     
                     #Producciones insumos
-                    sql = ("select sum(mu.cantidad * prodInsumos.cantidad) from prodInsumos right join materialesUtilizados as mu on mu.idProd = prodInsumos.idprodInsumo where idMaterial = %s and month(fecha)=%s and year(fecha)=%s;")
+                    sql = ("select sum(mu.cantidad) from prodInsumos right join materialesUtilizados as mu on mu.idProd = prodInsumos.idprodInsumo where idMaterial = %s and month(fecha)=%s and year(fecha)=%s;")
                     if current_month == 12:
                         values = (id, 1, current_year+1)
                     else:
@@ -299,6 +299,7 @@ class DatosMaterial(Datos):
 
                     if valStockProd == None:
                         valStockProd = 0
+                    print(valStockProd)
 
                     #Aplico los movimientos del mes al stock
                     stock -= valStockDep

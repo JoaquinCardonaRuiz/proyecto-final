@@ -37,3 +37,10 @@ class NegocioReportes():
             return DatosReportes.ganancias_art_totales(id,cant_meses)
         except Exception as e:
             raise e
+    
+    @classmethod
+    def get_movimientos_stock_materiales(cls,id,stock,cant_meses):
+        try:
+            return DatosReportes.get_movimientos_stock_materiales(id,stock,cant_meses)
+        except Exception as e:
+            raise e

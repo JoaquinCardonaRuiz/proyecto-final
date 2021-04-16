@@ -1636,7 +1636,8 @@ def get_chart_data_art(id):
 '''
 @app.route('/reportes-admin')
 def reportes_admin():
-    return render_template('reportes-admin.html')
+    materiales = NegocioMaterial.get_all()
+    return render_template('reportes-admin.html', materiales = materiales)
 
 @app.route('/reportes-admin/get-cant-usuarios')
 def get_cant_usuarios():
@@ -1661,6 +1662,12 @@ def ganancias_art(meses, idArt):
 @app.route('/reportes-admin/ganancias-art-totales/<meses>/<idArt>')
 def ganancias_art_totales(meses, idArt):
     cants = NegocioReportes.ganancias_art_totales(idArt,meses)
+    return jsonify(cants)
+
+@app.route('/reportes-admin/movimientos-stock-mat/<meses>/<idMat>')
+def get_movimientos_stock_materiales(meses, idMat):
+    stock = NegocioMaterial.get_by_id(idMat).stock
+    cants = NegocioReportes.get_movimientos_stock_materiales(idMat,stock,meses)
     return jsonify(cants)
 
 ''' 
