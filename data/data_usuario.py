@@ -367,7 +367,7 @@ class DatosUsuario(Datos):
             current_year = start_year
             sql = ("SELECT count(*) from usuarios")
             cls.cursor.execute()
-            cant_actual = cls.cursor.fetchone[0]
+            cant = cls.cursor.fetchone[0]
             data = []
             sql = ("SELECT min(fechaReg) from usuarios")
             cls.cursor.execute()
@@ -376,54 +376,29 @@ class DatosUsuario(Datos):
                 res = datetime.datetime.now()
             else:
                 fecha_min = res[0]
+            #TODO: calcular la cantidad de meses de diferencia entre la fecha actua y la que esta en fecha_min para iterar el for
             for i in range(1,13):
                 #valido si es el mes actual, en cuyo caso, aplica el stock actual.
                 if current_month == start_month and current_year == start_year:
-                    data.append(stock)
+                    data.append(cant)
                     current_month -= 1
                 else:
-                    #Si no lo es, busco en la BD los movimientos del mes siguiente para restarselos al valor guardado en stock.
-                    #Depositos
-                    sql = ("select SUM(cant) from depositos where idMaterial = %s and month(fechaDep)=%s and year(fechaDep)=%s and estado != 'cancelado'")
+                    #Si no lo es, busco en la BD los movimientos del mes siguiente para restarselos al valor guardado en cantidad.
+                    #Usuarios
+                    sql = ("select count(*) from usuarios where month(fechaReg)=%s and year(fechaReg)=%s")
                     if current_month == 12:
                         values = (id, 1, current_year+1)
                     else:
                         values = (id, current_month+1, current_year)
                     cls.cursor.execute(sql,values)
-                    valStockDep = cls.cursor.fetchone()[0]
+                    valCantMes = cls.cursor.fetchone()[0]
 
-                    if valStockDep == None:
-                        valStockDep = 0
-                    
-                    #Entradas
-                    sql = ("select SUM(cant) from entradasMat where idMaterial = %s and month(fecha)=%s and year(fecha)=%s")
-                    if current_month == 12:
-                        values = (id, 1, current_year+1)
-                    else:
-                        values = (id, current_month+1, current_year)
-                    cls.cursor.execute(sql,values)
-                    valStockEnt = cls.cursor.fetchone()[0]
-
-                    if valStockEnt == None:
-                        valStockEnt = 0
-                    
-                    #Producciones insumos
-                    sql = ("select sum(mu.cantidad * prodInsumos.cantidad) from prodInsumos right join materialesUtilizados as mu on mu.idProd = prodInsumos.idprodInsumo where idMaterial = %s and month(fecha)=%s and year(fecha)=%s;")
-                    if current_month == 12:
-                        values = (id, 1, current_year+1)
-                    else:
-                        values = (id, current_month+1, current_year)
-                    cls.cursor.execute(sql,values)
-                    valStockProd = cls.cursor.fetchone()[0]
-
-                    if valStockProd == None:
-                        valStockProd = 0
+                    if valCantMes == None:
+                        valCantMes = 0
 
                     #Aplico los movimientos del mes al stock
-                    stock -= valStockDep
-                    stock -= valStockEnt
-                    stock += valStockProd
-                    data.append(stock)
+                    cant -= valCantMes
+                    data.append(cant)
 
                     if current_month != 1:
                         current_month -= 1
