@@ -62,13 +62,13 @@ class DatosSalidaStock(Datos):
                                                     msj_adicional="Error obteniendo todas las salidas de la BD.")
 
     @classmethod
-    def add_one(cls,idArt, cant, concepto, fecha, idEntidad, valorTotal, noClose = False):
+    def add_one(cls,idArt, cant, concepto, fecha, idEntidad, valorTotal, costoTotal, noClose = False):
         """Registra una salida de stock en la BD en base a los parámetros recibidos.
         """
         try:
             cls.abrir_conexion()
-            sql = ("INSERT into salidasStock (idEntidad, idTipoArticulo, cantidadSalida, fecha, concepto, valorTotal) values (%s,%s,%s,%s,%s,%s)")
-            values = (idEntidad,idArt, cant, fecha ,concepto, valorTotal)
+            sql = ("INSERT into salidasStock (idEntidad, idTipoArticulo, cantidadSalida, fecha, concepto, valorTotal, costo) values (%s,%s,%s,%s,%s,%s,%s)")
+            values = (idEntidad,idArt, cant, fecha ,concepto, valorTotal,costoTotal)
             cls.cursor.execute(sql, values)
             cls.db.commit()
             return True

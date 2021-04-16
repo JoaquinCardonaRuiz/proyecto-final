@@ -19,8 +19,10 @@ class NegocioSalidaStock(Negocio):
             cant = float(cant)
             format_str = '%Y-%m-%d' # Formato de la fecha
             fecha = datetime.strptime(fecha, format_str)
+            art = NegocioArticulo.get_by_id(idArt)
             NegocioArticulo.checkStock(idArt,cant)
-            if DatosSalidaStock.add_one(idArt,cant,concepto,fecha,idEntidad, valorTotal):
+            costoTotal = art.costoTotal * cant
+            if DatosSalidaStock.add_one(idArt,cant,concepto,fecha,idEntidad, valorTotal,costoTotal):
                 NegocioArticulo.disminuirStock(idArt,cant)
         except Exception as e:
             raise e

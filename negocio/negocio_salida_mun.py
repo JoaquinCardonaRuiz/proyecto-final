@@ -21,7 +21,11 @@ class NegocioSalidaMun(Negocio):
             format_str = '%Y-%m-%d' # Formato de la fecha
             fecha = datetime.strptime(fecha, format_str)
             NegocioArticulo.checkStock(idArt,cant)
-            if DatosSalidaStockMun.add_one(idArt,cant,concepto,fecha):
+            art = NegocioArticulo.get_by_id(idArt)
+            NegocioArticulo.checkStock(idArt,cant)
+            costoObtAlt = art.costoObtencionAlternativa * cant
+            costoTotal = art.costoTotal * cant
+            if DatosSalidaStockMun.add_one(idArt,cant,concepto,fecha,costoTotal,costoObtAlt):
                 NegocioArticulo.disminuirStock(idArt,cant)
         except Exception as e:
             raise e

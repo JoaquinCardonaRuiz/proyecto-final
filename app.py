@@ -1634,6 +1634,10 @@ def get_chart_data_art(id):
     PRODUCCION
     ----------
 '''
+@app.route('/reportes-admin')
+def reportes_admin():
+    return render_template('reportes-admin.html')
+
 @app.route('/reportes-admin/get-cant-usuarios')
 def get_cant_usuarios():
     cants = NegocioReportes.get_cant_usuarios()
