@@ -1639,7 +1639,25 @@ def get_cant_usuarios():
     cants = NegocioReportes.get_cant_usuarios()
     return jsonify(cants)
 
+@app.route('/reportes-admin/get-cant-depositos/<meses>')
+def get_cant_depositos(meses):
+    cants = NegocioReportes.get_cant_depositos(meses)
+    return jsonify(cants)
 
+@app.route('/reportes-admin/get-cant-pedidos/<meses>')
+def get_cant_pedidos(meses):
+    cants = NegocioReportes.get_cant_pedidos(meses)
+    return jsonify(cants)
+
+@app.route('/reportes-admin/ganancias-art-eco-tienda/<meses>/<idArt>')
+def ganancias_art(meses, idArt):
+    cants = NegocioReportes.ganancias_art_eco_tienda(idArt,meses)
+    return jsonify(cants)
+
+@app.route('/reportes-admin/ganancias-art-totales/<meses>/<idArt>')
+def ganancias_art_totales(meses, idArt):
+    cants = NegocioReportes.ganancias_art_totales(idArt,meses)
+    return jsonify(cants)
 
 ''' 
     ----------
