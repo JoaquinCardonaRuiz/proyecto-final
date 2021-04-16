@@ -518,3 +518,7 @@ th,tr,td{
 .cs-enabled{
     margin-top: 5% !important; position: absolute !important; margin-left: 9.4% !important;
 }
+
+.anychart-credits{
+    display: none !important;
+}

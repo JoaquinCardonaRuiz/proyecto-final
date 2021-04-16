@@ -1672,6 +1672,19 @@ def get_movimientos_stock_materiales(meses, idMat):
     cants = NegocioReportes.get_movimientos_stock_materiales(idMat,stock,meses)
     return jsonify(cants)
 
+@app.route('/reportes-admin/movimientos-stock-ins/<meses>/<idIns>')
+def get_movimientos_stock_insumos(meses, idIns):
+    stock = NegocioInsumo.get_by_id(idIns).stock
+    cants = NegocioReportes.get_movimientos_stock_insumos(idIns,stock,meses)
+    return jsonify(cants)
+
+@app.route('/reportes-admin/movimientos-stock-art/<meses>/<idArt>')
+def get_movimientos_stock_articulos(meses, idArt):
+    stock = NegocioArticulo.get_by_id(idArt).stock
+    cants = NegocioReportes.get_movimientos_stock_articulos(idArt,stock,meses)
+    return jsonify(cants)
+
+
 @app.route('/reportes-admin/porcentaje-dep-acreditados/')
 def porcentaje_dep_acreditados():
     cants = NegocioReportes.porcentaje_dep_acreditados()
@@ -1681,6 +1694,7 @@ def porcentaje_dep_acreditados():
 def porcentaje_dep_por_pd():
     cants = NegocioReportes.porcentaje_dep_por_pd()
     return jsonify(cants)
+
 
 @app.route('/reportes-admin/porcentaje-ped-pr/')
 def porcentaje_ped_por_pr():

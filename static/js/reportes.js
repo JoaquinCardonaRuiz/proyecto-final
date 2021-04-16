@@ -63,7 +63,6 @@ function puntosRet(){
 }
 
 function stockMats_data(id, cant_meses=24,route){
-
     document.getElementById("chartContainer").innerHTML ="";
     $("#chart-row-mat").hide();
     $("#loading-row-mat").fadeIn();
@@ -104,13 +103,6 @@ function stockMats_data(id, cant_meses=24,route){
 
         // turn on chart animation
         chart.animation(true);
-
-        // axes settings
-        chart.yAxis().title('Stock');
-
-        var xAxis = chart.xAxis();
-        xAxis.title('Fecha');
-
 
         // create a series with mapped data
         var series = chart.area(seriesData);

@@ -44,6 +44,20 @@ class NegocioReportes():
             return DatosReportes.get_movimientos_stock_materiales(id,stock,cant_meses)
         except Exception as e:
             raise e
+    
+    @classmethod
+    def get_movimientos_stock_insumos(cls,id,stock,cant_meses):
+        try:
+            return DatosReportes.get_movimientos_stock_insumos(id,stock,cant_meses)
+        except Exception as e:
+            raise e
+
+    @classmethod
+    def get_movimientos_stock_articulos(cls,id,stock,cant_meses):
+        try:
+            return DatosReportes.get_movimientos_stock_articulos(id,stock,cant_meses)
+        except Exception as e:
+            raise e
 
     @classmethod
     def porcentaje_dep_acreditados(cls):
