@@ -8,21 +8,26 @@ function openGraphModal(option){
 }
 
 function stockArts(){
-
+  $("#stockMats").fadeIn();
+  document.getElementById("title-stockMats").innerHTML = "Niveles de Stock de Artículos";
+  stockMats_data($("#stock-mat-sp").val(),$('#stock-mat-time-sp').val(),"/reportes-admin/movimientos-stock-art/");
 }
 
 function stockIns(){
-    
+  $("#stockMats").fadeIn();
+  document.getElementById("title-stockMats").innerHTML = "Niveles de Stock de Insumos";
+  stockMats_data($("#stock-mat-sp").val(),$('#stock-mat-time-sp').val(),"/reportes-admin/movimientos-stock-ins/");
 }
 
 function stockMats(){
-    $("#stockMats").fadeIn();
-    stockMats_data($("#stock-mat-sp").val(),$('#stock-mat-time-sp').val());
+  $("#stockMats").fadeIn();
+  document.getElementById("title-stockMats").innerHTML = "Niveles de Stock de Materiales";
+  stockMats_data($("#stock-mat-sp").val(),$('#stock-mat-time-sp').val(),"/reportes-admin/movimientos-stock-mat/");
     
 }
 
 function cantUsers(){
-    
+  
 }
 
 function cantDeps(){
@@ -57,13 +62,13 @@ function puntosRet(){
     
 }
 
-function stockMats_data(id, cant_meses=24){
+function stockMats_data(id, cant_meses=24,route){
 
     document.getElementById("chartContainer").innerHTML ="";
     $("#chart-row-mat").hide();
     $("#loading-row-mat").fadeIn();
     $("#loading-text-mat").fadeIn();
-    $.getJSON("/reportes-admin/movimientos-stock-mat/"+String(cant_meses)+"/"+String(id),function (result){
+    $.getJSON(route+String(cant_meses)+"/"+String(id),function (result){
         const d = new Date();
         var months = [];
         cant_years = cant_meses/12;
