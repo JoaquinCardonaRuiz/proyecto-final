@@ -1711,6 +1711,17 @@ def ingresos_egresos_globales(meses):
     cants = NegocioReportes.ingresos_egresos_globales(meses)
     return jsonify(cants)
 
+@app.route('/reportes-admin/ingresos-globales/<meses>')
+def ingresos_globales(meses):
+    cants = NegocioReportes.ingresos_globales(meses)
+    return jsonify(cants)
+
+
+@app.route('/reportes-admin/egresos-globales/<meses>')
+def egresos_globales(meses):
+    cants = NegocioReportes.egresos_globales(meses)
+    return jsonify(cants)
+
 ''' 
     ----------
     PRODUCCION

@@ -93,3 +93,17 @@ class NegocioReportes():
             return DatosReportes.ingresos_egresos_globales(cant_meses)
         except Exception as e:
             raise e
+
+    @classmethod
+    def ingresos_globales(cls,cant_meses):
+        try:
+            return DatosReportes.ingresos_globales(cant_meses)
+        except Exception as e:
+            raise e
+    
+    @classmethod
+    def egresos_globales(cls,cant_meses):
+        try:
+            return DatosReportes.egresos_globales(cant_meses)
+        except Exception as e:
+            raise e
