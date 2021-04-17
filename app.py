@@ -1690,7 +1690,6 @@ def get_movimientos_stock_articulos(meses, idArt):
     cants = NegocioReportes.get_movimientos_stock_articulos(idArt,stock,meses)
     return jsonify(cants)
 
-
 @app.route('/reportes-admin/porcentaje-dep-acreditados/')
 def porcentaje_dep_acreditados():
     cants = NegocioReportes.porcentaje_dep_acreditados()
