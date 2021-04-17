@@ -435,6 +435,85 @@
             </div>
 
 
+
+            <div class="graph-row" id="graph-cantPeds" style="display: none;">
+                <!--START Gráfico Pedidos -->
+                <h5 class="table-title" id="title-cantPeds" style="margin-left: 6%;">Cantidad de depósitos en el tiempo</h5>
+                <div >
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="cantPeds-time-sp" class="selectpicker selectpicker-nooutline" oninput="cantPeds()" data-live-search="true">
+                                <option value=12>&nbsp; 1 año</option>
+                                <option value=36>&nbsp; 3 años</option>
+                                <option value=60>&nbsp; 5 años</option>    
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-cantPeds" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-cantPeds">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-cantPeds">
+                    <div id="chartContainer-cantPeds" class="mt-4 mb-4" style="height: 300px; width: 89%; margin-left: 5%;"></div>
+                </div>
+                <div class="row mt-4" id="loading-row-cantPeds" style="padding-top: 3%;">
+                </div>
+
+
+                <table class="table" style="margin-left: 5%;width:90%;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Mes</th>
+                        <th scope="col" class="table-heading">Cantidad</th>
+                        <th scope="col" class="table-heading">Cambio</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-cantPeds">
+                    </tbody>
+                </table>
+                <!--END Gráfico Pedidos -->
+            </div>
+
+
+
+
+            <div class="graph-row" id="graph-cantDeps" style="display: none;">
+                <!--START Gráfico Depositos -->
+                <h5 class="table-title" id="title-cantDeps" style="margin-left: 6%;">Cantidad de pedidos en el tiempo</h5>
+                <div >
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="cantDeps-time-sp" class="selectpicker selectpicker-nooutline" oninput="cantDeps()" data-live-search="true">
+                                <option value=12>&nbsp; 1 año</option>
+                                <option value=36>&nbsp; 3 años</option>
+                                <option value=60>&nbsp; 5 años</option>    
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-cantDeps" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-cantDeps">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-cantDeps">
+                    <div id="chartContainer-cantDeps" class="mt-4 mb-4" style="height: 300px; width: 89%; margin-left: 5%;"></div>
+                </div>
+                <div class="row mt-4" id="loading-row-cantDeps" style="padding-top: 3%;">
+                </div>
+
+
+                <table class="table" style="margin-left: 5%;width:90%;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Mes</th>
+                        <th scope="col" class="table-heading">Cantidad</th>
+                        <th scope="col" class="table-heading">Cambio</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-cantDeps">
+                    </tbody>
+                </table>
+                <!--END Gráfico Depositos -->
+            </div>
+
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn primary-btn" data-dismiss="modal" id="primary-btn-re">Listo</button>
