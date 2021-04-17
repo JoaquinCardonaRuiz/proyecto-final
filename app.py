@@ -1642,9 +1642,9 @@ def reportes_admin():
     articulos = NegocioArticulo.get_all()
     return render_template('reportes-admin.html', materiales = materiales, insumos=insumos, articulos=articulos)
 
-@app.route('/reportes-admin/get-cant-usuarios')
-def get_cant_usuarios():
-    cants = NegocioReportes.get_cant_usuarios()
+@app.route('/reportes-admin/get-cant-usuarios/<meses>')
+def get_cant_usuarios(meses):
+    cants = NegocioReportes.get_cant_usuarios(meses)
     return jsonify(cants)
 
 @app.route('/reportes-admin/get-cant-depositos/<meses>')

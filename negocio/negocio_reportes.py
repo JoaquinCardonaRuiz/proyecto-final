@@ -4,9 +4,9 @@ import custom_exceptions
 
 class NegocioReportes():
     @classmethod
-    def get_cant_usuarios(cls):
+    def get_cant_usuarios(cls,cant_meses):
         try:
-            return DatosReportes.get_cant_usuarios()
+            return DatosReportes.get_cant_usuarios(cant_meses)
         except Exception as e:
             raise e
     

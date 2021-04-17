@@ -8,7 +8,7 @@ import datetime
 class DatosReportes(Datos):
 
     @classmethod
-    def get_cant_usuarios(cls):
+    def get_cant_usuarios(cls,cant_meses):
         """
         Obtiene los movimientos de un material en base a su id, el tipo y el mes.
         """
@@ -31,8 +31,8 @@ class DatosReportes(Datos):
             else:
                 fecha_min = res[0]
             num_months = (d.year - fecha_min.year) * 12 + (d.month - fecha_min.month)
-            #Le pongo +2 para que arranque en la gráfica desde 0 usuarios.
-            for i in range(0,num_months+2):
+            print(fecha_min.month - d.month + 1)
+            for i in range(0,int(cant_meses)+1):
                 #valido si es el mes actual, en cuyo caso, aplica el stock actual.
                 if current_month == start_month and current_year == start_year:
                     data.append(cant)
