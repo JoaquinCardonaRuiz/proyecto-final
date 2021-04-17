@@ -169,10 +169,10 @@
         </div>
 
         <div class="modal-body" style="margin-top: 0% !important;">
-            <div id="graph-stockMats">
+            <div id="graph-stockMats" style="display: none;">
                 <!--START Gráfico materiales -->
                 <h5 class="table-title" id="title-stockMats" style="margin-left: 6%;"></h5>
-                <div class="graph-row" id="stockMats" style="display: none;">
+                <div class="graph-row">
                         <div id="inputs-mat">
                             <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
                                 <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-mat-time-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data($('#stock-mat-sp').val(),value,'/reportes-admin/movimientos-stock-mat/')" data-live-search="true">
@@ -205,8 +205,8 @@
                             </div>
                         </div>
 
-                        <div id="inputs-art">
-                            <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                    <div id="inputs-art">
+                        <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
                                 <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-art-time-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data($('#stock-art-sp').val(),value,'/reportes-admin/movimientos-stock-art/')" data-live-search="true">
                                         <option value=12>&nbsp; 1 año</option>
                                         <option value=36>&nbsp; 3 años</option>
@@ -218,8 +218,8 @@
                                     {%endfor%}
                                     
                                 </select>
-                            </div>
                         </div>
+                    </div>
                 </div>
                 <div class="row mt-4" id="loading-row-mat" style="padding-top: 5%;">
                     <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
@@ -246,6 +246,43 @@
                 <!--END Gráfico materiales -->
             </div>
             
+
+            <div id="graph-users">
+                <!--START Gráfico usuarios -->
+                <h5 class="table-title" id="title-users" style="margin-left: 6%;">Cantidad de Usuarios en el tiempo</h5>
+                <div class="graph-row">
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-users-time-sp" class="selectpicker selectpicker-nooutline" oninput="cantUsers()" data-live-search="true">
+                                <option value=12>&nbsp; 1 año</option>
+                                <option value=36>&nbsp; 3 años</option>
+                                <option value=60>&nbsp; 5 años</option>    
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-users" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-users">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-users">
+                    <div id="chartContainer-users" class="mt-4 mb-4" style="height: 300px; width: 89%; margin-left: 5%;"></div>
+                </div>
+                <div class="row mt-4" id="loading-row-users" style="padding-top: 3%;">
+                </div>
+
+
+                <table class="table" style="margin-left: 5%;width:90%;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Mes</th>
+                        <th scope="col" class="table-heading">Cantidad</th>
+                        <th scope="col" class="table-heading">Cambio</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-users">
+                    </tbody>
+                </table>
+                <!--END Gráfico usuarios -->
+            </div>
 
 
 

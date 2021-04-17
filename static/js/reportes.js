@@ -8,7 +8,7 @@ function openGraphModal(option){
 }
 
 function stockArts(){
-  $("#stockMats").fadeIn();
+  $("#graph-stockMats").fadeIn();
   document.getElementById("title-stockMats").innerHTML = "Niveles de Stock de Artículos";
   document.getElementById("inputs-art").hidden = false;
   document.getElementById("inputs-ins").hidden = true;
@@ -17,7 +17,7 @@ function stockArts(){
 }
 
 function stockIns(){
-  $("#stockMats").fadeIn();
+  $("#graph-stockMats").fadeIn();
   document.getElementById("title-stockMats").innerHTML = "Niveles de Stock de Insumos";
   document.getElementById("inputs-art").hidden = true;
   document.getElementById("inputs-ins").hidden = false;
@@ -26,7 +26,7 @@ function stockIns(){
 }
 
 function stockMats(){
-  $("#stockMats").fadeIn();
+  $("#graph-stockMats").fadeIn();
   document.getElementById("title-stockMats").innerHTML = "Niveles de Stock de Materiales";
   document.getElementById("inputs-art").hidden = true;
   document.getElementById("inputs-ins").hidden = true;
@@ -36,7 +36,103 @@ function stockMats(){
 }
 
 function cantUsers(){
-  
+  $("#graph-users").fadeIn();
+  document.getElementById("chartContainer-users").innerHTML ="";
+  $("#chart-row-users").hide();
+  $("#loading-row-users").fadeIn();
+  $("#loading-text-users").fadeIn();
+
+  cant_meses = document.getElementById("stock-users-time-sp").value;
+  $.getJSON("/reportes-admin/get-cant-usuarios/"+String(cant_meses),function (result){
+      const d = new Date();
+      var months = [];
+      cant_years = cant_meses/12;
+      
+      for (i = parseInt(d.getMonth())+1; i <12; i++){
+          months.push(monthNames[i] + " " + String(d.getFullYear()-cant_years));
+      }
+      for (var j=1; j<cant_years; j++){
+          for (i = 0; i < monthNames.length; i++){
+              months.push(monthNames[i] + " " + String(d.getFullYear()-j));
+          }
+      }
+      for (i = 0; i <= parseInt(d.getMonth()); i++){
+          months.push(monthNames[i] + " " + String(d.getFullYear()));
+      }
+      $("#loading-row-users").hide();
+      $("#loading-text-users").hide();
+      $("#chart-row-users").fadeIn();
+      datos = [];
+      result = result.reverse();
+      for (var i=result.length-1; i >= 0;i--){
+          datos.push([String(months[i]),result[i]]);
+      }
+      console.log(datos);
+
+      //Creo grafico
+
+      // map data for the first series, take x from the zero column and value from the first column of data set
+      var seriesData = datos.reverse();
+
+      // create line chart
+      var chart = anychart.area();
+
+      // turn on chart animation
+      chart.animation(true);
+
+      // create a series with mapped data
+      var series = chart.area(seriesData);
+      series.name('Cantidad');
+      series.hovered().markers().enabled(true).type('circle').size(4);
+      series.markers(true);
+      series.color("#95C22B");
+      // set chart tooltip and interactivity settings
+      chart
+        .tooltip()
+        .position('center-top')
+        .anchor('center-bottom')
+        .positionMode('point');
+
+      chart.interactivity().hoverMode('by-x');
+
+      // set container id for the chart
+      chart.container('chartContainer-users');
+      // initiate chart drawing
+      chart.draw();
+
+
+
+        //Lleno tabla
+        document.getElementById("tbody-users").innerHTML = "";
+        dsrev = datos.reverse();
+        for(var k in dsrev){
+          var tr = document.createElement("tr");
+          var td1 = document.createElement("td");
+          td1.innerHTML=dsrev[k][0];
+
+          var td2 = document.createElement("td");
+          if(k+1 < dsrev.length){
+            change = dsrev[k][1] - dsrev[Number(k)+1][1];
+            if(change > 0){
+              td2.innerHTML="<i class='fas fa-caret-up color-activo caret-up'></i>"+"+"+change.toString();
+            }else if (change < 0){
+              td2.innerHTML="<i class='fas fa-caret-down color-negativo caret-up'></i>" + change.toString();
+            }else{
+              td2.innerHTML=change.toString();
+            }
+          }else{
+            td2.innerHTML="0";
+          }
+          var td3 = document.createElement("td");
+          td3.innerHTML=dsrev[k][1];
+
+          tr.appendChild(td1);
+          tr.appendChild(td3);
+          tr.appendChild(td2);
+          document.getElementById("tbody-users").appendChild(tr);
+        
+        }
+      });
 }
 
 function cantDeps(){
