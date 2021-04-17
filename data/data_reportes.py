@@ -400,6 +400,108 @@ class DatosReportes(Datos):
                                                     msj_adicional="Error actualizando el stock de un material en la BD.")
         finally:
             cls.cerrar_conexion()
+
+    @classmethod
+    def ingresos_egresos_globales(cls,cant_meses):
+        """
+        Obtiene los movimientos de un material en base a su id, el tipo y el mes.
+        """
+        try:
+            d = datetime.datetime.now()
+            start_month = int(d.strftime("%m"))
+            start_year = int(d.year)
+            current_month = start_month
+            current_year = start_year
+            cant = 0
+            data = []
+            for i in range(0,int(cant_meses)):
+
+                #Pedidos
+                cls.abrir_conexion()
+                cant = 0
+                sql = ("select sum(totalARS) from pedidos where month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado' and estado != 'devuelto';")
+                values = (current_month, current_year)
+                cls.cursor.execute(sql,values)
+                sum = cls.cursor.fetchone()[0]
+                if sum == None:
+                    sum = 0
+                        
+                cls.cerrar_conexion()
+
+                #Salidas Stock
+                cls.abrir_conexion()
+                sql = ("select SUM((valorTotal - costo)) from salidasStock where month(fecha)=%s and year(fecha)=%s")
+                values = (current_month, current_year)
+                cls.cursor.execute(sql,values)
+                
+                sumSS = cls.cursor.fetchone()[0]
+
+                if sumSS == None:
+                    sumSS = 0
+
+                cls.cerrar_conexion()
+
+                #Salidas Municipalidad
+                cls.abrir_conexion()
+                sql = ("select SUM((costoObtencionAlt - costo)) from salidasMun where month(fecha)=%s and year(fecha)=%s")
+                values = (current_month, current_year)
+                cls.cursor.execute(sql,values)
+                
+                sumSM = cls.cursor.fetchone()[0]
+
+                if sumSM == None:
+                    sumSM = 0
+
+                cls.cerrar_conexion()
+
+                #Costos Producción Insumos
+                cls.abrir_conexion()
+                sql = ("SELECT sum((cProduccion + otrosCostos)*cantidad) FROM prodInsumos left join insumos using(idInsumo) where month(fecha)=%s and year(fecha)=%s")
+                values = (current_month, current_year)
+                cls.cursor.execute(sql,values)
+                
+                sumPI = cls.cursor.fetchone()[0]
+
+                if sumPI == None:
+                    sumPI = 0
+
+                cls.cerrar_conexion()
+
+                #Costos Producción Articulos
+                cls.abrir_conexion()
+                sql = ("SELECT sum((cProduccion + otrosCostos)*cantidad) FROM prodTipArt left join tiposArticulo using(idTipoArticulo) where month(fecha)=%s and year(fecha)=%s")
+                values = (current_month, current_year)
+                cls.cursor.execute(sql,values)
+                
+                sumPA = cls.cursor.fetchone()[0]
+
+                if sumPA == None:
+                    sumPA = 0
+
+                cls.cerrar_conexion()
+
+                #Aplico las ganancias del mes al total del mes
+                cant += sum
+                cant += sumSS
+                cant += sumSM
+                cant -= sumPA
+                cant -= sumPI
+
+                data.append(cant)
+                if current_month != 1:
+                    current_month -= 1
+                else:
+                    current_month = 12
+                    current_year -= 1
+               
+            return data
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.ingresos_egresos_globales()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
+        finally:
+            cls.cerrar_conexion()
     
     @classmethod
     def porcentaje_dep_acreditados(cls):

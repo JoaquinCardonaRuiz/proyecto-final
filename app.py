@@ -1707,6 +1707,11 @@ def porcentaje_ped_por_pr():
     cants = NegocioReportes.porcentaje_ped_por_pr()
     return jsonify(cants)
 
+@app.route('/reportes-admin/ingresos-egresos-globales/<meses>')
+def ingresos_egresos_globales(meses):
+    cants = NegocioReportes.ingresos_egresos_globales(meses)
+    return jsonify(cants)
+
 ''' 
     ----------
     PRODUCCION

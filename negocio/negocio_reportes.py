@@ -86,3 +86,10 @@ class NegocioReportes():
             return DatosReportes.porcentaje_ped_por_pr()
         except Exception as e:
             raise e
+
+    @classmethod
+    def ingresos_egresos_globales(cls,cant_meses):
+        try:
+            return DatosReportes.ingresos_egresos_globales(cant_meses)
+        except Exception as e:
+            raise e
