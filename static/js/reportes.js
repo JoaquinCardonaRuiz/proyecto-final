@@ -51,7 +51,7 @@ function cantUsers(){
       for (i = parseInt(d.getMonth())+1; i <12; i++){
           months.push(monthNames[i] + " " + String(d.getFullYear()-cant_years));
       }
-      for (var j=1; j<cant_years; j++){
+      for(var j = cant_years-1;j>=1;j--){
           for (i = 0; i < monthNames.length; i++){
               months.push(monthNames[i] + " " + String(d.getFullYear()-j));
           }
@@ -152,9 +152,6 @@ function costos(){
     
 }
 
-function ganancias(){
-  gananciasArt();
-}
 
 function gananciasArt(){
   $("#graph-gananciasArt").fadeIn();
@@ -173,7 +170,7 @@ function gananciasArt(){
       for (i = parseInt(d.getMonth())+1; i <12; i++){
           months.push(monthNames[i] + " " + String(d.getFullYear()-cant_years));
       }
-      for (var j=1; j<cant_years; j++){
+      for(var j = cant_years-1;j>=1;j--){
           for (i = 0; i < monthNames.length; i++){
               months.push(monthNames[i] + " " + String(d.getFullYear()-j));
           }
@@ -258,6 +255,110 @@ function gananciasArt(){
       });
 }
 
+
+
+
+function gananciasTotales(){
+  $("#graph-gananciasTotal").fadeIn();
+  document.getElementById("chartContainer-gananciasTotal").innerHTML ="";
+  $("#chart-row-gananciasTotal").hide();
+  $("#loading-row-gananciasTotal").fadeIn();
+  $("#loading-text-gananciasTotal").fadeIn();
+
+  cant_meses = document.getElementById("gananciasTotal-time-sp").value;
+  $.getJSON("/reportes-admin/ganancias-por-art-totales-globales/"+String(cant_meses),function (result){
+      const d = new Date();
+      var months = [];
+      cant_years = cant_meses/12;
+      
+      for (i = parseInt(d.getMonth())+1; i <12; i++){
+          months.push(monthNames[i] + " " + String(d.getFullYear()-cant_years));
+      }
+      for(var j = cant_years-1;j>=1;j--){
+          for (i = 0; i < monthNames.length; i++){
+              months.push(monthNames[i] + " " + String(d.getFullYear()-j));
+          }
+      }
+      for (i = 0; i <= parseInt(d.getMonth()); i++){
+          months.push(monthNames[i] + " " + String(d.getFullYear()));
+      }
+      $("#loading-row-gananciasTotal").hide();
+      $("#loading-text-gananciasTotal").hide();
+      $("#chart-row-gananciasTotal").fadeIn();
+      datos = [];
+      result = result.reverse();
+      for (var i=result.length-1; i >= 0;i--){
+          datos.push([String(months[i]),result[i]]);
+      }
+      console.log(datos);
+
+      //Creo grafico
+
+      // map data for the first series, take x from the zero column and value from the first column of data set
+      var seriesData = datos.reverse();
+
+      // create line chart
+      var chart = anychart.area();
+
+      // turn on chart animation
+      chart.animation(true);
+
+      // create a series with mapped data
+      var series = chart.area(seriesData);
+      series.name('Cantidad');
+      series.hovered().markers().enabled(true).type('circle').size(4);
+      series.markers(true);
+      series.color("#95C22B");
+      // set chart tooltip and interactivity settings
+      chart
+        .tooltip()
+        .position('center-top')
+        .anchor('center-bottom')
+        .positionMode('point');
+
+      chart.interactivity().hoverMode('by-x');
+
+      // set container id for the chart
+      chart.container('chartContainer-gananciasTotal');
+      // initiate chart drawing
+      chart.draw();
+
+
+
+        //Lleno tabla
+        document.getElementById("tbody-gananciasTotal").innerHTML = "";
+        dsrev = datos.reverse();
+        for(var k in dsrev){
+          var tr = document.createElement("tr");
+          var td1 = document.createElement("td");
+          td1.innerHTML=dsrev[k][0];
+
+          var td2 = document.createElement("td");
+          
+          if(Number(k)+1 < dsrev.length){
+            change = dsrev[k][1] - dsrev[Number(k)+1][1];
+            if(change > 0){
+              td2.innerHTML="<i class='fas fa-caret-up color-activo caret-up'></i>"+"+"+change.toString();
+            }else if (change < 0){
+              td2.innerHTML="<i class='fas fa-caret-down color-negativo caret-up'></i>" + change.toString();
+            }else{
+              td2.innerHTML=change.toString();
+            }
+          }else{
+            td2.innerHTML="0";
+          }
+          var td3 = document.createElement("td");
+          td3.innerHTML=dsrev[k][1];
+
+          tr.appendChild(td1);
+          tr.appendChild(td3);
+          tr.appendChild(td2);
+          document.getElementById("tbody-gananciasTotal").appendChild(tr);
+        
+        }
+      });
+}
+
 function depsAcred(){
     
 }
@@ -283,7 +384,7 @@ function stockMats_data(id, cant_meses=24,route){
         for (i = parseInt(d.getMonth())+1; i <12; i++){
             months.push(monthNames[i] + " " + String(d.getFullYear()-cant_years));
         }
-        for (var j=1; j<cant_years; j++){
+        for(var j = cant_years-1;j>=1;j--){
             for (i = 0; i < monthNames.length; i++){
                 months.push(monthNames[i] + " " + String(d.getFullYear()-j));
             }
