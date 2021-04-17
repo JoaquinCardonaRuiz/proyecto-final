@@ -493,8 +493,6 @@ th,tr,td{
 
 .list-group-item:hover{
     cursor: pointer;
-    background-color: #a9d3479f;
-    color: white;
 }
 
 .list-group-item-del:hover{
