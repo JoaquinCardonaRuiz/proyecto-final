@@ -16,8 +16,7 @@ class NegocioUsuario(Negocio):
     def alta(cls,email,password):
         try:
             if str(email) not in DatosUsuario.get_all_emails():
-                format_str = '%Y-%m-%d' # Formato de la fecha
-                fecha = datetime.strptime(datetime.now(), format_str)
+                fecha = datetime.now()
                 return DatosUsuario.alta(email,password,fecha=fecha)
             else:
                 return False
