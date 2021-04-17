@@ -1662,7 +1662,7 @@ def ganancias_art(meses, idArt):
     cants = NegocioReportes.ganancias_art_eco_tienda(idArt,meses)
     return jsonify(cants)
 
-@app.route('/reportes-admin/ganancias-art-totales/<meses>/<idArt>')
+@app.route('/reportes-admin/ganancias-por-art-totales/<meses>/<idArt>')
 def ganancias_art_totales(meses, idArt):
     cants = NegocioReportes.ganancias_art_totales(idArt,meses)
     return jsonify(cants)

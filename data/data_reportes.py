@@ -195,7 +195,7 @@ class DatosReportes(Datos):
                 #Pedidos
                 cls.abrir_conexion()
                 cant = 0
-                sql = ("select tiposArt_pedidos.cantidad, tiposArt_pedidos.margenGanancia, pedidos.fechaEnc from pedidos right join tiposArt_pedidos using(idPedido) where idTipoArticulo = %s and month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado' and estado != 'devuelto';")
+                sql = ("select tiposArt_pedidos.cantidad, tiposArt_pedidos.margenGanancia, pedidos.fechaEnc, idTipoArticulo from pedidos right join tiposArt_pedidos using(idPedido) where idTipoArticulo = %s and month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado' and estado != 'devuelto';")
                 values = (id, current_month, current_year)
                 cls.cursor.execute(sql,values)
                 valCantMes = cls.cursor.fetchall()
@@ -204,8 +204,8 @@ class DatosReportes(Datos):
                 else:
                     datos = []
                     for art in valCantMes:
-                        sql = ("select valor from valoresTipArt where fecha <= %s order by fecha DESC")
-                        values = (art[2],)
+                        sql = ("select valor from valoresTipArt where fecha <= %s and idTipoArticulo = %s order by fecha DESC")
+                        values = (art[2],art[3])
                         cls.cursor.execute(sql,values)
                         valor = cls.cursor.fetchone()[0]
                         datos.append({"cantidad":float(art[0]),"margenGanancia":float(art[1]),"valor":float(valor)})
@@ -249,7 +249,7 @@ class DatosReportes(Datos):
                 #Pedidos
                 cls.abrir_conexion()
                 cant = 0
-                sql = ("select tiposArt_pedidos.cantidad, tiposArt_pedidos.margenGanancia, pedidos.fechaEnc from pedidos right join tiposArt_pedidos using(idPedido) where idTipoArticulo = %s and month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado' and estado != 'devuelto';")
+                sql = ("select tiposArt_pedidos.cantidad, tiposArt_pedidos.margenGanancia, pedidos.fechaEnc, idTipoArticulo from pedidos right join tiposArt_pedidos using(idPedido) where idTipoArticulo = %s and month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado' and estado != 'devuelto';")
                 values = (id, current_month, current_year)
                 cls.cursor.execute(sql,values)
                 valCantMes = cls.cursor.fetchall()
@@ -258,8 +258,93 @@ class DatosReportes(Datos):
                 else:
                     datos = []
                     for art in valCantMes:
-                        sql = ("select valor from valoresTipArt where fecha <= %s order by fecha DESC")
-                        values = (art[2],)
+                        sql = ("select valor from valoresTipArt where fecha <= %s and idTipoArticulo = %s order by fecha DESC")
+                        values = (art[2],art[3])
+                        cls.cursor.execute(sql,values)
+                        valor = cls.cursor.fetchone()[0]
+                        datos.append({"cantidad":float(art[0]),"margenGanancia":float(art[1]),"valor":float(valor)})
+                        sum = 0
+                        for el in datos:
+                            sum += (el["valor"] - ((el["valor"])/(1+el["margenGanancia"]))) * el["cantidad"]
+                        
+                cls.cerrar_conexion()
+
+                #Salidas Stock
+                cls.abrir_conexion()
+                sql = ("select SUM((valorTotal - costo)) from salidasStock where idTipoArticulo = %s and month(fecha)=%s and year(fecha)=%s")
+                values = (id, current_month, current_year)
+                cls.cursor.execute(sql,values)
+                
+                sumSS = cls.cursor.fetchone()[0]
+
+                if sumSS == None:
+                    sumSS = 0
+
+                cls.cerrar_conexion()
+
+                #Salidas Municipalidad
+                cls.abrir_conexion()
+                sql = ("select SUM((costoObtencionAlt - costo)) from salidasMun where idTipoArticulo = %s and month(fecha)=%s and year(fecha)=%s")
+                values = (id, current_month, current_year)
+                cls.cursor.execute(sql,values)
+                
+                sumSM = cls.cursor.fetchone()[0]
+
+                if sumSM == None:
+                    sumSM = 0
+
+                cls.cerrar_conexion()
+
+                #Aplico las ganancias del mes al total del mes
+                cant += sum
+                cant += sumSS
+                cant += sumSM
+
+                data.append(cant)
+                if current_month != 1:
+                    current_month -= 1
+                else:
+                    current_month = 12
+                    current_year -= 1
+               
+            return data
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.ganancias_art()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
+    def ganancias_art_totales_generales(cls,cant_meses):
+        """
+        Obtiene los movimientos de un material en base a su id, el tipo y el mes.
+        """
+        try:
+            d = datetime.datetime.now()
+            start_month = int(d.strftime("%m"))
+            start_year = int(d.year)
+            current_month = start_month
+            current_year = start_year
+            cant = 0
+            data = []
+            for i in range(0,int(cant_meses)):
+
+                #Pedidos
+                cls.abrir_conexion()
+                cant = 0
+                sql = ("select tiposArt_pedidos.cantidad, tiposArt_pedidos.margenGanancia, pedidos.fechaEnc, idTipoArticulo from pedidos right join tiposArt_pedidos using(idPedido) where month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado' and estado != 'devuelto';")
+                values = (current_month, current_year)
+                cls.cursor.execute(sql,values)
+                valCantMes = cls.cursor.fetchall()
+                if len(valCantMes) == 0:
+                    sum = 0
+                else:
+                    datos = []
+                    for art in valCantMes:
+                        sql = ("select valor from valoresTipArt where fecha <= %s and idTipoArticulo = %s order by fecha DESC")
+                        values = (art[2],art[3])
                         cls.cursor.execute(sql,values)
                         valor = cls.cursor.fetchone()[0]
                         datos.append({"cantidad":float(art[0]),"margenGanancia":float(art[1]),"valor":float(valor)})
