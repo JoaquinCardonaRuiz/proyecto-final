@@ -235,9 +235,7 @@
                 <select style="background:#fff;box-shadow:none;border: none; font-size: 15px; border-bottom: 2px solid #f14e4eef; width: 78% !important; margin-left: 0%;" id="tu-reemplazo" class="selectpicker selectpicker-nooutline" oninput="enable_disable_tu_baja(value);" data-live-search="true">
                     <option value=-1 selected disabled>Por favor, seleccione un tipo de usuario de reemplazo</option>
                     {%for tu in tipos_usuario%}
-                    {%if tu.nombre != 'Ciudadano'%}
                         <option value='{{tu.id}},{{tu.nombre}}'>{{tu.nombre}}</option>
-                    {%endif%}
                     {%endfor%}    
                 </select>
                 <div class="row mt-4">
@@ -264,7 +262,7 @@
                 <div class="row" id="loadingRow">
                     <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                 </div>
-                <form action="{{url_for('baja_pd')}}" method="POST" id="bajaTUform">
+                <form action="{{url_for('baja_tipo_usuario')}}" method="POST" id="bajaTUform">
                     <div class="row margin-bottom-row" id="fieldsRowBaja">
                         <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark">
                         <p class="bottom-modal-text-baja" id="baja-question">¿Está seguro que desea eliminar el <span id="nombreTUbaja"></span>?</p>

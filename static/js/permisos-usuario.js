@@ -154,6 +154,7 @@ $('.list-group-item-del').click(function() {
     $("#secondary-btn-baja").text('Anterior');
     $("#idTuBaja").val(jQuery(this).find( ".my-1" ).text())
     $("#subheader-alta-tu").text("¿Qué Tipo de Usuario desea asignar a los " + String(nombreBaja) + "?");
+    $("#tu-reemplazo").val(-1);
     enable_disable_tu_baja($("#tu-reemplazo").val());
     hideSelectedOption(parseInt(jQuery(this).find( ".my-1" ).text()));
     page = 2;
@@ -198,6 +199,7 @@ function submitFormBaja(){
         $("#bottomBajaModalText").fadeIn(500);
         $("#primary-btn-alert").prop('disabled',true);
         $("#secondary-btn-baja").prop('disabled',true);
+        $( "#bajaTUform").submit();
         nextMsgBaja();
     }
     

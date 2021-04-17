@@ -49,6 +49,39 @@ class DatosTipoUsuario(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_tipo_usuario.add_one()",
                                                     msj=str(e),
                                                     msj_adicional="Error añadiendo un nuevo Tipo de Usuario a la BD.")
+    
+    @classmethod
+    def baja(cls, id_tu_baja, id_tu_reemplazo, noClose = False):
+        """
+        Elimina un Tipo de Usuario, sus permisos y asigna un Tipo de Usuario en reemplazo a los usuarios del tipo eliminado.
+        """
+        try:
+            cls.abrir_conexion()
+
+            #Elimino permisos de Acceso de este Tipo de Usuario.
+            modulos = cls.get_modulos(id_tu_baja)
+            for mod in modulos:
+                sql = ("Delete from permisosAcceso where idTipoUsuario = %s and idModulo = %s")
+                values = (id_tu_baja,mod)
+                cls.cursor.execute(sql,values)
+
+            #Actualizo el Tipo de Usuario de los usuarios con el tipo a eliminar
+            sql = ("Update usuarios set idTipoUsuario = %s where idTipoUsuario = %s")
+            values = (id_tu_reemplazo,id_tu_baja)
+            cls.cursor.execute(sql,values)
+
+            #Elimino el tipo de usuario de la BD.
+            sql = ("Update tiposUsuario set estado = 'eliminado' where idTipoUsuario = %s")
+            values = (id_tu_baja,)
+            cls.cursor.execute(sql,values)
+            
+            cls.db.commit()
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_tipo_usuario.baja()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error eliminando un Tipo de Usuario a la BD.")
 
     @classmethod
     def get_all(cls, noClose = False):

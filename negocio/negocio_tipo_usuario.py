@@ -47,3 +47,26 @@ class NegocioTipoUsuario(Negocio):
             DatosTipoUsuario.add_one(nombre)
         except Exception as e:
             raise e
+    
+    @classmethod
+    def baja(cls,idTipoUsuario,idTuReemplazo):
+        try:
+            #Valida que no sean vacíos.
+            if idTipoUsuario == None and idTuReemplazo == None:
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_tipo_usuario.baja()",
+                                                        msj_adicional = "Error al eliminando el Tipo de Usuario. Los ids no pueden ser vacíos.")
+            #Valido que sean distintos entre sí.
+            if idTipoUsuario == idTuReemplazo:
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_tipo_usuario.baja()",
+                                                        msj_adicional = "Error al eliminando el Tipo de Usuario. Los ids no pueden ser iguales.")
+            #Valido que existan
+            tus = cls.get_all()
+            if not (any(x.id == int(idTipoUsuario) for x in tus) and any(x.id == int(idTuReemplazo) for x in tus)):
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_tipo_usuario.baja()",
+                                                        msj_adicional = "Error al eliminando el Tipo de Usuario. Los ids no corresponden a Tipos de Usuario registrados.")
+
+            DatosTipoUsuario.baja(idTipoUsuario,idTuReemplazo)
+
+            return True
+        except Exception as e:
+            raise e

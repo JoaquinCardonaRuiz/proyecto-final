@@ -1821,6 +1821,17 @@ def add_tipo_usuario():
     except Exception as e:
         return error(e,"gestion_usuarios")
 
+@app.route('/gestion-usuarios/baja-tu',methods=["POST","GET"])
+def baja_tipo_usuario():
+    try:
+        if request.method == 'POST':
+            id_tu_baja = request.form["idTuBaja"]
+            id_tu_reemplazo = request.form["idTuBajaRemplazo"]
+            NegocioTipoUsuario.baja(id_tu_baja,id_tu_reemplazo)
+        return redirect(url_for('permisos_acceso'))
+    except Exception as e:
+        return error(e,"gestion_usuarios")
+
 @app.route('/permisos-acceso', methods = ['GET','POST'])
 def permisos_acceso():
     try:
