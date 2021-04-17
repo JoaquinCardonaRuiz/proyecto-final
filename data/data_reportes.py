@@ -356,8 +356,8 @@ class DatosReportes(Datos):
 
                 #Salidas Stock
                 cls.abrir_conexion()
-                sql = ("select SUM((valorTotal - costo)) from salidasStock where idTipoArticulo = %s and month(fecha)=%s and year(fecha)=%s")
-                values = (id, current_month, current_year)
+                sql = ("select SUM((valorTotal - costo)) from salidasStock where month(fecha)=%s and year(fecha)=%s")
+                values = (current_month, current_year)
                 cls.cursor.execute(sql,values)
                 
                 sumSS = cls.cursor.fetchone()[0]
@@ -369,8 +369,8 @@ class DatosReportes(Datos):
 
                 #Salidas Municipalidad
                 cls.abrir_conexion()
-                sql = ("select SUM((costoObtencionAlt - costo)) from salidasMun where idTipoArticulo = %s and month(fecha)=%s and year(fecha)=%s")
-                values = (id, current_month, current_year)
+                sql = ("select SUM((costoObtencionAlt - costo)) from salidasMun where month(fecha)=%s and year(fecha)=%s")
+                values = (current_month, current_year)
                 cls.cursor.execute(sql,values)
                 
                 sumSM = cls.cursor.fetchone()[0]

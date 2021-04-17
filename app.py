@@ -1667,6 +1667,11 @@ def ganancias_art_totales(meses, idArt):
     cants = NegocioReportes.ganancias_art_totales(idArt,meses)
     return jsonify(cants)
 
+@app.route('/reportes-admin/ganancias-por-art-totales-globales/<meses>')
+def ganancias_art_totales_generales(meses):
+    cants = NegocioReportes.ganancias_art_totales_generales(meses)
+    return jsonify(cants)
+
 @app.route('/reportes-admin/movimientos-stock-mat/<meses>/<idMat>')
 def get_movimientos_stock_materiales(meses, idMat):
     stock = NegocioMaterial.get_by_id(idMat).stock
