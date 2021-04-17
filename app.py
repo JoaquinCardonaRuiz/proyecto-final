@@ -1690,7 +1690,6 @@ def get_movimientos_stock_articulos(meses, idArt):
     cants = NegocioReportes.get_movimientos_stock_articulos(idArt,stock,meses)
     return jsonify(cants)
 
-
 @app.route('/reportes-admin/porcentaje-dep-acreditados/')
 def porcentaje_dep_acreditados():
     cants = NegocioReportes.porcentaje_dep_acreditados()
@@ -1710,6 +1709,17 @@ def porcentaje_ped_por_pr():
 @app.route('/reportes-admin/ingresos-egresos-globales/<meses>')
 def ingresos_egresos_globales(meses):
     cants = NegocioReportes.ingresos_egresos_globales(meses)
+    return jsonify(cants)
+
+@app.route('/reportes-admin/ingresos-globales/<meses>')
+def ingresos_globales(meses):
+    cants = NegocioReportes.ingresos_globales(meses)
+    return jsonify(cants)
+
+
+@app.route('/reportes-admin/egresos-globales/<meses>')
+def egresos_globales(meses):
+    cants = NegocioReportes.egresos_globales(meses)
     return jsonify(cants)
 
 ''' 

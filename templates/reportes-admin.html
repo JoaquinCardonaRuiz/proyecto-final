@@ -12,6 +12,9 @@
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
     <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
     <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
+    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/reportes.css')}}">
+
 </head>
 
 {% extends 'layout.html' %}
@@ -123,7 +126,7 @@
         <div class="container" id="top-container" style="margin-top: 2%;">
             <div class="row">
                 <div class="container" id="option-left" onclick="openGraphModal('gananciasArt');" style="width: 49%;">
-                    <i class="fas fa-search-dollar option-img" id="option-img-1" style="margin-left:5% !important;margin-right:5% !important;text-align:center;"></i>
+                    <i class="fas fa-search-dollar option-img" id="option-img-1" style="display: block !important; margin-left:5% !important;margin-right:5% !important;text-align:center;"></i>
                         <div class="option-text">
                             <p class="option-title">Ganancias por Artículo</p>
                             <p class="text-box">Visualizar las ganancias del un artículo a través del tiempo</p>
