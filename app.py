@@ -1639,7 +1639,9 @@ def get_chart_data_art(id):
 @app.route('/reportes-admin')
 def reportes_admin():
     materiales = NegocioMaterial.get_all()
-    return render_template('reportes-admin.html', materiales = materiales)
+    insumos = NegocioInsumo.get_all()
+    articulos = NegocioArticulo.get_all()
+    return render_template('reportes-admin.html', materiales = materiales, insumos=insumos, articulos=articulos)
 
 @app.route('/reportes-admin/get-cant-usuarios')
 def get_cant_usuarios():

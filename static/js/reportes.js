@@ -10,18 +10,27 @@ function openGraphModal(option){
 function stockArts(){
   $("#stockMats").fadeIn();
   document.getElementById("title-stockMats").innerHTML = "Niveles de Stock de Artículos";
-  stockMats_data($("#stock-mat-sp").val(),$('#stock-mat-time-sp').val(),"/reportes-admin/movimientos-stock-art/");
+  document.getElementById("inputs-art").hidden = false;
+  document.getElementById("inputs-ins").hidden = true;
+  document.getElementById("inputs-mat").hidden = true;
+  stockMats_data($("#stock-art-sp").val(),$('#stock-art-time-sp').val(),"/reportes-admin/movimientos-stock-art/");
 }
 
 function stockIns(){
   $("#stockMats").fadeIn();
   document.getElementById("title-stockMats").innerHTML = "Niveles de Stock de Insumos";
-  stockMats_data($("#stock-mat-sp").val(),$('#stock-mat-time-sp').val(),"/reportes-admin/movimientos-stock-ins/");
+  document.getElementById("inputs-art").hidden = true;
+  document.getElementById("inputs-ins").hidden = false;
+  document.getElementById("inputs-mat").hidden = true;
+  stockMats_data($("#stock-ins-sp").val(),$('#stock-ins-time-sp').val(),"/reportes-admin/movimientos-stock-ins/");
 }
 
 function stockMats(){
   $("#stockMats").fadeIn();
   document.getElementById("title-stockMats").innerHTML = "Niveles de Stock de Materiales";
+  document.getElementById("inputs-art").hidden = true;
+  document.getElementById("inputs-ins").hidden = true;
+  document.getElementById("inputs-mat").hidden = false;
   stockMats_data($("#stock-mat-sp").val(),$('#stock-mat-time-sp').val(),"/reportes-admin/movimientos-stock-mat/");
     
 }
