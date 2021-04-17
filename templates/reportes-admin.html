@@ -169,10 +169,10 @@
         </div>
 
         <div class="modal-body" style="margin-top: 0% !important;">
-            <div id="graph-stockMats" style="display: none;">
+            <div id="graph-stockMats" class="graph-row" style="display: none;">
                 <!--START Gráfico materiales -->
                 <h5 class="table-title" id="title-stockMats" style="margin-left: 6%;"></h5>
-                <div class="graph-row">
+                <div>
                         <div id="inputs-mat">
                             <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
                                 <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-mat-time-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data($('#stock-mat-sp').val(),value,'/reportes-admin/movimientos-stock-mat/')" data-live-search="true">
@@ -216,7 +216,6 @@
                                     {%for art in articulos%}
                                         <option value={{art.id}}>&nbsp; {{art.nombre}}</option>
                                     {%endfor%}
-                                    
                                 </select>
                         </div>
                     </div>
@@ -247,12 +246,12 @@
             </div>
             
 
-            <div id="graph-users">
+            <div class="graph-row" id="graph-users" style="display: none;">
                 <!--START Gráfico usuarios -->
                 <h5 class="table-title" id="title-users" style="margin-left: 6%;">Cantidad de Usuarios en el tiempo</h5>
-                <div class="graph-row">
+                <div >
                     <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
-                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-users-time-sp" class="selectpicker selectpicker-nooutline" oninput="cantUsers()" data-live-search="true">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="users-time-sp" class="selectpicker selectpicker-nooutline" oninput="cantUsers()" data-live-search="true">
                                 <option value=12>&nbsp; 1 año</option>
                                 <option value=36>&nbsp; 3 años</option>
                                 <option value=60>&nbsp; 5 años</option>    
@@ -284,6 +283,50 @@
                 <!--END Gráfico usuarios -->
             </div>
 
+
+
+            
+            <div class="graph-row" id="graph-gananciasArt" style="display: none;">
+                <!--START Gráfico ganancias por Art -->
+                <h5 class="table-title" id="title-gananciasArt" style="margin-left: 6%;">Ganancias de un Artículo en el tiempo</h5>
+                <div >
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="gananciasArt-time-sp" class="selectpicker selectpicker-nooutline" oninput="gananciasArt()" data-live-search="true">
+                                <option value=12>&nbsp; 1 año</option>
+                                <option value=36>&nbsp; 3 años</option>
+                                <option value=60>&nbsp; 5 años</option>    
+                        </select>
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 30% !important; margin-right: 7%;" id="gananciasArt-sp" class="selectpicker selectpicker-nooutline" oninput="gananciasArt()" data-live-search="true">
+                            {%for art in articulos%}
+                                <option value={{art.id}}>&nbsp; {{art.nombre}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-gananciasArt" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-gananciasArt">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-gananciasArt">
+                    <div id="chartContainer-gananciasArt" class="mt-4 mb-4" style="height: 300px; width: 89%; margin-left: 5%;"></div>
+                </div>
+                <div class="row mt-4" id="loading-row-gananciasArt" style="padding-top: 3%;">
+                </div>
+
+
+                <table class="table" style="margin-left: 5%;width:90%;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Mes</th>
+                        <th scope="col" class="table-heading">Ganancias</th>
+                        <th scope="col" class="table-heading">Cambio</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-gananciasArt">
+                    </tbody>
+                </table>
+                <!--END Gráfico ganancias por Art -->
+            </div>
 
 
         </div>
