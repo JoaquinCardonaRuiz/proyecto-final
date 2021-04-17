@@ -30,8 +30,9 @@ class DatosReportes(Datos):
                 fecha_min = datetime.datetime.now()
             else:
                 fecha_min = res[0]
+            '''Si se quisiera hacer historico, usar num_months.
             num_months = (d.year - fecha_min.year) * 12 + (d.month - fecha_min.month)
-            print(fecha_min.month - d.month + 1)
+            num_months += abs(fecha_min.month - d.month + 1)'''
             for i in range(0,int(cant_meses)):
                 #valido si es el mes actual, en cuyo caso, aplica el stock actual.
                 if current_month == start_month and current_year == start_year:
