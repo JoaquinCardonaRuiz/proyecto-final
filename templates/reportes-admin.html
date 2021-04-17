@@ -175,12 +175,12 @@
                 <div class="graph-row" id="stockMats" style="display: none;">
                         <div id="inputs-mat">
                             <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
-                                <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-mat-time-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data($('#stock-mat-sp').val(),value),'/reportes-admin/movimientos-stock-mat/'" data-live-search="true">
+                                <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-mat-time-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data($('#stock-mat-sp').val(),value,'/reportes-admin/movimientos-stock-mat/')" data-live-search="true">
                                         <option value=12>&nbsp; 1 año</option>
                                         <option value=36>&nbsp; 3 años</option>
                                         <option value=60>&nbsp; 5 años</option>    
                                 </select>
-                                <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 30% !important; margin-right: 7%;" id="stock-mat-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data(value, $('#stock-mat-time-sp').val()),'/reportes-admin/movimientos-stock-mat/'" data-live-search="true">
+                                <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 30% !important; margin-right: 7%;" id="stock-mat-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data(value, $('#stock-mat-time-sp').val(),'/reportes-admin/movimientos-stock-mat/')" data-live-search="true">
                                     {%for mat in materiales%}
                                         <option value={{mat.id}}>&nbsp; {{mat.nombre}}</option>
                                     {%endfor%}
@@ -191,12 +191,12 @@
                         
                         <div id="inputs-ins">
                             <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
-                                <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-ins-time-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data($('#stock-ins-sp').val(),value),'/reportes-admin/movimientos-stock-ins/'" data-live-search="true">
+                                <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="stock-ins-time-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data($('#stock-ins-sp').val(),value,'/reportes-admin/movimientos-stock-ins/')" data-live-search="true">
                                         <option value=12>&nbsp; 1 año</option>
                                         <option value=36>&nbsp; 3 años</option>
                                         <option value=60>&nbsp; 5 años</option>    
                                 </select>
-                                <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 30% !important; margin-right: 7%;" id="stock-ins-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data(value, $('#stock-ins-time-sp').val()),'/reportes-admin/movimientos-stock-ins/'" data-live-search="true">
+                                <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 30% !important; margin-right: 7%;" id="stock-ins-sp" class="selectpicker selectpicker-nooutline" oninput="stockMats_data(value, $('#stock-ins-time-sp').val(),'/reportes-admin/movimientos-stock-ins/')" data-live-search="true">
                                     {%for ins in insumos%}
                                         <option value={{ins.id}}>&nbsp; {{ins.nombre}}</option>
                                     {%endfor%}
