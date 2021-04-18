@@ -1801,8 +1801,15 @@ def confirmar_prod_art():
 @app.route('/elegir-tipo-gu', methods = ['GET','POST'])
 def elegir_tipo_gu():
     try:
-        #tiposUsuario = NegocioTipoUsuario.get_all()
         return render_template('elegir-tipo-gu.html')  
+    except Exception as e:
+        return error(e,"gestion_usuarios")
+
+@app.route('/gestion-usuarios',methods=["POST","GET"])
+def gestion_usuarios():
+    try:
+        usuarios = NegocioUsuario.get_all(True)
+        return render_template('gestion-usuarios.html', usuarios = usuarios)  
     except Exception as e:
         return error(e,"gestion_usuarios")
 
