@@ -63,7 +63,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="container" id="top-container" style="margin-top: 2%;">
             <div class="row">
                 <div class="container" id="option-left" onclick="openGraphModal('cantDeps');" style="width: 49%;">
@@ -85,18 +85,18 @@
 
         <div class="container" id="top-container" style="margin-top: 2%;">
             <div class="row">
-                <div class="container" id="option-left" onclick="openGraphModal('ingresos');" style="width: 49%;">
-                    <i class="fas fa-money-check-alt option-img" id="option-img-1" style="margin-left:5% !important;margin-right:5% !important;text-align:center;"></i>
+                <div class="container" id="option-left" onclick="openGraphModal('ingresosEgresos');" style="width: 49%;">
+                    <i class="fas fa-file-invoice-dollar option-img" id="option-img-1" style="margin-left:5% !important;margin-right:5% !important;text-align:center;"></i>
                         <div class="option-text">
-                            <p class="option-title">Ingresos</p>
-                            <p class="text-box">Visualizar los ingresos del sistema a través del tiempo</p>
+                            <p class="option-title">Ingresos y Costos</p>
+                            <p class="text-box">Visualizar los ingresos y costos del sistema a través del tiempo</p>
                         </div>
                 </div>
-                <div class="container" id="option-right" onclick="openGraphModal('costos');" style="width: 49%;">
-                    <i class="fas fa-file-invoice-dollar option-img" id="option-img-1" style="margin-left:5% !important;margin-right:5% !important;text-align:center;"></i>
+                <div class="container" id="option-right" onclick="openGraphModal('ecotienda');" style="width: 49%;">
+                    <i class="fas fa-store-alt option-img" id="option-img-1" style="margin-left:5% !important;margin-right:5% !important;text-align:center;"></i>
                     <div class="option-text">
-                        <p class="option-title">Costos</p>
-                        <p class="text-box">Visualizar los costos del sistema a través del tiempo</p>
+                        <p class="option-title">Ganancias de EcoTienda</p>
+                        <p class="text-box">Visualizar las ganancias producidas por la EcoTienda a través del tiempo</p>
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                         </div>
                 </div>
                 <div class="container" id="option-right" onclick="openGraphModal('gananciasTotales');" style="width: 49%;">
-                    <i class="fas fa-user-check option-img" id="option-img-1" style="margin-left:5% !important;margin-right:5% !important;text-align:center;"></i>
+                    <i class="fas fa-dollar-sign option-img" id="option-img-1" style="margin-left:5% !important;margin-right:5% !important;text-align:center;"></i>
                     <div class="option-text">
                         <p class="option-title">Ganancias Totales</p>
                         <p class="text-box">Visualizar las ganancias del sistema a través del tiempo</p>
@@ -512,6 +512,190 @@
                 </table>
                 <!--END Gráfico Depositos -->
             </div>
+
+
+
+            <div class="graph-row" id="graph-ingresosEgresos" style="display: none;">
+                <!--START Gráfico Ingresos-Egresos -->
+                <h5 class="table-title" id="title-ingresosEgresos" style="margin-left: 6%;">Ingresos vs Costos del sistema</h5>
+                <div >
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="ingresosEgresos-time-sp" class="selectpicker selectpicker-nooutline" oninput="ingresosEgresos()" data-live-search="true">
+                                <option value=12>&nbsp; 1 año</option>
+                                <option value=36>&nbsp; 3 años</option>
+                                <option value=60>&nbsp; 5 años</option>    
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-ingresosEgresos" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-ingresosEgresos">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-ingresosEgresos">
+                    <div id="chartContainer-ingresosEgresos" class="mt-4 mb-4" style="height: 300px; width: 89%; margin-left: 5%;"></div>
+                </div>
+                <div class="row mt-4" id="loading-row-ingresosEgresos" style="padding-top: 3%;">
+                </div>
+
+
+                <table class="table" style="margin-left: 5%;width:90%;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Mes</th>
+                        <th scope="col" class="table-heading">Ingresos</th>
+                        <th scope="col" class="table-heading">Egresos</th>
+                        <th scope="col" class="table-heading">Balance</th>
+                        <th scope="col" class="table-heading">Cambio</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-ingresosEgresos">
+                    </tbody>
+                </table>
+                <!--END Gráfico Depositos -->
+            </div>
+
+
+
+
+
+
+            <div class="graph-row" id="graph-ecotienda" style="display: none;">
+                <!--START Gráfico Ecotienda -->
+                <h5 class="table-title" id="title-ecotienda" style="margin-left: 6%;">Ganancias de la EcoTienda en el tiempo</h5>
+                <div >
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="ecotienda-time-sp" class="selectpicker selectpicker-nooutline" oninput="ecotienda()" data-live-search="true">
+                                <option value=12>&nbsp; 1 año</option>
+                                <option value=36>&nbsp; 3 años</option>
+                                <option value=60>&nbsp; 5 años</option>    
+                        </select>
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 30% !important; margin-right: 7%;" id="ecotienda-sp" class="selectpicker selectpicker-nooutline" oninput="ecotienda()" data-live-search="true">
+                            {%for art in articulos%}
+                                <option value={{art.id}}>&nbsp; {{art.nombre}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-ecotienda" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-ecotienda">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-ecotienda">
+                    <div id="chartContainer-ecotienda" class="mt-4 mb-4" style="height: 300px; width: 89%; margin-left: 5%;"></div>
+                    </div>
+                    <div class="row mt-4" id="loading-row-ecotienda" style="padding-top: 3%;">
+                    </div>
+
+
+                <table class="table" style="margin-left: 5%;width:90%;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Mes</th>
+                        <th scope="col" class="table-heading">Ganancia</th>
+                        <th scope="col" class="table-heading">Cambio</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-ecotienda">
+                    </tbody>
+                </table>
+                <!--END Gráfico Ecotienda -->
+            </div>
+
+
+
+
+            <div class="graph-row" id="graph-depsAcred" style="display: none;">
+                <!--START Gráfico Depositos Acreditados -->
+                <h5 class="table-title" id="title-depsAcred" style="margin-left: 6%;">Proporción de depósitos acreditados</h5>
+                <div >
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-depsAcred" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-depsAcred" style="margin-bottom: 100px !important;">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-depsAcred">
+                <div id="chartContainer-depsAcred" class="mt-4 mb-4" style="height: 400px; width: 89%; margin-left: 5%;"></div>
+                </div>
+                <div class="row mt-4" id="loading-row-depsAcred" style="padding-top: 3%;">
+                </div>
+                <table class="table" style="margin-left: 5%;width:90%;position:relative;top:-80px;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Depositos</th>
+                        <th scope="col" class="table-heading">Proporción</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-depsAcred">
+                    </tbody>
+                </table>
+                <!--END Gráfico Depositos Acreditados -->
+            </div>
+
+
+
+
+            <div class="graph-row" id="graph-puntosDep" style="display: none;">
+                <!--START Gráfico Puntos Deposito -->
+                <h5 class="table-title" id="title-puntosDep" style="margin-left: 6%;">Proporción de depósitos en cada punto de depósito</h5>
+                <div >
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-puntosDep" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-puntosDep" style="margin-bottom: 100px !important;">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-puntosDep">
+                <div id="chartContainer-puntosDep" class="mt-4 mb-4" style="height: 400px; width: 89%; margin-left: 5%;"></div>
+                </div>
+                <div class="row mt-4" id="loading-row-puntosDep" style="padding-top: 3%;">
+                </div>
+                <table class="table" style="margin-left: 5%;width:90%;position:relative;top:-80px;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Puntos</th>
+                        <th scope="col" class="table-heading">Proporción</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-puntosDep">
+                    </tbody>
+                </table>
+                <!--END Gráfico Puntos Deposito -->
+            </div>
+
+
+            <div class="graph-row" id="graph-puntosRet" style="display: none;">
+                <!--START Gráfico Puntos Retiro -->
+                <h5 class="table-title" id="title-puntosRet" style="margin-left: 6%;">Proporción de pedidos en cada punto de retiro</h5>
+                <div >
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-puntosRet" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-puntosRet" style="margin-bottom: 100px !important;">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-puntosRet">
+                <div id="chartContainer-puntosRet" class="mt-4 mb-4" style="height: 400px; width: 89%; margin-left: 5%;"></div>
+                </div>
+                <div class="row mt-4" id="loading-row-puntosRet" style="padding-top: 3%;">
+                </div>
+                <table class="table" style="margin-left: 5%;width:90%;position:relative;top:-80px;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Puntos</th>
+                        <th scope="col" class="table-heading">Proporción</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-puntosRet">
+                    </tbody>
+                </table>
+                <!--END Gráfico Puntos Retiro -->
+            </div>
+
+
 
 
         </div>
