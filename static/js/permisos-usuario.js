@@ -3,9 +3,32 @@ var idTipoUsuario = false;
 var tipoUsuario = false;
 var tiposUsuarioNames = [];
 var page = 1;
+var selected_option_pa = "item-1";
 
 function setUserLabel(val){
     $("#tipo-usuario-sel").text(val);
+}
+
+$( ".list-item-pa" ).hover(
+    function() {
+        if (jQuery(this).attr('id') != selected_option_pa){
+            jQuery(this).css('background-color', 'rgb(240, 240, 240)');
+        }
+    }, function() {
+        if (jQuery(this).attr('id') != selected_option_pa){
+            $( this ).css('background-color', 'transparent');
+        }
+      }
+  );
+
+setItemColor(1);
+
+function setItemColor(id){
+    $(".list-item-pa").css("background-color", "transparent");
+    $(".list-item-pa").css("color", "black");
+    $("#item-"+String(id)).css("background-color","#a9d3479f");
+    $("#item-"+String(id)).css("color","white");
+    selected_option_pa = "item-" + String(id); 
 }
 
 function getModulos(id){
@@ -21,6 +44,9 @@ function getModulos(id){
         $("#permisos-table").hide();
         $("#table-permisos-title").fadeIn();
         $("#permisos-table-disabled").fadeIn();
+        var y = window.scrollY + document.querySelector('#table-permisos-title').getBoundingClientRect().top; // Y
+            var x = window.scrollX + document.querySelector('#table-permisos-title').getBoundingClientRect().left; // X
+        window.scrollTo(x, y);
     }
     else{
         $.getJSON("/permisos-acceso/modulos/" + String(id),function (modulos){
@@ -38,6 +64,9 @@ function getModulos(id){
             $("#permisos-table-disabled").hide();
             $("#permisos-table").fadeIn();
             $("#table-permisos-title").fadeIn();
+            var y = window.scrollY + document.querySelector('#table-permisos-title').getBoundingClientRect().top; // Y
+            var x = window.scrollX + document.querySelector('#table-permisos-title').getBoundingClientRect().left; // X
+            window.scrollTo(x, y);
 
         });
     }   
@@ -154,6 +183,7 @@ $('.list-group-item-del').click(function() {
     $("#secondary-btn-baja").text('Anterior');
     $("#idTuBaja").val(jQuery(this).find( ".my-1" ).text())
     $("#subheader-alta-tu").text("¿Qué Tipo de Usuario desea asignar a los " + String(nombreBaja) + "?");
+    $("#tu-reemplazo").val(-1);
     enable_disable_tu_baja($("#tu-reemplazo").val());
     hideSelectedOption(parseInt(jQuery(this).find( ".my-1" ).text()));
     page = 2;
@@ -198,6 +228,7 @@ function submitFormBaja(){
         $("#bottomBajaModalText").fadeIn(500);
         $("#primary-btn-alert").prop('disabled',true);
         $("#secondary-btn-baja").prop('disabled',true);
+        $( "#bajaTUform").submit();
         nextMsgBaja();
     }
     
