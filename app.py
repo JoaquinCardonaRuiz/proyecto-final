@@ -66,6 +66,8 @@ def main():
         elif session["usuario"].estado == "no-verificado":
             return render_template('email-sent.html',email=session["usuario"].email) 
         else: 
+            if not valida_permiso(32):
+                return redirect(url_for("error_auth"))
             nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel, True)
             if len(session["usuario"].pedidos) >= 5:
                 pedidos = session["usuario"].pedidos[:5]
@@ -1226,11 +1228,6 @@ def edit_desc_material():
         NegocioMaterial.update_desc(idMat,desc)
         return redirect(url_for('gestion_materiales'))
 
-  
-  
-def valida_session():
-    return "usuario" not in session.keys()
-
 
 '''
     -----------------
@@ -1961,6 +1958,34 @@ def config_cambio():
     except Exception as e:
         return error(e,"config")
 
+
+
+'''
+    -----------------------
+    Páginas de error
+    -----------------------
+'''
+
+@app.route('/user-error', methods = ['GET','POST'])
+def error_usuario():
+    try:
+        return render_template("user-error-page.html")
+    except Exception as e:
+        return error(e,"error")
+
+@app.route('/auth-error', methods = ['GET','POST'])
+def error_auth():
+    try:
+        return render_template("auth-error-page.html")
+    except Exception as e:
+        return error(e,"error")
+
+  
+def valida_session():
+    return "usuario" not in session.keys()
+
+def valida_permiso(idModulo):
+    return idModulo in NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario).modulosAcceso
 
 
 
