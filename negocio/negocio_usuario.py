@@ -309,7 +309,7 @@ class NegocioUsuario(Negocio):
                                                         msj="El nombre o el apellido no pueden ser vacios.")
             
             #Valido ID Tipo de Usuario
-            tus = cls.get_all()
+            tus = DatosTipoUsuario.get_all()
             if not (any(x.id == int(id_tipo_usuario) for x in tus)):
                 raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.update()",
                                                         msj="El ID no corresponde a un Tipo de Usuario registrado.")
@@ -321,9 +321,11 @@ class NegocioUsuario(Negocio):
             cls.update_email(email,uid)
             
             #Actualizo Dirección
+            print("La direccion es: " + str(id_direccion))
             NegocioDireccion.mod_direccion(id_direccion, calle,altura,ciudad,provincia,pais,True)
 
-            #Actualizo Tipo de Usuario
+            #Actualizo Tipo de Usuario y datos personales.
+            DatosUsuario.update_nombre_apellido_tu(nombre,apellido,id_tipo_usuario,uid)
             
             
         except Exception as e:

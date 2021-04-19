@@ -252,9 +252,9 @@ class DatosUsuario(Datos):
                 docs.append(doc[0])
             return docs
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.get_all_emails()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.get_all_documentos()",
                                                     msj=str(e),
-                                                    msj_adicional="Error obteniendo todos los emails registrados distintos al del usuario de la BD.")
+                                                    msj_adicional="Error obteniendo todos los documentos registrados distintos al del usuario de la BD.")
         finally:
             cls.cerrar_conexion()
 
@@ -426,17 +426,22 @@ class DatosUsuario(Datos):
             cls.cerrar_conexion()
 
     @classmethod
-    def update_nombre_apellido_tu(cls,nombre,apellido,tu):
+    def update_nombre_apellido_tu(cls,nombre,apellido,tu,uid):
         """
         Actualiza el nombre, el apellido y el tipo de usuario de un usuario en la BD.
         """
         try:
             cls.abrir_conexion()
+            sql = ("UPDATE usuarios set nombre = %s, apellido = %s, idTipoUsuario = %s where idUsuario = %s")
+            values = (nombre,apellido,tu,uid)
+            cls.cursor.execute(sql,values)
+            cls.db.commit()
             
+            return True
         except custom_exceptions.ErrorDeConexion as e:
             raise e
         except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="update_nombre_apellido_tu.buscar_info_user()",
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.update_nombre_apellido_tu()",
                                                     msj=str(e),
                                                     msj_adicional="Error actualizando el nombre, el apellido y el tipo de usuario de un usuario en la BD..")
         finally:

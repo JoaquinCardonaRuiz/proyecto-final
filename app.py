@@ -1898,7 +1898,7 @@ def mod_user():
             nombre = request.form["nombre"]
             apellido = request.form["apellido"]
             email = request.form["email"]
-            id_direccion = request.form["idDireccionUser"]
+            id_direccion_gu = request.form["idDireccionUser"]
             calle = request.form['callePDMod']
             altura = request.form['alturaPDMod']
             ciudad = request.form['ciudadPDMod']
@@ -1908,11 +1908,11 @@ def mod_user():
             id_tipo_doc = request.form["tipoDocSelect"]
             id_tipo_usuario = request.form["id_tipo_usuario"]
             uid = request.form["idUsuario"]
-
-
-            
+            NegocioUsuario.update(nombre, apellido, email, id_direccion_gu, calle, altura, ciudad, provincia, pais, documento, id_tipo_doc, id_tipo_usuario,uid)
+            return redirect(url_for('gestion_usuarios'))
     except Exception as e:
-        return error(e,"permisos_acceso")
+        return error(e,"gestion_usuarios")
+
 
 @app.route('/gestion-usuarios/get-list/<type>', methods = ['GET','POST'])
 def gu_listas(type):

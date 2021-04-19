@@ -85,10 +85,10 @@
                             </div>
                         </td>
                     {%endif%}
-                    <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales('{{usuario.id}}', '{{usuario.nombre}}');"><i class="fa fa-info-circle custom-link-fa"></i> Ver info</a></td>
+                    <td><a class="custom-link" href='#' onclick=""></i> Ver info</a></td>
                     <td class="delete-row" onclick="openBajaModal('{{usuario.nombre}}','{{usuario.id}}');"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon"></i></td>
                     {%if usuario.estado == 'habilitado'%}
-                    <td class="modify-row" onclick="openModModal('{{usuario.nombre}}','{{usuario.estado}}', '{{usuario.direccion.calle}}', '{{usuario.direccion.altura}}', '{{usuario.direccion.ciudad}}', '{{usuario.direccion.provincia}}', '{{usuario.direccion.pais}}', '{{usuario.direccion}}' , '{{usuario.apellido}}','{{usuario.email}}','{{usuario.nroDoc}}','{{usuario.tipoDoc}}','{{usuario.idTipoUsuario}}','{{usuario.id}}');"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
+                    <td class="modify-row" onclick="openModModal('{{usuario.nombre}}','{{usuario.estado}}', '{{usuario.direccion.calle}}', '{{usuario.direccion.altura}}', '{{usuario.direccion.ciudad}}', '{{usuario.direccion.provincia}}', '{{usuario.direccion.pais}}', '{{usuario.direccion.id}}' , '{{usuario.apellido}}','{{usuario.email}}','{{usuario.nroDoc}}','{{usuario.tipoDoc}}','{{usuario.idTipoUsuario}}','{{usuario.id}}');"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
                     {%else%}
                     <td class="modify-row"></td>
                     {%endif%}
