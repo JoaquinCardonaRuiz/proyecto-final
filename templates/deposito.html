@@ -339,6 +339,7 @@
                             {%endfor%}
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{p.id}});"><i class="fa fa-box custom-link-fa"></i> Ver info</a></td>   
+                            <td scope="row"><button class="btn btn-outline-secondary" style="box-shadow:none;font-size:12px;border-radius:30px;" onclick="update_estado({{p.id}},'devuelto')">Devuelto</button></td>
                         </tr>
                     {%endif%}
                 {%endfor%}
@@ -367,7 +368,7 @@
                 </thead>
                 <tbody>
                 {%for p in pedidos%}
-                    {%if p.estado == 'devueltos'%}
+                    {%if p.estado == 'devuelto'%}
                     {%set ids_articulos = []%}
                         {%set cantidades = []%}
                         {%for art in p.articulos%}
@@ -385,6 +386,8 @@
                                 {%endif%}
                             {%endfor%}
                             <td><a class="custom-link" href='#' onclick="openLoadingRing();openModalMateriales({{ids_articulos}},{{cantidades}});"><i class="fa fa-box custom-link-fa"></i> Ver artículos</a></td>  
+                            <td><a class="custom-link" href='#' onclick="openLoadingRing();openInfoModal({{p.id}});"><i class="fa fa-box custom-link-fa"></i> Ver info</a></td>   
+
                         </tr>
                     {%endif%}
                 {%endfor%}
