@@ -25,6 +25,7 @@ function navbarResize(){
 }
 
 $.getJSON("/layout/datos-usuario",function (result){
+    showElementos(result["modulos"])
     $("#nombreUsuarioNavBar").text(result["nombre"]);
     $("#cantEPNavBar").text(result["totalEP"]);
     $("#user-profile-img-navbar").attr("src", result["img"]);
@@ -78,4 +79,48 @@ function isNumberKeyEntiresOnly(txt, evt) {
       (charCode < 48 || charCode > 57))
       return false;
   return true;
+}
+
+
+
+function showElementos(modulos){
+  if(modulos.includes(8) || modulos.includes(12)){
+    $("#pedidos").show();
+  }
+  if(modulos.includes(9)){
+    $("#depositos").show();
+  }
+  if(modulos.includes(2)){
+    $("#articulos").show();
+  }
+  if(modulos.includes(1)){
+    $("#insumo").show();
+  }
+  if(modulos.includes(16)){
+    $("#materiales").show();
+  }
+  if(modulos.includes(11)){
+    $("#stock").show();
+  }
+  if(modulos.includes(5)){
+    $("#produccion").show();
+  }
+  if(modulos.includes(4) || modulos.includes(10)){
+    $("#usuarios").show();
+  }
+  if(modulos.includes(6)){
+    $("#entidades").show();
+  }
+  if(modulos.includes(3)){
+    $("#niveles").show();
+  }
+  if(modulos.includes(7) || modulos.includes(15)){
+    $("#puntos").show();
+  }
+  if(modulos.includes(14)){
+    $("#reportes").show();
+  }
+  if(modulos.includes(13)){
+    $("#config").show();
+  }
 }
