@@ -1,3 +1,7 @@
+var domain = "";
+var img_hide = false;
+
+
 $( window ).resize(function() {
     reduceWindow();
 });
@@ -35,6 +39,7 @@ function reduceWindow(){
 function setEmail(){
     domain = "";
     add = false;
+    email_val = $("#email-direction-label").text();
     for (var i in String(email_val)){
         if (add){
             domain += email_val[i];
@@ -45,3 +50,13 @@ function setEmail(){
     }
     $("#email-button").text("Ir a " + domain);
 }
+
+function redirectBlankES(){
+    link = "https://" + domain;
+    window.open(
+        link,
+        '_blank' // <- This is what makes it open in a new window.
+    );
+    }
+
+setEmail();

@@ -292,8 +292,8 @@ class NegocioUsuario(Negocio):
             raise e
     
     @classmethod
-    def get_all(cls):
+    def get_all(cls, noFilter=False):
         try:
-            return DatosUsuario.get_all()
+            return DatosUsuario.get_all(noFilter=noFilter)
         except Exception as e:
             raise e

@@ -279,34 +279,58 @@ class DatosUsuario(Datos):
 
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls, noFilter=False):
         """
         Obtiene todos los usuarios
         """
         try:
             cls.abrir_conexion()
-            sql = ("SELECT usuarios.idUsuario, \
-                usuarios.nroDoc, \
-                usuarios.nombre, \
-                usuarios.apellido, \
-                usuarios.email, \
-                usuarios.password, \
-                usuarios.idTipoUsuario, \
-                usuarios.idTipoDoc, \
-                usuarios.idDireccion, \
-                usuarios.idNivel, \
-                usuarios.img \
-                from usuarios WHERE estado = \"habilitado\"")
+            if noFilter:
+                sql = ("SELECT usuarios.idUsuario, \
+                    usuarios.nroDoc, \
+                    usuarios.nombre, \
+                    usuarios.apellido, \
+                    usuarios.email, \
+                    usuarios.password, \
+                    usuarios.idTipoUsuario, \
+                    usuarios.idTipoDoc, \
+                    usuarios.idDireccion, \
+                    usuarios.idNivel, \
+                    usuarios.img, \
+                    usuarios.estado \
+                    from usuarios order by nombre IS NULL, nombre,estado ASC")
+            else:
+                sql = ("SELECT usuarios.idUsuario, \
+                    usuarios.nroDoc, \
+                    usuarios.nombre, \
+                    usuarios.apellido, \
+                    usuarios.email, \
+                    usuarios.password, \
+                    usuarios.idTipoUsuario, \
+                    usuarios.idTipoDoc, \
+                    usuarios.idDireccion, \
+                    usuarios.idNivel, \
+                    usuarios.img, \
+                    usuarios.estado \
+                    from usuarios WHERE estado = \"habilitado\" order by nombre ASC")
             cls.cursor.execute(sql)
             usuarios = cls.cursor.fetchall()
             users = []
-            for usu in usuarios:
-                direc = DatosDireccion.get_one_id(usu[8])
-                depositos = DatosDeposito.get_by_id_usuario(usu[0])
-                ped = DatosPedido.get_by_user_id(usu[0])
-                usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10])
-                usuario.calcularTotalEcopuntos()
-                users.append(usuario)
+            if noFilter:
+                for usu in usuarios:
+                    direc = None
+                    depositos = None
+                    ped = None
+                    usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10],usu[11])
+                    users.append(usuario)
+            else:
+                for usu in usuarios:
+                    direc = DatosDireccion.get_one_id(usu[8])
+                    depositos = DatosDeposito.get_by_id_usuario(usu[0])
+                    ped = DatosPedido.get_by_user_id(usu[0])
+                    usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10],usu[11])
+                    usuario.calcularTotalEcopuntos()
+                    users.append(usuario)
             return users
         except custom_exceptions.ErrorDeConexion as e:
             raise e

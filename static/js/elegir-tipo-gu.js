@@ -11,7 +11,7 @@ function redirectMessage(tipoPunto) {
 
     }
     else if (tipoPunto=='au'){
-        window.location.href = "/gestion-puntos-retiro";
+        window.location.href = "/gestion-usuarios";
         nextMsgRetiro();
     }
     

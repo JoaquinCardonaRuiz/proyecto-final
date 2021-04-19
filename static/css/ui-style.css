@@ -520,3 +520,7 @@ th,tr,td{
 .anychart-credits{
     display: none !important;
 }
+
+.color-alerta{
+    color: #f0ad4e !important;
+}
