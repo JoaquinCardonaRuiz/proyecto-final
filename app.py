@@ -66,8 +66,6 @@ def main():
         elif session["usuario"].estado == "no-verificado":
             return render_template('email-sent.html',email=session["usuario"].email) 
         else: 
-            if not valida_permiso(32):
-                return redirect(url_for("error_auth"))
             nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel, True)
             if len(session["usuario"].pedidos) >= 5:
                 pedidos = session["usuario"].pedidos[:5]
@@ -545,6 +543,13 @@ def info_niveles():
         return error(e, "info_niveles")
     return render_template('info-niveles.html', niveles = niveles)
 
+@app.route('/gestion-niveles/get-name/<int:id>')
+def get_nivel_name_request(id):
+    try:
+        id = int(id)
+        return jsonify(NegocioNivel.get_nivel_id(id).nombre)
+    except Exception as e:
+        return error(e,"gestion_niveles")
 
 ''' 
     -----------------
@@ -1849,6 +1854,7 @@ def get_modulos(id):
     except Exception as e:
         return error(e,"permisos_acceso")
 
+
 @app.route('/permisos-acceso/modulos/all', methods = ['GET','POST'])
 def get_modulos_all():
     try:
@@ -1906,6 +1912,16 @@ def mod_user():
             id_tipo_usuario = request.form["id_tipo_usuario"]
             uid = request.form["idUsuario"]
             NegocioUsuario.update(nombre, apellido, email, id_direccion_gu, calle, altura, ciudad, provincia, pais, documento, id_tipo_doc, id_tipo_usuario,uid)
+            return redirect(url_for('gestion_usuarios'))
+    except Exception as e:
+        return error(e,"gestion_usuarios")
+
+@app.route('/gestion-usuarios/baja', methods = ['GET','POST'])
+def baja_user():
+    try:
+        if request.method == 'POST':
+            id_usuario = request.form["idUsuarioBaja"]
+            NegocioUsuario.baja(id_usuario)
             return redirect(url_for('gestion_usuarios'))
     except Exception as e:
         return error(e,"gestion_usuarios")

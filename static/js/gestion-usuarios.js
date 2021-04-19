@@ -832,8 +832,8 @@ function openBajaModal(nombre, id){
     $(".lds-ring").hide();
 
     $("#bajaPDModal").modal("show");
-    $("#baja-question").text("¿Está seguro que desea eliminar al usuario " + String(nombre) + "?");
-    $("#idPuntoBaja").val(String(id));
+    $("#baja-question").text("¿Está seguro que desea eliminar el usuario " + String(id) + "?");
+    $("#idUsuarioBaja").val(String(id));
     
 
 }
@@ -858,7 +858,7 @@ function baja_PD(){
 }
 
 
-function openInfoModal(id, nombre, apellido,tu, estado,documento,email){
+function openInfoModal(id, nombre, apellido,tu, estado,documento,email,totalEP,calle,altura,ciudad,provincia,pais,id_nivel){
     $("#headingModalInfo").text("Información del Usuario " + String(id));
     $("#nombreModal").val(nombre + " " + apellido);
     $("#tipoUsuarioModal").val(tu);
@@ -877,16 +877,47 @@ function openInfoModal(id, nombre, apellido,tu, estado,documento,email){
     }
     $("#documentoModal").val(documento);
     $("#emailModal").val(email);
+    $("#totalEP").val(parseFloat(totalEP));
+    set_ep_logo_pos(parseFloat(totalEP));
+
+    $("#direccionModalInfo").val(calle + " " + altura + ", " + ciudad);
+    $("#prov-pais-modal").val(provincia + ", " + pais);
+
+    $.getJSON("/gestion-niveles/get-name/" + String(id_nivel),function (result){
+        $("#nivelModal").val("Nivel " + String(result));
+    });
 
     jQuery.noConflict();
     $("#infoModal").modal('show');
 }
 
+function openInfoModal2(id, email,estado,tu){
+    $("#headingModalInfo").text("Información del Usuario " + String(id));
+    $("#tipoUsuarioModal2").val(tu);
+    $(".circle-color-modal").hide();
+    if (estado == 'habilitado'){
+        $("#estado-activo-modal2").show();
+        $("#estadoModal2").text("Habilitado");
+    }
+    else if (estado == 'no-activo'){
+        $("#estado-semi-inactivo-modal2").show();
+        $("#estadoModal2").text("No Activo");
+    }
+    else{
+        $("#estado-inactivo-modal2").show();
+        $("#estadoModal2").text("Sin Verificar");
+    }
+    $("#documentoModal2").val(documento);
+    $("#emailModal2").val(email);
+
+    jQuery.noConflict();
+    $("#infoModal2").modal('show');
+}
 
 function set_ep_logo_pos(cant_ep){
-    left_factor = 12 * String(num).length;
-    var top_input = document.getElementById("EPModal").offsetTop;
-    var left_input = document.getElementById("EPModal").offsetLeft;
+    left_factor = 12 * String(cant_ep).length;
+    var top_input = document.getElementById("totalEP").offsetTop;
+    var left_input = document.getElementById("totalEP").offsetLeft;
     $("#ep-logo-modal-info").css({top: top_input + 11, position:'absolute'});
     $("#ep-logo-modal-info").css({left: left_input + left_factor, position:'absolute'});
 }

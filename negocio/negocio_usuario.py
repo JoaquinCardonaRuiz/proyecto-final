@@ -330,3 +330,14 @@ class NegocioUsuario(Negocio):
             
         except Exception as e:
             raise e
+    
+    @classmethod
+    def baja(cls, uid):
+        try:
+            users = DatosUsuario.get_all(True)
+            if not (any(x.id == int(uid) for x in users)):
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.baja()",
+                                                        msj="El ID no corresponde a un Usuario registrado.")
+            DatosUsuario.baja(uid)
+        except Exception as e:
+            raise e

@@ -86,12 +86,15 @@
                         </td>
                     {%endif%}
                     {%if usuario.estado != 'habilitado'%}
-                        <td><a class="custom-link" href='#' onclick="openInfoModal('{{usuario.id}}','-','','Ciudadano','{{usuario.estado}}');"><i class="fa fa-info-circle"></i> </i> Ver info</a></td>
-
+                        {%for tu in tipos_usuario%}
+                                {%if tu.id == usuario.idTipoUsuario%}
+                                    <td><a class="custom-link" href='#' onclick="openInfoModal2('{{usuario.id}}','{{usuario.email}}','{{usuario.estado}}','{{tu.nombre}}');"><i class="fa fa-info-circle"></i> </i> Ver info</a></td>
+                                {%endif%}
+                        {%endfor%}
                     {%else%}
                         {%for tu in tipos_usuario%}
                             {%if tu.id == usuario.idTipoUsuario%}
-                                <td><a class="custom-link" href='#' onclick="openInfoModal('{{usuario.id}}','{{usuario.nombre}}','{{usuario.apellido}}','{{tu.nombre}}','{{usuario.estado}}','{{usuario.nroDoc}}','{{usuario.email}}');"><i class="fa fa-info-circle"></i> </i> Ver info</a></td>
+                                <td><a class="custom-link" href='#' onclick="openInfoModal('{{usuario.id}}','{{usuario.nombre}}','{{usuario.apellido}}','{{tu.nombre}}','{{usuario.estado}}','{{usuario.nroDoc}}','{{usuario.email}}','{{usuario.totalEcopuntos}}','{{usuario.direccion.calle}}', '{{usuario.direccion.altura}}', '{{usuario.direccion.ciudad}}', '{{usuario.direccion.provincia}}', '{{usuario.direccion.pais}}','{{usuario.idNivel}}');"><i class="fa fa-info-circle"></i> </i> Ver info</a></td>
                             {%endif%}
                         {%endfor%}
                     {%endif%}
@@ -163,7 +166,7 @@
                     <label class="">Email</label>
                 </div>
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="estadoModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Nivel " id="nivelModal">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Nivel</label>
                 </div>
@@ -171,20 +174,65 @@
             <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
 
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_depModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="totalEP">
                     <img src="/static/img/econpuntos-logo.png" id="ep-logo-modal-info">
                     <input type="text" id="" name="id" hidden>
-                    <label class="">Total EP</label>
+                    <label class="">Total EcoPuntos</label>
                 </div>
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_regModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="direccionModalInfo">
                     <input type="text" id="" name="id" hidden>
                     <label class="">Dirección</label>
                 </div>
                 <div class="group" style="width: 25%;">  
-                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_regModal">
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="prov-pais-modal">
                     <input type="text" id="" name="id" hidden>
-                    <label class="">Ciudad, Provincia y País</label>
+                    <label class="">Provincia y País</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn primary-btn" onClick="closeLoadingRing();" data-dismiss="modal" id="primary-btn-alta">Listo</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Info Modal -->
+<div class="modal fade modal-lg" id="infoModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document" style="height: fit-content;"id="altaPDModalContent">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModalInfo">Información del Usuario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modal-body-card" style="height: fit-content;overflow-x:hidden;" id="modalAltaPDBody">           
+            <div class="row subheader-row" id="subheader-alta-pd">
+                <div class="col">
+                    <label class="subheader-info" id="subheader-alta">Datos del Usuario</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%;display: inline-block;">
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="emailModal2">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Email</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="tipoUsuarioModal2">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Tipo de Usuario</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="" id="" hidden>
+                    <i class="fas fa-circle color-activo circle-color-modal" id="estado-activo-modal2" style="display: none;"></i>
+                    <i class="fas fa-circle color-alerta circle-color-modal" id="estado-semi-inactivo-modal2" style="display: none;"></i>
+                    <i class="fas fa-circle color-inactivo circle-color-modal" id="estado-inactivo-modal2" style="display: none;"></i>
+                    <span id="estadoModal2"></span>
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Estado actual</label>
                 </div>
             </div>
         </div>
@@ -207,79 +255,6 @@
     </div>
 </div>
 
-<!-- Horarios Modal -->
-<div class="modal fade modal-lg" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="headingModalHorarios"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body modal-body-card">
-                <div class="container modal-large-card">
-                    <div class="row">
-                        <div class="modal-card-col" id="modal-card-col-1">
-                            <img src="/static/img/open-circle-icon.jpg" class="modal-large-card-img" id="open-img">
-                            <img src="/static/img/closed-circle-icon.png" class="modal-large-card-img" id="close-img">
-                            <img src="/static/img/inactive-circle-icon.png" class="modal-large-card-img" id="inactive-img">
-                        </div>
-                        <div class="modal-card-col" >
-                            <div class="row d-flex justify-content-center card-first-row">
-                                <p class="open-letter" id="estado-apertura-pos">Abierto</p>
-                                <p class="open-letter" id="estado-apertura-neg">Cerrado</p>
-                                <p class="open-letter" id="estado-apertura-inac">Inactivo</p>
-                            </div>
-                            <div class="row d-flex justify-content-center card-second-row">
-                                <p class="text-box">Estado Actual</p>
-                            </div>
-                        </div>
-                        <div class="modal-card-col">
-                            <div class="row d-flex justify-content-center card-first-row">
-                                <p class="open-letter" id="cant-horas-cierre-pos">-</p>
-                                <p class="open-letter" id="cant-horas-cierre-neg">-</p>
-                            </div>
-                            <div class="row d-flex justify-content-center card-second-row">
-                                <p class="text-box">Tiempo para cierre</p>
-                            </div>
-                        </div>
-                        <div class="modal-card-col">
-                            <div class="vl">
-                                <div class= "info-container-modal">
-                                    <span class="text-muted" id="toda-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-1-pos"></i>Abre de lunes a viernes<br></span>
-                                    <span class="text-muted" id="toda-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-1-neg"></i>No abre de lunes a viernes<br></span>
-
-                                    <span class="text-muted" id="fines-semana-pos"><i class="fa fa-check modal-info-img" id="info-modal-2-pos"></i>Abre fines de semana<br></span>
-                                    <span class="text-muted" id="fines-semana-neg"><i class="fa fa-times modal-info-img" id="info-modal-2-neg"></i>No abre fines de semana<br></span>
-
-                                    <i class="fa fa-clock modal-info-img" id="info-modal-3"></i><span class="text-muted" id="horarios-apertura">Hoy abre 08:00hs y cierra 20:00hs</span>                                                                        
-                                </div>
-                            </div>
-                            
-                           
-                        </div>
-                    </div>
-                </div>
-                    <div class="container modal-large-card d-flex justify-content-center" id="modal-large-card-2">
-                        <table class="table" id="content-table-modal">
-                            <thead>
-                            <tr id=headerRow>
-                            </tr>
-                            </thead>
-                            <tbody id="modalTableBody">
-                            </tbody>
-                    
-                        </table>
-                    </div>
-            </div>        
-        <div class="modal-footer">
-            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
-        </div>
-    </div>
-
-    </div>
-</div>
 
 <!-- Materiales Modal -->
 <div class="modal fade modal-lg" id="materialesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
@@ -542,7 +517,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="headingModal">Eliminar un Punto de Depósito</h5>
+          <h5 class="modal-title" id="headingModal">Eliminar un Usuario</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -551,12 +526,12 @@
             <div class="row" id="loadingRow">
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
-            <form action="{{url_for('baja_pd')}}" method="POST" id="bajaPDform">
+            <form action="{{url_for('baja_user')}}" method="POST" id="bajaPDform">
                 <div class="row margin-bottom-row" id="fieldsRowBaja">
                     <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark">
                     <p class="bottom-modal-text-baja" id="baja-question">¿Está seguro que desea eliminar el Punto? </p>
-                    <p class="bottom-modal-text less-margin-top"> Una vez eliminado, el Usuario no se podrá recuperar.</p>
-                    <input type="text" id="idPuntoBaja" name="idPuntoBaja" hidden>
+                    <p class="bottom-modal-text less-margin-top"> Una vez eliminado, el usuario no se podrá recuperar.</p>
+                    <input type="text" id="idUsuarioBaja" name="idUsuarioBaja" hidden>
                 </div>
             </form>
             <p class="bottom-modal-text" id="bottomBajaModalText"></p>

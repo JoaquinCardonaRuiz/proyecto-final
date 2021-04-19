@@ -29,7 +29,7 @@ class DatosUsuario(Datos):
                 usuarios.idNivel, \
                 usuarios.img, \
                 usuarios.estado \
-                from usuarios where email = %s and password = %s")
+                from usuarios where email = %s and password = %s and estado != 'eliminado'")
             values = (email, password)
             cls.cursor.execute(sql,values)
             usuarios = cls.cursor.fetchall()
@@ -77,7 +77,7 @@ class DatosUsuario(Datos):
                 usuarios.idDireccion, \
                 usuarios.idNivel, \
                 usuarios.img \
-                from usuarios where usuarios.idUsuario = {} and estado = \"habilitado\"").format(id)
+                from usuarios where usuarios.idUsuario = {}").format(id)
             cls.cursor.execute(sql)
             usuarios = cls.cursor.fetchall()
             if len(usuarios) > 0:
@@ -120,6 +120,25 @@ class DatosUsuario(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_usuario.update_nivel()",
                                                     msj=str(e),
                                                     msj_adicional="Error actualizando un nivel de un usuario en la BD.")
+        finally:
+            cls.cerrar_conexion()
+    
+    @classmethod
+    def baja(cls,uid):
+        """
+        Elimina logicamente a un usuario en la BD.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("UPDATE usuarios SET estado=%s WHERE idUsuario=%s")
+            values = ('eliminado',uid)
+            cls.cursor.execute(sql,values)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_usuario.baja()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error eliminando un un usuario de la BD.")
         finally:
             cls.cerrar_conexion()
     
@@ -281,7 +300,7 @@ class DatosUsuario(Datos):
     @classmethod
     def get_all(cls, noFilter=False):
         """
-        Obtiene todos los usuarios
+        Obtiene todos los usuarios. El No filter solamente filtra los no-activos y los no-verificados, no se incluyen nunca los eliminados.
         """
         try:
             cls.abrir_conexion()
@@ -298,7 +317,7 @@ class DatosUsuario(Datos):
                     usuarios.idNivel, \
                     usuarios.img, \
                     usuarios.estado \
-                    from usuarios order by nombre IS NULL, nombre,estado ASC")
+                    from usuarios where estado != 'eliminado' order by nombre IS NULL, nombre,estado ASC")
             else:
                 sql = ("SELECT usuarios.idUsuario, \
                     usuarios.nroDoc, \
@@ -318,6 +337,8 @@ class DatosUsuario(Datos):
             users = []
             if noFilter:
                 for usu in usuarios:
+                    print(usu[0])
+                    print(usu[11])
                     if usu[11] != 'habilitado':
                         direc = None
                         depositos = None
