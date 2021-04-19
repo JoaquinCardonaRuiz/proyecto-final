@@ -1809,7 +1809,9 @@ def elegir_tipo_gu():
 def gestion_usuarios():
     try:
         usuarios = NegocioUsuario.get_all(True)
-        return render_template('gestion-usuarios.html', usuarios = usuarios)  
+        tiposDoc = NegocioTipoDocumento.get_all()
+        tipos_usuario = NegocioTipoUsuario.get_all()
+        return render_template('gestion-usuarios.html', usuarios = usuarios, tiposDoc=tiposDoc, tipos_usuario=tipos_usuario)  
     except Exception as e:
         return error(e,"gestion_usuarios")
 
@@ -1887,6 +1889,43 @@ def get_all_tipos():
         return jsonify(tipos)
     except Exception as e:
         return error(e,"permisos_acceso")
+
+
+@app.route('/gestion-usuarios/mod', methods = ['GET','POST'])
+def mod_user():
+    try:
+        if request.method == 'POST':
+            nombre = request.form["nombre"]
+            apellido = request.form["apellido"]
+            email = request.form["email"]
+            id_direccion = request.form["idDireccionUser"]
+            calle = request.form['callePDMod']
+            altura = request.form['alturaPDMod']
+            ciudad = request.form['ciudadPDMod']
+            provincia = request.form['provinciaPDMod']
+            pais = request.form['paisPDMod']
+            documento = request.form["documentoInput"]
+            id_tipo_doc = request.form["tipoDocSelect"]
+            id_tipo_usuario = request.form["id_tipo_usuario"]
+            uid = request.form["idUsuario"]
+
+
+            
+    except Exception as e:
+        return error(e,"permisos_acceso")
+
+@app.route('/gestion-usuarios/get-list/<type>', methods = ['GET','POST'])
+def gu_listas(type):
+    try:
+        if type == 'emails':
+            return jsonify(NegocioUsuario.get_all_emails())
+        if type == 'documentos':
+            return jsonify(NegocioUsuario.get_all_documentos())
+        if type == 'documentos_no_filter':
+            return jsonify(NegocioUsuario.get_all_documentos())
+    except Exception as e:
+        return error(e,"perfil")
+    return render_template('login.html')
 
 '''
     -----------------------

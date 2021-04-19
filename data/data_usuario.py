@@ -318,11 +318,19 @@ class DatosUsuario(Datos):
             users = []
             if noFilter:
                 for usu in usuarios:
-                    direc = None
-                    depositos = None
-                    ped = None
-                    usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10],usu[11])
-                    users.append(usuario)
+                    if usu[11] != 'habilitado':
+                        direc = None
+                        depositos = None
+                        ped = None
+                        usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10],usu[11])
+                        users.append(usuario)
+                    else:
+                        direc = DatosDireccion.get_one_id(usu[8])
+                        depositos = DatosDeposito.get_by_id_usuario(usu[0])
+                        ped = DatosPedido.get_by_user_id(usu[0])
+                        usuario = Usuario(usu[0],usu[1],usu[7],usu[2],usu[3],usu[5],usu[6],direc,depositos,ped,usu[9],[],[],[],usu[4],usu[10],usu[11])
+                        usuario.calcularTotalEcopuntos()
+                        users.append(usuario)
             else:
                 for usu in usuarios:
                     direc = DatosDireccion.get_one_id(usu[8])
@@ -414,5 +422,22 @@ class DatosUsuario(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_usuario.buscar_info_user()",
                                                     msj=str(e),
                                                     msj_adicional="Error buscando usuarios.")
+        finally:
+            cls.cerrar_conexion()
+
+    @classmethod
+    def update_nombre_apellido_tu(cls,nombre,apellido,tu):
+        """
+        Actualiza el nombre, el apellido y el tipo de usuario de un usuario en la BD.
+        """
+        try:
+            cls.abrir_conexion()
+            
+        except custom_exceptions.ErrorDeConexion as e:
+            raise e
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="update_nombre_apellido_tu.buscar_info_user()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el nombre, el apellido y el tipo de usuario de un usuario en la BD..")
         finally:
             cls.cerrar_conexion()

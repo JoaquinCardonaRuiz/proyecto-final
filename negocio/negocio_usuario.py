@@ -5,6 +5,8 @@ from negocio.negocio_direccion import NegocioDireccion
 from negocio.negocio_nivel import NegocioNivel
 from negocio.negocio_tipo_documento import NegocioTipoDocumento
 from data.data_usuario import DatosUsuario
+from data.data_tipo_usuario import DatosTipoUsuario
+
 from datetime import datetime, timedelta
 from utils import Utils
 import re
@@ -295,5 +297,34 @@ class NegocioUsuario(Negocio):
     def get_all(cls, noFilter=False):
         try:
             return DatosUsuario.get_all(noFilter=noFilter)
+        except Exception as e:
+            raise e
+
+    @classmethod
+    def update(cls, nombre, apellido, email, id_direccion, calle, altura, ciudad, provincia, pais, documento, id_tipo_doc, id_tipo_usuario,uid):
+        try:
+            #Valido datos personales:
+            if nombre == "" or apellido =="":
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.update()",
+                                                        msj="El nombre o el apellido no pueden ser vacios.")
+            
+            #Valido ID Tipo de Usuario
+            tus = cls.get_all()
+            if not (any(x.id == int(id_tipo_usuario) for x in tus)):
+                raise custom_exceptions.ErrorDeNegocio(origen="negocio_usuario.update()",
+                                                        msj="El ID no corresponde a un Tipo de Usuario registrado.")
+
+            #Actualizo Documento
+            cls.update_documento(documento,id_tipo_doc,uid)
+            
+            #Actualizo email
+            cls.update_email(email,uid)
+            
+            #Actualizo Dirección
+            NegocioDireccion.mod_direccion(id_direccion, calle,altura,ciudad,provincia,pais,True)
+
+            #Actualizo Tipo de Usuario
+            
+            
         except Exception as e:
             raise e

@@ -8,46 +8,59 @@ var pais = true;
 var ciudad = true;
 var altura = false;
 var calle = false;
-var menuShown = false;
-var selectedOptions = [];
-var materiales_PD = [];
-var menuShownMod = false;
-var selectedOptionsMod = [];
+var nombre = false;
+var email = false;
+var apellido = false;
+var documento = false;
+var tipo_doc = false;
+var tipo_usuario = false;
 
 //Cambios
-var cambios_nombre = false;
+var cambio_nombre = false;
+var cambio_apellido = false;
+
 var cambio_estado = false;
 var cambio_provincia = false;
 var cambio_calle = false;
 var cambio_altura = false;
 var cambio_ciudad = false;
 var cambio_pais = false;
-var cambio_horarios = [false, false, false, false, false, false, false];
+
+var cambio_email = false;
+var cambio_tipo_doc = false;
+var cambio_doc = false;
+var cambio_tu = false;
 
 //Valores originales
+var email_ant = false;
 var nombre_ant = false;
-var estado_ant;
+var apellido_ant = false;
 var provincia_ant;
 var calle_ant = false;
 var altura_ant = false;
 var ciudad_ant = false;
 var provincia_ant = false;
 var pais_ant = false;
-var horarios_mod = false;
-var estado_horario_ant = [true,true,true,true,true,true,true];
-var estado_horario = [true,true,true,true,true,true,true];
- 
+var id_tipo_doc_ant = false;
+var documento_ant = false;
+var id_tipo_usuario_ant = false;
 
 
 //Asteriscos de error
 var error_nombre = false;
+var error_apellido = false;
+var error_doc = false;
+var error_email = false;
+
 var error_provincia = false;
 var error_calle = false;
 var error_altura = false;
 var error_pais = false;
 var error_ciudad = false;
-var error_horarios = [false, false, false, false, false, false, false];
 
+//Lista de valores ya registrados
+var emails = [];
+var documentos = [];
 
 //Funciones específicas que manejan el dropdwon.
 function headingOptionHover(){
@@ -100,52 +113,7 @@ function dropdownOptionSelect(idOption, nameOption, color){
      
 }
 
-//Manejo de carteles en la seleccion de materiales del dropdown.
-function labelShowHide(){
-    if (selectedOptions.length == 0){
-        $(".indicator-label-2").hide();
-        $("#warning-label-altaPD").fadeIn(1000);
-    }
-    else{
-        $(".indicator-label-2").show();
-        $("#warning-label-altaPD").hide();
-    }
-}
 
-//Setea el color de las tarjetas de materiales.
-function setColor(nombre,color){
-    $("#"+String(nombre)+"-img").css("background-color", String(color));
-}
-
-//Cierra el dropdown al clickear fuera de el y su
-$(document).on('click', function (e) {
-    if ($(e.target).closest("#dropdown-altaPD").length === 0) {
-        if (menuShown == true){
-            closeMenu();
-            headingOptionLeave();
-            menuShown=false;
-        }
-    }
-});
-
-//Funcion principal de manejo del compartamiento el dropdown.
-function dropdownManager(){
-    if (menuShown == false){
-        openMenu();
-        headingOptionHover();
-        menuShown = true
-    }
-    else{
-        closeMenu();
-        headingOptionLeave();
-        menuShown=false;
-    }
-
-}
-
-$.getJSON("/gestion-puntos-deposito/nombres-pd/",function (result){
-    nombres = result;
-});
 
 //Efecto CSS el botón del extremo derecho de los botones principales del modulo.
 $("#option-right").hover(function(){
@@ -217,200 +185,8 @@ function modificarPunto(){
     }
 }
 
-function openModalHorarios(id, nombre, estado){
-    $.getJSON("/gestion-puntos-deposito/horarios/"+String(id),function (result){
-        
-        // Borro contenido anterior
-        document.getElementById("modalTableBody"). innerHTML="";
-        document.getElementById("headerRow").innerHTML ="";
-
-        // Establezco título
-        document.getElementById("headingModalHorarios").innerHTML = "Horarios de " + nombre;
-
-        if(result.length > 0){
-            // Creo títulos de columnas
-            var headings = ["Día","Horarios"];
-            for (i=0; i < headings.length; i++){
-                t = document.createElement("th");
-                t.scope = "col";
-                t.class = "table-heading";
-                t.innerHTML = headings[i];
-                document.getElementById("headerRow").appendChild(t);
-            }
-
-            // Creo contenido
-            for(i=0; i < result.length - 5; i++){
-                // Creo celda de día
-                headCell = document.createElement("th");
-                headCell.scope = "row";
-                headCell.innerHTML = result[i]["dia"];
-    
-                // Creo celda de horarios
-                bodyCell1 = document.createElement("td");
-                if(result[i]["horaDesde"] == false || result[i]["horaHasta"] == false){
-                    bodyCell1.innerHTML = "No abre este día";
-                }
-                else{
-                    bodyCell1.innerHTML = "Desde las " + result[i]["horaDesde"] + " hasta las " + result[i]["horaHasta"];
-                }
-
-    
-                // Creo fila
-                row = document.createElement("tr");
-    
-                // Agrego celdas a fila
-                row.appendChild(headCell); 
-                row.appendChild(bodyCell1);
-
-                // Agrego fila a tabla
-                document.getElementById("modalTableBody").appendChild(row);
-            }
-        }
-        document.getElementById("open-loading-modal").click();
-        document.getElementById("open-modal").click();
-    
-    pd_abierto = result[7]
-    cant_horas_cierre = result[8]
-    fines_semana = result[9]
-    toda_semana = result[10]
-    horario_apertura = result[11]
-    
-    //Setea el estado.
-    if (estado == "False"){
-        $("#estado-apertura-pos").hide()
-        $("#cant-horas-cierre-pos").hide();
-        $("#estado-apertura-neg").hide()
-        $("#cant-horas-cierre-neg").hide();
-        $("#open-img").hide();
-        $("#close-img").hide();
-
-        $("#estado-apertura-inac").show()
-        $("#cant-horas-cierre-neg").show();
-        $("#inactive-img").show();
-    }
-    else if (pd_abierto == true){
-        $("#estado-apertura-neg").hide()
-        $("#cant-horas-cierre-neg").hide();
-        $("#estado-apertura-inac").hide()
-        $("#close-img").hide();
-        $("#inactive-img").hide();
-
-        $("#estado-apertura-pos").show()
-        $("#cant-horas-cierre-pos").text(cant_horas_cierre);
-        $("#cant-horas-cierre-pos").show();
-        $("#open-img").show();
-    }
-    else {
-        $("#estado-apertura-pos").hide()
-        $("#cant-horas-cierre-pos").hide();
-        $("#estado-apertura-inac").hide()
-        $("#open-img").hide();
-        $("#inactive-img").hide();
 
 
-        $("#estado-apertura-neg").show()
-        $("#cant-horas-cierre-neg").show();
-        $("#close-img").show();
-    }
-
-    //Setea si abre o no los fines de semana.
-    if (fines_semana == true){
-        $("#fines-semana-pos").show();
-        $("#fines-semana-neg").hide();
-    }
-    else{
-        $("#fines-semana-pos").hide();
-        $("#fines-semana-neg").show();
-    }
-
-    //Setea si abre o no de lunes a viernes.
-    if (toda_semana == true){
-        $("#toda-semana-pos").show();
-        $("#toda-semana-neg").hide();
-    }
-    else{
-        $("#toda-semana-pos").hide();
-        $("#toda-semana-neg").show();
-    }
-
-    //Setea el horario de apertura.
-    if (horario_apertura == false){
-        $("#horarios-apertura").text('No abre el día de hoy');
-    }
-    else if (estado == "False"){
-        $("#horarios-apertura").text('No abre mientras esté inactivo');
-        }
-        else if (pd_abierto == true){
-        $("#horarios-apertura").text('Hoy abre ' + horario_apertura[0] + "hs y cierra " + horario_apertura[1] + "hs");
-        }
-        else{
-            $("#horarios-apertura").text('Hoy abrió  ' + horario_apertura[0] + "hs y cerró " + horario_apertura[1] + "hs");
-        }
-    })
-}
-
-function openModalMateriales(id, nombre){
-    $.getJSON("/gestion-puntos-deposito/materiales/"+String(id),function (result){
-        
-        card = $("#material-card").clone();
-        $("#materiales-modal-body").children("#material-card").remove();
-        
-        // Borro contenido anterior
-        document.getElementById("modalTableBody"). innerHTML="";
-        document.getElementById("headerRow").innerHTML ="";
-
-        // Establezco título
-        document.getElementById("headingModalMat").innerHTML = "Materiales aceptados por " + nombre;
-        document.getElementById("open-loading-modal").click();
-        document.getElementById("open-modal-mat").click();
-
-        row = document.getElementById("material-card");
-        if (result.length > 0){
-            for(i=0; i < result.length ; i++){
-                clone = card.clone();
-                $("#no-mats").hide();
-                if (result[i]["estado"] == "suspendido"){
-                    clone.addClass("grey-card");
-                    clone.find("#nombre-material").removeClass("material-card-title").addClass("material-card-title-grey");
-                    clone.find("#unidad-medida").removeClass("material-card-title").addClass("material-card-title-grey");
-                    clone.find("#id-material").removeClass("material-card-title").addClass("material-card-title-grey");
-                    clone.find("#material-img").css('background-color',"rgb(165, 165, 165)");
-                    clone.attr("data-toggle", "tooltip");
-                    clone.attr("data-placement", "right");
-                    clone.attr("title", "Los depósitos de este material se encuentran suspendidos");
-                }
-                else{
-                    clone.removeClass("grey-card");
-                    clone.find("#material-img").removeClass("gray-mat-img");
-                    clone.find("#material-img").css('background-color',result[i]["color"]);
-                    clone.find("#nombre-material").removeClass("material-card-title-grey").addClass("material-card-title");
-                    clone.find("#unidad-medida").removeClass("material-card-title-grey").addClass("material-card-title");
-                    clone.find("#id-material").removeClass("material-card-title-grey").addClass("material-card-title");
-                    clone.removeAttr("data-toggle");
-                    clone.removeAttr("data-placement");
-                    clone.removeAttr("title");
-                    
-                }
-                clone.find("#nombre-material").text(result[i]["nombre"]);
-                clone.find("#unidad-medida").text(result[i]["unidadMedida"]); 
-                clone.find("#id-material").text(result[i]["id"]);
-                clone.find("#material-img").text(result[i]["nombre"][0]);
-                clone.show();
-                clone.appendTo("#materiales-modal-body");
-
-
-                
-            }
-        }
-        else{
-            clone = card.clone();
-            clone.hide();
-            $("#no-mats").show();
-            clone.appendTo("#materiales-modal-body");
-        }
-    
-    })
-}
 
 function cierraModal(idModal){
     jQuery.noConflict();
@@ -425,260 +201,10 @@ function openLoadingRing(){
     $("#loadingRow").show();
 }
 
-function openAltaModal(){
-    var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-    jQuery.noConflict();
 
-    //Define que se debe mostrar y que se oculta.
-    $("#bottomAltaModalText").hide();
-    $("#nombrePDError").hide();
-    $(".lds-ring").hide();
-    $("#loadingRow").hide();
-    $("#altaPDModal").modal("show");
-    $("#nombrePD").val("");
-    $("#customSwitch1").val(true);
-    $('#primary-btn-alta').prop('disabled', true);
-    $(".card-altaPD").hide();
-    $(".dropdown-option-check").hide();
-    $(".indicator-label-2").show();
-    $("#warning-label-altaPD").show();
 
-    //Seteo de valores iniciales.
-    for (var i in dias){
-        dia = dias[i];
-        $("#" + String(dia) + "-horaDesde").val("08:00");
-        $("#" + String(dia) + "-horaHasta").val("20:00");
-    }
-    $("#callePD").val("");
-    $("#alturaPD").val("");
-    $("#ciudadPD").val("Rosario");
-    $("#provinciaPD").val("Santa Fe");
-    $("#paisPD").val("Argentina");
-    selectedOptions = [];
-    $("#switch-value").val("true");
 
-}
 
-//Valida que el campo Nombre PD no esté repetido ni vacío.
-function validaNombrePD(tipo){
-    if (tipo == "alta"){
-        if ((String($("#nombrePD").val()).trim()) == ""){
-            $("#nombrePDError").text("* El nombre no puede quedar vacío.");
-            $("#nombrePDError").show();
-            $('#primary-btn-alta').prop('disabled', true);
-        }
-        else if (nombres.includes(($("#nombrePD").val()).trim())){
-            $("#nombrePDError").text("* Este nombre ya ha sido utilizado en otro Punto de Depósito.");
-            $("#nombrePDError").show();
-            $('#primary-btn-alta').prop('disabled', true);
-        }
-        else{
-            $("#nombrePDError").hide();
-            $('#primary-btn-alta').prop('disabled', false);
-        }
-    }
-
-    else if (tipo == "mod"){
-        if ((String($("#nombrePDMod").val()).trim()) == nombre_ant){
-            $("#nombrePDErrorMod").hide();
-            cambios_nombre = false;
-            error_nombre = false;
-        }
-        else if ((String($("#nombrePDMod").val()).trim()) == ""){
-            $("#nombrePDErrorMod").text("* El nombre no puede quedar vacío.");
-            $("#nombrePDErrorMod").show();
-            cambios_nombre = true;
-            error_nombre = true;
-        }
-        else if (nombres.includes(($("#nombrePDMod").val()).trim())){
-            $("#nombrePDErrorMod").text("* Este nombre ya ha sido utilizado en otro Punto de Depósito.");
-            $("#nombrePDErrorMod").show();
-            cambios_nombre = true;
-            error_nombre = true;
-        }
-        else{
-            $("#nombrePDErrorMod").hide();
-            cambios_nombre = true;
-            error_nombre = false;
-        }
-        calc_cant_cambios();
-        error_datos_basicos();
-    }
-    
-}
-
-function error_datos_basicos(){
-    if (error_nombre == true){
-        $("#db-error-tab").show();
-        return true;
-    }
-    else{
-        $("#db-error-tab").hide();
-        return false;
-    }
-}
-//Valida que ningún campo de horario tenga un valor incorrecto.
-function validaHorarioPD(){
-  var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-  desactiva = false;
-  activa = false;
-  pre_desactiva = false;
-  while(desactiva == false && activa == false){
-    for (var i in dias){
-        dia = dias[i];
-        horaHasta = $("#" + String(dia) + "-horaHasta").val();
-        horaDesde = $("#" + String(dia) + "-horaDesde").val();
-        if ( ( horaHasta== "" ||  horaDesde == "") && $("#" + String(dia) + "-switch").is(":checked") == true){
-            pre_desactiva = true;
-            if (horaHasta == ""){
-                $("#" + String(dia) + "-error-horaHasta").show();
-            }
-            else{
-                $("#" + String(dia) + "-error-horaHasta").hide();
-            }
-
-            if (horaDesde == ""){
-                $("#" + String(dia) + "-error-horaDesde").show();
-            }
-            else{
-                $("#" + String(dia) + "-error-horaDesde").hide();
-            }
-            $("#" + String(dia) + "-error").hide();
-        }
-        else if ((horaDesde) >= (horaHasta) && $("#" + String(dia) + "-switch").is(":checked") == true){
-            pre_desactiva = true;
-            $("#" + String(dia) + "-error-horaDesde").hide();
-            $("#" + String(dia) + "-error-horaHasta").hide();
-            $("#" + String(dia) + "-error").show();
-
-        }
-        else{
-            $("#" + String(dia) + "-error-horaDesde").hide();
-            $("#" + String(dia) + "-error-horaHasta").hide();
-            $("#" + String(dia) + "-error").hide();
-        }
-        
-      }
-    if (pre_desactiva == true)
-        desactiva = true;
-    else{
-        activa = true;
-    }
-  }
-  if (desactiva == true){
-    $('#primary-btn-alta').prop('disabled', true);
-  }
-  else{
-    $('#primary-btn-alta').prop('disabled', false);
-  }
-  
-  
-}
-
-function validaHorarioPDMod(){
-    var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-    desactivaMod = false;
-    activaMod = false;
-    pre_desactivaMod = false;
-    while(desactivaMod == false && activaMod == false){
-      for (var i in dias){
-          dia = dias[i];
-          horaHasta = $("#" + String(dia) + "-horaHasta-mod").val();
-          horaDesde = $("#" + String(dia) + "-horaDesde-mod").val();
-          horaHasta_ant = String(horarios_mod[i]["horaHasta"]);
-          horaDesde_ant = String(horarios_mod[i]["horaDesde"]);
-          estado = $("#" + String(dia) + "-switch-mod").is(":checked");
-          if (horaHasta_ant.length == 4){
-              horaHasta_ant = "0" + horaHasta_ant;
-          }
-          if (horaDesde_ant. length == 4){
-              horaDesde_ant = "0" + horaDesde_ant;
-          }
-          if ( ( horaHasta== "" ||  horaDesde == "") && $("#" + String(dia) + "-switch-mod").is(":checked") == true){
-              pre_desactivaMod = true;
-              if (horaHasta == ""){
-                  $("#" + String(dia) + "-error-horaHasta-mod").show();
-                  error_horarios[i] = true;
-              }
-              else{
-                  $("#" + String(dia) + "-error-horaHasta-mod").hide();
-                  error_horarios[i] = false;
-              }
-  
-              if (horaDesde == ""){
-                  $("#" + String(dia) + "-error-horaDesde-mod").show();
-                  error_horarios[i] = true;
-              }
-              else{
-                  $("#" + String(dia) + "-error-horaDesde-mod").hide();
-                  error_horarios[i] = false;
-              }
-              if (estado_ant[i] == false && horaHasta == "" && horaDesde == ""){
-                  cambio_horarios[i] = false;
-              }
-              else{
-                  cambio_horarios[i] = true;
-              }
-              
-              $("#" + String(dia) + "-error-mod").hide();
-          }
-          else if ((horaDesde) >= (horaHasta) && $("#" + String(dia) + "-switch-mod").is(":checked") == true){
-              pre_desactivaMod = true;
-              $("#" + String(dia) + "-error-horaDesde-mod").hide();
-              $("#" + String(dia) + "-error-horaHasta-mod").hide();
-              $("#" + String(dia) + "-error-mod").show();
-              error_horarios[i] = true;
-              cambio_horarios[i] = true;
-          }
-          else{
-              $("#" + String(dia) + "-error-horaDesde-mod").hide();
-              $("#" + String(dia) + "-error-horaHasta-mod").hide();
-              $("#" + String(dia) + "-error-mod").hide();
-              error_horarios[i] = false;
-              if (estado != estado_horario_ant[i]){
-                  cambio_horarios[i] = true;
-              }
-              else{
-                  if(estado_horario_ant[i] == false){
-                      cambio_horarios[i] = false;
-                  }
-                  else{
-                      if (horaDesde_ant != horaDesde || horaHasta_ant != horaHasta){
-                          cambio_horarios[i] = true;
-                      }
-                      else{
-                        cambio_horarios[i] = false;
-                      }
-                  }
-              }
-          }
-      }
-      if (pre_desactivaMod == true)
-          desactivaMod = true;
-      else{
-          activaMod = true;
-      }
-    }
-    if (desactivaMod == true){
-      //Botón
-    }
-    else{
-      //Botón
-    }
-    error_horario();
-    calc_cant_cambios();
-}
-
-function error_horario(){
-    if (error_horarios.includes(true)){
-        $("#hor-error-tab").show();
-        return true;
-    }
-    else{
-        $("#hor-error-tab").hide();
-        return false;
-    }
-}
 
 //Valida que ningún campo de la dirección tenga un valor.
 function validaDireccion(modal_type, campoValidacion){
@@ -833,25 +359,19 @@ function validaDireccion(modal_type, campoValidacion){
     
 }
 
-function error_direccion(){
-    if (error_provincia == true || error_calle == true || error_altura == true || error_ciudad == true || error_pais == true){
-        $("#dir-error-tab").show();
-        return true;
-    }
-    else{
-        $("#dir-error-tab").hide();
-        return false;
-    }
-}
 
 //Calcula la cantidad total de cambios en el Modal de Modificar.
 function calc_cant_cambios(){
     cant_cambios = 0;
-    //Datos básicos
-    if (cambios_nombre == true){
+
+    //Datos Personales
+    if (cambio_nombre == true){
         cant_cambios +=1;
     }
-    if (cambio_estado == true){
+    if (cambio_apellido == true){
+        cant_cambios += 1;
+    }
+    if (cambio_email == true){
         cant_cambios += 1;
     }
 
@@ -872,21 +392,23 @@ function calc_cant_cambios(){
         cant_cambios += 1;
     }
 
-    //Horarios
-    cant_cambios += cambio_horarios.reduce(function(n, val) {
-        return n + (val === true);
-    }, 0);
-
-    //Materiales
-    var difference = materiales_PD
-                .filter(x => !selectedOptionsMod.includes(x))
-                .concat(selectedOptionsMod.filter(x => !materiales_PD.includes(x)));
-    cant_cambios += difference.length;
+    //Documento
+    if (cambio_tipo_doc == true){
+        cant_cambios += 1;
+    }
+    if (cambio_doc == true){
+        cant_cambios += 1;
+    }
     
+    //Tipo Usuario
+    if (cambio_tu == true){
+        cant_cambios += 1;
+    }
+
     $("#primary-btn-mod").text("Confirmar " + String(cant_cambios) + " cambios");
 
     if (cant_cambios > 0){
-        if (error_datos_basicos() == true || error_direccion() == true || error_horario() == true){
+        if (error_datos_personales() == true || error_direccion() == true || error_documento() == true){
             $('#primary-btn-mod').prop('disabled', true);
         }
         else{
@@ -895,6 +417,39 @@ function calc_cant_cambios(){
     }
     else{
         $('#primary-btn-mod').prop('disabled', true);
+    }
+}
+
+function error_datos_personales(){
+    if (error_nombre == true || error_apellido == true || error_email == true){
+        $("#db-error-tab").show();
+        return true;
+    }
+    else{
+        $("#db-error-tab").hide();
+        return false;
+    }
+}
+
+function error_direccion(){
+    if (error_provincia == true || error_calle == true || error_altura == true || error_ciudad == true || error_pais == true){
+        $("#dir-error-tab").show();
+        return true;
+    }
+    else{
+        $("#dir-error-tab").hide();
+        return false;
+    }
+}
+
+function error_documento(){
+    if (error_doc == true){
+        $("#doc-error-tab").show();
+        return true;
+    }
+    else{
+        $("#doc-error-tab").hide();
+        return false;
     }
 }
 
@@ -909,130 +464,6 @@ function isNumberKey(txt, evt) {
     }
   }
 
-$("#customSwitch1").click(function() {
-    if($("#customSwitch1").is(":checked") == true){
-        $("#pdInactivo").fadeOut();    
-        $("#pdActivo").fadeIn();
-        $("#switch-value").val("true");
-    }
-    else{
-        $("#pdActivo").fadeOut(); 
-        $("#pdInactivo").fadeIn();
-        $("#switch-value").val("false");
-    }
-});
-
-//Setea la posición del label para el witch de la página 1 del modal de alta.
-function labelPosition(){
-    var pos_switch = document.getElementById("customSwitch1").offsetTop;
-    var pos_switch_left = document.getElementById("customSwitch1").offsetLeft;
-    $("#pdActivo").css({top: pos_switch - 24, position:'absolute'});
-    $("#pdActivo").css({left: pos_switch_left + 140, position:'absolute'});
-
-    $("#pdInactivo").css({top: pos_switch - 24, position:'absolute'});
-    $("#pdInactivo").css({left: pos_switch_left + 140, position:'absolute'});
-
-    var pos_switch = document.getElementById("customSwitch2").offsetTop;
-    var pos_switch_left = document.getElementById("customSwitch2").offsetLeft;
-    $("#pdActivoMod").css({top: pos_switch - 24, position:'absolute'});
-    $("#pdActivoMod").css({left: pos_switch_left + 140, position:'absolute'});
-
-    $("#pdInactivoMod").css({top: pos_switch - 24, position:'absolute'});
-    $("#pdInactivoMod").css({left: pos_switch_left + 140, position:'absolute'});
-}
-
-//Habilita y deshabilita los horarios para un día determinado.
-function habilitaHorario(dia){
-    
-    if ($("#" + String(dia) + "-switch").is(":checked") == true){
-
-        $("#" + String(dia) + "-horaDesde").val("08:00");
-        $("#" + String(dia) + "-horaHasta").val("20:00");
-        $("#" + String(dia) + "-horaDesde").prop( "readonly", false );
-        $("#" + String(dia) + "-horaHasta").prop( "readonly", false );
-        $("#" + String(dia) + "-horaDesde").removeClass("data-show-input");
-        $("#" + String(dia) + "-horaHasta").removeClass("data-show-input");
-        $("#" + String(dia) + "-span-horaDesde").show();
-        $("#" + String(dia) + "-bar-horaDesde").show();
-        $("#" + String(dia) + "-span-horaHasta").show();
-        $("#" + String(dia) + "-bar-horaHasta").show();
-        validaHorarioPD();
-    }
-    else{
-        $("#" + String(dia) + "-horaDesde").val("");
-        $("#" + String(dia) + "-horaHasta").val("");
-        $("#" + String(dia) + "-horaDesde").prop('readonly', true);
-        $("#" + String(dia) + "-horaDesde").addClass("data-show-input");
-        $("#" + String(dia) + "-horaHasta").prop('readonly', true);
-        $("#" + String(dia) + "-horaHasta").addClass("data-show-input");
-        $("#" + String(dia) + "-span-horaDesde").hide();
-        $("#" + String(dia) + "-bar-horaDesde").hide();
-        $("#" + String(dia) + "-span-horaHasta").hide();
-        $("#" + String(dia) + "-bar-horaHasta").hide();
-        validaHorarioPD()
-        
-    }
-}
-
-//Habilita y deshabilita los horarios para un día determinado.
-function habilitaHorarioMod(dia){
-    if ($("#" + String(dia) + "-switch-mod").is(":checked") == true){
-
-        $("#" + String(dia) + "-horaDesde-mod").val("08:00");
-        $("#" + String(dia) + "-horaHasta-mod").val("20:00");
-        $("#" + String(dia) + "-horaDesde-mod").prop( "readonly", false );
-        $("#" + String(dia) + "-horaHasta-mod").prop( "readonly", false );
-        $("#" + String(dia) + "-horaDesde-mod").removeClass("data-show-input");
-        $("#" + String(dia) + "-horaHasta-mod").removeClass("data-show-input");
-        $("#" + String(dia) + "-span-horaDesde-mod").show();
-        $("#" + String(dia) + "-bar-horaDesde-mod").show();
-        $("#" + String(dia) + "-span-horaHasta-mod").show();
-        $("#" + String(dia) + "-bar-horaHasta-mod").show();
-        validaHorarioPDMod();
-    }
-    else{
-        $("#" + String(dia) + "-horaDesde-mod").val("");
-        $("#" + String(dia) + "-horaHasta-mod").val("");
-        $("#" + String(dia) + "-horaDesde-mod").prop('readonly', true);
-        $("#" + String(dia) + "-horaDesde-mod").addClass("data-show-input");
-        $("#" + String(dia) + "-horaHasta-mod").prop('readonly', true);
-        $("#" + String(dia) + "-horaHasta-mod").addClass("data-show-input");
-        $("#" + String(dia) + "-span-horaDesde-mod").hide();
-        $("#" + String(dia) + "-bar-horaDesde-mod").hide();
-        $("#" + String(dia) + "-span-horaHasta-mod").hide();
-        $("#" + String(dia) + "-bar-horaHasta-mod").hide();
-        validaHorarioPDMod();
-        
-    }
-}
-
-//Hace el submit de un form, recibiendo su ID como parametro.
-function submitForm(idForm){
-    
-    //Seteo de pagina
-    alta_form_page = 1;
-    display_page();
-
-    
-    //Manejo de elementos de carga y ocultamientos
-    $("#modal-alta-p1").show();
-    $("#bottomAltaModalTextAltaPD").hide();  
-    $("#altaPdForm").hide();
-  
-    $("#bottomAltaModalText").show();
-    $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
-    $(".lds-ring").show().fadeIn(500);
-    $('#primary-btn').prop('disabled', true);
-    $('#secondary-btn').prop('disabled', true);
-
-    //Manejo de datos
-    idForm = String(idForm);
-    $( "#" + idForm ).submit();
-
-    //Funcion que va cambiando los mensajes de carga.
-    nextMsgAlta();
-
-}
 
 //Hace el submit de un form de modifiar PD.
 function submitFormMod(){
@@ -1056,99 +487,7 @@ function submitFormMod(){
 
 }
 
-//Gestiona el avance de páginas del modal de alta.
-function next_page(){
-    if (alta_form_page == 1){
-        alta_form_page = 2;
-        validaDireccion('');
-    }
-    else if (alta_form_page == 2){
-        alta_form_page = 3;
-        validaHorarioPD();
-    }
-    else if (alta_form_page == 3){
-        alta_form_page = 4;
-    }
-    else{
-        submitForm('altaPdForm');
-    }
-    display_page();
-}
 
-//Gestiona el retroceso de páginas del modal de alta.
-function previous_page(){
-    if (alta_form_page == 1){
-       $("#altaPDModal").modal("hide");
-    }
-    else if (alta_form_page == 2){
-        alta_form_page = 1;
-        validaNombrePD();
-    }
-    else if (alta_form_page == 3){
-        alta_form_page = 2;
-        validaDireccion('');
-    }
-    else{
-        alta_form_page = 3;
-        validaHorarioPD();
-    }
-    display_page();
-}
-
-//Gestiona lo que debe mostrarse en cada página del modal de alta.
-function display_page(){
-    if (alta_form_page == 1){
-        $("#modal-alta-p3").hide();
-        $("#modal-alta-p2").hide();
-        $("#modal-alta-p4").hide();
-        $("#modal-alta-p1").fadeIn();
-        $("#secondary-btn").text("Cancelar");
-        $("#primary-btn-alta").text("Siguiente");
-        $("#subheader-alta").text("Datos Básicos");
-        $("#bottomAltaModalTextAltaPD").text('Una vez completados todos los datos, presione el botón "Siguiente".');
-        goToTopOfPage();
-     }
-     else if (alta_form_page == 2){
-        $("#modal-alta-p1").hide();
-        $("#modal-alta-p3").hide();
-        $("#modal-alta-p4").hide();
-        $("#modal-alta-p2").fadeIn();
-        $("#secondary-btn").text("Anterior");
-        $("#primary-btn-alta").text("Siguiente");
-        $("#subheader-alta").text("Dirección");
-        if ($("#callePD").val() == "" || $("#alturaPD").val() == ""){
-            $('#primary-btn-alta').prop('disabled', true);
-        }
-        $("#bottomAltaModalTextAltaPD").text('Una vez completada la dirección, presione el botón "Siguiente".');
-        goToTopOfPage();
-     }
-     else if (alta_form_page == 3){
-        $("#modal-alta-p1").hide();
-        $("#modal-alta-p2").hide();
-        $("#modal-alta-p4").hide();
-        $("#modal-alta-p3").fadeIn();
-        $("#secondary-btn").text("Anterior");
-        $("#primary-btn-alta").text("Siguiente");
-        $("#subheader-alta").text("Horarios");
-        $("#bottomAltaModalTextAltaPD").css({"transform":"translateY(0px)"});
-        $(".margin-row").hide();
-        $("#bottomAltaModalTextAltaPD").text('Una vez elegidos los horarios, presione el botón "Siguiente".');
-        goToTopOfPage();
-     } 
-     else{
-        closeMenu();
-        labelShowHide();
-        $("#modal-alta-p1").hide();
-        $("#modal-alta-p2").hide();
-        $("#modal-alta-p3").hide();
-        $("#modal-alta-p4").fadeIn();
-        $("#secondary-btn").text("Anterior");
-        $("#primary-btn-alta").text("Crear Punto de  Depósito");
-        $("#subheader-alta").text("Materiales");
-        $("#bottomAltaModalTextAltaPD").text('Una vez elegidos los materiales, presione "Crear Punto de  Depósito" para añadir el nuevo Punto.');
-        goToTopOfPage();
-     }
-}
 
 //Traslada el scroll al tope de la pagina en el form de alta de un PD.
 function goToTopOfPage(){
@@ -1171,15 +510,6 @@ function nextMsgMod() {
     }
 };
 
-function nextMsgAlta() {
-    if (messagesAlta.length == 1) {
-        $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500);
-
-    } else {
-        $('#bottomAltaModalText').html(messagesAlta.pop()).fadeIn(500).delay(7500).fadeOut(500, nextMsgAlta);
-
-    }
-};
 
 function nextMsgBaja() {
     if (messagesBaja.length == 1) {
@@ -1201,15 +531,10 @@ var messagesMod = [
     "¡Casi listo! Últimos retoques"
 ].reverse();
 
-// Lista de mensajes para la carga del Modal de alta nivel.
-var messagesAlta = [
-    "Estamos añadiendo el Punto de Depósito...",
-    "¡Casi listo! Últimos retoques"
-].reverse();
 
 // Lista de mensajes para la carga del Modal de baja nivel.
 var messagesBaja = [
-    "Estamos eliminando el Punto de Depósito...",
+    "Estamos eliminando el Usuario...",
     "¡Casi listo! Últimos retoques"
 ].reverse();
 
@@ -1227,70 +552,86 @@ function updateMap(modal_type){
     
 }
 
-function setEstadoMod(estado){
-    if (estado == "True"){
-        $("#customSwitch2").prop("checked", true);
-        $("#pdActivoMod").show();
-        $("#switch-value-mod").val("true");
-    }
-    else{
-        $("#customSwitch2").prop("checked", false);
-        $("#pdInactivoMod").show();
-        $("#switch-value-mod").val("false");
-    }
-}
 
-function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id_punto, id_direccion){
+
+function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id_direccion, apellido, email, nro_doc,id_doc, id_tu,id_usuario){
     jQuery.noConflict();
     
+    //Consultas a endpoints
+    $.getJSON("/gestion-usuarios/get-list/emails",function (result){
+        console.log(result);
+        for (var i in result){
+            emails.push(result[i]);
+        }
+    });
+
+    $.getJSON("/gestion-usuarios/get-list/documentos",function (result){
+        console.log(result);
+        for (var j in result){
+            documentos.push(result[j]);
+        }
+    });
+    
+
     //Define que se debe mostrar y que se oculta.
+    
     $("#db-error-tab").hide();
     $("#dir-error-tab").hide();
-    $("#hor-error-tab").hide();
+    $("#doc-error-tab").hide();
     $("#mat-error-tab").hide();
     $("#error-provincia-mod").hide();
     $("#error-ciudad-mod").hide();
     $("#error-calle-mod").hide();
     $("#error-altura-mod").hide();
     $("#error-pais-mod").hide(); 
-    $("#nombrePDErrorMod").hide();
-    $("#pdInactivoMod").hide();
-    $("#pdActivoMod").hide();
+    $("#name-error").hide();
+    $("#apellido-error").hide();
+    $("#email-error").hide();
     $("#loadingRowMod").hide();
     $(".lds-ring").hide();
 
     //Seteo de valores iniciales en inputs.
-    $("#nombrePDMod").val(nombre);
-    $("#nombrePDModAnt").val(nombre);
+    $("#idUsuario").val(id_usuario);
+    $("#name-input").val(nombre);
+    $("#emailInput").val(email);
     $("#provinciaPDMod").val(provincia);
     $("#ciudadPDMod").val(ciudad);
     $("#callePDMod").val(calle);
     $("#alturaPDMod").val(altura);
     $("#paisPDMod").val(pais);
-    $("#idDireccionPD").val(id_direccion)
-    $("#idPDMod").val(id_punto)
+    $("#idDireccionUser").val(id_direccion);
+    $("#apellido-input").val(apellido);
+    $("#documentoInput").val(nro_doc);
+    $("#tipoDocSelect").val(parseInt(id_doc));
+    $("#tipo-usuario").val(parseInt(id_tu))
+
     updateMap('mod');
-    setHorariosModValues(id_punto);
-    setMaterialesPDvalues(id_punto);
 
     $("#primary-btn-mod").text("Confirmar 0 cambios");
     $('#primary-btn-mod').prop('disabled', true);
 
     //Seteo de variables iniciales
+    email_ant = email;
     nombre_ant = nombre;
+    apellido_ant = apellido;
     estado_ant = estado;
     calle_ant = calle;
     altura_ant = altura;
     ciudad_ant = ciudad;
     provincia_ant = provincia;
     pais_ant = pais;
+    id_tipo_doc_ant = parseInt(id_doc);
+    id_tipo_usuario_ant = parseInt(id_tu);
+    documento_ant = nro_doc;
     error_nombre = false;
     error_calle = false;
     error_provincia = false;
     error_altura = false;
     error_provincia = false;
     error_pais = false;
-    setEstadoMod(estado);
+    error_email = false;
+    error_apellido = false;
+    error_doc = false;
     document.getElementById("db-tab").click();
     selectedOptionsMod = [];
     
@@ -1298,6 +639,146 @@ function openModModal(nombre, estado, calle, altura, ciudad, provincia, pais, id
     //TODO: Ver si los errores suman al conteo de cambios o no.
     $("#modPDModal").modal("show");
     
+}
+
+function validateEmail(elementValue){
+    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (elementValue == email_ant){
+        email = false;
+        error_email = false;
+        cambio_email = false;
+        $("#email-error").fadeOut();
+    }      
+    else if (emails.includes(String(elementValue))){
+        email = false;
+        error_email = true;
+        cambio_email = true;
+        $("#email-error").text("* El email ya se encuentra registrado.");
+        $("#email-error").fadeIn();
+    }      
+    else if (elementValue == ""){
+        email = false;
+        error_email = true;
+        cambio_email = true;
+        $("#email-error").text("* El email no puede quedar vacío.");
+        $("#email-error").fadeIn();
+    }
+    else if (emailPattern.test(elementValue)){
+        email = true;
+        cambio_email = true;
+        error_email = false;
+        $("#email-error").fadeOut();
+    }
+    else{
+        email = false;
+        error_email = true;
+        cambio_email = true;
+        $("#email-error").text("* Formato email inválido");
+        $("#email-error").fadeIn();
+    }
+    error_datos_personales();
+    calc_cant_cambios();
+}
+
+function validaNombre(value){
+    if (value == nombre_ant){
+        $("#name-error").fadeOut();
+        cambio_nombre = false;
+        error_nombre = false;
+        nombre = false;
+    }
+    else if (value == ""){
+        $("#name-error").fadeIn();
+        error_nombre = true;
+        nombre = false;
+        cambio_nombre = true;
+    }
+    else{
+        $("#name-error").fadeOut();
+        error_nombre = false;
+        nombre = true;
+        cambio_nombre = true;
+    }
+    error_datos_personales();
+    calc_cant_cambios();  
+}
+
+function validaApellido(value){
+    if (value == apellido_ant){
+        $("#name-error").fadeOut();
+        apellido = false;
+        cambio_apellido = false;
+        error_apellido = false;
+    }
+    else if (value == ""){
+        $("#apellido-error").fadeIn();
+        apellido = false;
+        cambio_apellido = true;
+        error_apellido = true;
+    }
+    else{
+        $("#apellido-error").fadeOut();
+        apellido = true;
+        cambio_apellido = true;
+        error_apellido = false;
+    }
+    error_datos_personales();
+    calc_cant_cambios();
+}
+
+function validaTipoDoc(value){
+    if (parseInt(value) != parseInt(id_tipo_doc_ant)){
+        tipo_doc = true;
+        cambio_tipo_doc = true;
+    }
+    else{
+        tipo_doc = false;
+        cambio_tipo_doc = false;
+    }
+    calc_cant_cambios();
+}
+
+function validaTU(value){
+    if (value != id_tipo_usuario_ant){
+        tipo_usuario = true;
+        cambio_tu = true;
+    }
+    else{
+        tipo_usuario = false;
+        cambio_tu = false;
+    }
+    calc_cant_cambios();
+}
+
+function validaDoc(val){
+    if (val == documento_ant){
+        $("#error-doc").fadeOut();
+        documento = false;
+        cambio_doc = false;
+        error_doc = false;
+    }
+    else if (documentos.includes(String(val))){
+        $("#error-doc").text("* El documento ya se encuentra registrado.");
+        $("#error-doc").fadeIn();
+        documento = false;
+        cambio_doc = true;
+        error_doc = true;
+    }
+    else if (val == ""){
+        $("#error-doc").text("* El documento no puede quedar vacío.");
+        $("#error-doc").fadeIn();
+        documento = false;
+        cambio_doc = true;
+        error_doc = true;
+    }
+    else{
+        $("#error-doc").fadeOut();
+        documento = true;
+        cambio_doc = true;
+        error_doc = false;
+    }
+    error_documento();
+    calc_cant_cambios();
 }
 
 function closeModModal(){
@@ -1311,7 +792,7 @@ function configureModalTab(mod_form_page){
         $("#modal-mod-p4").hide();
         $("#modal-mod-p1").show();
         $("#bottomAltaModalTextModPD").css({"transform":"translateY(-30px)"});
-        $("#subheader-mod").text("Datos Básicos");
+        $("#subheader-mod").text("Datos Personales");
         goToTopOfPageMod();
      }
      else if (mod_form_page == 2){
@@ -1328,241 +809,22 @@ function configureModalTab(mod_form_page){
         $("#modal-mod-p2").hide();
         $("#modal-mod-p4").hide();
         $("#modal-mod-p3").show();
-        $("#subheader-mod").text("Horarios");
+        $("#subheader-mod").text("Documento");
         $(".margin-row").hide();
         $("#bottomAltaModalTextModPD").css({"transform":"translateY(-30px)"});
         goToTopOfPageMod();
      } 
      else{
-        closeMenu();
-        labelShowHideMod();
         $("#modal-mod-p1").hide();
         $("#modal-mod-p2").hide();
         $("#modal-mod-p3").hide();
         $("#modal-mod-p4").show();
-        $("#subheader-mod").text("Materiales");
+        $("#subheader-mod").text("Tipo de Usuario");
         goToTopOfPageMod();
      }
 }
 
-$("#customSwitch2").click(function() {
-    if($("#customSwitch2").is(":checked") == true){
-        $("#pdInactivoMod").fadeOut();    
-        $("#pdActivoMod").fadeIn();
-        $("#switch-value-mod").val("true");
-        if (estado_ant == "True"){
-            cambio_estado = false;
-        }
-        else{
-            cambio_estado = true;
-        }
-        
-    }
-    else{
-        $("#pdActivoMod").fadeOut(); 
-        $("#pdInactivoMod").fadeIn();
-        $("#switch-value-mod").val("false");
-        if (estado_ant == "False"){
-            cambio_estado = false;
-        }
-        else{
-            cambio_estado = true;
-        }
-    }
-    calc_cant_cambios();
-});
 
-function setHorariosModValues(id){
-    $.getJSON("/gestion-puntos-deposito/horarios/"+String(id),function (result){
-        var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-        horarios_mod = result; 
-        for (i=0; i < dias.length; i++){
-            dia = result[i]["dia"];
-            horaDesde = result[i]["horaDesde"];
-            horaHasta = result[i]["horaHasta"];
-            if (horaDesde.length == 4){
-                horaDesde = "0" + String(horaDesde);
-            }
-            if (horaHasta.length == 4){
-                horaHasta = "0" + String(horaHasta);
-            }
-            if (horaDesde == false || horaDesde == false){
-                $("#" + String(dia) + "-horaDesde-mod").val("");
-                $("#" + String(dia) + "-horaHasta-mod").val("");
-                $("#" + String(dia) + "-horaDesde-mod").prop('readonly', true);
-                $("#" + String(dia) + "-horaDesde-mod").addClass("data-show-input");
-                $("#" + String(dia) + "-horaHasta-mod").prop('readonly', true);
-                $("#" + String(dia) + "-horaHasta-mod").addClass("data-show-input");
-                $("#" + String(dia) + "-span-horaDesde-mod").hide();
-                $("#" + String(dia) + "-bar-horaDesde-mod").hide();
-                $("#" + String(dia) + "-span-horaHasta-mod").hide();
-                $("#" + String(dia) + "-bar-horaHasta-mod").hide();
-                $("#" + String(dia) + "-switch-mod").prop("checked", false);
-                estado_horario_ant[i] = false;
-                
-            }
-            else {
-                $("#" + String(dia) + "-horaDesde-mod").val(horaDesde);
-                $("#" + String(dia) + "-horaHasta-mod").val(horaHasta);
-                $("#" + String(dia) + "-horaDesde-mod").prop( "readonly", false );
-                $("#" + String(dia) + "-horaHasta-mod").prop( "readonly", false );
-                $("#" + String(dia) + "-horaDesde-mod").removeClass("data-show-input");
-                $("#" + String(dia) + "-horaHasta-mod").removeClass("data-show-input");
-                $("#" + String(dia) + "-span-horaDesde-mod").show();
-                $("#" + String(dia) + "-bar-horaDesde-mod").show();
-                $("#" + String(dia) + "-span-horaHasta-mod").show();
-                $("#" + String(dia) + "-bar-horaHasta-mod").show();
-                $("#" + String(dia) + "-switch-mod").prop("checked", true);
-                estado_horario_ant[i] = true;
-                
-            }
-        }
-    });
-}
-
-
-function openMenuMod() {
-    $("#menu-option-box-1-mod").fadeIn();
-    $(".dropdown-box").css("border","1px solid #95C22B");
-    $('#cards-row-materiales-mod').css({"transform":"translateY(200px)"});
-    $("#bottomAltaModalTextModPD").css({"transform":"translateY(200px)"});
-    $(".margin-row-mod").show();
-    $(".margin-row-mod").css({"transform":"translateY(190px)"});
-    $("#bottomAltaModalTextModPD").css({"margin-bottom":"10px"});
-};
-
-
-function closeMenuMod() {
-    $("#menu-option-box-1-mod").hide();
-    $(".dropdown-box").css("border","1px solid rgb(184, 184, 184)");
-    $('#cards-row-materiales-mod').css({"transform":"translateY(0px)"});
-    $("#bottomAltaModalTextModPD").css({"transform":"translateY(-25px)"});
-    $("#bottomAltaModalTextModPD").css({"margin-bottom":""});
-    $(".margin-row-mod").css({"transform":"translateY(0px)"});
-    $(".margin-row-mod").hide();
-};
-
-function dropdownOptionSelectMod(idOption, nameOption, color){
-    if (selectedOptionsMod.includes(idOption)){
-        const index = selectedOptionsMod.indexOf(idOption);
-        if (index > -1) {
-            selectedOptionsMod.splice(index, 1);
-        }
-        $("#" + String(idOption) + "-check-mod").hide().fadeOut();
-        $("#" + String(idOption) + "-card-mod").hide().fadeOut();
-    }
-    else{
-        console.log(idOption);
-        selectedOptionsMod.push(idOption);
-        $("#" + String(idOption) + "-check-mod").show().fadeIn();
-        setColorMod(idOption,color);
-        $("#" + String(idOption) + "-card-mod").show().fadeIn();
-    }
-    labelShowHideMod();
-    calc_cant_cambios();
-
-
-
-    $("#materiales-modPD").val("[" + selectedOptionsMod + "]");  
-     
-}
-
-//Deselecciona un material suspendido sin permitir que se vuelva a seleccionar.
-function dropdownOptionSuspendedSelectMod(idOption, nameOption){
-    if (selectedOptionsMod.includes(idOption)){
-        const index = selectedOptionsMod.indexOf(idOption);
-        if (index > -1) {
-            selectedOptionsMod.splice(index, 1);
-        }
-        $("#" + String(idOption) + "-check-mod").fadeOut();
-        $("#" + String(idOption) + "-card-mod").fadeOut();
-    }
-    labelShowHideMod();
-    calc_cant_cambios();
-    $("#materiales-modPD").val("[" + selectedOptionsMod + "]");  
-
-}
-
-//Manejo de carteles en la seleccion de materiales del dropdown.
-function labelShowHideMod(){
-    if (selectedOptionsMod.length == 0){
-        $(".indicator-label-2").hide();
-        $("#warning-label-modPD").fadeIn(1000);
-    }
-    else{
-        $(".indicator-label-2").show();
-        $("#warning-label-modPD").hide();
-    }
-}
-
-//Setea el color de las tarjetas de materiales.
-function setColorMod(nombre,color){
-    $("#"+String(nombre)+"-img-mod").css("background-color", String(color));
-}
-
-//Cierra el dropdown al clickear fuera de el y su
-$(document).on('click', function (e) {
-    if ($(e.target).closest("#dropdown-modPD").length === 0) {
-        if (menuShownMod == true){
-            closeMenuMod();
-            headingOptionLeave();
-            menuShownMod=false;
-        }
-    }
-});
-
-//Funcion principal de manejo del compartamiento el dropdown.
-function dropdownManagerMod(){
-    if (menuShownMod == false){
-        openMenuMod();
-        headingOptionHoverMod();
-        menuShownMod = true
-    }
-    else{
-        closeMenuMod();
-        headingOptionLeaveMod();
-        menuShownMod=false;
-    }
-
-}
-
-//Funciones específicas que manejan el dropdwon.
-function headingOptionHoverMod(){
-    $(".chevron").css({cursor: 'pointer', transform: 'rotate(180deg)'});
-}
-
-function headingOptionLeaveMod(){
-    $(".chevron").css({transform: 'rotate(0deg)'});
-}
-
-function setMaterialesPDvalues(id){
-    $.getJSON("/gestion-puntos-deposito/materiales/"+String(id),function (result){
-        materiales_PD = [];
-        $(".card-modPD").hide();
-        $(".mod-check").hide();
-        for (var i in result){
-            materiales_PD.push(String(result[i]["id"]));
-            $("#" + String(result[i]["id"]) + "-check-mod").show();
-            setColorMod(result[i]["id"],result[i]["color"]);
-            $("#" + String(result[i]["id"]) + "-card-mod").show();
-        }
-
-        if (result.length > 0){
-            $(".indicator-label-2").show();
-            $("#warning-label-modPD").hide();
-            for (var j in materiales_PD){
-                selectedOptionsMod.push(materiales_PD[j]);
-            }
-        }
-        else{
-            $(".card-modPD").hide();
-            $(".indicator-label-2").hide();
-            $("#warning-label-modPD").show();
-            $(".mod-check").hide();
-            selectedOptionsMod = [];
-        }
-    });
-}
 
 //Abre el modal de baja.
 function openBajaModal(nombre, id){
@@ -1594,4 +856,5 @@ function baja_PD(){
     //Funcion que va cambiando los mensajes de carga.
     nextMsgBaja();
 }
-labelPosition();
+
+
