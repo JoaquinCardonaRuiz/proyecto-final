@@ -94,7 +94,7 @@ function showElementos(modulos){
     $("#articulos").show();
   }
   if(modulos.includes(1)){
-    $("#insumo").show();
+    $("#insumos").show();
   }
   if(modulos.includes(16)){
     $("#materiales").show();
