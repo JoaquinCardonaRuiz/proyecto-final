@@ -65,7 +65,7 @@ def main():
         
         elif session["usuario"].estado == "no-verificado":
             return render_template('email-sent.html',email=session["usuario"].email) 
-        else: 
+        else:
             nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel, True)
             if len(session["usuario"].pedidos) >= 5:
                 pedidos = session["usuario"].pedidos[:5]
@@ -90,7 +90,7 @@ def get_datos_usuario():
         carrito = session["carrito"]
     else:
         carrito = False
-    return jsonify({"nombre":session["usuario"].nombre + " " + session["usuario"].apellido, "totalEP":session["usuario"].totalEcopuntos, "img":session["usuario"].img,"carrito": carrito})
+    return jsonify({"nombre":session["usuario"].nombre + " " + session["usuario"].apellido, "totalEP":session["usuario"].totalEcopuntos, "img":session["usuario"].img,"carrito": carrito,"modulos": NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario).modulosAcceso})
 
 ''' 
     -----------------
@@ -473,8 +473,9 @@ def ecotips():
 
 @app.route('/gestion-niveles')
 def gestion_niveles():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(3): return redirect(url_for("error_auth"))
     try:
-        if valida_session(): return redirect(url_for('login'))
         niveles = NegocioNivel.get_niveles()
         min_max_nivel = NegocioNivel.get_min_max_niveles()
         maxEP = NegocioNivel.get_max_ecoPuntos()
@@ -559,8 +560,9 @@ def get_nivel_name_request(id):
 
 @app.route('/gestion-ed', methods = ['GET','POST'])
 def gestion_ed():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(6): return redirect(url_for("error_auth"))
     try:
-        if valida_session(): return redirect(url_for('login'))
         entidades = NegocioEntidadDestino.get_all()
     except Exception as e:
         return error(e,"gestion_ed")
@@ -662,13 +664,15 @@ def error(err="", url_redirect="/main"):
 @app.route('/elegir-tipo-punto', methods = ['GET','POST'])
 def selection():
     if valida_session(): return redirect(url_for('login'))
+    if not (valida_permiso(7) or valida_permiso(15)): return redirect(url_for("error_auth"))
     return render_template('elegir-tipo-punto.html', usuario = session["usuario"])
 
 
 @app.route('/gestion-puntos-deposito', methods = ['GET','POST'])
 def gestion_pd():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(15): return redirect(url_for("error_auth"))
     try:
-        if valida_session(): return redirect(url_for('login'))
         materiales = NegocioMaterial.get_all()
         puntos_deposito = NegocioPuntoDeposito.get_all()
         dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
@@ -772,8 +776,9 @@ def baja_pd():
 '''
 @app.route('/gestion-puntos-retiro', methods = ['GET','POST'])
 def gestion_pr():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(7): return redirect(url_for("error_auth"))
     try:
-        if valida_session(): return redirect(url_for('login'))
         puntos_retiro = NegocioPuntoRetiro.get_all()
         dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
     except Exception as e:
@@ -881,8 +886,9 @@ def baja_pr():
 
 @app.route('/articulos', methods = ['GET','POST'])
 def gestion_articulos():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(2): return redirect(url_for("error_auth"))
     try:
-        if valida_session(): return redirect(url_for('login'))
         articulos = NegocioArticulo.get_all()
         insumos = NegocioInsumo.get_all()
         return render_template('gestion-articulos.html',articulos=articulos, usuario = session["usuario"],insumos=insumos)
@@ -1048,6 +1054,8 @@ def get_stock_art(id):
 
 @app.route('/insumos', methods = ['GET','POST'])
 def gestion_insumos():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(1): return redirect(url_for("error_auth"))
     try:
         insumos = NegocioInsumo.get_all()
         materiales = NegocioMaterial.get_all()
@@ -1166,6 +1174,8 @@ def get_recetas_articulos(idIns):
 
 @app.route('/materiales', methods = ['GET','POST'])
 def gestion_materiales():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(16): return redirect(url_for("error_auth"))
     try:
         materiales = NegocioMaterial.get_all()
         return render_template('gestion-materiales.html',materiales=materiales, usuario = session["usuario"])
@@ -1242,6 +1252,8 @@ def edit_desc_material():
 
 @app.route('/elegir-PR')
 def elegirPR():
+    if valida_session(): return redirect(url_for('login'))
+    if not (valida_permiso(8) or valida_permiso(12)): return redirect(url_for("error_auth"))
     try:
         puntosRetiro = NegocioPuntoRetiro.get_all()
         return render_template('elegir-PR.html',puntosRetiro = puntosRetiro, usuario=session["usuario"])
@@ -1250,6 +1262,8 @@ def elegirPR():
 
 @app.route('/gestion-pedidos/deposito')
 def deposito():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(8): return redirect(url_for("error_auth"))
     try:
         pedidos = NegocioPedido.get_all()
         puntosRetiro = NegocioPuntoRetiro.get_all(True)
@@ -1259,6 +1273,8 @@ def deposito():
 
 @app.route('/gestion-pedidos/pr/<id>')
 def pedidosPR(id):
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(12): return redirect(url_for("error_auth"))
     try:
         pedidos = NegocioPedido.get_by_idPR(int(id))
         puntoRetiro = NegocioPuntoRetiro.get_by_id(int(id))
@@ -1356,6 +1372,8 @@ def pedidos_info(id):
 
 @app.route('/elegir-PD')
 def elegirPD():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(9): return redirect(url_for("error_auth"))
     try:
         puntosDeposito = NegocioPuntoDeposito.get_all()
         return render_template('elegir-PD.html',puntosDeposito = puntosDeposito, usuario=session["usuario"])
@@ -1364,6 +1382,8 @@ def elegirPD():
 
 @app.route('/gestion-depositos/admin')
 def allDepositos():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(9): return redirect(url_for("error_auth"))
     try:
         materiales = NegocioMaterial.get_all()
         depositos = NegocioDeposito.get_all()
@@ -1373,6 +1393,8 @@ def allDepositos():
 
 @app.route('/gestion-depositos/pd/<id>')
 def pedidosPD(id):
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(9): return redirect(url_for("error_auth"))
     try:
         materiales = NegocioMaterial.get_all()
         depositos = NegocioDeposito.get_by_id_PD(int(id))
@@ -1533,6 +1555,8 @@ def verificar_codigo(cod):
 
 @app.route('/gestion-stock', methods = ['GET','POST'])
 def gestion_stock():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(11): return redirect(url_for("error_auth"))
     try:
         articulos = NegocioArticulo.get_all()
         materiales = NegocioMaterial.get_all()
@@ -1632,13 +1656,15 @@ def get_chart_data_art(id):
 
 ''' 
     ----------
-    PRODUCCION
+    REPORTES
     ----------
 '''
 
 
 @app.route('/reportes-admin')
 def reportes_admin():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(14): return redirect(url_for("error_auth"))
     materiales = NegocioMaterial.get_all()
     insumos = NegocioInsumo.get_all()
     articulos = NegocioArticulo.get_all()
@@ -1726,16 +1752,22 @@ def ingresos_globales(meses):
 '''
 @app.route('/produccion')
 def gestion_prod():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(5): return redirect(url_for("error_auth"))
     return render_template('elegirProd.html',usuario=session["usuario"])
 
 @app.route('/produccion/insumos')
 def prod_Insumos():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(5): return redirect(url_for("error_auth"))
     insumos = NegocioInsumo.get_all()
     prods = NegocioProduccion.get_all_insumos()
     return render_template('insumosProd.html',insumos=insumos,prods=prods,usuario=session["usuario"])
 
 @app.route('/produccion/articulos')
 def prod_Articulos():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(5): return redirect(url_for("error_auth"))
     articulos = NegocioArticulo.get_all()
     prods = NegocioProduccion.get_all_articulos()
     return render_template('articulosProd.html', articulos=articulos,usuario=session["usuario"],prods=prods)
@@ -1802,6 +1834,8 @@ def confirmar_prod_art():
 
 @app.route('/elegir-tipo-gu', methods = ['GET','POST'])
 def elegir_tipo_gu():
+    if valida_session(): return redirect(url_for('login'))
+    if not (valida_permiso(4) or valida_permiso(10)): return redirect(url_for("error_auth"))
     try:
         return render_template('elegir-tipo-gu.html')  
     except Exception as e:
@@ -1809,6 +1843,8 @@ def elegir_tipo_gu():
 
 @app.route('/gestion-usuarios',methods=["POST","GET"])
 def gestion_usuarios():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(4): return redirect(url_for("error_auth"))
     try:
         usuarios = NegocioUsuario.get_all(True)
         tiposDoc = NegocioTipoDocumento.get_all()
@@ -1840,6 +1876,8 @@ def baja_tipo_usuario():
 
 @app.route('/permisos-acceso', methods = ['GET','POST'])
 def permisos_acceso():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(10): return redirect(url_for("error_auth"))
     try:
         tiposUsuario = NegocioTipoUsuario.get_all()
         modulos = NegocioModulo.get_all()
@@ -1957,6 +1995,8 @@ def nosotros():
 '''
 @app.route('/config', methods = ['GET','POST'])
 def config():
+    if valida_session(): return redirect(url_for('login'))
+    if not valida_permiso(13): return redirect(url_for("error_auth"))
     EPs = NegocioEcoPuntos.get_valores_EP()
     EPs = [[i[0].strftime("%d/%m/%Y"),i[1]] for i in EPs]
     Recs = NegocioEcoPuntos.get_factores_recompensa()
