@@ -792,3 +792,9 @@ display: none;
 #ent-select-picker-sm{
   font-size: 15px;
 }
+
+.circle-color-modal{
+  margin-top: 18px;
+  font-size: 10px;
+  padding-left: 5px;
+}

@@ -858,3 +858,35 @@ function baja_PD(){
 }
 
 
+function openInfoModal(id, nombre, apellido,tu, estado,documento,email){
+    $("#headingModalInfo").text("Información del Usuario " + String(id));
+    $("#nombreModal").val(nombre + " " + apellido);
+    $("#tipoUsuarioModal").val(tu);
+    $(".circle-color-modal").hide();
+    if (estado == 'habilitado'){
+        $("#estado-activo-modal").show();
+        $("#estadoModal").text("Habilitado");
+    }
+    else if (estado == 'no-activo'){
+        $("#estado-semi-inactivo-modal").show();
+        $("#estadoModal").text("No Activo");
+    }
+    else{
+        $("#estado-inactivo-modal").show();
+        $("#estadoModal").text("Sin Verificar");
+    }
+    $("#documentoModal").val(documento);
+    $("#emailModal").val(email);
+
+    jQuery.noConflict();
+    $("#infoModal").modal('show');
+}
+
+
+function set_ep_logo_pos(cant_ep){
+    left_factor = 12 * String(num).length;
+    var top_input = document.getElementById("EPModal").offsetTop;
+    var left_input = document.getElementById("EPModal").offsetLeft;
+    $("#ep-logo-modal-info").css({top: top_input + 11, position:'absolute'});
+    $("#ep-logo-modal-info").css({left: left_input + left_factor, position:'absolute'});
+}

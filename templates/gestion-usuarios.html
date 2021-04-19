@@ -85,7 +85,17 @@
                             </div>
                         </td>
                     {%endif%}
-                    <td><a class="custom-link" href='#' onclick=""></i> Ver info</a></td>
+                    {%if usuario.estado != 'habilitado'%}
+                        <td><a class="custom-link" href='#' onclick="openInfoModal('{{usuario.id}}','-','','Ciudadano','{{usuario.estado}}');"><i class="fa fa-info-circle"></i> </i> Ver info</a></td>
+
+                    {%else%}
+                        {%for tu in tipos_usuario%}
+                            {%if tu.id == usuario.idTipoUsuario%}
+                                <td><a class="custom-link" href='#' onclick="openInfoModal('{{usuario.id}}','{{usuario.nombre}}','{{usuario.apellido}}','{{tu.nombre}}','{{usuario.estado}}','{{usuario.nroDoc}}','{{usuario.email}}');"><i class="fa fa-info-circle"></i> </i> Ver info</a></td>
+                            {%endif%}
+                        {%endfor%}
+                    {%endif%}
+
                     <td class="delete-row" onclick="openBajaModal('{{usuario.nombre}}','{{usuario.id}}');"><i class="fa fa-trash" style="font-size: 23px;" id="delete-table-icon"></i></td>
                     {%if usuario.estado == 'habilitado'%}
                     <td class="modify-row" onclick="openModModal('{{usuario.nombre}}','{{usuario.estado}}', '{{usuario.direccion.calle}}', '{{usuario.direccion.altura}}', '{{usuario.direccion.ciudad}}', '{{usuario.direccion.provincia}}', '{{usuario.direccion.pais}}', '{{usuario.direccion.id}}' , '{{usuario.apellido}}','{{usuario.email}}','{{usuario.nroDoc}}','{{usuario.tipoDoc}}','{{usuario.idTipoUsuario}}','{{usuario.id}}');"><i class="fa fa-edit" style="font-size: 23px;" id="modify-table-icon"></i></td>
@@ -103,6 +113,88 @@
         </div>
     </div>
 </div>
+
+<!--Info Modal -->
+<div class="modal fade modal-lg" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document" style="height: fit-content;"id="altaPDModalContent">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="headingModalInfo">Información del Usuario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modal-body-card" style="height: fit-content;overflow-x:hidden;" id="modalAltaPDBody">           
+            <div class="row subheader-row" id="subheader-alta-pd">
+                <div class="col">
+                    <label class="subheader-info" id="subheader-alta">Datos del Usuario</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%;display: inline-block;">
+                <div class="group" style="width: 25%;">
+                    <input type="text" id="nombreModal" class="data-show-input" readonly> 
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Nombre Completo</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="tipoUsuarioModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Tipo de Usuario</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="documentoModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Número Documento</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="" id="" hidden>
+                    <i class="fas fa-circle color-activo circle-color-modal" id="estado-activo-modal" style="display: none;"></i>
+                    <i class="fas fa-circle color-alerta circle-color-modal" id="estado-semi-inactivo-modal" style="display: none;"></i>
+                    <i class="fas fa-circle color-inactivo circle-color-modal" id="estado-inactivo-modal" style="display: none;"></i>
+                    <span id="estadoModal"></span>
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Estado actual</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="emailModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Email</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="estadoModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Nivel</label>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between" style="width: 84%; margin-left: 8.5%; display: inline-block;">
+
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_depModal">
+                    <img src="/static/img/econpuntos-logo.png" id="ep-logo-modal-info">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Total EP</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_regModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Dirección</label>
+                </div>
+                <div class="group" style="width: 25%;">  
+                    <input type="text" class="data-show-input" width="25%" readonly value="Test" id="fecha_regModal">
+                    <input type="text" id="" name="id" hidden>
+                    <label class="">Ciudad, Provincia y País</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn primary-btn" onClick="closeLoadingRing();" data-dismiss="modal" id="primary-btn-alta">Listo</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 
 <!-- Loading Modal -->
 <!-- Para mostrar mientras se carga un modal-->

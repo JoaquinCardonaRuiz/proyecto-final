@@ -70,8 +70,9 @@ function openInfoModal(id){
 
 
     });
-    
-}function openLoadingRing(){
+}
+
+function openLoadingRing(){
     jQuery.noConflict();
     document.getElementById("open-loading-modal").click();
     $(".lds-ring").hide();
