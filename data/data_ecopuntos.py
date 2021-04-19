@@ -110,3 +110,80 @@ class DatosEcoPuntos(Datos):
                                                     msj_adicional="Error actualizando un ecopunto en la BD.")
         finally:
             cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def get_valores_EP(cls):
+        """
+        Obtiene los valores historicos de los EP.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = "SELECT fecha,valor FROM datosEcoPuntos;"
+            cls.cursor.execute(sql)
+            return cls.cursor.fetchall()
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_valores_EP()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los valores de los EP de la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+    @classmethod
+    def get_factores_recompensa(cls):
+        """
+        Obtiene los factores de recompensa historicos de los EP.
+        """
+        try:
+            cls.abrir_conexion()
+            sql = "SELECT fecha, porc_rec_EP FROM datosEcoPuntos;"
+            cls.cursor.execute(sql)
+            return cls.cursor.fetchall()
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.get_factores_recompensa()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error obtieniendo los factores de recompensa de EP de la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def updateValorEp(cls,value,p,date):
+        """
+        Actualiza el valor de los EcoPuntos
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("INSERT INTO datosEcoPuntos (fecha, valor, porc_rec_EP) values (\"{}\",{},{})").format(date,value,p)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.updateValorEp()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando configuracion en la BD.")
+        finally:
+            cls.cerrar_conexion()
+
+
+
+    @classmethod
+    def updatePorcentajeRec(cls,value,e,date):
+        """
+        Actualiza el porcentaje de recompensa por los depositos
+        """
+        try:
+            cls.abrir_conexion()
+            sql = ("INSERT INTO datosEcoPuntos (fecha, valor, porc_rec_EP) values (\"{}\",{},{})").format(date,e,value)
+            cls.cursor.execute(sql)
+            cls.db.commit()
+            return True
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_ecopuntos.updatePorcentajeRec()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando configuracion en la BD.")
+        finally:
+            cls.cerrar_conexion()
