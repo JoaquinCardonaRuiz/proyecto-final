@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/codigo.css')}}">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.3/clipboard.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    
+
+</head>
+
+<!-- Sidebar import -->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="page-content" style="text-align: left;" id="content">
+
+
+
+
+    <!-- Heading -->
+
+    <div class="container" id="heading-container">
+        <h1 class="heading">Gestión de Configuración</h1>
+        <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Gestione los parámetros de funcionamiento del sistema.</span></h6>
+    </div>  
+    <button id="click-btn" onclick="cargarEP({{EPs}});cargarRecs({{Recs}});loadEP();"></button>
+    <div class="container" id="table-container">
+        <h4 class="table-title" style="margin-bottom: 3%;"><i class="fas fa-cog" style="color: #95C22B !important;"></i> Configuraciones</h4>          
+        <div class="row d-flex justify-content-center mt-4" style="padding-bottom: 5%; margin-top: 2%;">
+            <div class="col" style="width: 100%; margin-left: 4%;">
+                <h5 class="table-title" style="margin-left: 0%;">Seleccione la configuración a ajustar</h5> 
+                <ul class="list-group" style="width: 80%; padding-top: 3%;">
+                    <li id="select-EP" class="list-group-item d-flex justify-content-between lh-condensed list-item-pa" onclick="loadEP();">
+                        <div>
+                          <h6 class="my-0">Valor de EcoPuntos</h6>
+                          <small class="text-muted"></small>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </li>
+                    <li id="select-Recompensa" class="list-group-item d-flex justify-content-between lh-condensed list-item-pa" onclick="loadRecompensa();">
+                        <div>
+                          <h6 class="my-0">Porcentaje de Recompensa Depósito</h6>
+                          <small class="text-muted"></small>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="col" style="width: 100%;">
+                <h5 class="table-title" style="margin-left: 0%;">Nuevo Valor</h5> 
+                <form action="{{url_for('config_cambio')}}" method="POST" class="row" id="confirm-form" style="margin-left: -10%;margin-top:10%;"> 
+                    <div class="col" style="width: 260px;">
+                        <div class="group" style="margin-left: 0%;">
+                            <input id="configInput" name="config" style="width: 260px;" hidden>
+                            <input type="text" id="valorInput" style="width: 260px;" required onkeyup = "" name="nuevoValor" >
+                            <span class="highlight" style="width: 260px;" ></span>
+                            <span class="bar" style="width: 260px;" ></span>
+                            <label>Valor</label>
+                            <p id="valorError" class="modalErrorMessage"></p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="group" style="margin-left: 20%;">
+                            <button class="primary-btn btn" style="width:100px;">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+                <h5 class="table-title" style="margin-left: 0%;">Valores Históricos</h5> 
+                <div class="table-container-permisos" id="permisos-table-disabled"> 
+                    <table class="table content-table-main" id="" style="margin-left: 5%; width: 90%;">
+                        <thead style=" border-top:none">
+                        <tr>
+                            <th scope="col" class="table-heading">Fecha</th>
+                            <th scope="col" class="table-heading">Valor</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody-values">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-4" id="loading-row-permisos" style="padding-top: 10%; margin-left: -31%; display: none;">
+                    <div id="lds-ring-permisos" class="lds-ring" style="display:block"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-permisos" style="margin-left: -20%; display: none;">Cargando permisos...</p>
+            </div>
+            
+        </div>
+        
+    </div>
+    <div class="row" id="loadingRowCodigo" style="display: none;">
+        <div id="lds-ring-big" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+    <div class="row d-flex justify-content-center" id="loading-text-row">
+        <p id="loading-text-codigo"></p>
+    </div>
+    
+
+        
+</div>
+
+
+
+
+<script src="/static/js/config.js"></script>
+{% endblock %}

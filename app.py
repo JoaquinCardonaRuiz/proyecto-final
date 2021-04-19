@@ -1891,6 +1891,33 @@ def nosotros():
     return render_template('quienes-somos.html')
 
 
+'''
+    -----------------------
+    Config
+    -----------------------
+'''
+@app.route('/config', methods = ['GET','POST'])
+def config():
+    EPs = NegocioEcoPuntos.get_valores_EP()
+    EPs = [[i[0].strftime("%d/%m/%Y"),i[1]] for i in EPs]
+    Recs = NegocioEcoPuntos.get_factores_recompensa()
+    Recs = [[i[0].strftime("%d/%m/%Y"),i[1]] for i in Recs]
+    return render_template('config.html',EPs=EPs,Recs=Recs)
+
+
+@app.route('/config/confirmar', methods = ['GET','POST'])
+def config_cambio():
+    value = float(request.form["nuevoValor"])
+    config = request.form["config"]
+    try:
+        NegocioEcoPuntos.updateConfig(config,value)
+        return redirect(url_for('config'))
+    except Exception as e:
+        return error(e,"config")
+
+
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
