@@ -343,10 +343,10 @@ class DatosReportes(Datos):
                 if sumSS == None:
                     sumSS = 0
 
-               
+                cls.cerrar_conexion()
 
                 #Salidas Municipalidad
-                
+                cls.abrir_conexion()
                 sql = ("select SUM((costoObtencionAlt - costo)) from salidasMun where month(fecha)=%s and year(fecha)=%s")
                 values = (current_month, current_year)
                 cls.cursor.execute(sql,values)
