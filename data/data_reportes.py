@@ -673,7 +673,7 @@ class DatosReportes(Datos):
             cls.abrir_conexion()
             data = []
             #Fecha del primer pedido
-            sql = ("select min(fechaReg) from depositos where estado !='eliminado'")
+            sql = ("select min(fechaDep) from depositos where estado !='eliminado'")
             cls.cursor.execute(sql)
             fecha = cls.cursor.fetchone()[0].strftime("%d/%m/%Y")
             #Todos los depósitos
