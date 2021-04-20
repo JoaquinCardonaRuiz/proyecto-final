@@ -2008,6 +2008,16 @@ def nosotros():
 
 '''
     -----------------------
+    Ayuda al usuario
+    -----------------------
+'''
+@app.route('/ayuda-faq', methods = ['GET','POST'])
+def help():
+    return render_template('ayuda-usuario.html')
+
+
+'''
+    -----------------------
     Config
     -----------------------
 '''
