@@ -645,8 +645,8 @@ class DatosReportes(Datos):
                 dep_acreditados = 0
             
             
-            porcentaje_acreditados = round(float(dep_acreditados) * 100/float(total_depositos),2)
-            porcentaje_no_acreditados = round(float(dep_no_acreditados) * 100/float(total_depositos),2)
+            porcentaje_acreditados = round(float(dep_acreditados) * 100/float(total_depositos),1)
+            porcentaje_no_acreditados = round(float(dep_no_acreditados) * 100/float(total_depositos),1)
             return [[dep_acreditados,dep_no_acreditados],[porcentaje_acreditados,porcentaje_no_acreditados]]
 
         except Exception as e:
@@ -680,8 +680,8 @@ class DatosReportes(Datos):
                 cant_dep_pd = cls.cursor.fetchone()[0]
                 if cant_dep_pd == None:
                     cant_dep_pd = 0
-                porcentaje_dep_pd = float(cant_dep_pd) * 100/ float(total_depositos)
-                data.append([pd.nombre,porcentaje_dep_pd,cant_dep_pd])
+                porcentaje_dep_pd = round(float(cant_dep_pd) * 100/ float(total_depositos),1)
+                data.append([pd.nombre,cant_dep_pd,porcentaje_dep_pd])
             
             return data
 
@@ -716,8 +716,8 @@ class DatosReportes(Datos):
                 cant_ped_pr = cls.cursor.fetchone()[0]
                 if cant_ped_pr == None:
                     cant_ped_pr = 0
-                porcentaje_ped_pr = float(cant_ped_pr) * 100/ float(total_pedidos)
-                data.append([pr.nombre,porcentaje_ped_pr])
+                porcentaje_ped_pr = round(float(cant_ped_pr) * 100/ float(total_pedidos),1)
+                data.append([pr.nombre,cant_ped_pr,porcentaje_ped_pr])
             
             return data
 
