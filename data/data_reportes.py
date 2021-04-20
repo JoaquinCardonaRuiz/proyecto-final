@@ -622,7 +622,12 @@ class DatosReportes(Datos):
         """
         try:
             cls.abrir_conexion()
-    
+
+            #Fecha del primer pedido
+            sql = ("select min(fechaReg) from depositos where estado !='eliminado'")
+            cls.cursor.execute(sql)
+            fecha = cls.cursor.fetchone()[0].strftime("%d/%m/%Y")
+
             #Todos los depósitos
             sql = ("SELECT count(*) from depositos")
             cls.cursor.execute(sql)
@@ -647,7 +652,10 @@ class DatosReportes(Datos):
             
             porcentaje_acreditados = round(float(dep_acreditados) * 100/float(total_depositos),1)
             porcentaje_no_acreditados = round(float(dep_no_acreditados) * 100/float(total_depositos),1)
-            return [[dep_acreditados,dep_no_acreditados],[porcentaje_acreditados,porcentaje_no_acreditados]]
+            data = [[dep_acreditados,dep_no_acreditados],[porcentaje_acreditados,porcentaje_no_acreditados]]
+            
+            dic = {"data":data,"fecha":fecha}
+            return dic
 
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_material.ganancias_art()",
@@ -664,6 +672,10 @@ class DatosReportes(Datos):
         try:
             cls.abrir_conexion()
             data = []
+            #Fecha del primer pedido
+            sql = ("select min(fechaReg) from depositos where estado !='eliminado'")
+            cls.cursor.execute(sql)
+            fecha = cls.cursor.fetchone()[0].strftime("%d/%m/%Y")
             #Todos los depósitos
             sql = ("SELECT count(*) from depositos where estado !='eliminado'")
             cls.cursor.execute(sql)
@@ -683,7 +695,8 @@ class DatosReportes(Datos):
                 porcentaje_dep_pd = round(float(cant_dep_pd) * 100/ float(total_depositos),1)
                 data.append([pd.nombre,cant_dep_pd,porcentaje_dep_pd])
             
-            return data
+            dic = {"data":data,"fecha":fecha}
+            return dic
 
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_material.porcentaje_dep_por_pd()",
@@ -700,6 +713,10 @@ class DatosReportes(Datos):
         try:
             cls.abrir_conexion()
             data = []
+            #Fecha del primer pedido
+            sql = ("select min(fechaEnc) from pedidos where estado !='eliminado'")
+            cls.cursor.execute(sql)
+            fecha = cls.cursor.fetchone()[0].strftime("%d/%m/%Y")
             #Todos los depósitos
             sql = ("SELECT count(*) from pedidos where estado != 'eliminado'")
             cls.cursor.execute(sql)
@@ -719,7 +736,8 @@ class DatosReportes(Datos):
                 porcentaje_ped_pr = round(float(cant_ped_pr) * 100/ float(total_pedidos),1)
                 data.append([pr.nombre,cant_ped_pr,porcentaje_ped_pr])
             
-            return data
+            dic = {"data":data,"fecha":fecha}
+            return dic
 
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_material.porcentaje_ped_por_pr()",
