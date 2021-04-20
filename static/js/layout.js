@@ -85,42 +85,42 @@ function isNumberKeyEntiresOnly(txt, evt) {
 
 function showElementos(modulos){
   if(modulos.includes(8) || modulos.includes(12)){
-    $("#pedidos").show();
+    $("#layout-li-pedidos").show();
   }
   if(modulos.includes(9)){
-    $("#depositos").show();
+    $("#layout-li-depositos").show();
   }
   if(modulos.includes(2)){
-    $("#articulos").show();
+    $("#layout-li-articulos").show();
   }
   if(modulos.includes(1)){
-    $("#insumos").show();
+    $("#layout-li-insumos").show();
   }
   if(modulos.includes(16)){
-    $("#materiales").show();
+    $("#layout-li-materiales").show();
   }
   if(modulos.includes(11)){
-    $("#stock").show();
+    $("#layout-li-stock").show();
   }
   if(modulos.includes(5)){
-    $("#produccion").show();
+    $("#layout-li-produccion").show();
   }
   if(modulos.includes(4) || modulos.includes(10)){
-    $("#usuarios").show();
+    $("#layout-li-usuarios").show();
   }
   if(modulos.includes(6)){
-    $("#entidades").show();
+    $("#layout-li-entidades").show();
   }
   if(modulos.includes(3)){
-    $("#niveles").show();
+    $("#layout-li-niveles").show();
   }
   if(modulos.includes(7) || modulos.includes(15)){
-    $("#puntos").show();
+    $("#layout-li-puntos").show();
   }
   if(modulos.includes(14)){
-    $("#reportes").show();
+    $("#layout-li-reportes").show();
   }
   if(modulos.includes(13)){
-    $("#config").show();
+    $("#layout-li-config").show();
   }
 }

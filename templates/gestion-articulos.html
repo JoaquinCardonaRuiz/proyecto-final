@@ -111,7 +111,8 @@
                     <button id="open-mat-vacio" href='#'data-toggle="modal" data-target="#materialesVacioModal"hidden="true"></button>
                     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
                     <td scope="row">{{art.costoTotal}}</td>
-                    <td scope="row">{{art.margenGanancia * 100}}%</td>
+                    <td id="mg-{{art.id}}"scope="row">{{art.margenGanancia * 100}}%</td>
+                    <script>$("#mg-{{art.id}}").text(parseFloat({{art.margenGanancia * 100}}.toFixed(2)) + "%")</script>
                     <td scope="row">{{art.valor}}</td>
                     <td scope="row">{{art.stock}}</td>
                     <td scope="row">{{art.unidadMedida}}</td>
@@ -506,16 +507,16 @@
       <div class="modal-content">
       <div class="modal-header" style="border-bottom:none">
           <ul class="nav nav-tabs ed-tabs" id="myTab" role="tablist">
-            <li class="nav-item ed-tabs-item" style="width:190px !important">
+            <li class="nav-item ed-tabs-item" style="width:188px !important">
               <a class="nav-link ed-link active" id="entidad-tab" data-toggle="tab" href="#datos-basicos" role="tab" aria-controls="datos-basicos" aria-selected="true">Datos Basicos <p hidden id="error-mark-db" style="display:inline" class="error">*</p></a>
             </li>
-            <li class="nav-item ed-tabs-item" style="width:190px !important">
+            <li class="nav-item ed-tabs-item" style="width:188px !important">
               <a class="nav-link ed-link " id="insumos-tab" data-toggle="tab" href="#insumos" role="tab" aria-controls="insumos" aria-selected="false">Insumos <p hidden id="error-mark-c" style="display:inline" class="error">*</p></a>
             </li>
-            <li class="nav-item ed-tabs-item" style="width:190px !important">
+            <li class="nav-item ed-tabs-item" style="width:188px !important">
               <a class="nav-link ed-link " id="demandas-tab" data-toggle="tab" href="#costos" role="tab" aria-controls="costos" aria-selected="false">Costos <p hidden id="error-mark-c" style="display:inline" class="error">*</p></a>
             </li>
-            <li class="nav-item ed-tabs-item" style="width:190px !important">
+            <li class="nav-item ed-tabs-item" style="width:188px !important">
               <a class="nav-link ed-link " id="nuevademanda-tab" data-toggle="tab" href="#precio" role="tab" aria-controls="precio" aria-selected="false">Precio <p hidden id="error-mark-p" style="display:inline" class="error">*</p></a>
             </li>
           </ul>

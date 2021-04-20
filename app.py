@@ -1950,6 +1950,8 @@ def mod_user():
             id_tipo_usuario = request.form["id_tipo_usuario"]
             uid = request.form["idUsuario"]
             NegocioUsuario.update(nombre, apellido, email, id_direccion_gu, calle, altura, ciudad, provincia, pais, documento, id_tipo_doc, id_tipo_usuario,uid)
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
             return redirect(url_for('gestion_usuarios'))
     except Exception as e:
         return error(e,"gestion_usuarios")
