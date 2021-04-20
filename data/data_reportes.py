@@ -85,8 +85,7 @@ class DatosReportes(Datos):
             current_year = start_year
             data = []
             for i in range(0,int(cant_meses)):
-                #Si no lo es, busco en la BD los movimientos del mes siguiente para restarselos al valor guardado en cantidad.
-                #Usuarios
+
                 cant = 0
                 sql = ("select count(*) from depositos where month(fechaDep)=%s and year(fechaDep)=%s and estado != 'cancelado'")
                 if current_month == 12:
@@ -126,38 +125,27 @@ class DatosReportes(Datos):
             start_year = int(d.year)
             current_month = start_month
             current_year = start_year
-            sql = ("SELECT count(*) from pedidos where estado != 'cancelado' and estado != 'devuelto'")
-            cls.cursor.execute(sql)
-            cant = cls.cursor.fetchone()[0]
             data = []
-            for i in range(0,int(cant_meses)):
-                #valido si es el mes actual, en cuyo caso, aplica el stock actual.
-                if current_month == start_month and current_year == start_year:
-                    data.append(cant)
+            for i in range(0,int(cant_meses)):                
+
+                cant = 0
+                sql = ("select count(*) from pedidos where month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado' and estado != 'devuelto'")
+                if current_month == 12:
+                    values = (1, current_year+1)
+                else:
+                    values = (current_month+1, current_year)
+                cls.cursor.execute(sql,values)
+                valCantMes = cls.cursor.fetchone()[0]
+                if valCantMes == None:
+                    valCantMes = 0
+                #Aplico los movimientos del mes al stock
+                cant = valCantMes
+                data.append(cant)
+                if current_month != 1:
                     current_month -= 1
                 else:
-                    #Si no lo es, busco en la BD los movimientos del mes siguiente para restarselos al valor guardado en cantidad.
-                    #Usuarios
-                    sql = ("select count(*) from pedidos where month(fechaEnc)=%s and year(fechaEnc)=%s and estado != 'cancelado' and estado != 'devuelto'")
-                    if current_month == 12:
-                        values = (1, current_year+1)
-                    else:
-                        values = (current_month+1, current_year)
-                    cls.cursor.execute(sql,values)
-                    valCantMes = cls.cursor.fetchone()[0]
-
-                    if valCantMes == None:
-                        valCantMes = 0
-
-                    #Aplico los movimientos del mes al stock
-                    cant -= valCantMes
-                    data.append(cant)
-
-                    if current_month != 1:
-                        current_month -= 1
-                    else:
-                        current_month = 12
-                        current_year -= 1
+                    current_month = 12
+                    current_year -= 1
             return data
 
         except Exception as e:
