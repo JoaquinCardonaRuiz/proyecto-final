@@ -330,10 +330,9 @@ class DatosReportes(Datos):
                         for el in datos:
                             sum += (el["valor"] - ((el["valor"])/(1+el["margenGanancia"]))) * el["cantidad"]
                         
-                cls.cerrar_conexion()
+               
 
                 #Salidas Stock
-                cls.abrir_conexion()
                 sql = ("select SUM((valorTotal - costo)) from salidasStock where month(fecha)=%s and year(fecha)=%s")
                 values = (current_month, current_year)
                 cls.cursor.execute(sql,values)
@@ -343,10 +342,8 @@ class DatosReportes(Datos):
                 if sumSS == None:
                     sumSS = 0
 
-                cls.cerrar_conexion()
 
                 #Salidas Municipalidad
-                cls.abrir_conexion()
                 sql = ("select SUM((costoObtencionAlt - costo)) from salidasMun where month(fecha)=%s and year(fecha)=%s")
                 values = (current_month, current_year)
                 cls.cursor.execute(sql,values)
