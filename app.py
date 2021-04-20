@@ -1339,9 +1339,8 @@ def update_estado_pedido():
             estado = request.form["estadoInput"]
             pr = int(request.form["idPRInput"])
             NegocioPedido.update_estado(id,estado)
-            if estado == "cancelado":
-                session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
-                session.modified = True
+            session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
+            session.modified = True
             if pr == 0:
                 return redirect(url_for("deposito"))
             else:

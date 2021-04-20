@@ -83,6 +83,26 @@
             </div>
         </div>
 
+
+        <div class="container" id="top-container" style="margin-top: 2%;">
+            <div class="row">
+                <div class="container" id="option-left" onclick="openGraphModal('cantDepsMats');" style="width: 49%;">
+                    <i class="fas fa-trash-restore option-img" id="option-img-1" style="margin-left:5% !important;margin-right:5% !important;text-align:center;"></i>
+                        <div class="option-text">
+                            <p class="option-title">Cantidad Depositada por Material</p>
+                            <p class="text-box">Visualizar la cantidad de unidades de un material depositadas a través del tiempo</p>
+                        </div>
+                </div>
+                <div class="container" id="option-right" onclick="openGraphModal('cantPedsArts');" style="width: 49%;">
+                    <i class="fas fa-gift option-img" id="option-img-1" style="margin-left:5% !important;margin-right:5% !important;text-align:center;"></i>
+                    <div class="option-text">
+                        <p class="option-title">Cantidad Pedida por Artículo</p>
+                        <p class="text-box">Visualizar la cantidad unidades de un artículo pedidas a través del tiempo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container" id="top-container" style="margin-top: 2%;">
             <div class="row">
                 <div class="container" id="option-left" onclick="openGraphModal('ingresosEgresos');" style="width: 49%;">
@@ -515,6 +535,105 @@
 
 
 
+
+
+
+
+
+
+            <div class="graph-row" id="graph-cantPedsArts" style="display: none;">
+                <!--START Gráfico Pedidos Articulos-->
+                <h5 class="table-title" id="title-cantPedsArts" style="margin-left: 6%;">Cantidad de unidades de un artículo pedidas en el tiempo</h5>
+                <div >
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="cantPedsArts-time-sp" class="selectpicker selectpicker-nooutline" oninput="cantPedsArts()" data-live-search="true">
+                                <option value=12>&nbsp; 1 año</option>
+                                <option value=36>&nbsp; 3 años</option>
+                                <option value=60>&nbsp; 5 años</option>    
+                        </select>
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 30% !important; margin-right: 7%;" id="cantPedsArts-sp" class="selectpicker selectpicker-nooutline" oninput="cantPedsArts()" data-live-search="true">
+                            {%for art in articulos%}
+                                <option value={{art.id}}>&nbsp; {{art.nombre}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-cantPedsArts" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-cantPedsArts">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-cantPedsArts">
+                    <div id="chartContainer-cantPedsArts" class="mt-4 mb-4" style="height: 300px; width: 89%; margin-left: 5%;"></div>
+                </div>
+                <div class="row mt-4" id="loading-row-cantPedsArts" style="padding-top: 3%;">
+                </div>
+
+
+                <table class="table" style="margin-left: 5%;width:90%;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Mes</th>
+                        <th scope="col" class="table-heading">Cantidad</th>
+                        <th scope="col" class="table-heading">Cambio</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-cantPedsArts">
+                    </tbody>
+                </table>
+                <!--END Gráfico Pedidos -->
+            </div>
+
+
+
+
+            <div class="graph-row" id="graph-cantDepsMats" style="display: none;">
+                <!--START Gráfico Depositos Materiales-->
+                <h5 class="table-title" id="title-cantDepsMats" style="margin-left: 6%;">Cantidad de unidades de un material depositadas en el tiempo</h5>
+                <div >
+                    <div class="d-flex justify-content-end" style="margin-bottom: -3%; margin-top: 3%;">
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 15% !important; margin-right: 3%;" id="cantDepsMats-time-sp" class="selectpicker selectpicker-nooutline" oninput="cantDepsMats()" data-live-search="true">
+                                <option value=12>&nbsp; 1 año</option>
+                                <option value=36>&nbsp; 3 años</option>
+                                <option value=60>&nbsp; 5 años</option>    
+                        </select>
+                        <select style="background:#fff;box-shadow:none;border: none; font-size: 13px; border-bottom: 2px solid #cfec8c; width: 30% !important; margin-right: 7%;" id="cantDepsMats-sp" class="selectpicker selectpicker-nooutline" oninput="cantDepsMats()" data-live-search="true">
+                            {%for mat in materiales%}
+                                <option value={{mat.id}}>&nbsp; {{mat.nombre}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4" id="loading-row-cantDepsMats" style="padding-top: 5%;">
+                    <div id="lds-ring-chart" class="lds-ring" style="display: block;"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <p class="loading-text-chart mb-4" id="loading-text-cantDepsMats">Cargando gráfico...</p>
+                <div class="row mb-4" id="chart-row-cantDepsMats">
+                    <div id="chartContainer-cantDepsMats" class="mt-4 mb-4" style="height: 300px; width: 89%; margin-left: 5%;"></div>
+                </div>
+                <div class="row mt-4" id="loading-row-cantDepsMats" style="padding-top: 3%;">
+                </div>
+
+
+                <table class="table" style="margin-left: 5%;width:90%;">
+                    <thead style="border-top:none">
+                    <tr>
+                        <th scope="col" class="table-heading">Mes</th>
+                        <th scope="col" class="table-heading">Cantidad</th>
+                        <th scope="col" class="table-heading">Cambio</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-cantDepsMats">
+                    </tbody>
+                </table>
+                <!--END Gráfico Depositos -->
+            </div>
+
+
+
+
+
+
+
             <div class="graph-row" id="graph-ingresosEgresos" style="display: none;">
                 <!--START Gráfico Ingresos-Egresos -->
                 <h5 class="table-title" id="title-ingresosEgresos" style="margin-left: 6%;">Ingresos vs Costos del sistema</h5>
@@ -624,7 +743,8 @@
                     <thead style="border-top:none">
                     <tr>
                         <th scope="col" class="table-heading">Depositos</th>
-                        <th scope="col" class="table-heading">Proporción</th>
+                        <th scope="col" class="table-heading">Cantidad</th>
+                        <th scope="col" class="table-heading">Porcentaje</th>
                     </tr>
                     </thead>
                     <tbody id="tbody-depsAcred">
@@ -656,7 +776,8 @@
                     <thead style="border-top:none">
                     <tr>
                         <th scope="col" class="table-heading">Puntos</th>
-                        <th scope="col" class="table-heading">Proporción</th>
+                        <th scope="col" class="table-heading">Cantidad</th>
+                        <th scope="col" class="table-heading">Porcentaje</th>
                     </tr>
                     </thead>
                     <tbody id="tbody-puntosDep">
@@ -686,7 +807,8 @@
                     <thead style="border-top:none">
                     <tr>
                         <th scope="col" class="table-heading">Puntos</th>
-                        <th scope="col" class="table-heading">Proporción</th>
+                        <th scope="col" class="table-heading">Cantidad</th>
+                        <th scope="col" class="table-heading">Porcentaje</th>
                     </tr>
                     </thead>
                     <tbody id="tbody-puntosRet">
@@ -700,6 +822,7 @@
 
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn secondary-btn" onclick="exportToCsv();"><i class="fas fa-file-download"></i>   Descargar</button>
           <button type="button" class="btn primary-btn" data-dismiss="modal" id="primary-btn-re">Listo</button>
         </div>
 

@@ -1,3 +1,5 @@
+var data_to_download = [];
+
 const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
   "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
@@ -64,10 +66,13 @@ function cantUsers(){
       $("#chart-row-users").fadeIn();
       datos = [];
       result = result.reverse();
+      data_to_download = [];
+      data_to_download.push(["Fecha","Cantidad"])
+
       for (var i=result.length-1; i >= 0;i--){
           datos.push([String(months[i]),result[i]]);
+          data_to_download.push([String(months[i]),result[i]]);
       }
-      console.log(datos);
 
       //Creo grafico
 
@@ -169,10 +174,13 @@ function cantDeps(){
       $("#chart-row-cantDeps").fadeIn();
       datos = [];
       result = result.reverse();
+      data_to_download = [];
+      data_to_download.push(["Fecha","Cantidad"])
+
       for (var i=result.length-1; i >= 0;i--){
           datos.push([String(months[i]),result[i]]);
+          data_to_download.push([String(months[i]),result[i]]);
       }
-      console.log(datos);
 
       //Creo grafico
 
@@ -276,10 +284,14 @@ function cantPeds(){
       $("#chart-row-cantPeds").fadeIn();
       datos = [];
       result = result.reverse();
+
+      data_to_download = [];
+      data_to_download.push(["Fecha","Cantidad"])
+
       for (var i=result.length-1; i >= 0;i--){
           datos.push([String(months[i]),result[i]]);
+          data_to_download.push([String(months[i]),result[i]]);
       }
-      console.log(datos);
 
       //Creo grafico
 
@@ -385,9 +397,13 @@ function ingresosEgresos(){
       datosE = [];
       ingresos = result["ingresos"].reverse();
       egresos = result["egresos"].reverse();
+
+      data_to_download = [];
+      data_to_download.push(["Fecha","Ingresos","Egresos"])
       for (var i=ingresos.length-1; i >= 0;i--){
           datosI.push([String(months[i]),ingresos[i]]);
           datosE.push([String(months[i]),egresos[i]]);
+          data_to_download.push([String(months[i]),ingresos[i],egresos[i]]);
       }
 
       //Creo grafico
@@ -403,8 +419,8 @@ function ingresosEgresos(){
       chart.animation(true);
 
       // create a series with mapped data
-      var seriesI = chart.line(datosI);
-      var seriesE = chart.line(datosE);
+      var seriesI = chart.spline(datosI);
+      var seriesE = chart.spline(datosE);
       // set chart tooltip and interactivity settings
       chart
         .tooltip()
@@ -513,10 +529,14 @@ function rentabilidad(){
       $("#chart-row-rentabilidad").fadeIn();
       datos = [];
       result = result.reverse();
+
+      data_to_download = [];
+      data_to_download.push(["Fecha","Balance"])
+
       for (var i=result.length-1; i >= 0;i--){
           datos.push([String(months[i]),result[i]]);
+          data_to_download.push([String(months[i]),result[i]]);
       }
-      console.log(datos);
 
       //Creo grafico
 
@@ -620,10 +640,13 @@ function gananciasArt(){
       $("#chart-row-gananciasArt").fadeIn();
       datos = [];
       result = result.reverse();
+      data_to_download = [];
+      data_to_download.push(["Fecha","Cantidad"])
+
       for (var i=result.length-1; i >= 0;i--){
           datos.push([String(months[i]),result[i]]);
+          data_to_download.push([String(months[i]),result[i]]);
       }
-      console.log(datos);
 
       //Creo grafico
 
@@ -727,10 +750,13 @@ function gananciasTotales(){
       $("#chart-row-gananciasTotal").fadeIn();
       datos = [];
       result = result.reverse();
+      data_to_download = [];
+      data_to_download.push(["Fecha","Cantidad"])
+
       for (var i=result.length-1; i >= 0;i--){
           datos.push([String(months[i]),result[i]]);
+          data_to_download.push([String(months[i]),result[i]]);
       }
-      console.log(datos);
 
       //Creo grafico
 
@@ -812,9 +838,17 @@ function depsAcred(){
   $("#loading-text-depsAcred").fadeIn();
 
   $.getJSON("/reportes-admin/porcentaje-dep-acreditados/",function (result){
+    document.getElementById("title-depsAcred").innerHTML = "Proporción de depósitos acreditados desde " + result["fecha"];
+    var r = result["data"][0]
     var data = [
-      ['Acreditados', result[0]],
-      ['No Acreditados', result[1]],
+      ['Acreditados', r[0]],
+      ['No Acreditados', r[1]],
+    ];
+
+    data_to_download = [
+      ["Depositos","Cantidad","Porcentaje"],
+      ['Acreditados', r[0],result["data"][1][0]],
+      ['No Acreditados', r[1],result["data"][1][1]],
     ];
 
     var datosAC = anychart.data.set(data);
@@ -825,8 +859,7 @@ function depsAcred(){
     chart
       .labels()
       .hAlign('center')
-      .position('inside')
-      .format('{%Value}%)');
+      .position('inside');
 
 
     var palette = anychart.palettes.rangeColors();
@@ -858,10 +891,13 @@ function depsAcred(){
       var tr = document.createElement("tr");
       var td1 = document.createElement("td");
       var td2 = document.createElement("td"); 
+      var td3 = document.createElement("td"); 
       td1.innerHTML = data[k][0];
-      td2.innerHTML = data[k][1].toFixed(2) + "%";
+      td2.innerHTML = data[k][1];
+      td3.innerHTML = result["data"][1][k] + "%";
       tr.appendChild(td1);
       tr.appendChild(td2);
+      tr.appendChild(td3);
       document.getElementById("tbody-depsAcred").appendChild(tr);
     }
   });    
@@ -877,17 +913,18 @@ function puntosDep(){
   $("#loading-text-puntosDep").fadeIn();
 
   $.getJSON("/reportes-admin/porcentaje-dep-pd/",function (result){
+    document.getElementById("title-puntosDep").innerHTML = "Proporción de depósitos en cada punto de depósito desde " + result["fecha"];
+    var datosAC = anychart.data.set(result["data"]);
 
-    var datosAC = anychart.data.set(result);
 
+    data_to_download = [["Punto","Cantidad","Porcentaje"],...result["data"]];
     var datos = datosAC.mapAs({ x: 0, value: 1 });
 
     var chart = anychart.pie(datos);
     chart
       .labels()
       .hAlign('center')
-      .position('inside')
-      .format('{%Value}%)');
+      .position('inside');
 
     /*
     var palette = anychart.palettes.rangeColors();
@@ -916,14 +953,17 @@ function puntosDep(){
 
     //Lleno tabla
     document.getElementById("tbody-puntosDep").innerHTML = "";
-    for(var k in result){
+    for(var k in result["data"]){
       var tr = document.createElement("tr");
       var td1 = document.createElement("td");
-      var td2 = document.createElement("td"); 
-      td1.innerHTML = result[k][0];
-      td2.innerHTML = result[k][1].toFixed(2) + "%";
+      var td2 = document.createElement("td");
+      var td3 = document.createElement("td"); 
+      td1.innerHTML = result["data"][k][0];
+      td2.innerHTML = result["data"][k][1];
+      td3.innerHTML = result["data"][k][2] + "%";
       tr.appendChild(td1);
       tr.appendChild(td2);
+      tr.appendChild(td3);
       document.getElementById("tbody-puntosDep").appendChild(tr);
     }
   });  
@@ -937,18 +977,17 @@ function puntosRet(){
   $("#loading-text-puntosRet").fadeIn();
 
   $.getJSON("/reportes-admin/porcentaje-ped-pr",function (result){
+    document.getElementById("title-puntosRet").innerHTML = "Proporción de pedidos en cada punto de retiro desde " + result["fecha"];
+    var datosAC = anychart.data.set(result["data"]);
 
-    var datosAC = anychart.data.set(result);
-
+    data_to_download = [["Punto","Cantidad","Porcentaje"],...result["data"]];
     var datos = datosAC.mapAs({ x: 0, value: 1 });
 
     var chart = anychart.pie(datos);
     chart
       .labels()
       .hAlign('center')
-      .position('inside')
-      .format('{%Value}%)');
-
+      .position('inside');
     /*
     var palette = anychart.palettes.rangeColors();
     palette.items([{ color: '#95C22B' }, { color: '#f14e4e' }]);
@@ -976,14 +1015,17 @@ function puntosRet(){
 
     //Lleno tabla
     document.getElementById("tbody-puntosRet").innerHTML = "";
-    for(var k in result){
+    for(var k in result["data"]){
       var tr = document.createElement("tr");
       var td1 = document.createElement("td");
-      var td2 = document.createElement("td"); 
-      td1.innerHTML = result[k][0];
-      td2.innerHTML = result[k][1].toFixed(2) + "%";
+      var td2 = document.createElement("td");
+      var td3 = document.createElement("td"); 
+      td1.innerHTML = result["data"][k][0];
+      td2.innerHTML = result["data"][k][1];
+      td3.innerHTML = result["data"][k][2] + "%";
       tr.appendChild(td1);
       tr.appendChild(td2);
+      tr.appendChild(td3);
       document.getElementById("tbody-puntosRet").appendChild(tr);
     }
   });
@@ -1021,10 +1063,13 @@ function ecotienda(){
       $("#chart-row-ecotienda").fadeIn();
       datos = [];
       result = result.reverse();
+      data_to_download = [];
+      data_to_download.push(["Fecha","Ganancia"])
+
       for (var i=result.length-1; i >= 0;i--){
           datos.push([String(months[i]),result[i]]);
+          data_to_download.push([String(months[i]),result[i]]);
       }
-      console.log(datos);
 
       //Creo grafico
 
@@ -1128,10 +1173,13 @@ function stockMats_data(id, cant_meses=24,route){
         $("#chart-row-mat").fadeIn();
         datos = [];
         result = result.reverse();
+        data_to_download = [];
+        data_to_download.push(["Fecha","Cantidad"])
+
         for (var i=result.length-1; i >= 0;i--){
             datos.push([String(months[i]),result[i]]);
+            data_to_download.push([String(months[i]),result[i]]);
         }
-        console.log(datos);
 
         //Creo grafico
 
@@ -1199,4 +1247,295 @@ function stockMats_data(id, cant_meses=24,route){
           
           }
         });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function cantDepsMats(){
+  $("#graph-cantDepsMats").fadeIn();
+  document.getElementById("chartContainer-cantDepsMats").innerHTML ="";
+  $("#chart-row-cantDepsMats").hide();
+  $("#loading-row-cantDepsMats").fadeIn();
+  $("#loading-text-cantDepsMats").fadeIn();
+
+  cant_meses = document.getElementById("cantDepsMats-time-sp").value;
+  idArt = document.getElementById("cantDepsMats-sp").value;
+  console.log(cant_meses);
+  $.getJSON("/reportes-admin/get-cant-depositos/"+String(cant_meses),function (result){
+      const d = new Date();
+      var months = [];
+      cant_years = cant_meses/12;
+      
+      for (i = parseInt(d.getMonth())+1; i <12; i++){
+          months.push(monthNames[i] + " " + String(d.getFullYear()-cant_years));
+      }
+      for(var j = cant_years-1;j>=1;j--){
+          for (i = 0; i < monthNames.length; i++){
+              months.push(monthNames[i] + " " + String(d.getFullYear()-j));
+          }
+      }
+      for (i = 0; i <= parseInt(d.getMonth()); i++){
+          months.push(monthNames[i] + " " + String(d.getFullYear()));
+      }
+      $("#loading-row-cantDepsMats").hide();
+      $("#loading-text-cantDepsMats").hide();
+      $("#chart-row-cantDepsMats").fadeIn();
+      datos = [];
+      result = result.reverse();
+      data_to_download = [];
+      data_to_download.push(["Fecha","Cantidad"])
+
+      for (var i=result.length-1; i >= 0;i--){
+          datos.push([String(months[i]),result[i]]);
+          data_to_download.push([String(months[i]),result[i]]);
+      }
+
+      //Creo grafico
+
+      // map data for the first series, take x from the zero column and value from the first column of data set
+      var seriesData = datos.reverse();
+
+      // create line chart
+      var chart = anychart.area();
+
+      // turn on chart animation
+      chart.animation(true);
+
+      // create a series with mapped data
+      var series = chart.area(seriesData);
+      series.name('Cantidad');
+      series.hovered().markers().enabled(true).type('circle').size(4);
+      series.markers(true);
+      // set chart tooltip and interactivity settings
+      chart
+        .tooltip()
+        .position('center-top')
+        .anchor('center-bottom')
+        .positionMode('point');
+
+      chart.interactivity().hoverMode('by-x');
+
+      // set container id for the chart
+      chart.container('chartContainer-cantDepsMats');
+      // initiate chart drawing
+      // set positive and negative stroke settings
+      
+      series.negativeFill("#f14e4eb0");
+      series.fill("#95C22Bb0");
+      series.stroke("#95C22B");
+      series.negativeStroke("#f14e4e");
+      chart.draw();
+
+
+
+        //Lleno tabla
+        document.getElementById("tbody-cantDepsMats").innerHTML = "";
+        dsrev = datos.reverse();
+        for(var k in dsrev){
+          var tr = document.createElement("tr");
+          var td1 = document.createElement("td");
+          td1.innerHTML=dsrev[k][0];
+
+          var td2 = document.createElement("td");
+          
+          if(Number(k)+1 < dsrev.length){
+            change = dsrev[k][1] - dsrev[Number(k)+1][1];
+            if(change > 0){
+              td2.innerHTML="<i class='fas fa-caret-up color-activo caret-up'></i>"+"+"+change.toString();
+            }else if (change < 0){
+              td2.innerHTML="<i class='fas fa-caret-down color-negativo caret-up'></i>" + change.toString();
+            }else{
+              td2.innerHTML=change.toString();
+            }
+          }else{
+            td2.innerHTML="0";
+          }
+          var td3 = document.createElement("td");
+          td3.innerHTML=dsrev[k][1];
+
+          tr.appendChild(td1);
+          tr.appendChild(td3);
+          tr.appendChild(td2);
+          document.getElementById("tbody-cantDepsMats").appendChild(tr);
+        
+        }
+      });
+}
+
+function cantPedsArts(){
+  $("#graph-cantPedsArts").fadeIn();
+  document.getElementById("chartContainer-cantPedsArts").innerHTML ="";
+  $("#chart-row-cantPedsArts").hide();
+  $("#loading-row-cantPedsArts").fadeIn();
+  $("#loading-text-cantPedsArts").fadeIn();
+
+  cant_meses = document.getElementById("cantPedsArts-time-sp").value;
+  idArt = document.getElementById("cantPedsArts-sp").value;
+  console.log(cant_meses);
+  $.getJSON("/reportes-admin/get-cant-pedidos/"+String(cant_meses),function (result){
+      const d = new Date();
+      var months = [];
+      cant_years = cant_meses/12;
+      
+      for (i = parseInt(d.getMonth())+1; i <12; i++){
+          months.push(monthNames[i] + " " + String(d.getFullYear()-cant_years));
+      }
+      for(var j = cant_years-1;j>=1;j--){
+          for (i = 0; i < monthNames.length; i++){
+              months.push(monthNames[i] + " " + String(d.getFullYear()-j));
+          }
+      }
+      for (i = 0; i <= parseInt(d.getMonth()); i++){
+          months.push(monthNames[i] + " " + String(d.getFullYear()));
+      }
+      $("#loading-row-cantPedsArts").hide();
+      $("#loading-text-cantPedsArts").hide();
+      $("#chart-row-cantPedsArts").fadeIn();
+      datos = [];
+      result = result.reverse();
+      data_to_download = [];
+      data_to_download.push(["Fecha","Cantidad"])
+
+      for (var i=result.length-1; i >= 0;i--){
+          datos.push([String(months[i]),result[i]]);
+          data_to_download.push([String(months[i]),result[i]]);
+      }
+
+      //Creo grafico
+
+      // map data for the first series, take x from the zero column and value from the first column of data set
+      var seriesData = datos.reverse();
+
+      // create line chart
+      var chart = anychart.area();
+
+      // turn on chart animation
+      chart.animation(true);
+
+      // create a series with mapped data
+      var series = chart.area(seriesData);
+      series.name('Cantidad');
+      series.hovered().markers().enabled(true).type('circle').size(4);
+      series.markers(true);
+      // set chart tooltip and interactivity settings
+      chart
+        .tooltip()
+        .position('center-top')
+        .anchor('center-bottom')
+        .positionMode('point');
+
+      chart.interactivity().hoverMode('by-x');
+
+      // set container id for the chart
+      chart.container('chartContainer-cantPedsArts');
+      // initiate chart drawing
+      // set positive and negative stroke settings
+      
+      series.negativeFill("#f14e4eb0");
+      series.fill("#95C22Bb0");
+      series.stroke("#95C22B");
+      series.negativeStroke("#f14e4e");
+      chart.draw();
+
+
+
+        //Lleno tabla
+        document.getElementById("tbody-cantPedsArts").innerHTML = "";
+        dsrev = datos.reverse();
+        for(var k in dsrev){
+          var tr = document.createElement("tr");
+          var td1 = document.createElement("td");
+          td1.innerHTML=dsrev[k][0];
+
+          var td2 = document.createElement("td");
+          
+          if(Number(k)+1 < dsrev.length){
+            change = dsrev[k][1] - dsrev[Number(k)+1][1];
+            if(change > 0){
+              td2.innerHTML="<i class='fas fa-caret-up color-activo caret-up'></i>"+"+"+change.toString();
+            }else if (change < 0){
+              td2.innerHTML="<i class='fas fa-caret-down color-negativo caret-up'></i>" + change.toString();
+            }else{
+              td2.innerHTML=change.toString();
+            }
+          }else{
+            td2.innerHTML="0";
+          }
+          var td3 = document.createElement("td");
+          td3.innerHTML=dsrev[k][1];
+
+          tr.appendChild(td1);
+          tr.appendChild(td3);
+          tr.appendChild(td2);
+          document.getElementById("tbody-cantPedsArts").appendChild(tr);
+        
+        }
+      });
+}
+
+
+
+
+
+
+
+
+
+function exportToCsv() {
+  rows = data_to_download;
+  if(data_to_download==[]){
+    return true;
+  }
+  filename="datos.csv"
+  var processRow = function (row) {
+      var finalVal = '';
+      for (var j = 0; j < row.length; j++) {
+          var innerValue = row[j] === null ? '' : row[j].toString();
+          if (row[j] instanceof Date) {
+              innerValue = row[j].toLocaleString();
+          };
+          var result = innerValue.replace(/"/g, '""');
+          if (result.search(/("|,|\n)/g) >= 0)
+              result = '"' + result + '"';
+          if (j > 0)
+              finalVal += ',';
+          finalVal += result;
+      }
+      return finalVal + '\n';
+  };
+
+  var csvFile = '';
+  for (var i = 0; i < rows.length; i++) {
+      csvFile += processRow(rows[i]);
+  }
+
+  var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+  if (navigator.msSaveBlob) { // IE 10+
+      navigator.msSaveBlob(blob, filename);
+  } else {
+      var link = document.createElement("a");
+      if (link.download !== undefined) { // feature detection
+          // Browsers that support HTML5 download attribute
+          var url = URL.createObjectURL(blob);
+          link.setAttribute("href", url);
+          link.setAttribute("download", filename);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+      }
+  }
 }
