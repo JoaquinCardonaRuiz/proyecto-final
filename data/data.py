@@ -44,7 +44,7 @@ class Datos():
                         user="sql10404333", # Usuario de la BD
                         passwd="nBUhZ1gSar", # Contraseña de la BD
                         db="sql10404333")  # Nombre de la DB
-            cls.cursor = cls.db.cursor()
+            cls.cursor = cls.db.cursor(buffered=True)
                 
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data",
