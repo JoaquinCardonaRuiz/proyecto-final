@@ -594,6 +594,7 @@ class DatosReportes(Datos):
 
                 #Costos Producción Insumos
                 cls.abrir_conexion()
+                cant = 0
                 sql = ("SELECT sum((cProduccion + otrosCostos)*cantidad) FROM prodInsumos left join insumos using(idInsumo) where month(fecha)=%s and year(fecha)=%s")
                 values = (current_month, current_year)
                 cls.cursor.execute(sql,values)
@@ -646,7 +647,7 @@ class DatosReportes(Datos):
         """
         try:
             cls.abrir_conexion()
-
+    
             #Todos los depósitos
             sql = ("SELECT count(*) from depositos")
             cls.cursor.execute(sql)
