@@ -1734,7 +1734,6 @@ def porcentaje_dep_por_pd():
     cants = NegocioReportes.porcentaje_dep_por_pd()
     return jsonify(cants)
 
-
 @app.route('/reportes-admin/porcentaje-ped-pr/')
 def porcentaje_ped_por_pr():
     cants = NegocioReportes.porcentaje_ped_por_pr()
