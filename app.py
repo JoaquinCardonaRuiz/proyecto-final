@@ -325,11 +325,17 @@ def eco_tienda():
     try:
         if valida_session(): return redirect(url_for('login'))
         articulos = NegocioArticulo.get_all()
+        count = sum(art.stock > 0 for art in articulos)
+        if count > 0:
+            show_no_stock_letter = False 
+        else:
+            show_no_stock_letter = True
+        print(show_no_stock_letter)
         nivel = NegocioNivel.get_nivel_id(session["usuario"].idNivel)
         valor_ep = NegocioEcoPuntos.get_valor_EP()
     except Exception as e:
         return error(e, "eco-tienda")
-    return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel, valor_ep = valor_ep)
+    return render_template('eco-tienda.html', articulos = articulos, usuario = session["usuario"], nivel = nivel, valor_ep = valor_ep, show_no_stock_letter = show_no_stock_letter)
 
 
 @app.route('/eco-tienda/producto/<id>')

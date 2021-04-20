@@ -51,7 +51,11 @@
                                 <p class="option-description-pr text-muted"  style="margin-top: 0.2%;">{{pd.direccion.ciudad}}</p>
                                 <div style="float: right;" class="horarios-container-ecnontrar-punto">
                                     <i class="far fa-clock horarios-img-ecnontrar-punto" id="{{pd.id}}-img" onmouseover="changeColor({{pd.id}});" onmouseout="restablishColor({{pd.id}});" onclick="openLoadingRing();openModalHorarios('{{pd.id}}', '{{pd.nombre}}', '{{pd.estado}}');"></i>
-                                    <p class="option-description-pr horarios-desc-ecnontrar-punto" id="{{pd.id}}-desc" onmouseover="changeColor({{pd.id}});" onmouseout="restablishColor({{pd.id}});" onclick="openLoadingRing();openModalHorarios('{{pd.id}}', '{{pd.nombre}}', '{{pd.estado}}');">Ver horarios</p>
+                                    <p class="option-description-pr horarios-desc-ecnontrar-punto" id="{{pd.id}}-desc" onmouseover="changeColor({{pd.id}});" onmouseout="restablishColor({{pd.id}});" onclick="openLoadingRing();openModalHorarios('{{pd.id}}', '{{pd.nombre}}', '{{pd.estado}}');">Horarios</p>
+                                </div>
+                                <div style="float: right;" class="horarios-container-ecnontrar-punto">
+                                    <i class="fas fa-truck-loading horarios-img-ecnontrar-punto" id="{{pd.id}}-img" onmouseover="changeColor({{pd.id}});" onmouseout="restablishColor({{pd.id}});" onclick="openLoadingRing();openModalHorarios('{{pd.id}}', '{{pd.nombre}}', '{{pd.estado}}');"></i>
+                                    <p class="option-description-pr horarios-desc-ecnontrar-punto" id="{{pd.id}}-desc" onmouseover="changeColor({{pd.id}});" onmouseout="restablishColor({{pd.id}});" onclick="openLoadingRing();openModalHorarios('{{pd.id}}', '{{pd.nombre}}', '{{pd.estado}}');">Materiales</p>
                                 </div>
                             </div>
                             {%endfor%}

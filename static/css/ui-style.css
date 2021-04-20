@@ -457,6 +457,7 @@ h2 		 {
     position: relative;
     top: -70%;
     margin-left: 2%;
+    padding-left: 12% !important;
     color: rgb(132,117,167);
 }
 

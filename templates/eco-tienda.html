@@ -23,11 +23,29 @@
 {% extends 'layout.html' %}
 {% block body %}
 <div class="page-content" style="text-align: left;" id="content">
+    {%if show_no_stock_letter == False%}
     <div class="container" id="heading-container">
         <h1 class="heading">EcoTienda</h1>
         <h6 class="d-flex justify-content-between align-items-center"><span class="text-muted subheading">Canjee sus EcoPuntos por productos de la tienda.</span></h6>
     </div>
+    {%endif%}
     <div class="container" id="heading-container" style="margin-top: 5%;">
+        {%if show_no_stock_letter == True%}
+        <div class="row d-flex justify-content-center" style="margin-top:5%; width: 100%;">
+            <h3 class="title-empty-card">¡Ups! Parece que la EcoTienda está temporalmente sin stock de artículos</h3>
+        </div>
+        <div class="row d-flex justify-content-center" style="margin-top:0%; width: 100%;">
+            <p class="page-content-subtitle">Nuestros empleados ya están trabajando para crear nuevos productos reciclados. Por favor, intentá nuevamente más tarde.</p>
+        </div>
+        <div class="row d-flex justify-content-center" style="margin-top:3%; width: 100%;">
+            <img src="/static/img/carrito_vacio.png" width="55%" alt="">
+        </div>
+        <div class="row d-flex justify-content-center" style="width: 100%; margin-bottom: 4%;">
+            <button type="button" class="btn" id="ecoasistente-btn-main" style="width: 55%;" data-mdb-ripple-color="dark" onclick="redirect('/main');">
+                <i class="fa fa-home mr-2 fa-fw" style="color: white;"></i>Volver al Inicio
+            </button>
+        </div>
+        {%endif%}
         <div class="container" id="products-container">
             <div class="row">
                 {%set ids_art = []%}
