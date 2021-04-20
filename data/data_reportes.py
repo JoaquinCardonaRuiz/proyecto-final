@@ -647,7 +647,7 @@ class DatosReportes(Datos):
             
             porcentaje_acreditados = float(dep_acreditados) * 100/float(total_depositos)
             porcentaje_no_acreditados = float(dep_no_acreditados) * 100/float(total_depositos)
-            return [[porcentaje_acreditados,dep_acreditados],[dep_no_acreditados,porcentaje_no_acreditados]]
+            return [[dep_acreditados,porcentaje_acreditados],[dep_no_acreditados,porcentaje_no_acreditados]]
 
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_material.ganancias_art()",
@@ -681,7 +681,7 @@ class DatosReportes(Datos):
                 if cant_dep_pd == None:
                     cant_dep_pd = 0
                 porcentaje_dep_pd = float(cant_dep_pd) * 100/ float(total_depositos)
-                data.append([pd.nombre,porcentaje_dep_pd])
+                data.append([pd.nombre,porcentaje_dep_pd,cant_dep_pd])
             
             return data
 
