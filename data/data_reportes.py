@@ -646,7 +646,7 @@ class DatosReportes(Datos):
             
             porcentaje_acreditados = float(dep_acreditados) * 100/float(total_depositos)
             porcentaje_no_acreditados = float(dep_no_acreditados) * 100/float(total_depositos)
-            return [porcentaje_acreditados,porcentaje_no_acreditados]
+            return [dep_acreditados,dep_no_acreditados]
 
         except Exception as e:
             raise custom_exceptions.ErrorDeConexion(origen="data_material.ganancias_art()",
