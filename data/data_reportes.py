@@ -624,7 +624,7 @@ class DatosReportes(Datos):
             cls.abrir_conexion()
 
             #Fecha del primer pedido
-            sql = ("select min(fechaReg) from depositos where estado !='eliminado'")
+            sql = ("select min(fechaDep) from depositos where estado !='eliminado'")
             cls.cursor.execute(sql)
             fecha = cls.cursor.fetchone()[0].strftime("%d/%m/%Y")
 
@@ -802,7 +802,6 @@ class DatosReportes(Datos):
 
                     if valStockProd == None:
                         valStockProd = 0
-                    print(valStockProd)
 
                     #Aplico los movimientos del mes al stock
                     stock -= valStockDep
@@ -977,5 +976,99 @@ class DatosReportes(Datos):
             raise custom_exceptions.ErrorDeConexion(origen="data_articulo.get_movimientos_stock()",
                                                     msj=str(e),
                                                     msj_adicional="Error actualizando el stock de un articulo en la BD.")
+        finally:
+            cls.cerrar_conexion()
+    
+    @classmethod
+    def cantidad_depositada_por_material(cls,id,cant_meses):
+        """
+        Obtiene los movimientos de un material en base a su id, el tipo y el mes.
+        """
+        try:
+            d = datetime.datetime.now()
+            start_month = int(d.strftime("%m"))
+            start_year = int(d.year)
+            current_month = start_month
+            current_year = start_year
+            data = []
+            for i in range(0,int(cant_meses)):
+
+                #Depositos por material
+                cls.abrir_conexion()
+                cant = 0
+                sql = ("SELECT sum(cant) from depositos where idMaterial = %s and month(fechaDep)=%s and year(fechaDep)=%s")
+                values = (id,current_month, current_year)
+                cls.cursor.execute(sql,values)
+                
+                sumPI = cls.cursor.fetchone()[0]
+
+                if sumPI == None:
+                    sumPI = 0
+
+                cls.cerrar_conexion()
+
+                #Aplico las cantidades depositadas al dataset
+                cant += sumPI
+
+                data.append(cant)
+                if current_month != 1:
+                    current_month -= 1
+                else:
+                    current_month = 12
+                    current_year -= 1
+               
+            return data
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.cantidad_depositada_por_material()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
+        finally:
+            cls.cerrar_conexion()
+    
+    @classmethod
+    def cantidad_pedida_por_articulo(cls,id,cant_meses):
+        """
+        Obtiene los movimientos de un material en base a su id, el tipo y el mes.
+        """
+        try:
+            d = datetime.datetime.now()
+            start_month = int(d.strftime("%m"))
+            start_year = int(d.year)
+            current_month = start_month
+            current_year = start_year
+            data = []
+            for i in range(0,int(cant_meses)):
+
+                #Depositos por material
+                cls.abrir_conexion()
+                cant = 0
+                sql = ("select sum(cantidad) from pedidos right join tiposArt_pedidos using(idPedido) where idTipoArticulo = %s and month(fechaReg)=%s and year(fechaReg)=%s")
+                values = (id,current_month, current_year)
+                cls.cursor.execute(sql,values)
+                
+                sumPI = cls.cursor.fetchone()[0]
+
+                if sumPI == None:
+                    sumPI = 0
+
+                cls.cerrar_conexion()
+
+                #Aplico las cantidades depositadas al dataset
+                cant += sumPI
+
+                data.append(cant)
+                if current_month != 1:
+                    current_month -= 1
+                else:
+                    current_month = 12
+                    current_year -= 1
+               
+            return data
+
+        except Exception as e:
+            raise custom_exceptions.ErrorDeConexion(origen="data_material.cantidad_pedida_por_articulo()",
+                                                    msj=str(e),
+                                                    msj_adicional="Error actualizando el stock de un material en la BD.")
         finally:
             cls.cerrar_conexion()

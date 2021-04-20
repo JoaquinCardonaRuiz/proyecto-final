@@ -1750,6 +1750,17 @@ def ingresos_globales(meses):
     egr = NegocioReportes.egresos_globales(meses)
     return jsonify({"ingresos":ing,"egresos":egr})
 
+@app.route('/reportes-admin/cant-dep-por-mat/<meses>/<idMat>')
+def cantidad_depositada_por_material(meses,idMat):
+    cants = NegocioReportes.cantidad_depositada_por_material(idMat,meses)
+    return jsonify(cants)
+
+@app.route('/reportes-admin/cant-ped-por-art/<meses>/<idArt>')
+def cantidad_pedida_por_articulo(meses,idArt):
+    cants = NegocioReportes.cantidad_pedida_por_articulo(idArt,meses)
+    return jsonify(cants)
+
+
 ''' 
     ----------
     PRODUCCION

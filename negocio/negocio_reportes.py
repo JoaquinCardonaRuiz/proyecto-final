@@ -107,3 +107,18 @@ class NegocioReportes():
             return DatosReportes.egresos_globales(cant_meses)
         except Exception as e:
             raise e
+
+    @classmethod
+    def cantidad_depositada_por_material(cls,id,cant_meses):
+        try:
+            return DatosReportes.cantidad_depositada_por_material(id,cant_meses)
+        except Exception as e:
+            raise e
+    
+    @classmethod
+    def cantidad_pedida_por_articulo(cls,id,cant_meses):
+        try:
+            return DatosReportes.cantidad_pedida_por_articulo(id,cant_meses)
+        except Exception as e:
+            raise e
+    
