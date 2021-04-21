@@ -45,7 +45,7 @@ def upload_user_img():
             filename = secure_filename(file.filename)
             dir = os.path.join(p, filename)
             file.save(dir)
-            NegocioUsuario.update_img(session["usuario"].id,dir)
+            NegocioUsuario.update_img(session["usuario"].id,"/"+dir)
             session["usuario"] = NegocioUsuario.get_by_id(session["usuario"].id)
             session.modified = True
     return redirect(url_for('perfil'))
@@ -947,7 +947,7 @@ def alta_articulo():
                 file.save(dir)
                 imagen = dir
             if imagen != "":
-                NegocioArticulo.update_img(idNuevoArt,imagen)
+                NegocioArticulo.update_img(idNuevoArt,"/"+imagen)
 
         except Exception as e:
             return error(e,"articulos")
@@ -998,7 +998,7 @@ def edit_articulo():
                 file.save(dir)
                 imagen = dir
             if imagen != "":
-                NegocioArticulo.update_img(idArt,imagen)
+                NegocioArticulo.update_img(idArt,"/"+imagen)
         except Exception as e:
             return error(e,"articulos")
         return redirect(url_for('gestion_articulos'))
