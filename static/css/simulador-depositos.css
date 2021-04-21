@@ -272,3 +272,7 @@
     font-family: 'Hind', sans-serif;
     font-size: 29px;
   }
+
+  .material-card-subtitle{
+    color: rgb(116, 116, 116);
+  }
