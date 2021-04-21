@@ -47,3 +47,25 @@ function addToCart(){
 }
 
 initialValueRound();
+
+function roundPrices(ids){
+    for (var i in ids){
+        id = "#" + String(ids[i]) + "-price";
+        val = $(id).text();
+        round_val = Math.round(parseFloat(val));
+        $(id).text(round_val);
+
+        id = "#" + String(ids[i]) + "-price-old";
+        val = $(id).text();
+        round_val = Math.round(parseFloat(val));
+        $(id).text(round_val);
+
+        $("#products-container").fadeIn();
+    }
+}
+
+//Redirige al url que recibe como parámetro.
+function redirect(link){
+    alert("hey");
+    window.location.href = link;
+  }

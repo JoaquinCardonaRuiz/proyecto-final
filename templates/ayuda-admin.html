@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EcoAsitente</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/master.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/ayuda-usuario.css')}}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;600&display=swap" rel="stylesheet">    
+</head>
+
+
+<body style="background-color: white;">
+
+<!--Sección Principal-->
+<div class="top" id="page-top-content" style="background-color: white;">
+    <div class="row" id="page-heading">
+            <h4 id="heading-title" onclick="window.location.href='/'" style="margin-left: 10%;">
+                <img src="/static/img/logo-gris.png" id="heading-title-img">
+            </h4>
+            <h4 id="heading-option" onmouseover="headingOptionHover(); openMenu()" onmouseleave="headingOptionLeave();closeMenu()">
+                Info 
+                <img src="/static/img/chevron.svg" class="chevron"></img>
+                <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
+                    <p class="menu-option-box-op" id="menu-option-box-op-1" onclick="redirect('/ayuda-faq');">Centro de Ayuda</p>
+                    <p class="menu-option-box-op">Documentación</p>
+                    <p class="menu-option-box-op" onclick="redirect('/quienes-somos');">Quienes somos</p>
+                    <p class="menu-option-box-op">¿Por qué un EcoAsistente?</p>                
+                </div>
+            </h4> 
+            <h4 id="heading-option-right" onclick="redirect('/login')">Iniciar Sesión</h5>
+            <h4 id="heading-option-right2" onclick="redirect('/register')">Registrate</h5>
+    </div>
+</div>
+
+<div class="container-fluid" style="background-color: #f8f9fa;">
+  <div class="row" style="width: 100%;">
+    <img src="/static/img/centroayuda3.png" style="width: 102.2%; margin-bottom: 3%;">
+  </div>
+  <h3 class="page-content-title">Centro de Ayuda para Administradores de EcoAsistente</h3>
+  <div class="row">
+    <div class="col-sm-4" >
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between lh-condensed list-item-help" id="item">
+                <div>
+                  <h6 class="my-0">Categorias</h6>
+                  <small class="text-muted"></small>
+                </div>
+              </li>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed list-item-pa" id="item-1" onclick="setItemColor(1);">
+                <div>
+                  <p class="my-0"><i class="fa fa-user fa-1x mr-3"></i>Mi Cuenta</p>
+                  <small class="text-muted"></small>
+                </div>
+              </li>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed list-item-pa" id="item-2" onclick="setItemColor(2);">
+                <div>
+                  <p class="my-0"><i class="fa fa-recycle fa-1x mr-3"></i>Depósitos</p>
+                  <small class="text-muted"></small>
+                </div>
+              </li>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed list-item-pa" id="item-3" onclick="setItemColor(3);">
+                <div>
+                  <p class="my-0"><i class="fa fa-paper-plane fa-1x mr-3"></i>Pedidos</p>
+                  <small class="text-muted"></small>
+                </div>
+              </li>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed list-item-pa" id="item-4" onclick="setItemColor(4);">
+                <div>
+                  <p class="my-0"><i class="fa fa-shopping-bag fa-1x mr-3"></i>EcoTienda</p>
+                  <small class="text-muted"></small>
+                </div>
+              </li>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed list-item-pa" id="item-5" onclick="setItemColor(5);">
+                <div>
+                  <p class="my-0"><i class="fa fa-trophy fa-1x mr-3"></i>Niveles</p>
+                  <small class="text-muted"></small>
+                </div>
+              </li>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed list-item-pa" id="item-6" onclick="setItemColor(6);">
+                <div>
+                  <p class="my-0"><i class="fa fa-lightbulb fa-1x mr-3"></i>EcoTips</p>
+                  <small class="text-muted"></small>
+                </div>
+              </li>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed list-item-pa" id="item-7" onclick="setItemColor(7);">
+                <div>
+                  <p class="my-0"><i class="fa fa-question-circle fa-1x mr-3"></i>Preguntas Frecuentes</p>
+                  <small class="text-muted"></small>
+                </div>
+              </li>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-sm-7 content-faq"  style="background-color: white; height: auto;">
+        <!--Preguntas sección Mi Cuenta-->
+        <div class="col question-col" id="questions-col-1" style="margin-left: 5%;">
+            <h2 id="top-questions-title">Mi Cuenta</h2>
+            <hr style="width: 95%; margin-left: -2.5%; margin-bottom: 5% !important;">
+            <div class="row question-row" onclick="slideAnswer(1,1);" id="question-row-1-1">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1-1"></img>
+                <p class="question" id="question-1-1">¿Qué es EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-1-1">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
+            
+            <div class="row question-row" onclick="slideAnswer(2,1);" id="question-row-2-1">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2-1"></img>
+                <p class="question" id="question-2-1">¿Cómo comienzo a usar EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-2-1">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
+
+            <div class="row question-row" onclick="slideAnswer(3,1);" id="question-row-3-1">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3-1"></img>
+                <p class="question" id="question-3-1">¿Cómo obtengo EcoPuntos?</p>
+            </div>
+            <p class="question-answer" id="answer-3-1">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
+
+            <div class="row question-row" onclick="slideAnswer(4,1);" id="question-row-4-1">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4-1"></img>
+                <p class="question" id="question-4-1">¿Dónde puedo realizar depósitos?</p>
+            </div>
+            <p class="question-answer" id="answer-4-1">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
+
+            <div class="row question-row" onclick="slideAnswer(5,1);" id="question-row-5-1">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5-1"></img>
+                <p class="question" id="question-5-1">¿Qué materiales puedo depositar?</p>
+            </div>
+            <p class="question-answer" id="answer-5-1">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
+        </div>
+         <!--Preguntas sección Depósitos-->
+         <div class="col question-col" id="questions-col-2" style="margin-left: 5%;">
+            <h2 id="top-questions-title">Depósitos</h2>
+            <hr style="width: 95%; margin-left: -2.5%; margin-bottom: 5% !important;">
+            <div class="row question-row" onclick="slideAnswer(1,2);" id="question-row-1-2">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1-2"></img>
+                <p class="question" id="question-1-2">¿Qué es EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-1-2">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
+            
+            <div class="row question-row" onclick="slideAnswer(2,2);" id="question-row-2-2">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2-2"></img>
+                <p class="question" id="question-2-2">¿Cómo comienzo a usar EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-2-2">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
+
+            <div class="row question-row" onclick="slideAnswer(3,2);" id="question-row-3-2">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3-2"></img>
+                <p class="question" id="question-3-2">¿Cómo obtengo EcoPuntos?</p>
+            </div>
+            <p class="question-answer" id="answer-3-2">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
+
+            <div class="row question-row" onclick="slideAnswer(4,2);" id="question-row-4-2">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4-2"></img>
+                <p class="question" id="question-4-2">¿Dónde puedo realizar depósitos?</p>
+            </div>
+            <p class="question-answer" id="answer-4-2">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
+
+            <div class="row question-row" onclick="slideAnswer(5,2);" id="question-row-5-2">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5-2"></img>
+                <p class="question" id="question-5-2">¿Qué materiales puedo depositar?</p>
+            </div>
+            <p class="question-answer" id="answer-5-2">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
+        </div>
+         <!--Preguntas sección Pedidos-->
+         <div class="col question-col" id="questions-col-3" style="margin-left: 5%;">
+            <h2 id="top-questions-title">Pedidos</h2>
+            <hr style="width: 95%; margin-left: -2.5%; margin-bottom: 5% !important;">
+            <div class="row question-row" onclick="slideAnswer(1,3);" id="question-row-1-3">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1-3"></img>
+                <p class="question" id="question-1-3">¿Qué es EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-1-3">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
+            
+            <div class="row question-row" onclick="slideAnswer(2,3);" id="question-row-2-3">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2-3"></img>
+                <p class="question" id="question-2-3">¿Cómo comienzo a usar EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-2-3">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
+
+            <div class="row question-row" onclick="slideAnswer(3,3);" id="question-row-3-3">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3-3"></img>
+                <p class="question" id="question-3-3">¿Cómo obtengo EcoPuntos?</p>
+            </div>
+            <p class="question-answer" id="answer-3-3">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
+
+            <div class="row question-row" onclick="slideAnswer(4,3);" id="question-row-4-3">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4-3"></img>
+                <p class="question" id="question-4-3">¿Dónde puedo realizar depósitos?</p>
+            </div>
+            <p class="question-answer" id="answer-4-3">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
+
+            <div class="row question-row" onclick="slideAnswer(5,3);" id="question-row-5-3">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5-3"></img>
+                <p class="question" id="question-5-3">¿Qué materiales puedo depositar?</p>
+            </div>
+            <p class="question-answer" id="answer-5-3">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
+        </div>
+         <!--Preguntas sección EcoTienda-->
+        <div class="col question-col" id="questions-col-4" style="margin-left: 5%;">
+            <h2 id="top-questions-title">EcoTienda</h2>
+            <hr style="width: 95%; margin-left: -2.5%; margin-bottom: 5% !important;">
+            <div class="row question-row" onclick="slideAnswer(1,4);" id="question-row-1-4">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1-4"></img>
+                <p class="question" id="question-1-4">¿Qué es EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-1-4">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
+            
+            <div class="row question-row" onclick="slideAnswer(2,4);" id="question-row-2-4">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2-4"></img>
+                <p class="question" id="question-2-4">¿Cómo comienzo a usar EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-2-4">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
+
+            <div class="row question-row" onclick="slideAnswer(3,4);" id="question-row-3-4">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3-4"></img>
+                <p class="question" id="question-3-4">¿Cómo obtengo EcoPuntos?</p>
+            </div>
+            <p class="question-answer" id="answer-3-4">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
+
+            <div class="row question-row" onclick="slideAnswer(4,4);" id="question-row-4-4">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4-4"></img>
+                <p class="question" id="question-4-4">¿Dónde puedo realizar depósitos?</p>
+            </div>
+            <p class="question-answer" id="answer-4-4">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
+
+            <div class="row question-row" onclick="slideAnswer(5,4);" id="question-row-5-4">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5-4"></img>
+                <p class="question" id="question-5-4">¿Qué materiales puedo depositar?</p>
+            </div>
+            <p class="question-answer" id="answer-5-4">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
+        </div>
+         <!--Preguntas sección Niveles-->
+         <div class="col question-col" id="questions-col-5" style="margin-left: 5%;">
+            <h2 id="top-questions-title">Niveles</h2>
+            <hr style="width: 95%; margin-left: -2.5%; margin-bottom: 5% !important;">
+            <div class="row question-row" onclick="slideAnswer(1,5);" id="question-row-1-5">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1-5"></img>
+                <p class="question" id="question-1-5">¿Qué es EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-1-5">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
+            
+            <div class="row question-row" onclick="slideAnswer(2,5);" id="question-row-2-5">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2-5"></img>
+                <p class="question" id="question-2-5">¿Cómo comienzo a usar EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-2-5">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
+
+            <div class="row question-row" onclick="slideAnswer(3,5);" id="question-row-3-5">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3-5"></img>
+                <p class="question" id="question-3-5">¿Cómo obtengo EcoPuntos?</p>
+            </div>
+            <p class="question-answer" id="answer-3-5">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
+
+            <div class="row question-row" onclick="slideAnswer(4,5);" id="question-row-4-5">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4-5"></img>
+                <p class="question" id="question-4-5">¿Dónde puedo realizar depósitos?</p>
+            </div>
+            <p class="question-answer" id="answer-4-5">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
+
+            <div class="row question-row" onclick="slideAnswer(5,5);" id="question-row-5-5">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5-5"></img>
+                <p class="question" id="question-5-5">¿Qué materiales puedo depositar?</p>
+            </div>
+            <p class="question-answer" id="answer-5-5">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
+        </div>
+        <!--Preguntas sección EcoTips-->
+        <div class="col question-col" id="questions-col-6" style="margin-left: 5%;">
+            <h2 id="top-questions-title">EcoTips</h2>
+            <hr style="width: 95%; margin-left: -2.5%; margin-bottom: 5% !important;">
+            <div class="row question-row" onclick="slideAnswer(1,6);" id="question-row-1-6">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1-6"></img>
+                <p class="question" id="question-1-6">¿Qué es EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-1-6">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
+            
+            <div class="row question-row" onclick="slideAnswer(2,6);" id="question-row-2-6">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2-6"></img>
+                <p class="question" id="question-2-6">¿Cómo comienzo a usar EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-2-6">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
+
+            <div class="row question-row" onclick="slideAnswer(3,6);" id="question-row-3-6">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3-6"></img>
+                <p class="question" id="question-3-6">¿Cómo obtengo EcoPuntos?</p>
+            </div>
+            <p class="question-answer" id="answer-3-6">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
+
+            <div class="row question-row" onclick="slideAnswer(4,6);" id="question-row-4-6">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4-6"></img>
+                <p class="question" id="question-4-6">¿Dónde puedo realizar depósitos?</p>
+            </div>
+            <p class="question-answer" id="answer-4-6">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
+
+            <div class="row question-row" onclick="slideAnswer(5,6);" id="question-row-5-6">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5-6"></img>
+                <p class="question" id="question-5-6">¿Qué materiales puedo depositar?</p>
+            </div>
+            <p class="question-answer" id="answer-5-6">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
+        </div>
+        <!--Preguntas sección FAQ-->
+        <div class="col question-col" id="questions-col-7" style="margin-left: 5%;">
+            <h2 id="top-questions-title">Preguntas Frecuentes</h2>
+            <hr style="width: 95%; margin-left: -2.5%; margin-bottom: 5% !important;">
+            <div class="row question-row" onclick="slideAnswer(1,7);" id="question-row-1-7">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1-7"></img>
+                <p class="question" id="question-1-7">¿Qué es EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-1-7">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
+            
+            <div class="row question-row" onclick="slideAnswer(2,7);" id="question-row-2-7">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2-7"></img>
+                <p class="question" id="question-2-7">¿Cómo comienzo a usar EcoAsistente?</p>
+            </div>
+            <p class="question-answer" id="answer-2-7">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
+
+            <div class="row question-row" onclick="slideAnswer(3,7);" id="question-row-3-7">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3-7"></img>
+                <p class="question" id="question-3-7">¿Cómo obtengo EcoPuntos?</p>
+            </div>
+            <p class="question-answer" id="answer-3-7">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
+
+            <div class="row question-row" onclick="slideAnswer(4,7);" id="question-row-4-7">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4-7"></img>
+                <p class="question" id="question-4-7">¿Dónde puedo realizar depósitos?</p>
+            </div>
+            <p class="question-answer" id="answer-4-7">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
+
+            <div class="row question-row" onclick="slideAnswer(5,7);" id="question-row-5-7">
+                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5-7"></img>
+                <p class="question" id="question-5-7">¿Qué materiales puedo depositar?</p>
+            </div>
+            <p class="question-answer" id="answer-5-7">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
+        </div>
+        
+    </div>
+  </div>
+</div>
+<div class="row" style="height: 40px; background-color:#f8f9fa; width: 101.1%;">
+
+</div>
+</body>
+</html>
+
+
+<script src="/static/js/ayuda-admin.js"></script>

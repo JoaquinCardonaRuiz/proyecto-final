@@ -60,6 +60,14 @@
   .product-card-cart{
     color: #95C22B !important;
   }
+
+  .recomendation-title{
+    font-family: 'Hind',sans-serif;
+  }
+  
+  .recomendation-name{
+    font-weight: 500;
+  }
   
   .price-wrap{
     text-align: center;

@@ -2007,12 +2007,16 @@ def nosotros():
 
 '''
     -----------------------
-    Ayuda al usuario
+    Ayuda
     -----------------------
 '''
 @app.route('/ayuda-faq', methods = ['GET','POST'])
 def help():
     return render_template('ayuda-usuario.html')
+
+@app.route('/ayuda-admin', methods = ['GET','POST'])
+def help_admin():
+    return render_template('ayuda-admin.html')
 
 
 '''
