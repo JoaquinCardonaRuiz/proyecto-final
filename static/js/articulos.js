@@ -582,6 +582,13 @@ function check_edit(){
         document.getElementById("error-mark-c").hidden = true;
         document.getElementById("error-mark-p").hidden = true;
     }
+    for(var i in cantidades_mod){
+        if((cantidades_originales[i] != cantidades_mod[i]) && cantidades_mod[i] <= 0){
+            document.getElementById("edit-btn").innerHTML = "Se han encontrado errores"
+            document.getElementById("edit-btn").disabled = true;
+            document.getElementById("error-mark-i").hidden = false;
+        }
+    }
 }
 
 
