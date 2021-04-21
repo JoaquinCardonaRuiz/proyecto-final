@@ -1,13 +1,12 @@
 
-var preguntasMiCuenta = 5;
-var preguntasDep = 5;
-var preguntasPed = 5;
-var preguntasEcoTienda = 5;
-var preguntasNiveles = 5;
-var preguntasEcoTips = 5;
+var preguntasDepPed = 5;
+var preguntasStock = 5;
+var preguntasProd = 5;
+var preguntasUsers = 5;
+var preguntasConfig = 4;
 var preguntasFAQ = 5;
 
-var cantPreguntas = [preguntasMiCuenta, preguntasDep, preguntasPed,preguntasEcoTienda,preguntasNiveles,preguntasEcoTips,preguntasFAQ];
+var cantPreguntas = [preguntasDepPed, preguntasStock, preguntasProd,preguntasUsers,preguntasConfig,preguntasFAQ];
 var slidedAns = [false,false,false,false,false,false]; 
 
 //Animación chevron (rota 180 grados cuando se abre el dropdown de la opción "Info" del menú principal)
