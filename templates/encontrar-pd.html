@@ -54,8 +54,8 @@
                                     <p class="option-description-pr horarios-desc-ecnontrar-punto" id="{{pd.id}}-desc" onmouseover="changeColor({{pd.id}});" onmouseout="restablishColor({{pd.id}});" onclick="openLoadingRing();openModalHorarios('{{pd.id}}', '{{pd.nombre}}', '{{pd.estado}}');">Horarios</p>
                                 </div>
                                 <div style="float: right;" class="horarios-container-ecnontrar-punto">
-                                    <i class="fas fa-truck-loading horarios-img-ecnontrar-punto" id="{{pd.id}}-img" onmouseover="changeColor({{pd.id}});" onmouseout="restablishColor({{pd.id}});" onclick="openLoadingRing();openModalHorarios('{{pd.id}}', '{{pd.nombre}}', '{{pd.estado}}');"></i>
-                                    <p class="option-description-pr horarios-desc-ecnontrar-punto" id="{{pd.id}}-desc" onmouseover="changeColor({{pd.id}});" onmouseout="restablishColor({{pd.id}});" onclick="openLoadingRing();openModalHorarios('{{pd.id}}', '{{pd.nombre}}', '{{pd.estado}}');">Materiales</p>
+                                    <i class="fas fa-truck-loading horarios-img-ecnontrar-punto" style="padding-left: 13px;" id="{{pd.id}}-img-mat" onmouseover="changeColorMat({{pd.id}});" onmouseout="restablishColorMat({{pd.id}});" onclick="openLoadingRing();openModalMateriales('{{pd.id}}', '{{pd.nombre}}');"></i>
+                                    <p class="option-description-pr horarios-desc-ecnontrar-punto" id="{{pd.id}}-desc-mat" onmouseover="changeColorMat({{pd.id}});" onmouseout="restablishColorMat({{pd.id}});" onclick="openLoadingRing();openModalMateriales('{{pd.id}}', '{{pd.nombre}}');">Materiales</p>
                                 </div>
                             </div>
                             {%endfor%}
@@ -73,6 +73,7 @@
     <button id="open-modal" href='#'data-toggle="modal" data-target="#tablaModal" hidden="true"></button>
     <button id="close-loading-modal" href='#' onclick="cierraModal('loadingModal');" hidden="true"></button>
     <button id="open-loading-modal" href='#'data-toggle="modal" data-target="#loadingModal" data-backdrop="static" data-keyboard="false" hidden="true">
+    <button id="open-modal-mat" href='#'data-toggle="modal" data-target="#materialesModal"hidden="true"></button>
 </div>
 
 
@@ -155,7 +156,63 @@
                     </div>
             </div>        
         <div class="modal-footer">
-            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal">Listo</div>
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal" onclick="cierraModal('tablaModal');">Listo</div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<!-- Materiales Modal -->
+<div class="modal fade modal-lg" id="materialesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headingModalMat"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-card" id="materiales-modal-body">
+                <div class="row margin-bottom-row" id="no-mats">
+                    <p id="" class="advert-icon-no-mats"><i class="fa fa-exclamation-triangle advert-icon-no-mats"></i></p>
+                    <p class="bottom-modal-text-baja">Este Punto de Depósito aún no acepta ningún material</p>
+                    <p class="bottom-modal-text less-margin-top">Para añadir materiales aceptados, ingrese a la opción "Modificar Punto".</p>
+                </div>
+                <div class="container modal-large-card-sm" id="material-card">
+                    <div class="row">
+                        <div class="modal-card-col-sm">
+                            <div class="circle materiales-large-card-img" id="material-img">M</div>
+                        </div>
+                        <div class="modal-card-col-sm" >
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="nombre-material">Nombre</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Nombre material</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="unidad-medida">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">Unidad de medida</p>
+                            </div>
+                        </div>
+                        <div class="modal-card-col-sm">
+                            <div class="row d-flex justify-content-center card-first-row-sm">
+                                <p class="material-card-title" id="id-material">-</p>
+                            </div>
+                            <div class="row d-flex justify-content-center card-second-row">
+                                <p class="text-box material-card-subtitle">ID material</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        <div class="modal-footer">
+            <div type="button" class="btn primary-btn" id="primary-btn" data-dismiss="modal" onclick="cierraModal('materialesModal')">Listo</div>
         </div>
     </div>
 
