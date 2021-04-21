@@ -1,12 +1,11 @@
 
 var preguntasDepPed = 5;
-var preguntasStock = 5;
+var preguntasStock = 4;
 var preguntasProd = 5;
 var preguntasUsers = 5;
 var preguntasConfig = 4;
-var preguntasFAQ = 5;
 
-var cantPreguntas = [preguntasDepPed, preguntasStock, preguntasProd,preguntasUsers,preguntasConfig,preguntasFAQ];
+var cantPreguntas = [preguntasDepPed, preguntasStock, preguntasProd,preguntasUsers,preguntasConfig];
 var slidedAns = [false,false,false,false,false,false]; 
 
 //Animación chevron (rota 180 grados cuando se abre el dropdown de la opción "Info" del menú principal)

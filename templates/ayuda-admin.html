@@ -93,13 +93,6 @@
                 </div>
               </li>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed list-item-pa" id="item-7" onclick="setItemColor(7);">
-                <div>
-                  <p class="my-0"><i class="fa fa-question-circle fa-1x mr-3"></i>Preguntas Frecuentes</p>
-                  <small class="text-muted"></small>
-                </div>
-              </li>
-            </li>
         </ul>
     </div>
 
@@ -178,33 +171,54 @@
             <hr style="width: 95%; margin-left: -2.5%; margin-bottom: 5% !important;">
             <div class="row question-row" onclick="slideAnswer(1,2);" id="question-row-1-2">
                 <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1-2"></img>
-                <p class="question" id="question-1-2">Visualizar Niveles de Stock</p>
+                <p class="question" id="question-1-2">Visualizar Niveles y Movimientos de Stock</p>
             </div>
-            <p class="question-answer" id="answer-1-2">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
+            <div class="question-answer" id="answer-1-2"><p>Para visualizar la información correspondiente al <strong style="font-weight: bold !important;">stock</strong> de materiales, insumos, y artículos, debemos acceder a la sección de <em>Gestión de Stock</em>. Para visualizarlos, debemos seleccionar <em>Gestión de Stock</em> en la barra lateral de Eco Asistente, si su usuario tiene permisos de acceder</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_20210421_165238.png" alt=""></p>
+                <p>Una vez dentro del módulo, podremos ver una pantalla con las siguientes opciones</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_2021-04-21 EcoAsitente(19).png" alt="" style="width:100%;"></p>
+                <p>Aquí, podemos seleccionar <em>Visualizar Niveles de Stock</em> para obtener una lista de todos los materiales, insumos, y artículos, y sus niveles de stock, o <em>Ver Movimientos de Stock</em>, para obtener una lista de todas las entradas y salidas de stock del sistema, ya sea por depósitos, pedidos, entradas y salidas manuales, o producciones.</p>
+                </div>
             
             <div class="row question-row" onclick="slideAnswer(2,2);" id="question-row-2-2">
                 <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2-2"></img>
-                <p class="question" id="question-2-2">Registrar una Entrada de Stock</p>
+                <p class="question" id="question-2-2">Registrar una Entrada de Material</p>
             </div>
-            <p class="question-answer" id="answer-2-2">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
+            <div class="question-answer" id="answer-2-2"><p>Una <strong style="font-weight: bold !important;">Entrada de Material</strong> es una entrada de stock de un material por un medio distinto a los depósitos del usuario. Esto permite integrar otras fuentes de recolección al sistema. Para acceder, puede dirigirse a la sección de <em>Gestión de Stock</em> en la barra lateral de Eco Asistente, si su usuario tiene permisos de acceder</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_20210421_165238.png" alt=""></p>
+                <p>Una vez ahí, verá las siguientes opciones</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_2021-04-21 EcoAsitente(19).png" alt="" style="width:100%;"></p>
+                <p>Al seleccionar <em>Registrar Entrada Material</em>, se abrirá la siguiente pantalla, donde se podrán ingresar los detalles de la entrada.</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_2021-04-21 EcoAsitente(20).png" alt="" style="width:100%;"></p>
+                <p>Una vez completados, puede seleccionar <em>Registrar entrada</em> para completar el registro.</p>
+                </div>
 
             <div class="row question-row" onclick="slideAnswer(3,2);" id="question-row-3-2">
                 <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3-2"></img>
                 <p class="question" id="question-3-2">Registrar una Entidad de Destino</p>
             </div>
-            <p class="question-answer" id="answer-3-2">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
+            <div class="question-answer" id="answer-3-2"><p>Las <strong style="font-weight: bold !important;">Entidad de Destino</strong> son aquellas a las que se pueden registrar salidas de artículos, es decir, ventas externas a la EcoTienda de EcoAsistente. Para visualizarlas, debemos seleccionar <em>Entidades Destino</em> en la barra lateral de Eco Asistente, si su usuario tiene permisos de acceder </p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_20210421_173826.png" alt=""></p>
+                <p>Al ingresar a este módulo, puede ver un listado de las Entidades de Destino registradas, junto con controles para crearlas, modificarlas, y eliminarlas.</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_2021-04-21 EcoAsitente(34).png" alt="" style="width: 100%;"></p>
+                <p>Para añadir una Entidad de Destino, puede seleccionar <em>Añadir Entidad</em>, tras lo cual se abrirá la siguiente pantalla</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_2021-04-21 EcoAsitente(35).png" alt="" style="width: 100%;"></p>
+                <p>Una vez registrado el nombre de la entidad, seleccione <em>Crear Entidad</em> para registrarla.</p>
+            </div>
 
             <div class="row question-row" onclick="slideAnswer(4,2);" id="question-row-4-2">
                 <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4-2"></img>
-                <p class="question" id="question-4-2">Registrar una Salida de Stock a una Entidad Destino</p>
+                <p class="question" id="question-4-2">Registrar una Salida de Artículo</p>
             </div>
-            <p class="question-answer" id="answer-4-2">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
-
-            <div class="row question-row" onclick="slideAnswer(5,2);" id="question-row-5-2">
-                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5-2"></img>
-                <p class="question" id="question-5-2">Registrar una Salida de Stock al Municipio</p>
-            </div>
-            <p class="question-answer" id="answer-5-2">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
+            <div class="question-answer" id="answer-4-2"><p>Una <strong style="font-weight: bold !important;">Salida de Artículo</strong> es una salida de stock de un artículo por un medio distinto a las ventas de la EcoTienda, ya sea a una Entidad de Destino, o para uso del Municipio. Esto permite crear otras fuentes de ingreso de dinero al sistema. Para acceder, puede dirigirse a la sección de <em>Gestión de Stock</em> en la barra lateral de Eco Asistente, si su usuario tiene permisos de acceder</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_20210421_165238.png" alt=""></p>
+                <p>Una vez ahí, verá las siguientes opciones</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_2021-04-21 EcoAsitente(19).png" alt="" style="width:100%;"></p>
+                <p>Al seleccionar <em>Registrar Salida Artículo</em>, se abrirá la siguiente pantalla, donde se podrá seleccionar si se trata de una salida a una Entidad de Destino, o al Municipio.</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_2021-04-21 EcoAsitente(21).png" alt="" style="width:100%;"></p>
+                <p>Una vez seleccionado, puede completar los datos en la siguiente pantalla para terminar el registro.</p>
+                <p><img src="/static/img/screenshots-admin/Screenshot_2021-04-21 EcoAsitente(22).png" alt="" style="width:100%;"></p>
+            </div>        
         </div>
 
 
@@ -309,41 +323,6 @@
             <p class="question-answer" id="answer-4-5">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
 
            </div>
-        
-        <!--Preguntas sección FAQ-->
-        <div class="col question-col" id="questions-col-7" style="margin-left: 5%;">
-            <h2 id="top-questions-title">Preguntas Frecuentes</h2>
-            <hr style="width: 95%; margin-left: -2.5%; margin-bottom: 5% !important;">
-            <div class="row question-row" onclick="slideAnswer(1,7);" id="question-row-1-7">
-                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-1-7"></img>
-                <p class="question" id="question-1-7">¿Qué es EcoAsistente?</p>
-            </div>
-            <p class="question-answer" id="answer-1-7">EcoAsistente es un sistema diseñado para hacer a tu ciudad más sustentable, premiando y fomentando el reciclaje de residuos a través de EcoPuntos que podés usar para adquirir productos reciclados en nuestra tienda. A su vez, podés informarte sobre cómo hacer tu hogar más ecológico, generando como resultado una sociedad más concientizada. Con EcoAsistente, cuanto más reciclas, más ganás.</p>
-            
-            <div class="row question-row" onclick="slideAnswer(2,7);" id="question-row-2-7">
-                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-2-7"></img>
-                <p class="question" id="question-2-7">¿Cómo comienzo a usar EcoAsistente?</p>
-            </div>
-            <p class="question-answer" id="answer-2-7">Utilizar EcoAsistente es súper fácil y 100% gratuito. Para comenzar, primero debés crear una cuenta registrándote con un email, tu nombre y tu dni. Luego, selecciona tu contraseña, ¡Y listo! Ya podés comenzar a realizar depósitos y a sumar EcoPuntos con cada uno de ellos. Luego, podés canjearlos por artículos hechos a partir de materiales reciclados en nuestra tienda.</p>
-
-            <div class="row question-row" onclick="slideAnswer(3,7);" id="question-row-3-7">
-                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-3-7"></img>
-                <p class="question" id="question-3-7">¿Cómo obtengo EcoPuntos?</p>
-            </div>
-            <p class="question-answer" id="answer-3-7">Los EcoPuntos se obtienen ingresando en tu cuenta el código que obtenés cuando realizás un depósito de residuos en un Punto de Depósito. La cantidad de EcoPuntos dependerá del material y de la cantidad que deposites. Cuanto más depositás, más EcoPuntos obtenés.</p>
-
-            <div class="row question-row" onclick="slideAnswer(4,7);" id="question-row-4-7">
-                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-4-7"></img>
-                <p class="question" id="question-4-7">¿Dónde puedo realizar depósitos?</p>
-            </div>
-            <p class="question-answer" id="answer-4-7">Los depósitos de residuos pueden realizarse en cualquier Punto de Depósito, que se encuentran en distribuídos por distintos sectores de la ciudad. Podés conocer cuáles son los puntos de depósito de tu ciudad, su estado, sus horarios y qué materiales acpetan cada uno de ellos ingresando con tu usuario en EcoAsistente.</p>
-
-            <div class="row question-row" onclick="slideAnswer(5,7);" id="question-row-5-7">
-                <img src="/static/img/chevron.svg" class="chevron-faq" id="chevron-faq-5-7"></img>
-                <p class="question" id="question-5-7">¿Qué materiales puedo depositar?</p>
-            </div>
-            <p class="question-answer" id="answer-5-7">Recordá que no todos los Puntos de Depósito aceptan todos los materiales, sino que cada uno de ellos acepta una determinada variedad específica de materiales. Para consultar que materiales acepta cada Punto de Depósito, ingresá con tu cuenta de EcoAsistente y chequea eso y más info. en tiempo real.</p>
-        </div>
         
     </div>
   </div>
