@@ -37,6 +37,17 @@ function restablishColor(id){
     $("#" + String(id) + "-desc").css("color", "rgb(132,117,167)");
 }
 
+
+function changeColorMat(id){
+    $("#" + String(id) + "-img-mat").css("color", "#95C22B");
+    $("#" + String(id) + "-desc-mat").css("color", "#95C22B");
+}
+
+function restablishColorMat(id){
+    $("#" + String(id) + "-img-mat").css("color", "rgb(192, 192, 192)");
+    $("#" + String(id) + "-desc-mat").css("color", "rgb(132,117,167)");
+}
+
 function openModalHorarios(id, nombre, estado){
     $.getJSON("/gestion-puntos-deposito/horarios/"+String(id),function (result){
         
@@ -172,6 +183,8 @@ function openModalHorarios(id, nombre, estado){
 function cierraModal(idModal){
     jQuery.noConflict();
     $('#loadingModal').modal('hide');
+    $('#' + String(idModal)).modal('hide');
+    document.getElementById("loading-modal").click();
 }
 
 function openLoadingRing(){
@@ -180,4 +193,67 @@ function openLoadingRing(){
     $(".lds-ring div").css("border-color", "#95C22B transparent transparent transparent");
     $(".lds-ring").show();
     $("#loadingRow").show();
+}
+
+function openModalMateriales(id, nombre){
+    $.getJSON("/gestion-puntos-deposito/materiales/"+String(id),function (result){
+        
+        card = $("#material-card").clone();
+        $("#materiales-modal-body").children("#material-card").remove();
+        
+        // Borro contenido anterior
+        document.getElementById("modalTableBody"). innerHTML="";
+        document.getElementById("headerRow").innerHTML ="";
+
+        // Establezco título
+        document.getElementById("headingModalMat").innerHTML = "Materiales aceptados por " + nombre;
+        document.getElementById("open-loading-modal").click();
+        document.getElementById("open-modal-mat").click();
+
+        row = document.getElementById("material-card");
+        if (result.length > 0){
+            for(i=0; i < result.length ; i++){
+                clone = card.clone();
+                $("#no-mats").hide();
+                if (result[i]["estado"] == "suspendido"){
+                    clone.addClass("grey-card");
+                    clone.find("#nombre-material").removeClass("material-card-title").addClass("material-card-title-grey");
+                    clone.find("#unidad-medida").removeClass("material-card-title").addClass("material-card-title-grey");
+                    clone.find("#id-material").removeClass("material-card-title").addClass("material-card-title-grey");
+                    clone.find("#material-img").css('background-color',"rgb(165, 165, 165)");
+                    clone.attr("data-toggle", "tooltip");
+                    clone.attr("data-placement", "right");
+                    clone.attr("title", "Los depósitos de este material se encuentran suspendidos");
+                }
+                else{
+                    clone.removeClass("grey-card");
+                    clone.find("#material-img").removeClass("gray-mat-img");
+                    clone.find("#material-img").css('background-color',result[i]["color"]);
+                    clone.find("#nombre-material").removeClass("material-card-title-grey").addClass("material-card-title");
+                    clone.find("#unidad-medida").removeClass("material-card-title-grey").addClass("material-card-title");
+                    clone.find("#id-material").removeClass("material-card-title-grey").addClass("material-card-title");
+                    clone.removeAttr("data-toggle");
+                    clone.removeAttr("data-placement");
+                    clone.removeAttr("title");
+                    
+                }
+                clone.find("#nombre-material").text(result[i]["nombre"]);
+                clone.find("#unidad-medida").text(result[i]["unidadMedida"]); 
+                clone.find("#id-material").text(result[i]["id"]);
+                clone.find("#material-img").text(result[i]["nombre"][0]);
+                clone.show();
+                clone.appendTo("#materiales-modal-body");
+
+
+                
+            }
+        }
+        else{
+            clone = card.clone();
+            clone.hide();
+            $("#no-mats").show();
+            clone.appendTo("#materiales-modal-body");
+        }
+    
+    })
 }
