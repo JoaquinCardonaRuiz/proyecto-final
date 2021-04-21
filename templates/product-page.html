@@ -105,7 +105,17 @@
                             <td class="pl-0">
                               <div class="def-number-input number-input safari_only mb-0" style="display: flex;">
                                   <div class="group" style="width: 30%; margin-top: 2%;">
-                                      <input type="number" required id="cantProd" name="cantProd" onkeydown="if(event.key==='.' || event.key===','){event.preventDefault();}" min="0" value="1" max="{{producto.stock}}" autocomplete="off" style="width: 90%; background-color: transparent; text-align: center; height: 35px;" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');setMinCantVal({{producto.valor * valor_ep}},value, {{nivel.descuento}},{{producto.stock}}), setTotalVal({{producto.valor * valor_ep}}, value, {{nivel.descuento}});"> 
+                                    {%if carrito|length > 0%}
+                                      {%for i in range(0,carrito|length)%}
+                                        {%if carrito[i].idTipoArticulo|string == producto.id|string%}
+                                          <input type="number" required id="cantProd" name="cantProd" onkeydown="if(event.key==='.' || event.key===','){event.preventDefault();}" min="0" value="1" max="{{producto.stock - carrito[i].cantidad}}" autocomplete="off" style="width: 90%; background-color: transparent; text-align: center; height: 35px;" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');setMinCantVal({{producto.valor * valor_ep}},value, {{nivel.descuento}},{{producto.stock}}), setTotalVal({{producto.valor * valor_ep}}, value, {{nivel.descuento}});"> 
+                                        {%elif i == carrito|length - 1%}
+                                          <input type="number" required id="cantProd" name="cantProd" onkeydown="if(event.key==='.' || event.key===','){event.preventDefault();}" min="0" value="1" max="{{producto.stock}}" autocomplete="off" style="width: 90%; background-color: transparent; text-align: center; height: 35px;" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');setMinCantVal({{producto.valor * valor_ep}},value, {{nivel.descuento}},{{producto.stock}}), setTotalVal({{producto.valor * valor_ep}}, value, {{nivel.descuento}});"> 
+                                        {%endif%}
+                                      {%endfor%}
+                                    {%else%}
+                                    <input type="number" required id="cantProd" name="cantProd" onkeydown="if(event.key==='.' || event.key===','){event.preventDefault();}" min="0" value="1" max="{{producto.stock}}" autocomplete="off" style="width: 90%; background-color: transparent; text-align: center; height: 35px;" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');setMinCantVal({{producto.valor * valor_ep}},value, {{nivel.descuento}},{{producto.stock}}), setTotalVal({{producto.valor * valor_ep}}, value, {{nivel.descuento}});"> 
+                                    {%endif%}
                                       <span class="highlight" style="width: 90%;"></span>
                                       <span class="bar" style="width: 90%;"></span>
                                   </div>

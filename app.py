@@ -353,7 +353,7 @@ def product_page(id):
         recomendaciones = NegocioArticulo.get_recommendations(id,Utils.carrito_to_list(session["carrito"]))
         demora_prom = NegocioPuntoRetiro.get_demora_promedio()
         valor_ep = NegocioEcoPuntos.get_valor_EP()
-        return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones, nivel = nivel, usuario = session["usuario"], valor_ep = valor_ep, demora_prom  = demora_prom)
+        return render_template('product-page.html',producto=producto, recomendaciones=recomendaciones, nivel = nivel, usuario = session["usuario"], valor_ep = valor_ep, demora_prom  = demora_prom, carrito=Utils.carrito_to_list(session["carrito"]))
     except Exception as e:
         return error(e, "eco-tienda")
 
