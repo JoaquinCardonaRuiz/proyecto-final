@@ -39,7 +39,7 @@ class NegocioUsuario(Negocio):
                         #Hago el alta:
                         idNivel = NegocioNivel.get_nivel_nombre(NegocioNivel.get_min_max_niveles()[0]).id
                         idDireccion = NegocioDireccion.alta_direccion(calle,altura,ciudad,provincia,pais)
-                        if DatosUsuario.alta(email,None,documento,tipo_doc,nombre,apellido,1,idDireccion,idNivel,"/static/img/avatar.png","habilitado",True):
+                        if DatosUsuario.alta(email,None,datetime.now(),documento,tipo_doc,nombre,apellido,1,idDireccion,idNivel,"/static/img/avatar.png","habilitado",True):
                             return True
             return False
         except Exception as e:
