@@ -58,7 +58,7 @@
                 </div>
                  <div class="col">
                     <div class="group">
-                        <input class="cant-input" style="left:-25px;" type="number" id="cantInput" name="cantidad" required value=1 min=1 max=10000 onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' onclick='verificar_prod()' onkeyup='verificar_prod()'>
+                        <input class="cant-input" style="left:-25px;" type="number" id="cantInput" name="cantidad" required value=1 min=1 max=10000 onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' onclick='verificar_prod()' oninput='verificar_prod()'>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Cantidad</label>

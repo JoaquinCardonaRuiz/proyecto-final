@@ -458,6 +458,13 @@ function permiteEdit(){
         document.getElementById("error-mark-m").hidden = true;
         document.getElementById("error-mark-c").hidden = true;
     }
+    for(var i in cantidades_mod){
+        if((cantidades_originales[i] != cantidades_mod[i]) && cantidades_mod[i] <= 0){
+            document.getElementById("edit-btn").innerHTML = "Se han encontrado errores"
+            document.getElementById("edit-btn").disabled = true;
+            document.getElementById("error-mark-m").hidden = false;
+        }
+    }
 }
 
 function validaNuevoNombreMod(nombres){
@@ -926,6 +933,7 @@ function verificar_cantidades_mod(){
             }
         }
     }
+    console.log(hayerror);
     if(!hayerror){
         document.getElementById("cmInputMod").value = String(sum);
         document.getElementById('bottomMatText').innerHTML="Costo de Materiales: ARS $"+String(sum);

@@ -29,11 +29,16 @@ function load_dd_insumos(ids,nombres){
 function verificar_prod_ins(){
     var cant = document.getElementById("cantInput").value;
     if(Number(cant) == NaN || Number(cant) <= 0){
-        document.getElementById("siguiente-btn").disabled = true;
         document.getElementById("cantError").innerHTML = "* Error";
-    }else if(document.getElementById("nombreInsInput").value != -1){
+    }
+    else{
+        document.getElementById("cantError").innerHTML = "";
+    }
+    if(document.getElementById("nombreInsInput").value != -1 && !(Number(cant) == NaN || Number(cant) <= 0)){
         document.getElementById("cantError").innerHTML = "";
         document.getElementById("siguiente-btn").disabled = false;
+    }else{
+        document.getElementById("siguiente-btn").disabled = true;
     }
 }
 
@@ -132,11 +137,16 @@ function load_dd_articulos(ids,nombres){
 function verificar_prod(){
     var cant = document.getElementById("cantInput").value;
     if(Number(cant) == NaN || Number(cant) <= 0){
-        document.getElementById("siguiente-btn").disabled = true;
         document.getElementById("cantError").innerHTML = "* Error";
-    }else if(document.getElementById("nombreArtInput").value != -1){
+    }
+    else{
+        document.getElementById("cantError").innerHTML = "";
+    }
+    if(document.getElementById("nombreArtInput").value != -1 && !(Number(cant) == NaN || Number(cant) <= 0)){
         document.getElementById("cantError").innerHTML = "";
         document.getElementById("siguiente-btn").disabled = false;
+    }else{
+        document.getElementById("siguiente-btn").disabled = true;
     }
 }
 
