@@ -2,7 +2,7 @@
 var preguntasDepPed = 5;
 var preguntasStock = 4;
 var preguntasProd = 5;
-var preguntasUsers = 5;
+var preguntasUsers = 4;
 var preguntasConfig = 4;
 
 var cantPreguntas = [preguntasDepPed, preguntasStock, preguntasProd,preguntasUsers,preguntasConfig];
