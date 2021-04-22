@@ -1,14 +1,12 @@
 
 var preguntasMiCuenta = 4;
 var preguntasDep = 5;
-var preguntasPed = 5;
-var preguntasEcoTienda = 5;
+var preguntasPed = 6;
 var preguntasNiveles = 5;
-var preguntasEcoTips = 5;
 var preguntasFAQ = 5;
 
-var cantPreguntas = [preguntasMiCuenta, preguntasDep, preguntasPed,preguntasEcoTienda,preguntasNiveles,preguntasEcoTips,preguntasFAQ];
-var slidedAns = [false,false,false,false,false,false]; 
+var cantPreguntas = [preguntasMiCuenta, preguntasDep, preguntasPed,preguntasNiveles,preguntasFAQ];
+var slidedAns = [false,false,false,false,false]; 
 
 //Animación chevron (rota 180 grados cuando se abre el dropdown de la opción "Info" del menú principal)
 function headingOptionHover(){
@@ -78,8 +76,16 @@ function slideAnswer(numero,id){
         $("#answer-3" + "-" + String(id)).slideUp();
         $("#answer-4" + "-" + String(id)).slideUp();
         $("#answer-5" + "-" + String(id)).slideUp();
+        $("#answer-6" + "-" + String(id)).slideUp();
         $("#chevron-faq-" + String(numero) + "-" + String(id)).css({"transform": "rotate(180deg)"});
         $("#answer-" + String(numero) + "-" + String(id)).slideDown();
         $("#question-" + String(numero) + "-" + String(id)).css({"transition" : "color 0.3s ease-in-out","color": "#95C22B"});
     }
 }
+
+function redirectBlank(link){
+    window.open(
+        link,
+        '_blank' // <- This is what makes it open in a new window.
+    );
+    }

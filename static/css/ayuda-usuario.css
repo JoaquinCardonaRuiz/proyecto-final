@@ -512,3 +512,12 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
     transform: translateX(-150px);
     margin-top: 1rem;
 }
+
+.help-link{
+    color: #95C22B;
+}
+
+.help-link:hover{
+    text-decoration: none;
+    color: #87af28;
+}
