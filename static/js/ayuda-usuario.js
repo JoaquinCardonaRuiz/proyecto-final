@@ -1,5 +1,5 @@
 
-var preguntasMiCuenta = 5;
+var preguntasMiCuenta = 4;
 var preguntasDep = 5;
 var preguntasPed = 5;
 var preguntasEcoTienda = 5;
