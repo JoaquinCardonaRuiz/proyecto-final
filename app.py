@@ -2016,7 +2016,10 @@ def help():
 
 @app.route('/ayuda-admin', methods = ['GET','POST'])
 def help_admin():
-    return render_template('ayuda-admin.html')
+    if len(NegocioTipoUsuario.get_by_id(session["usuario"].idTipoUsuario).modulosAcceso) >= 1:
+        return render_template('ayuda-admin.html')
+    else:
+        return redirect('/auth-error')
 
 
 '''
