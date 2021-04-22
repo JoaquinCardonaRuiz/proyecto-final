@@ -36,7 +36,7 @@ class DatosReportes(Datos):
             for i in range(0,int(cant_meses)):
                 #valido si es el mes actual, en cuyo caso, aplica el stock actual.
                 if current_month == start_month and current_year == start_year:
-                    data.append(cant)
+                    data.append(round(float(cant),2))
                     current_month -= 1
                 else:
                     #Si no lo es, busco en la BD los movimientos del mes siguiente para restarselos al valor guardado en cantidad.
@@ -53,7 +53,7 @@ class DatosReportes(Datos):
                         valCantMes = 0
 
                     #Aplico los movimientos del mes al stock
-                    cant -= valCantMes
+                    cant -= round(float(valCantMes),2)
                     data.append(cant)
 
                     if current_month != 1:
@@ -98,7 +98,7 @@ class DatosReportes(Datos):
                     valCantMes = 0
                 #Aplico los movimientos del mes al stock
                 cant = valCantMes
-                data.append(cant)
+                data.append(round(float(cant),2))
                 if current_month != 1:
                     current_month -= 1
                 else:
@@ -140,7 +140,7 @@ class DatosReportes(Datos):
                     valCantMes = 0
                 #Aplico los movimientos del mes al stock
                 cant = valCantMes
-                data.append(cant)
+                data.append(round(float(cant),2))
                 if current_month != 1:
                     current_month -= 1
                 else:
@@ -193,7 +193,7 @@ class DatosReportes(Datos):
                         
                 #Aplico las ganancias del mes al stock
                 cant += sum
-                data.append(cant)
+                data.append(round(float(cant),2))
                 if current_month != 1:
                     current_month -= 1
                 else:
@@ -278,7 +278,7 @@ class DatosReportes(Datos):
                 cant += sumSS
                 cant += sumSM
 
-                data.append(cant)
+                data.append(round(float(cant),2))
                 if current_month != 1:
                     current_month -= 1
                 else:
@@ -360,7 +360,7 @@ class DatosReportes(Datos):
                 cant += sumSS
                 cant += sumSM
 
-                data.append(cant)
+                data.append(round(float(cant),2))
                 if current_month != 1:
                     current_month -= 1
                 else:
@@ -462,7 +462,7 @@ class DatosReportes(Datos):
                 cant -= sumPA
                 cant -= sumPI
 
-                data.append(cant)
+                data.append(round(float(cant),2))
                 if current_month != 1:
                     current_month -= 1
                 else:
@@ -536,7 +536,7 @@ class DatosReportes(Datos):
                 cant += sumSS
                 cant += sumSM
 
-                data.append(cant)
+                data.append(round(float(cant),2))
                 if current_month != 1:
                     current_month -= 1
                 else:
@@ -598,7 +598,7 @@ class DatosReportes(Datos):
                 cant += sumPA
                 cant += sumPI
 
-                data.append(cant)
+                data.append(round(float(cant),2))
                 if current_month != 1:
                     current_month -= 1
                 else:
@@ -807,7 +807,7 @@ class DatosReportes(Datos):
                     stock -= valStockDep
                     stock -= valStockEnt
                     stock += valStockProd
-                    data.append(stock)
+                    data.append(round(float(stock),2))
 
                     if current_month != 1:
                         current_month -= 1
@@ -872,7 +872,7 @@ class DatosReportes(Datos):
                     #Aplico los movimientos del mes al stock
                     stock -= valStockProdIns
                     stock += valStockProdArt
-                    data.append(stock)
+                    data.append(round(float(stock),2))
 
                     if current_month != 1:
                         current_month -= 1
@@ -963,7 +963,7 @@ class DatosReportes(Datos):
                     stock += valStockPed
                     stock -= valStockProdArt
 
-                    data.append(stock)
+                    data.append(round(float(stock),2))
 
                     if current_month != 1:
                         current_month -= 1
@@ -1010,7 +1010,7 @@ class DatosReportes(Datos):
                 #Aplico las cantidades depositadas al dataset
                 cant += sumPI
 
-                data.append(cant)
+                data.append(round(float(cant),2))
                 if current_month != 1:
                     current_month -= 1
                 else:
@@ -1057,7 +1057,7 @@ class DatosReportes(Datos):
                 #Aplico las cantidades depositadas al dataset
                 cant += sumPI
 
-                data.append(cant)
+                data.append(round(float(cant),2))
                 if current_month != 1:
                     current_month -= 1
                 else:

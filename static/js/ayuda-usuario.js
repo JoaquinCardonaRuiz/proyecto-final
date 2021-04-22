@@ -2,7 +2,7 @@
 var preguntasMiCuenta = 4;
 var preguntasDep = 5;
 var preguntasPed = 6;
-var preguntasNiveles = 5;
+var preguntasNiveles = 3;
 var preguntasFAQ = 5;
 
 var cantPreguntas = [preguntasMiCuenta, preguntasDep, preguntasPed,preguntasNiveles,preguntasFAQ];
