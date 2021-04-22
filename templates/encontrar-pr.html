@@ -49,9 +49,9 @@
                                 <p class="option-title-cards-pr">{{pr.nombre}}</p>
                                 <p class="option-description-pr">{{pr.direccion.calle + ' '}}{{pr.direccion.altura}}</p>
                                 <p class="option-description-pr text-muted"  style="margin-top: 0.2%;">{{pr.direccion.ciudad}}</p>
-                                <div style="float: right;" class="horarios-container-ecnontrar-punto">
+                                <div style="float: right;" class="horarios-container-ecnontrar-punto" >
                                     <i class="far fa-clock horarios-img-ecnontrar-punto" id="{{pr.id}}-img" onmouseover="changeColor({{pr.id}});" onmouseout="restablishColor({{pr.id}});" onclick="openLoadingRing();openModalHorarios('{{pr.id}}', '{{pr.nombre}}', '{{pr.estado}}');"></i>
-                                    <p class="option-description-pr horarios-desc-ecnontrar-punto" id="{{pr.id}}-desc" onmouseover="changeColor({{pr.id}});" onmouseout="restablishColor({{pr.id}});" onclick="openLoadingRing();openModalHorarios('{{pr.id}}', '{{pr.nombre}}', '{{pr.estado}}');">Ver horarios</p>
+                                    <p class="option-description-pr" style="color: rgb(132,117,167);" id="{{pr.id}}-desc" onmouseover="changeColor({{pr.id}});" onmouseout="restablishColor({{pr.id}});" onclick="openLoadingRing();openModalHorarios('{{pr.id}}', '{{pr.nombre}}', '{{pr.estado}}');">Ver horarios</p>
                                 </div>
                             </div>
                         {%endfor%}
