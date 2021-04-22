@@ -84,43 +84,48 @@ function isNumberKeyEntiresOnly(txt, evt) {
 
 
 function showElementos(modulos){
-  if(modulos.includes(8) || modulos.includes(12)){
-    $("#layout-li-pedidos").show();
-  }
-  if(modulos.includes(9)){
-    $("#layout-li-depositos").show();
-  }
-  if(modulos.includes(2)){
-    $("#layout-li-articulos").show();
-  }
-  if(modulos.includes(1)){
-    $("#layout-li-insumos").show();
-  }
-  if(modulos.includes(16)){
-    $("#layout-li-materiales").show();
-  }
-  if(modulos.includes(11)){
-    $("#layout-li-stock").show();
-  }
-  if(modulos.includes(5)){
-    $("#layout-li-produccion").show();
-  }
-  if(modulos.includes(4) || modulos.includes(10)){
-    $("#layout-li-usuarios").show();
-  }
-  if(modulos.includes(6)){
-    $("#layout-li-entidades").show();
-  }
-  if(modulos.includes(3)){
-    $("#layout-li-niveles").show();
-  }
-  if(modulos.includes(7) || modulos.includes(15)){
-    $("#layout-li-puntos").show();
-  }
-  if(modulos.includes(14)){
-    $("#layout-li-reportes").show();
-  }
-  if(modulos.includes(13)){
-    $("#layout-li-config").show();
+  if(modulos.length >= 1){
+    if(modulos.includes(8) || modulos.includes(12)){
+      $("#layout-li-pedidos").show();
+    }
+    if(modulos.includes(9)){
+      $("#layout-li-depositos").show();
+    }
+    if(modulos.includes(2)){
+      $("#layout-li-articulos").show();
+    }
+    if(modulos.includes(1)){
+      $("#layout-li-insumos").show();
+    }
+    if(modulos.includes(16)){
+      $("#layout-li-materiales").show();
+    }
+    if(modulos.includes(11)){
+      $("#layout-li-stock").show();
+    }
+    if(modulos.includes(5)){
+      $("#layout-li-produccion").show();
+    }
+    if(modulos.includes(4) || modulos.includes(10)){
+      $("#layout-li-usuarios").show();
+    }
+    if(modulos.includes(6)){
+      $("#layout-li-entidades").show();
+    }
+    if(modulos.includes(3)){
+      $("#layout-li-niveles").show();
+    }
+    if(modulos.includes(7) || modulos.includes(15)){
+      $("#layout-li-puntos").show();
+    }
+    if(modulos.includes(14)){
+      $("#layout-li-reportes").show();
+    }
+    if(modulos.includes(13)){
+      $("#layout-li-config").show();
+    }
+  
+    $("#admin-label").show();
+    $("#layout-li-ayuda").show();
   }
 }
