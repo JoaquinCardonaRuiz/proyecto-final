@@ -40,10 +40,10 @@ class Datos():
         
         try:
                         
-            cls.db = mysql.connector.connect(host="ls-28501d0963307bbff458754e469d8fb4c89bcd0e.cjtrx9up91ir.us-east-1.rds.amazonaws.com", # Host de la BD.
-                        user="root", # Usuario de la BD
-                        passwd="proyectoFinal1", # Contraseña de la BD
-                        db="EcoAsistente")  # Nombre de la DB
+            cls.db = mysql.connector.connect(host="sql10.freemysqlhosting.net", # Host de la BD.
+                        user="sql10404333", # Usuario de la BD
+                        passwd="nBUhZ1gSar", # Contraseña de la BD
+                        db="sql10404333")  # Nombre de la DB
             cls.cursor = cls.db.cursor(buffered=True)
                 
         except Exception as e:
