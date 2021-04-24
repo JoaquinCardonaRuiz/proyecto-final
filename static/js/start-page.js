@@ -229,6 +229,7 @@ function slideAnswer(numero){
         $("#answer-2").slideUp();
         $("#answer-3").slideUp();
         $("#answer-4").slideUp();
+        $("#answer-5").slideUp();
         $("#chevron-faq-" + String(numero)).css({"transform": "rotate(180deg)"});
         $("#answer-" + String(numero)).slideDown();
         $("#question-" + String(numero)).css({"transition" : "color 0.3s ease-in-out","color": "#95C22B"});
