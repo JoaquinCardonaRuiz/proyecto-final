@@ -112,8 +112,8 @@ def authentication(email, password):
         session["usuario"] = NegocioUsuario.login(email, password)
         session.modified = True
         return jsonify({"login-state":True})
-    except Exception as e:
-        raise e
+    except:
+        return jsonify({"login-state":False})
 
 @app.route('/logout/<val>', methods = ['GET','POST'])
 def logout(val):
