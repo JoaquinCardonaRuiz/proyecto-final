@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EcoAsitente</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/quienes-somos.css')}}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script data-ad-client="ca-pub-2159408717266836" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">   
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    
+</head>
+<body style="background-color: white;">
+
+<!--Sección Principal-->
+<div class="top" id="page-top-content">
+    <div class="row" id="page-heading">
+            <h4 id="heading-title" onclick="window.location.href='/'" style="margin-left: -10%;">
+                <img src="/static/img/logo-gris.png" id="heading-title-img">
+            </h4>
+            <h4 id="heading-option" onmouseover="headingOptionHover(); openMenu()" onmouseleave="headingOptionLeave();closeMenu()">
+                Info 
+                <img src="/static/img/chevron.svg" class="chevron"></img>
+                <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
+                    <p class="menu-option-box-op" id="menu-option-box-op-1" onclick="redirect('/ayuda-faq');">Centro de Ayuda</p>
+                    <p class="menu-option-box-op" onclick="redirect('/documentacion');">Documentación</p>
+                    <p class="menu-option-box-op" onclick="redirect('/quienes-somos');">Quienes somos</p>
+                </div>
+            </h4> 
+            <h4 id="heading-option-right" onclick="redirect('/login')" style="margin-right:-8%">Iniciar Sesión</h5>
+            <h4 id="heading-option-right2" onclick="redirect('/register')" style="margin-right:-8%">Registrate</h5>
+    </div>
+</div>
+<div class="container" style="margin-bottom: 10%;">
+    <div class="row d-flex justify-content-center" style="width: 100%; margin-top: 7%;">
+        <h3 class="page-content-title">Documentación</h3>
+    </div>
+    <div class="row d-flex justify-content-center" style="margin-bottom: 4%;">
+        <p class="page-content-subtitle">En esta sección podés ver la documentación que hizo posible a EcoAsistente, elaborada a lo largo de este proyecto.</p>
+    </div>
+    <div class="row mt-4">
+        <div class="row d-flex justify-content-center" style="width: 99%; height: 900px; margin-left: 0%;">
+            <iframe src="/static/pdf/Proyecto Final_EcoAsistente _EntregaFinal.pdf" frameborder="0" style="width: 90% !important; height: 100% !important;">
+
+            </iframe>
+        </div>
+    </div>
+
+</div>
+
+<!--footer starts from here-->
+<footer class="footer">
+    <div class="container bottom_border">
+        <div class="row">
+            <div class=" col-sm-4 col-md col-sm-4  col-12 col">
+                <img class="headin5_amrc col_white_amrc pt2 footer-logo" src="/static/img/logo.png" >
+                <!--headin5_amrc-->
+                <h3 id="start-button-footer" onclick="redirect('/register')">Registrarse</h3> 
+                <h3 id="login-button-footer" onclick="redirect('/login')">Iniciar Sesión</h3>   
+            </div>
+            
+            
+            <div class=" col-sm-4 col-md  col-6 col" id="footer-col-1">
+                <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+                <!--headin5_amrc-->
+                <ul class="footer_ul_amrc">
+                <li><a href="http://webenlance.com">Image Rectoucing</a></li>
+                <li><a href="http://webenlance.com">Clipping Path</a></li>
+                <li><a href="http://webenlance.com">Hollow Man Montage</a></li>
+                <li><a href="http://webenlance.com">Ebay & Amazon</a></li>
+                <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
+                <li><a href="http://webenlance.com">Image Cropping</a></li>
+                </ul>
+                <!--footer_ul_amrc ends here-->
+            </div>
+            
+            
+            <div class=" col-sm-4 col-md  col-6 col" id="footer-col-2">
+                <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+                <!--headin5_amrc-->
+                <ul class="footer_ul_amrc">
+                <li><a href="http://webenlance.com">Remove Background</a></li>
+                <li><a href="http://webenlance.com">Shadows</a></li>
+                <li><a href="http://webenlance.com">Logo Design</a></li>
+                <li><a href="http://webenlance.com">Vectorization</a></li>
+                <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
+                <li><a href="http://webenlance.com">Image Cropping</a></li>
+                </ul>
+                <!--footer_ul_amrc ends here-->
+            </div>
+            
+            
+            <div class=" col-sm-4 col-md  col-12 col" id="footer-col-3">
+                <h5 class="headin5_amrc col_white_amrc pt2">Sobre nosotros</h5>
+                <!--headin5_amrc ends here-->
+                
+                <ul class="footer_ul2_amrc">
+                    <p class="mb10">EcoAsistente fue desarrollado como Proyecto Final de la carrera de Ingeniería en Sistemas de Información, de la Universidad Tecnológica Nacional de Rosario, por Bruno Tomás Caracini y Joaquín Cardona Ruíz.</p>
+                    <p class="linkeable-p" onclick="redirectBlank('mailto:bruno98980@gmail.com')"><i class="fa fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;bruno98980@gmail.com  </p>
+                    <p class="linkeable-p" onclick="redirectBlank('mailto:joaquincardonaruiz@gmail.com')"><i class="fa fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;joaquincardonaruiz@gmail.com  </p>
+                    <p class="linkeable-p" onclick="redirectBlank('https://github.com/JoaquinCardonaRuiz/proyecto-final')"><i class="fa fa fa-code"></i>&nbsp;&nbsp;&nbsp;Repositorio en Github  </p>
+                </ul>
+                <!--footer_ul2_amrc ends here-->
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="container">
+        <ul class="foote_bottom_ul_amrc">
+        <li><a href="http://webenlance.com">Home</a></li>
+        <li><a href="http://webenlance.com">About</a></li>
+        <li><a href="http://webenlance.com">Services</a></li>
+        <li><a href="http://webenlance.com">Pricing</a></li>
+        <li><a href="http://webenlance.com">Blog</a></li>
+        <li><a href="http://webenlance.com">Contact</a></li>
+        </ul>
+        <!--foote_bottom_ul_amrc ends here-->
+        <p class="text-center">Presentado en 2021 | EcoAsistente</p>
+    </div>
+    
+</footer>
+
+</body>
+
+<script src="static/js/quienes-somos.js"></script>
+
