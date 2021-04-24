@@ -17,17 +17,19 @@
 	background: rgb(177, 177, 177); 
   }
 
+  
   #up-bar{
 	background-color: rgb(255, 255, 255); 
-	width: calc(100%-15.5rem); 
-	margin-left: calc(15.5rem - 8px); 
-	height: 3.8rem; 
+	width: calc(100%-16rem); 
+	margin-left: calc(16rem - 8px); 
+	height: 3.7rem; 
 	box-shadow: none !important; 
 	z-index: 9; 	
-	box-shadow: none !important; border-bottom: 1px solid rgb(240, 240, 240) !important;
-	border-left: 1px solid rgb(240, 240, 240) !important;
+	box-shadow: none !important; 
+	border-bottom: 1px solid rgb(240, 240, 240) !important;
 	position: relative;
   }
+
 
 /*footer*/
 .col_white_amrc { color:#FFF;}
@@ -98,8 +100,7 @@ footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
 	left: 0;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
 	transition: all 0.4s;
-	overflow: auto;
-  }
+}
   
   .page-content {
 	width: calc(100% - 15.5rem);

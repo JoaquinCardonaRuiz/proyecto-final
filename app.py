@@ -2004,6 +2004,14 @@ def gu_listas(type):
 def nosotros():
     return render_template('quienes-somos.html')
 
+'''
+    -----------------------
+    Documentación
+    -----------------------
+'''
+@app.route('/documentacion', methods = ['GET','POST'])
+def documentacion():
+    return render_template('documentacion.html')
 
 '''
     -----------------------
