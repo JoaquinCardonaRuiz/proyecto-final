@@ -3,7 +3,7 @@ import email.message
 import os
 from utils import Utils
 
-debug = True
+debug = False
 
 def send_mail(email_address, passwd, html_string, code):
     global debug

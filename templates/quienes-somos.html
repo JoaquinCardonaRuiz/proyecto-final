@@ -41,7 +41,7 @@
 <!--Sección Principal-->
 <div class="top" id="page-top-content">
     <div class="row" id="page-heading">
-            <h4 id="heading-title" onclick="window.location.href='/'">
+            <h4 id="heading-title" onclick="window.location.href='/'" style="margin-left: -10%;">
                 <img src="/static/img/logo-gris.png" id="heading-title-img">
             </h4>
             <h4 id="heading-option" onmouseover="headingOptionHover(); openMenu()" onmouseleave="headingOptionLeave();closeMenu()">
@@ -49,13 +49,13 @@
                 <img src="/static/img/chevron.svg" class="chevron"></img>
                 <div class="menu-option-box" id="menu-option-box-1" onmouseover="menuMouseOver()" onmouseleave="menuMouseLeave()">
                     <p class="menu-option-box-op" id="menu-option-box-op-1" onclick="redirect('/ayuda-faq');">Centro de Ayuda</p>
-                    <p class="menu-option-box-op">Documentación</p>
+                    <p class="menu-option-box-op" onclick="redirect('/documentacion');">Documentación</p>
                     <p class="menu-option-box-op" onclick="redirect('/quienes-somos');">Quienes somos</p>
                     <p class="menu-option-box-op">¿Por qué un EcoAsistente?</p>                
                 </div>
             </h4> 
-            <h4 id="heading-option-right" onclick="redirect('/login')">Iniciar Sesión</h5>
-            <h4 id="heading-option-right2" onclick="redirect('/register')">Registrate</h5>
+            <h4 id="heading-option-right" onclick="redirect('/login')" style="margin-right:-8%">Iniciar Sesión</h5>
+            <h4 id="heading-option-right2" onclick="redirect('/register')" style="margin-right:-8%">Registrate</h5>
     </div>
 </div>
 <div class="container" style="margin-bottom: 10%;">
