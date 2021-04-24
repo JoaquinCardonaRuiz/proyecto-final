@@ -318,7 +318,7 @@ function openBajaModal(idArticulo,nombreArticulo){
     $('#bottomBajaModalText').hide();
     $('#primary-btn-alert').prop('disabled', false);
     $('#secondary-btn-baja').prop('disabled', false);
-    document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea eliminar el artículo " + nombreArticulo + "? Una vez eliminado, este no se podrá recuperar.";
+    document.getElementById("baja-custom-text").innerHTML = "¿Está seguro que desea eliminar el artículo " + nombreArticulo + "?";
 
     //Manejo de carteles
     jQuery.noConflict();
@@ -331,6 +331,7 @@ function baja_entidad(){
 
     //Manejo de elementos para la carga
     $(".b-modal-text-baja").hide();
+    $("#fieldsRowBaja").hide();
     $(".lds-ring div").css("border-color", "#cf4545 transparent transparent transparent");
     $(".lds-ring").show().fadeIn(500);
     $('#bottomBajaModalText').show();

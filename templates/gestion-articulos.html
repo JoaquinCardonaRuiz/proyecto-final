@@ -80,6 +80,8 @@
                     <th scope="col" class="table-heading">Desc.</th>
                     <th scope="col" class="table-heading">Insumos</th>
                     <th scope="col" class="table-heading">Público</th>
+                    <th class="table-heading delete-th"></th>
+                    <th class="table-heading modify-th"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -769,13 +771,18 @@
           </button>
         </div>
         <div class="modal-body-baja" >
+            <div class="row margin-bottom-row" id="fieldsRowBaja">
+                <img src="/static/img/exclamation-mark.png" class="delete-exlamation-mark">
+                <p class="bottom-modal-text-baja" id="baja-custom-text">¿Está seguro que desea eliminar el Artículo? </p>
+                <p class="bottom-modal-text less-margin-top"> Una vez eliminado, el Artículo no se podrá recuperar.</p>
+                <input type="text" id="idPuntoBaja" name="idPuntoBaja" hidden>
+            </div>
             <div class="row" id="loadingRow">
                 <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
-            <p class="b-modal-text-baja" id="baja-custom-text">
-            </p>
+            <p class="bottom-modal-text" id="bottomBajaModalText"></p>
         </div>
-        <p class="bottom-modal-text" id="bottomBajaModalText"></p>
+        
         <input type="text" name="" id="idArticulo" hidden>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal" id="secondary-btn-baja">Cancelar</button>
