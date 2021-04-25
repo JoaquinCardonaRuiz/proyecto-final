@@ -1,7 +1,20 @@
  ::-webkit-scrollbar {
 	width: 8px;
   }
+
+  body{
+	  background-color: #161b21ff !important;
+  }
   
+  h1,h2,h3,h4,h5,h6,p,a,span,input,li,.nav-link,.nav-item{
+	  color: white !important;
+  }
+
+  .container, #sidebar,#up-bar,.modal-body,.modal-footer,.modal-header,.row,input,select{
+	background-color:#1f2630 !important;
+  }
+
+
   /* Track */
   ::-webkit-scrollbar-track {
 	background: #ffffff; 
