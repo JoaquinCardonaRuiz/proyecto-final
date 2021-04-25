@@ -1,3 +1,11 @@
+function set_light_mode(){
+  $.getJSON("/config/set-light-mode",function (result){
+    if (result == true){
+      location.reload(true);
+    }
+  });
+}
+
 $(function() {
     // Sidebar toggle behavior
     $('#sidebarCollapse').on('click', function() {
@@ -6,10 +14,32 @@ $(function() {
   });
 
 
+
+
 document.body.scrollTop = 0;
 
 $( window ).resize(function() {
   navbarResize();
+});
+
+$.getJSON("/config/get-light-mode",function (result){
+  if (result == 'day'){
+    $('head').append('<link rel="stylesheet" type="text/css" href="/static/css/layout.css">');
+    $(".nav-link").removeClass('text-light');
+    $(".nav-link").addClass('text-dark');
+    $("#theme-label").text("Tema oscuro");
+    $(".fa-sun").hide();
+    $(".fa-moon").show();
+  }
+  else{
+    $('head').append('<link rel="stylesheet" type="text/css" href="/static/css/layout-oscuro.css">');
+    $(".nav-link").removeClass('text-dark');
+    $(".nav-link").addClass('text-light');
+    $("#theme-label").text("Tema claro");  
+    $(".fa-sun").show();
+    $(".fa-moon").hide(); 
+  }
+  $("body").fadeIn();
 });
 
 function navbarResize(){
