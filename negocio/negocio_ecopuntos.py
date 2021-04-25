@@ -52,7 +52,6 @@ class NegocioEcoPuntos(Negocio):
         if config=="EPs":
             p = DatosEcoPuntos.get_porcentaje_rec_EP()
             DatosEcoPuntos.updateValorEp(value,p,date)
-            DatosArticulo.update_all_EP_values(value)
 
         elif config=="Recs":
             e = DatosEcoPuntos.get_valor_EP()

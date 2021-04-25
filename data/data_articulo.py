@@ -528,24 +528,3 @@ class DatosArticulo(Datos):
                                                     msj_adicional="Error obtieniendo el margen de ganancia de un articulo desde la BD.")
         finally:
             cls.cerrar_conexion()
-
-
-
-
-    @classmethod
-    def update_all_EP_values(cls,value):
-        """
-        Actualiza los costos en EP de todos los artículos de acuerdo a un nuevo valor
-        """
-        try:
-            cls.abrir_conexion()
-            sql= ("UPDATE tiposArticulo SET cInsumos={}, cTotal={} WHERE idTipoArticulo={};").format(cIns,cTot,idTA)
-            cls.cursor.execute(sql)
-            cls.db.commit()
-            return cls.cursor.lastrowid
-        except Exception as e:
-            raise custom_exceptions.ErrorDeConexion(origen="data_articulo.updateCostos()",
-                                                    msj=str(e),
-                                                    msj_adicional="Error actualizando los costos de un articulo en la BD.")
-        finally:
-            cls.cerrar_conexion()
