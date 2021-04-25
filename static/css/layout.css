@@ -7,7 +7,7 @@ body,#heading-container,.subheading,#content,#loadingRowPuntos,#top-container,#p
 	background-color: #161b21ff !important;
 }
 
-h1,h2,h3,h4,h5,h6,h7,p,a,span,input,li,.nav-link,.nav-item,tr,th,td,.nav-link,option,select{
+h1,h2,h3,h4,h5,h6,h7,p,a,span,input,li,.nav-link,.nav-item,tr,th,td,.nav-link,option,select,#cantEP{
 	color: white !important;
 }
 
@@ -19,6 +19,19 @@ h1,h2,h3,h4,h5,h6,h7,p,a,span,input,li,.nav-link,.nav-item,tr,th,td,.nav-link,op
 	background-color:#1f2630;
 }
 
+#night-mode{
+	padding-top: 17px;
+	color: #95C22B !important;
+}
+
+#night-mode:hover{
+	cursor: pointer;
+}
+
+.info-result{
+	color: #95C22B !important;
+}
+
 .secondary-btn{
 	color: white;
 }
@@ -27,7 +40,7 @@ h1,h2,h3,h4,h5,h6,h7,p,a,span,input,li,.nav-link,.nav-item,tr,th,td,.nav-link,op
 	color:#1f2630;
 }
 
-#content-table{
+#content-table,.content-table-main{
 	border-top: 2px solid #1f2630 !important;
 }
 
