@@ -7,7 +7,7 @@ body,#heading-container,.subheading,#content,#loadingRowPuntos,#top-container,#p
 	background-color: #161b21ff !important;
 }
 
-h1,h2,h3,h4,h5,h6,h7,p,a,input,li,.nav-link,.nav-item,tr,th,td,.nav-link,option,select,#cantEP,.nav-link,#home-tab,#profile-tab,#security-tab{
+h1,h2,h3,h4,h5,h6,h7,p,a,textarea,input,li,.nav-link,.nav-item,tr,th,td,.nav-link,option,select,#cantEP,.nav-link,#home-tab,#profile-tab,#security-tab{
 	color: white !important;
 }
 
@@ -15,7 +15,7 @@ label{
 	color: #95C22B !important;
 }
 
-.container, #sidebar,#up-bar,.modal-body,.modal-footer,.modal-header,input,select,.modal-content,select,.numberCircle,#table-container,#content-table,.menu-option-box,.card-product,#nombreArtInput,.list-group,li,ul,.electpicker,.selectpicker-nooutline{
+.container, #sidebar,#up-bar,.modal-body,.modal-footer,.modal-header,input,select,.modal-content,select,.numberCircle,#table-container,#content-table,.menu-option-box,.card-product,#nombreArtInput,.list-group,li,ul,.electpicker,.selectpicker-nooutline,textarea,.data-show-input,#dateInputSM,#dateInputSE{
   background-color:#1f2630 !important;
 }
 
