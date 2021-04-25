@@ -1,6 +1,10 @@
   ::-webkit-scrollbar {
 	width: 8px;
   }
+
+  #img-nav-bar{
+	  display: none;
+  }
   
   /* Track */
   ::-webkit-scrollbar-track {

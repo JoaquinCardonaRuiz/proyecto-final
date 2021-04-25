@@ -2,6 +2,10 @@
 	width: 8px;
   }
 
+  #img-nav-bar{
+	display: none;
+}
+
 /*Modo noche*/
 body,#heading-container,.subheading,#content,#loadingRowPuntos,#top-container,#products-container{
 	background-color: #161b21ff !important;

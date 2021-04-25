@@ -30,6 +30,7 @@ $.getJSON("/config/get-light-mode",function (result){
     $("#theme-label").text("Tema oscuro");
     $(".fa-sun").hide();
     $(".fa-moon").show();
+    $("img-nav-bar").fadeIn();
   }
   else{
     $('head').append('<link rel="stylesheet" type="text/css" href="/static/css/layout-oscuro.css">');
@@ -37,7 +38,8 @@ $.getJSON("/config/get-light-mode",function (result){
     $(".nav-link").addClass('text-light');
     $("#theme-label").text("Tema claro");  
     $(".fa-sun").show();
-    $(".fa-moon").hide(); 
+    $(".fa-moon").hide();
+    $("img-nav-bar").fadeIn();
   }
   $("body").fadeIn();
 });
