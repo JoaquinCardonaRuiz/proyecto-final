@@ -2,10 +2,6 @@
 	width: 8px;
   }
 
-  #img-nav-bar{
-	display: none;
-}
-
 /*Modo noche*/
 body,#heading-container,.subheading,#content,#loadingRowPuntos,#top-container,#products-container{
 	background-color: #161b21ff !important;
@@ -19,7 +15,7 @@ label{
 	color: #95C22B !important;
 }
 
-.container, #sidebar,#up-bar,.modal-body,.modal-footer,.modal-header,input,select,.modal-content,select,.numberCircle,#table-container,#content-table,.menu-option-box,.card-product,#nombreArtInput,.list-group,li,ul,.electpicker,.selectpicker-nooutline,textarea,.data-show-input,#dateInputSM,#dateInputSE{
+.container, #sidebar,#up-bar,.modal-body,.modal-footer,.modal-header,input,select,.modal-content,select,.numberCircle,#table-container,#content-table,.menu-option-box,.card-product,#nombreArtInput,.list-group,li,ul,.electpicker,.selectpicker-nooutline,textarea,.data-show-input,#dateInputSM,#dateInputSE,#slideInput,.range{
   background-color:#1f2630 !important;
 }
 

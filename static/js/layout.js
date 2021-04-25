@@ -30,7 +30,6 @@ $.getJSON("/config/get-light-mode",function (result){
     $("#theme-label").text("Tema oscuro");
     $(".fa-sun").hide();
     $(".fa-moon").show();
-    $("img-nav-bar").fadeIn();
   }
   else{
     $('head').append('<link rel="stylesheet" type="text/css" href="/static/css/layout-oscuro.css">');
@@ -39,10 +38,12 @@ $.getJSON("/config/get-light-mode",function (result){
     $("#theme-label").text("Tema claro");  
     $(".fa-sun").show();
     $(".fa-moon").hide();
-    $("img-nav-bar").fadeIn();
   }
   $("body").fadeIn();
 });
+
+$("#img-nav-bar").fadeIn(1000);
+$("#img-nav-bar").css("transform","translateZ(0)");
 
 function navbarResize(){
   if( $( window ).width() < 768){
