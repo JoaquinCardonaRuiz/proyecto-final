@@ -8,19 +8,47 @@ body,#heading-container,.subheading,#content,#loadingRowPuntos,#top-container,#p
 }
 
 h1,h2,h3,h4,h5,h6,h7,p,a,textarea,input,li,.nav-link,.nav-item,tr,th,td,.nav-link,option,select,#cantEP,.nav-link,#home-tab,#profile-tab,#security-tab{
-	color: white !important;
+	color: #d3d9e2 !important;
 }
 
 label{
 	color: #95C22B !important;
 }
 
+.material-card-subtitle{
+	color: rgb(177, 177, 177) !important;
+}
+
+thead tr th{
+	border-bottom: 3px solid #3c4652 !important;
+}
+
+tbody td{
+	border-top: 2px solid #3c4652 !important;
+}
+
+tbody th{
+	border-top: 2px solid #3c4652 !important;
+}
+
 .container, #sidebar,#up-bar,.modal-body,.modal-footer,.modal-header,input,select,.modal-content,select,.numberCircle,#table-container,#content-table,.menu-option-box,.card-product,#nombreArtInput,.list-group,li,ul,.electpicker,.selectpicker-nooutline,textarea,.data-show-input,#dateInputSM,#dateInputSE,#slideInput,.range{
   background-color:#1f2630 !important;
 }
 
-.nav-item{
-	background-color:#1f2630;
+.nav-item,.nav-link.active{
+	background-color:#1f2630 !important;
+}
+
+.ed-tabs .ed-link:hover, .ed-tabs .ed-link:hover,.nav-tabs .nav-link:focus:hover, .nav-tabs .nav-link:hover{
+	background:#2d323a !important;
+}
+
+.modal-large-card-sm, .modal-large-card{
+	border: 1px solid rgb(66, 66, 66) !important;
+}
+
+.nav-item:active{
+	background-color:#1f2630 !important;
 }
 
 #night-mode:hover{
