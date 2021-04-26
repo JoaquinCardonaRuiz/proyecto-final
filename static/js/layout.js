@@ -40,7 +40,6 @@ $.getJSON("/layout/datos-usuario",function (result){
       }
       $("#carrito-cant-items").text(cantidad);
     }
-    //TODO: obtener la cantidad de elementos del carrito (chequear en que formato se guarda, creo que es un dic), y mostrarla.
 });
 
 //Redirige al url que recibe como parámetro.

@@ -127,6 +127,7 @@ function hacerPedido(){
             $("#codPedido").text(result["codigo"]);
             $("#cantDias").text(result["demora"]);
             $("#successful-order").fadeIn();
+            get_user_data();
         }
         else if(result["estado"]=="error-stock"){
             $("#error-order-stock").fadeIn();
@@ -161,3 +162,23 @@ function ocultaResult(){
     $("#error-order-ep").hide();
 }
 
+function get_user_data(){
+    $.getJSON("/layout/datos-usuario",function (result){
+        showElementos(result["modulos"])
+        $("#nombreUsuarioNavBar").text(result["nombre"]);
+        $("#cantEPNavBar").text(result["totalEP"]);
+        $("#user-profile-img-navbar").attr("src", result["img"]);
+        if (result["carrito"]== false){
+          $("#carrito-cant-items").text("0");
+        }
+        else{
+          cantidad = 0;
+          carrito = result["carrito"];
+          for (var item in carrito){
+            cantidad += parseFloat(carrito[item]);
+          }
+          $("#carrito-cant-items").text(cantidad);
+        }
+    });
+    
+}
